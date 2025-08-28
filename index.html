@@ -1,50 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suvojeet Sengupta - Links</title>
+    <title>Suvojeet Sengupta - Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #ffffff;
-            color: #000000;
-        }
+        :root {
+            --background-light: #f5f5f5;
+            --text-light: #1a1a1a;
+            --card-light: #ffffff;
+            --primary-light: #8e44ad;
+            --shadow-light: rgba(0, 0, 0, 0.1);
 
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
-                color: #ffffff;
-            }
+            --background-dark: #1a1a1a;
+            --text-dark: #f5f5f5;
+            --card-dark: #2c2c2c;
+            --primary-dark: #9b59b6;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+        }
+        html.dark {
+            --background: var(--background-dark);
+            --text: var(--text-dark);
+            --card: var(--card-dark);
+            --primary: var(--primary-dark);
+            --shadow: var(--shadow-dark);
+        }
+        html:not(.dark) {
+            --background: var(--background-light);
+            --text: var(--text-light);
+            --card: var(--card-light);
+            --primary: var(--primary-light);
+            --shadow: var(--shadow-light);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        .slide-in-left {
+            animation: slideInLeft 1s ease-in-out;
+        }
+        .slide-in-right {
+            animation: slideInRight 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-sm p-8 space-y-6 bg-gray-200 bg-opacity-70 rounded-lg shadow-lg backdrop-blur-md dark:bg-white dark:bg-opacity-10">
-        <div class="flex flex-col items-center">
-            <img class="w-24 h-24 mb-4 rounded-full" src="suvojeet.jpg" alt="Profile Picture">
-            <h1 class="text-2xl font-bold text-black dark:text-white">Suvojeet Sengupta</h1>
-            <p class="text-gray-600 dark:text-gray-400 text-center">🎤 Singer | Performer | Composer<br>✨ Introvert, but music makes me shine<br>🎶 Living my childhood dream – where words turn into melodies & emotions into magic.</p>
-        </div>
-        <div class="space-y-4">
-            <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" class="flex items-center justify-center w-full px-4 py-3 font-semibold text-white transition-transform transform bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:scale-105">
-                <i class="mr-3 fab fa-instagram"></i>Instagram
-            </a>
-            <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" class="flex items-center justify-center w-full px-4 py-3 font-semibold text-white transition-transform transform bg-red-600 rounded-lg hover:scale-105">
-                <i class="mr-3 fab fa-youtube"></i>YouTube
-            </a>
-            <a href="https://www.facebook.com/share/1CH5CXcCqX/" class="flex items-center justify-center w-full px-4 py-3 font-semibold text-white transition-transform transform bg-blue-600 rounded-lg hover:scale-105">
-                <i class="mr-3 fab fa-facebook"></i>Facebook
-            </a>
-        </div>
-        <div class="w-full">
-            <h2 class="mb-3 text-xl font-bold text-center text-black dark:text-white">Latest Music Video</h2>
-            <div class="relative w-full overflow-hidden rounded-lg" style="padding-top: 56.25%">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/roXi5XonUZI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
+
+    <div class="absolute top-5 right-5">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none">
+            <i class="fas fa-moon dark:hidden"></i>
+            <i class="fas fa-sun hidden dark:inline"></i>
+        </button>
+    </div>
+
+    <main class="w-full max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden md:flex">
+        <!-- Left Column -->
+        <div class="md:w-1/3 p-8 bg-gradient-to-b from-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center slide-in-left">
+            <img class="w-32 h-32 rounded-full border-4 border-white shadow-lg" src="suvojeet.jpg" alt="Profile Picture">
+            <h1 class="text-3xl font-bold mt-4 text-center">Suvojeet Sengupta</h1>
+            <p class="text-indigo-200 text-center mt-2">🎤 Singer | Performer | Composer</p>
+            <div class="mt-4 text-center text-sm text-indigo-100">
+                <p>✨ Introvert, but music makes me shine</p>
+                <p>🎶 Living my childhood dream – where words turn into melodies & emotions into magic.</p>
             </div>
         </div>
-    </div>
+
+        <!-- Right Column -->
+        <div class="md:w-2/3 p-8 slide-in-right">
+            <div class="space-y-5">
+                <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" class="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white">
+                    <i class="fab fa-instagram text-2xl text-purple-500 group-hover:text-white transition-colors duration-300"></i>
+                    <span class="ml-4 flex-grow">Instagram</span>
+                    <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                </a>
+                <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" class="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-red-600 hover:text-white">
+                    <i class="fab fa-youtube text-2xl text-red-500 group-hover:text-white transition-colors duration-300"></i>
+                    <span class="ml-4 flex-grow">YouTube</span>
+                    <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1CH5CXcCqX/" class="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-blue-600 hover:text-white">
+                    <i class="fab fa-facebook text-2xl text-blue-500 group-hover:text-white transition-colors duration-300"></i>
+                    <span class="ml-4 flex-grow">Facebook</span>
+                    <i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
+                </a>
+            </div>
+            <div class="mt-8">
+                <h2 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Latest Music Video</h2>
+                <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-top: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/roXi5XonUZI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
 </body>
 </html>
