@@ -27,48 +27,87 @@
         }
     </script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
 
-    <div class="absolute top-5 right-5">
-        <button onclick="toggleTheme()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none">
+    <div class="absolute top-5 right-5 z-10">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white/20 text-white focus:outline-none">
             <i class="fas fa-moon dark:hidden"></i>
             <i class="fas fa-sun hidden dark:inline"></i>
         </button>
     </div>
 
-    <main class="w-full max-w-6xl mx-auto p-8">
-        <nav class="mb-8">
-            <div class="flex justify-center space-x-4">
-                <a href="index.html" class="px-4 py-2 font-semibold text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300">Home</a>
-                <a href="music.html" class="px-4 py-2 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg transition-all duration-300">Music</a>
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white text-center py-20 relative">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative">
+            <h1 class="text-5xl font-bold">Music Collection</h1>
+            <p class="mt-4 text-lg">Explore the melodies and stories behind the songs.</p>
+        </div>
+    </header>
+
+    <main class="w-full max-w-7xl mx-auto p-8">
+        <!-- Navigation -->
+        <nav class="mb-12">
+            <div class="flex justify-center space-x-6">
+                <a href="index.html" class="text-lg font-semibold text-gray-600 dark:text-gray-300 hover:text-purple-500 transition-colors duration-300">Home</a>
+                <a href="music.html" class="text-lg font-bold text-purple-500 border-b-2 border-purple-500">Music</a>
             </div>
         </nav>
 
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Music Videos</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">A collection of official music videos.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- New Video -->
-            <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-top: 56.25%;">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/t7zF5Ye0JwE" title="Music video by Suvojeet Sengupta" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- Video Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Video Card 1 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/t7zF5Ye0JwE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Bekhayali</h3>
+                    <p class="text-gray-600 dark:text-gray-400">A soulful rendition of a popular track.</p>
+                </div>
             </div>
-            <!-- Video 1 -->
-            <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-top: 56.25%;">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/roXi5XonUZI" title="Music video 1 by Suvojeet Sengupta" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- Video Card 2 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/roXi5XonUZI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Tum Hi Ho</h3>
+                    <p class="text-gray-600 dark:text-gray-400">A classic romantic ballad.</p>
+                </div>
             </div>
-            <!-- Video 2 -->
-            <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-top: 56.25%;">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Uuv-GwwNhGY" title="Music video 2 by Suvojeet Sengupta" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- Video Card 3 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Uuv-GwwNhGY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Channa Mereya</h3>
+                    <p class="text-gray-600 dark:text-gray-400">An emotional and powerful performance.</p>
+                </div>
             </div>
-            <!-- Video 3 -->
-            <div class="relative w-full overflow-hidden rounded-lg shadow-lg" style="padding-top: 56.25%;">
-                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/qFovu9M41UE" title="Music video 3 by Suvojeet Sengupta" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- Video Card 4 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/qFovu9M41UE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Kabira</h3>
+                    <p class="text-gray-600 dark:text-gray-400">A beautiful song about love and farewell.</p>
+                </div>
             </div>
-            
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-8 mt-16">
+        <div class="flex justify-center space-x-6 mb-4">
+            <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-youtube fa-2x"></i></a>
+            <a href="https://www.facebook.com/suvojeetsengupta21" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-facebook fa-2x"></i></a>
+        </div>
+        <p>&copy; 2025 Suvojeet Sengupta. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
