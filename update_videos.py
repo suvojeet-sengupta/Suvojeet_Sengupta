@@ -142,11 +142,11 @@ def update_html_and_json_files(videos_data_json):
                     const videoCard = `
                         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
                             <div class="relative w-full" style="padding-top: 56.25%;">
-                                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${video.id}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${{video.id}}" title="${{video.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             </div>
                             <div class="p-6">
-                                <h3 class="text-xl font-bold mb-2"><a href="${video.url}" target="_blank" rel="noopener noreferrer">${video.title}</a></h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">Uploaded: ${video.formatted_date}</p>
+                                <h3 class="text-xl font-bold mb-2"><a href="${{video.url}}" target="_blank" rel="noopener noreferrer">${{video.title}}</a></h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">Uploaded: ${{video.formatted_date}}</p>
                             </div>
                         </div>
                     `;
