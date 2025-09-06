@@ -52,3 +52,9 @@
             from { transform: translateX(20px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+/* --- YouTube Video Section Styles (Added by Gemini) --- */
+/* Add any custom styles for the dynamically loaded YouTube videos here if needed. */
+/* For example, you might want to adjust spacing or responsiveness beyond Tailwind's defaults. */
+/* #youtube-videos-container { margin-top: 20px; } */
+/* .video-item { border: 1px solid #ccc; } */
