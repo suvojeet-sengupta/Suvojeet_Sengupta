@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Suvojeet Sengupta</title>
+    <meta name="description" content="Learn more about the journey and passion of Suvojeet Sengupta.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
+
+    <div class="absolute top-5 right-5 z-10">
+        <button onclick="toggleTheme()" class="p-2 rounded-full bg-white/20 text-white focus:outline-none">
+            <i class="fas fa-moon dark:hidden"></i>
+            <i class="fas fa-sun hidden dark:inline"></i>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white text-center py-20 relative">
+        <div class="absolute inset-0 bg-black opacity-20"></div>
+        <div class="relative">
+            <h1 class="text-5xl font-bold">About Me</h1>
+            <p class="mt-4 text-lg">The story behind the music.</p>
+        </div>
+    </header>
+
+    <main class="w-full max-w-7xl mx-auto p-8">
+        <!-- Navigation -->
+        <nav class="mb-12">
+            <div class="flex justify-center space-x-4">
+                <a href="index.html" class="px-4 py-2 font-semibold text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300">Home</a>
+                <a href="music.html" class="px-4 py-2 font-semibold text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300">Music</a>
+                <a href="about.html" class="px-4 py-2 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg transition-all duration-300">About Me</a>
+            </div>
+        </nav>
+
+        <!-- About Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 md:p-12 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center">
+                <div class="md:col-span-1">
+                    <img src="suvojeet.jpg" alt="Suvojeet Sengupta" class="rounded-lg shadow-lg w-full h-auto mx-auto">
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">My Story</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        From a young age, music has been more than just a hobby—it has been my language, my escape, and my greatest passion. I started my journey by simply humming tunes I heard on the radio, and soon found myself lost in the world of melodies and rhythms. This is placeholder text, feel free to replace it with your own story.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Over the years, I've honed my skills as a singer, performer, and composer, always striving to create music that resonates with emotion and tells a story. Every song is a piece of my heart, and every performance is a chance to connect with you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div>
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">My Musical Journey</h2>
+            <div class="relative wrap overflow-hidden p-10 h-full">
+                <div class="border-2-2 absolute border-opacity-20 border-gray-700 dark:border-gray-300 h-full border" style="left: 50%"></div>
+                
+                <!-- Timeline Item 1 -->
+                <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-purple-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                    </div>
+                    <div class="order-1 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-xl">The Beginning</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-600 dark:text-gray-400">Started learning classical music and discovered a passion for singing. (Placeholder)</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-purple-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto text-white font-semibold text-lg">2</h1>
+                    </div>
+                    <div class="order-1 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-xl">First Composition</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-600 dark:text-gray-400">Wrote and composed my very first original song. A milestone moment. (Placeholder)</p>
+                    </div>
+                </div>
+                
+                <!-- Timeline Item 3 -->
+                <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                    <div class="order-1 w-5/12"></div>
+                    <div class="z-20 flex items-center order-1 bg-purple-600 shadow-xl w-8 h-8 rounded-full">
+                        <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                    </div>
+                    <div class="order-1 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-xl w-5/12 px-6 py-4">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-xl">First Live Performance</h3>
+                        <p class="text-sm leading-snug tracking-wide text-gray-600 dark:text-gray-400">Performed in front of a live audience for the first time. (Placeholder)</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-8 mt-16">
+        <div class="flex justify-center space-x-6 mb-4">
+            <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-youtube fa-2x"></i></a>
+            <a href="https://www.facebook.com/suvojeetsengupta21" class="hover:text-purple-400 transition-colors duration-300"><i class="fab fa-facebook fa-2x"></i></a>
+        </div>
+        <p>&copy; 2025 Suvojeet Sengupta. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
