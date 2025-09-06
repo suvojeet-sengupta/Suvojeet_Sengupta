@@ -58,94 +58,9 @@
         <!-- Video Grid -->
         <!-- YouTube Videos Section -->
         <div id="youtube-videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            
-        <div id="youtube-videos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <!-- Videos will be rendered here by JavaScript -->
         </div>
-        <div class="flex justify-center mt-8 space-x-4">
-            <button id="prevPage" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
-            <button id="nextPage" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
-        </div>
-
-        <script>
-            const videosContainer = document.getElementById('youtube-videos-container');
-            const prevButton = document.getElementById('prevPage');
-            const nextButton = document.getElementById('nextPage');
-            let allVideos = [];
-            let currentPage = 0;
-            const videosPerPage = 9; // From Python script
-
-            async function loadVideosData() {
-                try {
-                    const response = await fetch('videos_data.json');
-                    allVideos = await response.json();
-                    renderVideos();
-                } catch (error) {
-                    console.error('Error loading videos data:', error);
-                    videosContainer.innerHTML = '<p class="text-red-500">Failed to load videos. Please try again later.</p>';
-                }
-            }
-
-            function renderVideos() {
-                videosContainer.innerHTML = ''; // Clear current videos
-                const start = currentPage * videosPerPage;
-                const end = start + videosPerPage;
-                const videosToRender = allVideos.slice(start, end);
-
-                if (videosToRender.length === 0 && allVideos.length > 0 && currentPage > 0) {
-                    // If we navigated to an empty page, go back one
-                    currentPage--;
-                    renderVideos();
-                    return;
-                }
-
-                if (videosToRender.length === 0 && allVideos.length === 0) {
-                    videosContainer.innerHTML = '<p class="text-gray-500">No videos found.</p>';
-                    prevButton.disabled = true;
-                    nextButton.disabled = true;
-                    return;
-                }
-
-                videosToRender.forEach(video => {
-                    const videoCard = `
-                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
-                            <div class="relative w-full" style="padding-top: 56.25%;">
-                                <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${video.id}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold mb-2"><a href="${video.url}" target="_blank" rel="noopener noreferrer">${video.title}</a></h3>
-                                <p class="text-gray-600 dark:text-gray-400 text-sm">Uploaded: ${video.formatted_date}</p>
-                            </div>
-                        </div>
-                    `;
-                    videosContainer.innerHTML += videoCard;
-                });
-
-                // Update button states
-                prevButton.disabled = currentPage === 0;
-                nextButton.disabled = (currentPage + 1) * videosPerPage >= allVideos.length;
-            }
-
-            // Event Listeners
-            prevButton.addEventListener('click', () => {
-                if (currentPage > 0) {
-                    currentPage--;
-                    renderVideos();
-                    window.scrollTo({ top: videosContainer.offsetTop - 100, behavior: 'smooth' }); // Scroll to top of videos
-                }
-            });
-
-            nextButton.addEventListener('click', () => {
-                if ((currentPage + 1) * videosPerPage < allVideos.length) {
-                    currentPage++;
-                    renderVideos();
-                    window.scrollTo({ top: videosContainer.offsetTop - 100, behavior: 'smooth' }); // Scroll to top of videos
-                }
-            });
-
-            // Initial load
-            document.addEventListener('DOMContentLoaded', loadVideosData);
-        </script>
+        <!-- YOUTUBE_VIDEOS_LIST -->
         
         </div>
     </main>
