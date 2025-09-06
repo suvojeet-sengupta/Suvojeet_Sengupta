@@ -1,6 +1,7 @@
 import requests
 import xml.etree.ElementTree as ET
 import os
+from datetime import datetime
 
 # --- Configuration ---
 YOUTUBE_CHANNEL_ID = "UCqDDM6Q1purcYsW8rfGXstQ"
@@ -36,6 +37,15 @@ def parse_videos_from_rss(rss_content):
             title = entry.find('atom:title', ns).text
             link = entry.find('atom:link', ns).get('href')
             video_id = entry.find('yt:videoId', ns).text
+            published_str = entry.find('atom:published', ns).text
+            
+            # Parse and format the published date
+            try:
+                # Handle 'Z' for UTC timezone
+                dt_object = datetime.fromisoformat(published_str.replace('Z', '+00:00'))
+                formatted_date = dt_object.strftime("%B %d, %Y") # e.g., October 27, 2023
+            except ValueError:
+                formatted_date = "Date N/A" # Fallback if parsing fails
             
             # Find thumbnail URL
             thumbnail_url = None
@@ -53,7 +63,8 @@ def parse_videos_from_rss(rss_content):
                 'title': title,
                 'link': link,
                 'video_id': video_id,
-                'thumbnail': thumbnail_url
+                'thumbnail': thumbnail_url,
+                'published_date': formatted_date
             })
             if len(videos) >= MAX_VIDEOS:
                 break
@@ -74,6 +85,7 @@ def generate_video_html(videos):
                 </div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2"><a href="{video['link']}" target="_blank" rel="noopener noreferrer">{video['title']}</a></h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Uploaded: {video['published_date']}</p>
                 </div>
             </div>
         """
