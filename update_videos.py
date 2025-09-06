@@ -5,7 +5,7 @@ import os
 # --- Configuration ---
 YOUTUBE_CHANNEL_ID = "UCqDDM6Q1purcYsW8rfGXstQ"
 RSS_FEED_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={YOUTUBE_CHANNEL_ID}"
-MUSIC_HTML_PATH = "/data/data/com.termux/files/home/bio_page/music.html"
+MUSIC_HTML_PATH = "music.html"
 PLACEHOLDER = "<!-- YOUTUBE_VIDEOS_LIST -->"
 MAX_VIDEOS = 6 # Display the latest 6 videos
 
