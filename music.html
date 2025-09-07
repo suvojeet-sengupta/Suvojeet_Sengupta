@@ -117,10 +117,27 @@
                             <div class="p-6">
                                 <h3 class="text-xl font-bold mb-2"><a href="${video.url}" target="_blank" rel="noopener noreferrer">${video.title}</a></h3>
                                 <p class="text-gray-600 dark:text-gray-400 text-sm">Uploaded: ${video.formatted_date}</p>
+                                <div class="mt-4 text-gray-700 dark:text-gray-300 text-sm">
+                                    <p class="description line-clamp-3" style="white-space: pre-wrap;">${video.description}</p>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:underline focus:outline-none view-more-btn">View more</button>
+                                </div>
                             </div>
                         </div>
                     `;
                     videosContainer.innerHTML += videoCard;
+                });
+
+                // Add event listeners for the "View more" buttons
+                document.querySelectorAll('.view-more-btn').forEach(button => {
+                    button.addEventListener('click', event => {
+                        const description = event.target.previousElementSibling;
+                        description.classList.toggle('line-clamp-3');
+                        if (description.classList.contains('line-clamp-3')) {
+                            event.target.textContent = 'View more';
+                        } else {
+                            event.target.textContent = 'View less';
+                        }
+                    });
                 });
 
                 // Update button states

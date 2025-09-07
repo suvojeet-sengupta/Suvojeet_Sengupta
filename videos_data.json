@@ -5,7 +5,8 @@
     "published_at": "2025-09-06T13:50:08Z",
     "formatted_date": "September 06, 2025",
     "thumbnail": "https://img.youtube.com/vi/t7zF5Ye0JwE/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=t7zF5Ye0JwE"
+    "url": "https://www.youtube.com/watch?v=t7zF5Ye0JwE",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "qFovu9M41UE",
@@ -13,7 +14,8 @@
     "published_at": "2025-09-04T11:29:27Z",
     "formatted_date": "September 04, 2025",
     "thumbnail": "https://img.youtube.com/vi/qFovu9M41UE/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=qFovu9M41UE"
+    "url": "https://www.youtube.com/watch?v=qFovu9M41UE",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Uuv-GwwNhGY",
@@ -21,7 +23,8 @@
     "published_at": "2025-09-03T04:01:32Z",
     "formatted_date": "September 03, 2025",
     "thumbnail": "https://img.youtube.com/vi/Uuv-GwwNhGY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Uuv-GwwNhGY"
+    "url": "https://www.youtube.com/watch?v=Uuv-GwwNhGY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "jthbzo9UKAw",
@@ -29,7 +32,8 @@
     "published_at": "2025-08-30T04:59:34Z",
     "formatted_date": "August 30, 2025",
     "thumbnail": "https://img.youtube.com/vi/jthbzo9UKAw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=jthbzo9UKAw"
+    "url": "https://www.youtube.com/watch?v=jthbzo9UKAw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "AOUIJnAZuRg",
@@ -37,7 +41,8 @@
     "published_at": "2025-08-28T13:10:36Z",
     "formatted_date": "August 28, 2025",
     "thumbnail": "https://img.youtube.com/vi/AOUIJnAZuRg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=AOUIJnAZuRg"
+    "url": "https://www.youtube.com/watch?v=AOUIJnAZuRg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "hgV98XDYv7s",
@@ -45,7 +50,8 @@
     "published_at": "2025-08-10T15:32:59Z",
     "formatted_date": "August 10, 2025",
     "thumbnail": "https://img.youtube.com/vi/hgV98XDYv7s/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=hgV98XDYv7s"
+    "url": "https://www.youtube.com/watch?v=hgV98XDYv7s",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "AydLHYrP8FY",
@@ -53,7 +59,8 @@
     "published_at": "2025-07-06T07:07:22Z",
     "formatted_date": "July 06, 2025",
     "thumbnail": "https://img.youtube.com/vi/AydLHYrP8FY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=AydLHYrP8FY"
+    "url": "https://www.youtube.com/watch?v=AydLHYrP8FY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Jm40rP_7SsU",
@@ -61,7 +68,8 @@
     "published_at": "2025-05-25T13:34:45Z",
     "formatted_date": "May 25, 2025",
     "thumbnail": "https://img.youtube.com/vi/Jm40rP_7SsU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Jm40rP_7SsU"
+    "url": "https://www.youtube.com/watch?v=Jm40rP_7SsU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "CPJKAkCt1ZY",
@@ -69,7 +77,8 @@
     "published_at": "2025-05-18T15:22:12Z",
     "formatted_date": "May 18, 2025",
     "thumbnail": "https://img.youtube.com/vi/CPJKAkCt1ZY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=CPJKAkCt1ZY"
+    "url": "https://www.youtube.com/watch?v=CPJKAkCt1ZY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "0aIUzhrDqH0",
@@ -77,7 +86,8 @@
     "published_at": "2025-04-27T11:25:05Z",
     "formatted_date": "April 27, 2025",
     "thumbnail": "https://img.youtube.com/vi/0aIUzhrDqH0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=0aIUzhrDqH0"
+    "url": "https://www.youtube.com/watch?v=0aIUzhrDqH0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "roXi5XonUZI",
@@ -85,7 +95,8 @@
     "published_at": "2025-04-22T09:06:23Z",
     "formatted_date": "April 22, 2025",
     "thumbnail": "https://img.youtube.com/vi/roXi5XonUZI/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=roXi5XonUZI"
+    "url": "https://www.youtube.com/watch?v=roXi5XonUZI",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "TntcJ10dLuA",
@@ -93,7 +104,8 @@
     "published_at": "2025-02-19T11:58:02Z",
     "formatted_date": "February 19, 2025",
     "thumbnail": "https://img.youtube.com/vi/TntcJ10dLuA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=TntcJ10dLuA"
+    "url": "https://www.youtube.com/watch?v=TntcJ10dLuA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Z6cFO3Wo_Nc",
@@ -101,7 +113,8 @@
     "published_at": "2025-02-16T09:09:32Z",
     "formatted_date": "February 16, 2025",
     "thumbnail": "https://img.youtube.com/vi/Z6cFO3Wo_Nc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Z6cFO3Wo_Nc"
+    "url": "https://www.youtube.com/watch?v=Z6cFO3Wo_Nc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "6x5oNgFglwk",
@@ -109,7 +122,8 @@
     "published_at": "2025-02-15T02:26:06Z",
     "formatted_date": "February 15, 2025",
     "thumbnail": "https://img.youtube.com/vi/6x5oNgFglwk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=6x5oNgFglwk"
+    "url": "https://www.youtube.com/watch?v=6x5oNgFglwk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "RDMt7xnB_R4",
@@ -117,7 +131,8 @@
     "published_at": "2025-02-14T07:47:59Z",
     "formatted_date": "February 14, 2025",
     "thumbnail": "https://img.youtube.com/vi/RDMt7xnB_R4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=RDMt7xnB_R4"
+    "url": "https://www.youtube.com/watch?v=RDMt7xnB_R4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "3pcxaeFOAPc",
@@ -125,7 +140,8 @@
     "published_at": "2025-02-08T04:42:01Z",
     "formatted_date": "February 08, 2025",
     "thumbnail": "https://img.youtube.com/vi/3pcxaeFOAPc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=3pcxaeFOAPc"
+    "url": "https://www.youtube.com/watch?v=3pcxaeFOAPc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "yEvebSOXaF4",
@@ -133,7 +149,8 @@
     "published_at": "2025-02-05T05:23:03Z",
     "formatted_date": "February 05, 2025",
     "thumbnail": "https://img.youtube.com/vi/yEvebSOXaF4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=yEvebSOXaF4"
+    "url": "https://www.youtube.com/watch?v=yEvebSOXaF4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "pIdWoLJ0UD0",
@@ -141,7 +158,8 @@
     "published_at": "2025-02-03T00:30:28Z",
     "formatted_date": "February 03, 2025",
     "thumbnail": "https://img.youtube.com/vi/pIdWoLJ0UD0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=pIdWoLJ0UD0"
+    "url": "https://www.youtube.com/watch?v=pIdWoLJ0UD0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ho6Jj1zf2BU",
@@ -149,7 +167,8 @@
     "published_at": "2025-02-01T07:10:21Z",
     "formatted_date": "February 01, 2025",
     "thumbnail": "https://img.youtube.com/vi/ho6Jj1zf2BU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ho6Jj1zf2BU"
+    "url": "https://www.youtube.com/watch?v=ho6Jj1zf2BU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "us7A-rY3nR0",
@@ -157,7 +176,8 @@
     "published_at": "2025-01-31T08:20:41Z",
     "formatted_date": "January 31, 2025",
     "thumbnail": "https://img.youtube.com/vi/us7A-rY3nR0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=us7A-rY3nR0"
+    "url": "https://www.youtube.com/watch?v=us7A-rY3nR0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ezT9bcu5nC8",
@@ -165,7 +185,8 @@
     "published_at": "2025-01-30T09:15:28Z",
     "formatted_date": "January 30, 2025",
     "thumbnail": "https://img.youtube.com/vi/ezT9bcu5nC8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ezT9bcu5nC8"
+    "url": "https://www.youtube.com/watch?v=ezT9bcu5nC8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "qjtLMdBiIjA",
@@ -173,7 +194,8 @@
     "published_at": "2025-01-29T04:49:03Z",
     "formatted_date": "January 29, 2025",
     "thumbnail": "https://img.youtube.com/vi/qjtLMdBiIjA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=qjtLMdBiIjA"
+    "url": "https://www.youtube.com/watch?v=qjtLMdBiIjA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9XM1ijqQ1sc",
@@ -181,7 +203,8 @@
     "published_at": "2025-01-28T14:12:47Z",
     "formatted_date": "January 28, 2025",
     "thumbnail": "https://img.youtube.com/vi/9XM1ijqQ1sc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9XM1ijqQ1sc"
+    "url": "https://www.youtube.com/watch?v=9XM1ijqQ1sc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "-6OkFoNFeLs",
@@ -189,7 +212,8 @@
     "published_at": "2025-01-26T03:40:00Z",
     "formatted_date": "January 26, 2025",
     "thumbnail": "https://img.youtube.com/vi/-6OkFoNFeLs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=-6OkFoNFeLs"
+    "url": "https://www.youtube.com/watch?v=-6OkFoNFeLs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "od74XVWvhpc",
@@ -197,7 +221,8 @@
     "published_at": "2025-01-25T18:31:30Z",
     "formatted_date": "January 25, 2025",
     "thumbnail": "https://img.youtube.com/vi/od74XVWvhpc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=od74XVWvhpc"
+    "url": "https://www.youtube.com/watch?v=od74XVWvhpc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "fI-Hb_eWAeY",
@@ -205,7 +230,8 @@
     "published_at": "2025-01-19T11:26:34Z",
     "formatted_date": "January 19, 2025",
     "thumbnail": "https://img.youtube.com/vi/fI-Hb_eWAeY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=fI-Hb_eWAeY"
+    "url": "https://www.youtube.com/watch?v=fI-Hb_eWAeY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "53UIfgxJy-A",
@@ -213,7 +239,8 @@
     "published_at": "2025-01-18T16:23:55Z",
     "formatted_date": "January 18, 2025",
     "thumbnail": "https://img.youtube.com/vi/53UIfgxJy-A/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=53UIfgxJy-A"
+    "url": "https://www.youtube.com/watch?v=53UIfgxJy-A",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "BpOoSI3cZuU",
@@ -221,7 +248,8 @@
     "published_at": "2025-01-15T14:38:29Z",
     "formatted_date": "January 15, 2025",
     "thumbnail": "https://img.youtube.com/vi/BpOoSI3cZuU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=BpOoSI3cZuU"
+    "url": "https://www.youtube.com/watch?v=BpOoSI3cZuU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "8muHAXke2t8",
@@ -229,7 +257,8 @@
     "published_at": "2025-01-14T10:37:54Z",
     "formatted_date": "January 14, 2025",
     "thumbnail": "https://img.youtube.com/vi/8muHAXke2t8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=8muHAXke2t8"
+    "url": "https://www.youtube.com/watch?v=8muHAXke2t8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "PMsjzVRE93g",
@@ -237,7 +266,8 @@
     "published_at": "2025-01-13T06:31:04Z",
     "formatted_date": "January 13, 2025",
     "thumbnail": "https://img.youtube.com/vi/PMsjzVRE93g/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=PMsjzVRE93g"
+    "url": "https://www.youtube.com/watch?v=PMsjzVRE93g",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "XmgrHV0K3Tg",
@@ -245,7 +275,8 @@
     "published_at": "2025-01-13T03:15:08Z",
     "formatted_date": "January 13, 2025",
     "thumbnail": "https://img.youtube.com/vi/XmgrHV0K3Tg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=XmgrHV0K3Tg"
+    "url": "https://www.youtube.com/watch?v=XmgrHV0K3Tg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "oO_4vQyoTGk",
@@ -253,7 +284,8 @@
     "published_at": "2025-01-06T06:31:01Z",
     "formatted_date": "January 06, 2025",
     "thumbnail": "https://img.youtube.com/vi/oO_4vQyoTGk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=oO_4vQyoTGk"
+    "url": "https://www.youtube.com/watch?v=oO_4vQyoTGk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "rNc5BYv6Apw",
@@ -261,7 +293,8 @@
     "published_at": "2025-01-03T10:15:54Z",
     "formatted_date": "January 03, 2025",
     "thumbnail": "https://img.youtube.com/vi/rNc5BYv6Apw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=rNc5BYv6Apw"
+    "url": "https://www.youtube.com/watch?v=rNc5BYv6Apw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ex6VPEUm4d0",
@@ -269,7 +302,8 @@
     "published_at": "2024-12-30T05:33:03Z",
     "formatted_date": "December 30, 2024",
     "thumbnail": "https://img.youtube.com/vi/ex6VPEUm4d0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ex6VPEUm4d0"
+    "url": "https://www.youtube.com/watch?v=ex6VPEUm4d0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "wkiYHVRqveM",
@@ -277,7 +311,8 @@
     "published_at": "2024-12-14T03:34:56Z",
     "formatted_date": "December 14, 2024",
     "thumbnail": "https://img.youtube.com/vi/wkiYHVRqveM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=wkiYHVRqveM"
+    "url": "https://www.youtube.com/watch?v=wkiYHVRqveM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "qQwhfAZ3vUk",
@@ -285,7 +320,8 @@
     "published_at": "2024-12-14T02:54:53Z",
     "formatted_date": "December 14, 2024",
     "thumbnail": "https://img.youtube.com/vi/qQwhfAZ3vUk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=qQwhfAZ3vUk"
+    "url": "https://www.youtube.com/watch?v=qQwhfAZ3vUk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "xMm7q_jOPTo",
@@ -293,7 +329,8 @@
     "published_at": "2024-11-19T12:48:42Z",
     "formatted_date": "November 19, 2024",
     "thumbnail": "https://img.youtube.com/vi/xMm7q_jOPTo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=xMm7q_jOPTo"
+    "url": "https://www.youtube.com/watch?v=xMm7q_jOPTo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "1aOGwhTrGSs",
@@ -301,7 +338,8 @@
     "published_at": "2024-11-19T06:53:23Z",
     "formatted_date": "November 19, 2024",
     "thumbnail": "https://img.youtube.com/vi/1aOGwhTrGSs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=1aOGwhTrGSs"
+    "url": "https://www.youtube.com/watch?v=1aOGwhTrGSs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "lvs2M065mN8",
@@ -309,7 +347,8 @@
     "published_at": "2024-11-09T14:26:53Z",
     "formatted_date": "November 09, 2024",
     "thumbnail": "https://img.youtube.com/vi/lvs2M065mN8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=lvs2M065mN8"
+    "url": "https://www.youtube.com/watch?v=lvs2M065mN8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "5juz1DjzRTw",
@@ -317,7 +356,8 @@
     "published_at": "2024-11-09T06:07:30Z",
     "formatted_date": "November 09, 2024",
     "thumbnail": "https://img.youtube.com/vi/5juz1DjzRTw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=5juz1DjzRTw"
+    "url": "https://www.youtube.com/watch?v=5juz1DjzRTw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Bc1PcpOoMPw",
@@ -325,7 +365,8 @@
     "published_at": "2024-11-08T06:22:42Z",
     "formatted_date": "November 08, 2024",
     "thumbnail": "https://img.youtube.com/vi/Bc1PcpOoMPw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Bc1PcpOoMPw"
+    "url": "https://www.youtube.com/watch?v=Bc1PcpOoMPw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "4JcYK8Nc1fA",
@@ -333,7 +374,8 @@
     "published_at": "2024-11-07T09:20:09Z",
     "formatted_date": "November 07, 2024",
     "thumbnail": "https://img.youtube.com/vi/4JcYK8Nc1fA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=4JcYK8Nc1fA"
+    "url": "https://www.youtube.com/watch?v=4JcYK8Nc1fA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9s3QK-BmT5I",
@@ -341,7 +383,8 @@
     "published_at": "2024-11-07T08:15:55Z",
     "formatted_date": "November 07, 2024",
     "thumbnail": "https://img.youtube.com/vi/9s3QK-BmT5I/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9s3QK-BmT5I"
+    "url": "https://www.youtube.com/watch?v=9s3QK-BmT5I",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "LT6twfW9r1Y",
@@ -349,7 +392,8 @@
     "published_at": "2024-10-28T02:30:14Z",
     "formatted_date": "October 28, 2024",
     "thumbnail": "https://img.youtube.com/vi/LT6twfW9r1Y/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=LT6twfW9r1Y"
+    "url": "https://www.youtube.com/watch?v=LT6twfW9r1Y",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "o-zp-kBLFTs",
@@ -357,7 +401,8 @@
     "published_at": "2024-10-21T00:30:34Z",
     "formatted_date": "October 21, 2024",
     "thumbnail": "https://img.youtube.com/vi/o-zp-kBLFTs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=o-zp-kBLFTs"
+    "url": "https://www.youtube.com/watch?v=o-zp-kBLFTs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "U3Qg8WVgjJw",
@@ -365,7 +410,8 @@
     "published_at": "2024-09-28T04:30:18Z",
     "formatted_date": "September 28, 2024",
     "thumbnail": "https://img.youtube.com/vi/U3Qg8WVgjJw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=U3Qg8WVgjJw"
+    "url": "https://www.youtube.com/watch?v=U3Qg8WVgjJw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "J2V4TPSMOP0",
@@ -373,7 +419,8 @@
     "published_at": "2024-09-25T05:49:12Z",
     "formatted_date": "September 25, 2024",
     "thumbnail": "https://img.youtube.com/vi/J2V4TPSMOP0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=J2V4TPSMOP0"
+    "url": "https://www.youtube.com/watch?v=J2V4TPSMOP0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "wHBQUqzVApQ",
@@ -381,7 +428,8 @@
     "published_at": "2024-09-24T04:39:09Z",
     "formatted_date": "September 24, 2024",
     "thumbnail": "https://img.youtube.com/vi/wHBQUqzVApQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=wHBQUqzVApQ"
+    "url": "https://www.youtube.com/watch?v=wHBQUqzVApQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "rgUH3NTm6pc",
@@ -389,7 +437,8 @@
     "published_at": "2024-09-23T01:30:25Z",
     "formatted_date": "September 23, 2024",
     "thumbnail": "https://img.youtube.com/vi/rgUH3NTm6pc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=rgUH3NTm6pc"
+    "url": "https://www.youtube.com/watch?v=rgUH3NTm6pc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Rj-8T2A3ZRw",
@@ -397,7 +446,8 @@
     "published_at": "2024-08-11T11:45:46Z",
     "formatted_date": "August 11, 2024",
     "thumbnail": "https://img.youtube.com/vi/Rj-8T2A3ZRw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Rj-8T2A3ZRw"
+    "url": "https://www.youtube.com/watch?v=Rj-8T2A3ZRw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "V4g8b9KRZDo",
@@ -405,7 +455,8 @@
     "published_at": "2024-04-24T00:08:16Z",
     "formatted_date": "April 24, 2024",
     "thumbnail": "https://img.youtube.com/vi/V4g8b9KRZDo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=V4g8b9KRZDo"
+    "url": "https://www.youtube.com/watch?v=V4g8b9KRZDo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "NM6quyabODU",
@@ -413,7 +464,8 @@
     "published_at": "2024-04-23T10:02:51Z",
     "formatted_date": "April 23, 2024",
     "thumbnail": "https://img.youtube.com/vi/NM6quyabODU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=NM6quyabODU"
+    "url": "https://www.youtube.com/watch?v=NM6quyabODU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "67agkZgbUCg",
@@ -421,7 +473,8 @@
     "published_at": "2024-04-22T12:14:19Z",
     "formatted_date": "April 22, 2024",
     "thumbnail": "https://img.youtube.com/vi/67agkZgbUCg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=67agkZgbUCg"
+    "url": "https://www.youtube.com/watch?v=67agkZgbUCg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Gcfj6Op3aoM",
@@ -429,7 +482,8 @@
     "published_at": "2024-04-22T00:25:38Z",
     "formatted_date": "April 22, 2024",
     "thumbnail": "https://img.youtube.com/vi/Gcfj6Op3aoM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Gcfj6Op3aoM"
+    "url": "https://www.youtube.com/watch?v=Gcfj6Op3aoM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "0bPpvpdVV9M",
@@ -437,7 +491,8 @@
     "published_at": "2024-04-09T09:32:04Z",
     "formatted_date": "April 09, 2024",
     "thumbnail": "https://img.youtube.com/vi/0bPpvpdVV9M/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=0bPpvpdVV9M"
+    "url": "https://www.youtube.com/watch?v=0bPpvpdVV9M",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "h4HFS3hawHI",
@@ -445,7 +500,8 @@
     "published_at": "2024-03-25T03:08:38Z",
     "formatted_date": "March 25, 2024",
     "thumbnail": "https://img.youtube.com/vi/h4HFS3hawHI/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=h4HFS3hawHI"
+    "url": "https://www.youtube.com/watch?v=h4HFS3hawHI",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "IgXj4drXV4A",
@@ -453,7 +509,8 @@
     "published_at": "2024-03-12T11:40:46Z",
     "formatted_date": "March 12, 2024",
     "thumbnail": "https://img.youtube.com/vi/IgXj4drXV4A/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=IgXj4drXV4A"
+    "url": "https://www.youtube.com/watch?v=IgXj4drXV4A",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "b4dTC9gXrWM",
@@ -461,7 +518,8 @@
     "published_at": "2024-02-16T03:13:42Z",
     "formatted_date": "February 16, 2024",
     "thumbnail": "https://img.youtube.com/vi/b4dTC9gXrWM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=b4dTC9gXrWM"
+    "url": "https://www.youtube.com/watch?v=b4dTC9gXrWM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "BKKGuFvLJwY",
@@ -469,7 +527,8 @@
     "published_at": "2024-01-19T11:44:35Z",
     "formatted_date": "January 19, 2024",
     "thumbnail": "https://img.youtube.com/vi/BKKGuFvLJwY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=BKKGuFvLJwY"
+    "url": "https://www.youtube.com/watch?v=BKKGuFvLJwY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "mx_LJTZwV3w",
@@ -477,7 +536,8 @@
     "published_at": "2024-01-06T07:17:08Z",
     "formatted_date": "January 06, 2024",
     "thumbnail": "https://img.youtube.com/vi/mx_LJTZwV3w/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=mx_LJTZwV3w"
+    "url": "https://www.youtube.com/watch?v=mx_LJTZwV3w",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ycc7sqRituw",
@@ -485,7 +545,8 @@
     "published_at": "2023-12-22T00:02:38Z",
     "formatted_date": "December 22, 2023",
     "thumbnail": "https://img.youtube.com/vi/ycc7sqRituw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ycc7sqRituw"
+    "url": "https://www.youtube.com/watch?v=ycc7sqRituw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Jk5YtlPR3ps",
@@ -493,7 +554,8 @@
     "published_at": "2023-12-18T02:11:39Z",
     "formatted_date": "December 18, 2023",
     "thumbnail": "https://img.youtube.com/vi/Jk5YtlPR3ps/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Jk5YtlPR3ps"
+    "url": "https://www.youtube.com/watch?v=Jk5YtlPR3ps",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "5_OUfkEuYMM",
@@ -501,7 +563,8 @@
     "published_at": "2023-12-01T04:57:16Z",
     "formatted_date": "December 01, 2023",
     "thumbnail": "https://img.youtube.com/vi/5_OUfkEuYMM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=5_OUfkEuYMM"
+    "url": "https://www.youtube.com/watch?v=5_OUfkEuYMM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "FSP3k9KqFOo",
@@ -509,7 +572,8 @@
     "published_at": "2023-11-08T02:38:46Z",
     "formatted_date": "November 08, 2023",
     "thumbnail": "https://img.youtube.com/vi/FSP3k9KqFOo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=FSP3k9KqFOo"
+    "url": "https://www.youtube.com/watch?v=FSP3k9KqFOo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "lRwxev_Ihu4",
@@ -517,7 +581,8 @@
     "published_at": "2023-09-30T08:44:16Z",
     "formatted_date": "September 30, 2023",
     "thumbnail": "https://img.youtube.com/vi/lRwxev_Ihu4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=lRwxev_Ihu4"
+    "url": "https://www.youtube.com/watch?v=lRwxev_Ihu4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "I4lhS1mv1X4",
@@ -525,7 +590,8 @@
     "published_at": "2023-09-24T06:40:11Z",
     "formatted_date": "September 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/I4lhS1mv1X4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=I4lhS1mv1X4"
+    "url": "https://www.youtube.com/watch?v=I4lhS1mv1X4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "dO5k_vfeNz0",
@@ -533,7 +599,8 @@
     "published_at": "2023-09-23T05:58:40Z",
     "formatted_date": "September 23, 2023",
     "thumbnail": "https://img.youtube.com/vi/dO5k_vfeNz0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=dO5k_vfeNz0"
+    "url": "https://www.youtube.com/watch?v=dO5k_vfeNz0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "6GpU_zjusVo",
@@ -541,7 +608,8 @@
     "published_at": "2023-09-22T03:05:48Z",
     "formatted_date": "September 22, 2023",
     "thumbnail": "https://img.youtube.com/vi/6GpU_zjusVo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=6GpU_zjusVo"
+    "url": "https://www.youtube.com/watch?v=6GpU_zjusVo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "aQkEA0PYTug",
@@ -549,7 +617,8 @@
     "published_at": "2023-09-21T00:46:31Z",
     "formatted_date": "September 21, 2023",
     "thumbnail": "https://img.youtube.com/vi/aQkEA0PYTug/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=aQkEA0PYTug"
+    "url": "https://www.youtube.com/watch?v=aQkEA0PYTug",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "C1uQUQquiM0",
@@ -557,7 +626,8 @@
     "published_at": "2023-09-06T06:09:54Z",
     "formatted_date": "September 06, 2023",
     "thumbnail": "https://img.youtube.com/vi/C1uQUQquiM0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=C1uQUQquiM0"
+    "url": "https://www.youtube.com/watch?v=C1uQUQquiM0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "0-wUXrNRHtU",
@@ -565,7 +635,8 @@
     "published_at": "2023-09-06T00:30:00Z",
     "formatted_date": "September 06, 2023",
     "thumbnail": "https://img.youtube.com/vi/0-wUXrNRHtU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=0-wUXrNRHtU"
+    "url": "https://www.youtube.com/watch?v=0-wUXrNRHtU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ZpAi56COwgs",
@@ -573,7 +644,8 @@
     "published_at": "2023-08-24T04:30:15Z",
     "formatted_date": "August 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/ZpAi56COwgs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ZpAi56COwgs"
+    "url": "https://www.youtube.com/watch?v=ZpAi56COwgs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Y8g0siz32K8",
@@ -581,7 +653,8 @@
     "published_at": "2023-07-25T01:54:01Z",
     "formatted_date": "July 25, 2023",
     "thumbnail": "https://img.youtube.com/vi/Y8g0siz32K8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Y8g0siz32K8"
+    "url": "https://www.youtube.com/watch?v=Y8g0siz32K8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "UeLqz5a9rqs",
@@ -589,7 +662,8 @@
     "published_at": "2023-07-23T23:30:09Z",
     "formatted_date": "July 23, 2023",
     "thumbnail": "https://img.youtube.com/vi/UeLqz5a9rqs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=UeLqz5a9rqs"
+    "url": "https://www.youtube.com/watch?v=UeLqz5a9rqs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "a18c90FnU3M",
@@ -597,7 +671,8 @@
     "published_at": "2023-07-18T11:18:06Z",
     "formatted_date": "July 18, 2023",
     "thumbnail": "https://img.youtube.com/vi/a18c90FnU3M/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=a18c90FnU3M"
+    "url": "https://www.youtube.com/watch?v=a18c90FnU3M",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "EpXLOkDHLM8",
@@ -605,7 +680,8 @@
     "published_at": "2023-07-17T23:30:02Z",
     "formatted_date": "July 17, 2023",
     "thumbnail": "https://img.youtube.com/vi/EpXLOkDHLM8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=EpXLOkDHLM8"
+    "url": "https://www.youtube.com/watch?v=EpXLOkDHLM8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "CMenRycko8c",
@@ -613,7 +689,8 @@
     "published_at": "2023-07-16T23:30:02Z",
     "formatted_date": "July 16, 2023",
     "thumbnail": "https://img.youtube.com/vi/CMenRycko8c/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=CMenRycko8c"
+    "url": "https://www.youtube.com/watch?v=CMenRycko8c",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "674kv8D8gWs",
@@ -621,7 +698,8 @@
     "published_at": "2023-07-16T00:30:02Z",
     "formatted_date": "July 16, 2023",
     "thumbnail": "https://img.youtube.com/vi/674kv8D8gWs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=674kv8D8gWs"
+    "url": "https://www.youtube.com/watch?v=674kv8D8gWs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "cV2J3jMUBvE",
@@ -629,7 +707,8 @@
     "published_at": "2023-07-15T03:06:22Z",
     "formatted_date": "July 15, 2023",
     "thumbnail": "https://img.youtube.com/vi/cV2J3jMUBvE/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=cV2J3jMUBvE"
+    "url": "https://www.youtube.com/watch?v=cV2J3jMUBvE",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "KTM1nV8SB4s",
@@ -637,7 +716,8 @@
     "published_at": "2023-07-01T10:28:56Z",
     "formatted_date": "July 01, 2023",
     "thumbnail": "https://img.youtube.com/vi/KTM1nV8SB4s/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=KTM1nV8SB4s"
+    "url": "https://www.youtube.com/watch?v=KTM1nV8SB4s",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "JwuC1oNnXaQ",
@@ -645,7 +725,8 @@
     "published_at": "2023-06-28T23:30:02Z",
     "formatted_date": "June 28, 2023",
     "thumbnail": "https://img.youtube.com/vi/JwuC1oNnXaQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=JwuC1oNnXaQ"
+    "url": "https://www.youtube.com/watch?v=JwuC1oNnXaQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "USfqjDTOFg0",
@@ -653,7 +734,8 @@
     "published_at": "2023-06-27T05:23:10Z",
     "formatted_date": "June 27, 2023",
     "thumbnail": "https://img.youtube.com/vi/USfqjDTOFg0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=USfqjDTOFg0"
+    "url": "https://www.youtube.com/watch?v=USfqjDTOFg0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "W5PIR2Ni1-A",
@@ -661,7 +743,8 @@
     "published_at": "2023-06-08T12:30:20Z",
     "formatted_date": "June 08, 2023",
     "thumbnail": "https://img.youtube.com/vi/W5PIR2Ni1-A/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=W5PIR2Ni1-A"
+    "url": "https://www.youtube.com/watch?v=W5PIR2Ni1-A",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "qsPNG7hK3YI",
@@ -669,7 +752,8 @@
     "published_at": "2023-06-01T04:29:55Z",
     "formatted_date": "June 01, 2023",
     "thumbnail": "https://img.youtube.com/vi/qsPNG7hK3YI/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=qsPNG7hK3YI"
+    "url": "https://www.youtube.com/watch?v=qsPNG7hK3YI",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ZaKVhCYq1VY",
@@ -677,7 +761,8 @@
     "published_at": "2023-05-26T02:42:34Z",
     "formatted_date": "May 26, 2023",
     "thumbnail": "https://img.youtube.com/vi/ZaKVhCYq1VY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ZaKVhCYq1VY"
+    "url": "https://www.youtube.com/watch?v=ZaKVhCYq1VY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "3w3ed_WQvXA",
@@ -685,7 +770,8 @@
     "published_at": "2023-05-07T00:30:01Z",
     "formatted_date": "May 07, 2023",
     "thumbnail": "https://img.youtube.com/vi/3w3ed_WQvXA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=3w3ed_WQvXA"
+    "url": "https://www.youtube.com/watch?v=3w3ed_WQvXA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "BQAW4abn5Bg",
@@ -693,7 +779,8 @@
     "published_at": "2023-05-03T00:30:02Z",
     "formatted_date": "May 03, 2023",
     "thumbnail": "https://img.youtube.com/vi/BQAW4abn5Bg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=BQAW4abn5Bg"
+    "url": "https://www.youtube.com/watch?v=BQAW4abn5Bg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "CxFnnQr8E60",
@@ -701,7 +788,8 @@
     "published_at": "2023-04-24T02:30:05Z",
     "formatted_date": "April 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/CxFnnQr8E60/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=CxFnnQr8E60"
+    "url": "https://www.youtube.com/watch?v=CxFnnQr8E60",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "LtAEaQSg_tc",
@@ -709,7 +797,8 @@
     "published_at": "2023-04-23T17:19:32Z",
     "formatted_date": "April 23, 2023",
     "thumbnail": "https://img.youtube.com/vi/LtAEaQSg_tc/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=LtAEaQSg_tc"
+    "url": "https://www.youtube.com/watch?v=LtAEaQSg_tc",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "fSRi_hLu9xg",
@@ -717,7 +806,8 @@
     "published_at": "2023-04-08T04:11:46Z",
     "formatted_date": "April 08, 2023",
     "thumbnail": "https://img.youtube.com/vi/fSRi_hLu9xg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=fSRi_hLu9xg"
+    "url": "https://www.youtube.com/watch?v=fSRi_hLu9xg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "B91hc_2rlJs",
@@ -725,7 +815,8 @@
     "published_at": "2023-04-07T02:00:06Z",
     "formatted_date": "April 07, 2023",
     "thumbnail": "https://img.youtube.com/vi/B91hc_2rlJs/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=B91hc_2rlJs"
+    "url": "https://www.youtube.com/watch?v=B91hc_2rlJs",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ayGeXi9yT0A",
@@ -733,7 +824,8 @@
     "published_at": "2023-03-29T00:30:02Z",
     "formatted_date": "March 29, 2023",
     "thumbnail": "https://img.youtube.com/vi/ayGeXi9yT0A/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ayGeXi9yT0A"
+    "url": "https://www.youtube.com/watch?v=ayGeXi9yT0A",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "D_UC399T4-Q",
@@ -741,7 +833,8 @@
     "published_at": "2023-03-26T02:19:19Z",
     "formatted_date": "March 26, 2023",
     "thumbnail": "https://img.youtube.com/vi/D_UC399T4-Q/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=D_UC399T4-Q"
+    "url": "https://www.youtube.com/watch?v=D_UC399T4-Q",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ZDhV3iufLIg",
@@ -749,7 +842,8 @@
     "published_at": "2023-03-25T06:56:44Z",
     "formatted_date": "March 25, 2023",
     "thumbnail": "https://img.youtube.com/vi/ZDhV3iufLIg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ZDhV3iufLIg"
+    "url": "https://www.youtube.com/watch?v=ZDhV3iufLIg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "oMRvnpLJSXQ",
@@ -757,7 +851,8 @@
     "published_at": "2023-03-25T02:30:15Z",
     "formatted_date": "March 25, 2023",
     "thumbnail": "https://img.youtube.com/vi/oMRvnpLJSXQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=oMRvnpLJSXQ"
+    "url": "https://www.youtube.com/watch?v=oMRvnpLJSXQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "fg_GTWxNi3U",
@@ -765,7 +860,8 @@
     "published_at": "2023-03-18T00:44:52Z",
     "formatted_date": "March 18, 2023",
     "thumbnail": "https://img.youtube.com/vi/fg_GTWxNi3U/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=fg_GTWxNi3U"
+    "url": "https://www.youtube.com/watch?v=fg_GTWxNi3U",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Z7H4LpSY4RA",
@@ -773,7 +869,8 @@
     "published_at": "2023-02-24T06:54:56Z",
     "formatted_date": "February 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/Z7H4LpSY4RA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Z7H4LpSY4RA"
+    "url": "https://www.youtube.com/watch?v=Z7H4LpSY4RA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "25Hajb03Mqk",
@@ -781,7 +878,8 @@
     "published_at": "2023-02-24T02:30:00Z",
     "formatted_date": "February 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/25Hajb03Mqk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=25Hajb03Mqk"
+    "url": "https://www.youtube.com/watch?v=25Hajb03Mqk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "e4sajz2iIFw",
@@ -789,7 +887,8 @@
     "published_at": "2023-02-21T07:52:16Z",
     "formatted_date": "February 21, 2023",
     "thumbnail": "https://img.youtube.com/vi/e4sajz2iIFw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=e4sajz2iIFw"
+    "url": "https://www.youtube.com/watch?v=e4sajz2iIFw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "W-ZhETEpm08",
@@ -797,7 +896,8 @@
     "published_at": "2023-02-15T15:43:45Z",
     "formatted_date": "February 15, 2023",
     "thumbnail": "https://img.youtube.com/vi/W-ZhETEpm08/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=W-ZhETEpm08"
+    "url": "https://www.youtube.com/watch?v=W-ZhETEpm08",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "B2vCzDk5fIo",
@@ -805,7 +905,8 @@
     "published_at": "2023-02-07T01:14:33Z",
     "formatted_date": "February 07, 2023",
     "thumbnail": "https://img.youtube.com/vi/B2vCzDk5fIo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=B2vCzDk5fIo"
+    "url": "https://www.youtube.com/watch?v=B2vCzDk5fIo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "i3ghsqEl6hE",
@@ -813,7 +914,8 @@
     "published_at": "2023-02-02T01:49:11Z",
     "formatted_date": "February 02, 2023",
     "thumbnail": "https://img.youtube.com/vi/i3ghsqEl6hE/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=i3ghsqEl6hE"
+    "url": "https://www.youtube.com/watch?v=i3ghsqEl6hE",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9TRpQPy5WE0",
@@ -821,7 +923,8 @@
     "published_at": "2023-02-01T05:42:02Z",
     "formatted_date": "February 01, 2023",
     "thumbnail": "https://img.youtube.com/vi/9TRpQPy5WE0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9TRpQPy5WE0"
+    "url": "https://www.youtube.com/watch?v=9TRpQPy5WE0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "7i3FJXRDHdw",
@@ -829,7 +932,8 @@
     "published_at": "2023-01-24T02:30:03Z",
     "formatted_date": "January 24, 2023",
     "thumbnail": "https://img.youtube.com/vi/7i3FJXRDHdw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=7i3FJXRDHdw"
+    "url": "https://www.youtube.com/watch?v=7i3FJXRDHdw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "fjdHvB4NzGk",
@@ -837,7 +941,8 @@
     "published_at": "2023-01-22T13:54:26Z",
     "formatted_date": "January 22, 2023",
     "thumbnail": "https://img.youtube.com/vi/fjdHvB4NzGk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=fjdHvB4NzGk"
+    "url": "https://www.youtube.com/watch?v=fjdHvB4NzGk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "nwz02_7BJ58",
@@ -845,7 +950,8 @@
     "published_at": "2023-01-20T12:36:53Z",
     "formatted_date": "January 20, 2023",
     "thumbnail": "https://img.youtube.com/vi/nwz02_7BJ58/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=nwz02_7BJ58"
+    "url": "https://www.youtube.com/watch?v=nwz02_7BJ58",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "mtSXvOy-UjE",
@@ -853,7 +959,8 @@
     "published_at": "2023-01-12T01:46:18Z",
     "formatted_date": "January 12, 2023",
     "thumbnail": "https://img.youtube.com/vi/mtSXvOy-UjE/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=mtSXvOy-UjE"
+    "url": "https://www.youtube.com/watch?v=mtSXvOy-UjE",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "RG2Mfe5KSK8",
@@ -861,7 +968,8 @@
     "published_at": "2023-01-04T02:38:17Z",
     "formatted_date": "January 04, 2023",
     "thumbnail": "https://img.youtube.com/vi/RG2Mfe5KSK8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=RG2Mfe5KSK8"
+    "url": "https://www.youtube.com/watch?v=RG2Mfe5KSK8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "wJk7TPM4kd0",
@@ -869,7 +977,8 @@
     "published_at": "2023-01-02T00:26:22Z",
     "formatted_date": "January 02, 2023",
     "thumbnail": "https://img.youtube.com/vi/wJk7TPM4kd0/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=wJk7TPM4kd0"
+    "url": "https://www.youtube.com/watch?v=wJk7TPM4kd0",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "uXblQNkdyBM",
@@ -877,7 +986,8 @@
     "published_at": "2023-01-01T10:41:10Z",
     "formatted_date": "January 01, 2023",
     "thumbnail": "https://img.youtube.com/vi/uXblQNkdyBM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=uXblQNkdyBM"
+    "url": "https://www.youtube.com/watch?v=uXblQNkdyBM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9ARhU4VSkvU",
@@ -885,7 +995,8 @@
     "published_at": "2022-12-16T02:01:26Z",
     "formatted_date": "December 16, 2022",
     "thumbnail": "https://img.youtube.com/vi/9ARhU4VSkvU/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9ARhU4VSkvU"
+    "url": "https://www.youtube.com/watch?v=9ARhU4VSkvU",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "2Rcvnb_UjLw",
@@ -893,7 +1004,8 @@
     "published_at": "2022-11-15T02:30:00Z",
     "formatted_date": "November 15, 2022",
     "thumbnail": "https://img.youtube.com/vi/2Rcvnb_UjLw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=2Rcvnb_UjLw"
+    "url": "https://www.youtube.com/watch?v=2Rcvnb_UjLw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Eyx4krpUaFg",
@@ -901,7 +1013,8 @@
     "published_at": "2022-11-09T06:21:41Z",
     "formatted_date": "November 09, 2022",
     "thumbnail": "https://img.youtube.com/vi/Eyx4krpUaFg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Eyx4krpUaFg"
+    "url": "https://www.youtube.com/watch?v=Eyx4krpUaFg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "UQsJtP6OkTg",
@@ -909,7 +1022,8 @@
     "published_at": "2022-11-02T12:03:46Z",
     "formatted_date": "November 02, 2022",
     "thumbnail": "https://img.youtube.com/vi/UQsJtP6OkTg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=UQsJtP6OkTg"
+    "url": "https://www.youtube.com/watch?v=UQsJtP6OkTg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "6Mj3EEffU-8",
@@ -917,7 +1031,8 @@
     "published_at": "2022-11-01T01:53:54Z",
     "formatted_date": "November 01, 2022",
     "thumbnail": "https://img.youtube.com/vi/6Mj3EEffU-8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=6Mj3EEffU-8"
+    "url": "https://www.youtube.com/watch?v=6Mj3EEffU-8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "eaGNh25CAUQ",
@@ -925,7 +1040,8 @@
     "published_at": "2022-10-16T01:53:19Z",
     "formatted_date": "October 16, 2022",
     "thumbnail": "https://img.youtube.com/vi/eaGNh25CAUQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=eaGNh25CAUQ"
+    "url": "https://www.youtube.com/watch?v=eaGNh25CAUQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "7royue0bbGk",
@@ -933,7 +1049,8 @@
     "published_at": "2022-10-16T01:34:22Z",
     "formatted_date": "October 16, 2022",
     "thumbnail": "https://img.youtube.com/vi/7royue0bbGk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=7royue0bbGk"
+    "url": "https://www.youtube.com/watch?v=7royue0bbGk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "aFhixGUkQlw",
@@ -941,7 +1058,8 @@
     "published_at": "2022-10-14T18:00:09Z",
     "formatted_date": "October 14, 2022",
     "thumbnail": "https://img.youtube.com/vi/aFhixGUkQlw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=aFhixGUkQlw"
+    "url": "https://www.youtube.com/watch?v=aFhixGUkQlw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "_DOWX6L6xSA",
@@ -949,7 +1067,8 @@
     "published_at": "2022-10-13T15:40:00Z",
     "formatted_date": "October 13, 2022",
     "thumbnail": "https://img.youtube.com/vi/_DOWX6L6xSA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=_DOWX6L6xSA"
+    "url": "https://www.youtube.com/watch?v=_DOWX6L6xSA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "uIbC2VQi29g",
@@ -957,7 +1076,8 @@
     "published_at": "2022-10-02T02:20:02Z",
     "formatted_date": "October 02, 2022",
     "thumbnail": "https://img.youtube.com/vi/uIbC2VQi29g/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=uIbC2VQi29g"
+    "url": "https://www.youtube.com/watch?v=uIbC2VQi29g",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "K9nEDJsbj-g",
@@ -965,7 +1085,8 @@
     "published_at": "2022-09-26T13:18:40Z",
     "formatted_date": "September 26, 2022",
     "thumbnail": "https://img.youtube.com/vi/K9nEDJsbj-g/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=K9nEDJsbj-g"
+    "url": "https://www.youtube.com/watch?v=K9nEDJsbj-g",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "tJS0LJENnUw",
@@ -973,7 +1094,8 @@
     "published_at": "2022-09-25T14:54:18Z",
     "formatted_date": "September 25, 2022",
     "thumbnail": "https://img.youtube.com/vi/tJS0LJENnUw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=tJS0LJENnUw"
+    "url": "https://www.youtube.com/watch?v=tJS0LJENnUw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "WIPipN-UhXo",
@@ -981,7 +1103,8 @@
     "published_at": "2022-09-23T18:59:22Z",
     "formatted_date": "September 23, 2022",
     "thumbnail": "https://img.youtube.com/vi/WIPipN-UhXo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=WIPipN-UhXo"
+    "url": "https://www.youtube.com/watch?v=WIPipN-UhXo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "HlkDx_O-8Is",
@@ -989,7 +1112,8 @@
     "published_at": "2022-09-14T05:30:04Z",
     "formatted_date": "September 14, 2022",
     "thumbnail": "https://img.youtube.com/vi/HlkDx_O-8Is/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=HlkDx_O-8Is"
+    "url": "https://www.youtube.com/watch?v=HlkDx_O-8Is",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "iAcQ1fUBZ0w",
@@ -997,7 +1121,8 @@
     "published_at": "2022-09-12T00:03:45Z",
     "formatted_date": "September 12, 2022",
     "thumbnail": "https://img.youtube.com/vi/iAcQ1fUBZ0w/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=iAcQ1fUBZ0w"
+    "url": "https://www.youtube.com/watch?v=iAcQ1fUBZ0w",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "6Y71RCRxWw4",
@@ -1005,7 +1130,8 @@
     "published_at": "2022-09-08T16:34:40Z",
     "formatted_date": "September 08, 2022",
     "thumbnail": "https://img.youtube.com/vi/6Y71RCRxWw4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=6Y71RCRxWw4"
+    "url": "https://www.youtube.com/watch?v=6Y71RCRxWw4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "ZAmnNtqAGR4",
@@ -1013,7 +1139,8 @@
     "published_at": "2022-09-07T16:59:38Z",
     "formatted_date": "September 07, 2022",
     "thumbnail": "https://img.youtube.com/vi/ZAmnNtqAGR4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=ZAmnNtqAGR4"
+    "url": "https://www.youtube.com/watch?v=ZAmnNtqAGR4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9-2SWeX-kJ4",
@@ -1021,7 +1148,8 @@
     "published_at": "2022-09-05T23:56:44Z",
     "formatted_date": "September 05, 2022",
     "thumbnail": "https://img.youtube.com/vi/9-2SWeX-kJ4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9-2SWeX-kJ4"
+    "url": "https://www.youtube.com/watch?v=9-2SWeX-kJ4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "YQE1z91NkBA",
@@ -1029,7 +1157,8 @@
     "published_at": "2022-08-29T01:22:41Z",
     "formatted_date": "August 29, 2022",
     "thumbnail": "https://img.youtube.com/vi/YQE1z91NkBA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=YQE1z91NkBA"
+    "url": "https://www.youtube.com/watch?v=YQE1z91NkBA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Db-zo_Bl17M",
@@ -1037,7 +1166,8 @@
     "published_at": "2022-08-22T08:08:28Z",
     "formatted_date": "August 22, 2022",
     "thumbnail": "https://img.youtube.com/vi/Db-zo_Bl17M/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Db-zo_Bl17M"
+    "url": "https://www.youtube.com/watch?v=Db-zo_Bl17M",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "aei3-gPZsQ4",
@@ -1045,7 +1175,8 @@
     "published_at": "2022-08-06T01:53:34Z",
     "formatted_date": "August 06, 2022",
     "thumbnail": "https://img.youtube.com/vi/aei3-gPZsQ4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=aei3-gPZsQ4"
+    "url": "https://www.youtube.com/watch?v=aei3-gPZsQ4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "LcoCBkHoaXQ",
@@ -1053,7 +1184,8 @@
     "published_at": "2022-07-27T01:43:10Z",
     "formatted_date": "July 27, 2022",
     "thumbnail": "https://img.youtube.com/vi/LcoCBkHoaXQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=LcoCBkHoaXQ"
+    "url": "https://www.youtube.com/watch?v=LcoCBkHoaXQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "JhnT9sAXR_U",
@@ -1061,7 +1193,8 @@
     "published_at": "2022-07-20T15:14:45Z",
     "formatted_date": "July 20, 2022",
     "thumbnail": "https://img.youtube.com/vi/JhnT9sAXR_U/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=JhnT9sAXR_U"
+    "url": "https://www.youtube.com/watch?v=JhnT9sAXR_U",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "gPyaWz9R6io",
@@ -1069,7 +1202,8 @@
     "published_at": "2022-07-04T20:57:02Z",
     "formatted_date": "July 04, 2022",
     "thumbnail": "https://img.youtube.com/vi/gPyaWz9R6io/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=gPyaWz9R6io"
+    "url": "https://www.youtube.com/watch?v=gPyaWz9R6io",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Q9bCVt7_dDw",
@@ -1077,7 +1211,8 @@
     "published_at": "2022-07-02T01:41:43Z",
     "formatted_date": "July 02, 2022",
     "thumbnail": "https://img.youtube.com/vi/Q9bCVt7_dDw/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Q9bCVt7_dDw"
+    "url": "https://www.youtube.com/watch?v=Q9bCVt7_dDw",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "G68Dtf_j2Z8",
@@ -1085,7 +1220,8 @@
     "published_at": "2022-06-09T01:56:19Z",
     "formatted_date": "June 09, 2022",
     "thumbnail": "https://img.youtube.com/vi/G68Dtf_j2Z8/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=G68Dtf_j2Z8"
+    "url": "https://www.youtube.com/watch?v=G68Dtf_j2Z8",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "d47mFOJ5xxg",
@@ -1093,7 +1229,8 @@
     "published_at": "2022-06-09T01:47:45Z",
     "formatted_date": "June 09, 2022",
     "thumbnail": "https://img.youtube.com/vi/d47mFOJ5xxg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=d47mFOJ5xxg"
+    "url": "https://www.youtube.com/watch?v=d47mFOJ5xxg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "G8SNn8GdSYo",
@@ -1101,7 +1238,8 @@
     "published_at": "2022-06-05T23:41:32Z",
     "formatted_date": "June 05, 2022",
     "thumbnail": "https://img.youtube.com/vi/G8SNn8GdSYo/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=G8SNn8GdSYo"
+    "url": "https://www.youtube.com/watch?v=G8SNn8GdSYo",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "-SuZh0fV__Y",
@@ -1109,7 +1247,8 @@
     "published_at": "2022-06-04T04:04:00Z",
     "formatted_date": "June 04, 2022",
     "thumbnail": "https://img.youtube.com/vi/-SuZh0fV__Y/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=-SuZh0fV__Y"
+    "url": "https://www.youtube.com/watch?v=-SuZh0fV__Y",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "q3yjGt1FBWM",
@@ -1117,7 +1256,8 @@
     "published_at": "2022-06-03T04:53:38Z",
     "formatted_date": "June 03, 2022",
     "thumbnail": "https://img.youtube.com/vi/q3yjGt1FBWM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=q3yjGt1FBWM"
+    "url": "https://www.youtube.com/watch?v=q3yjGt1FBWM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "xMVZf2uEFog",
@@ -1125,7 +1265,8 @@
     "published_at": "2022-05-28T08:22:17Z",
     "formatted_date": "May 28, 2022",
     "thumbnail": "https://img.youtube.com/vi/xMVZf2uEFog/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=xMVZf2uEFog"
+    "url": "https://www.youtube.com/watch?v=xMVZf2uEFog",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "fYCn0VoDOv4",
@@ -1133,7 +1274,8 @@
     "published_at": "2022-05-26T02:46:25Z",
     "formatted_date": "May 26, 2022",
     "thumbnail": "https://img.youtube.com/vi/fYCn0VoDOv4/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=fYCn0VoDOv4"
+    "url": "https://www.youtube.com/watch?v=fYCn0VoDOv4",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "HKWwYFSOSNg",
@@ -1141,7 +1283,8 @@
     "published_at": "2022-05-10T07:08:59Z",
     "formatted_date": "May 10, 2022",
     "thumbnail": "https://img.youtube.com/vi/HKWwYFSOSNg/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=HKWwYFSOSNg"
+    "url": "https://www.youtube.com/watch?v=HKWwYFSOSNg",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "zhyfel2qdHk",
@@ -1149,7 +1292,8 @@
     "published_at": "2022-05-01T20:57:47Z",
     "formatted_date": "May 01, 2022",
     "thumbnail": "https://img.youtube.com/vi/zhyfel2qdHk/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=zhyfel2qdHk"
+    "url": "https://www.youtube.com/watch?v=zhyfel2qdHk",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "50rc0RkZ7Us",
@@ -1157,7 +1301,8 @@
     "published_at": "2022-04-15T01:35:12Z",
     "formatted_date": "April 15, 2022",
     "thumbnail": "https://img.youtube.com/vi/50rc0RkZ7Us/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=50rc0RkZ7Us"
+    "url": "https://www.youtube.com/watch?v=50rc0RkZ7Us",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "4ndGDVoiTAA",
@@ -1165,7 +1310,8 @@
     "published_at": "2022-04-13T12:16:17Z",
     "formatted_date": "April 13, 2022",
     "thumbnail": "https://img.youtube.com/vi/4ndGDVoiTAA/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=4ndGDVoiTAA"
+    "url": "https://www.youtube.com/watch?v=4ndGDVoiTAA",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "tCBZ4V-D5to",
@@ -1173,7 +1319,8 @@
     "published_at": "2022-04-11T01:53:16Z",
     "formatted_date": "April 11, 2022",
     "thumbnail": "https://img.youtube.com/vi/tCBZ4V-D5to/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=tCBZ4V-D5to"
+    "url": "https://www.youtube.com/watch?v=tCBZ4V-D5to",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "slaCppfUOKM",
@@ -1181,7 +1328,8 @@
     "published_at": "2022-04-08T01:15:57Z",
     "formatted_date": "April 08, 2022",
     "thumbnail": "https://img.youtube.com/vi/slaCppfUOKM/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=slaCppfUOKM"
+    "url": "https://www.youtube.com/watch?v=slaCppfUOKM",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "blIJx5uoPOQ",
@@ -1189,7 +1337,8 @@
     "published_at": "2022-04-08T01:14:56Z",
     "formatted_date": "April 08, 2022",
     "thumbnail": "https://img.youtube.com/vi/blIJx5uoPOQ/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=blIJx5uoPOQ"
+    "url": "https://www.youtube.com/watch?v=blIJx5uoPOQ",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "Q58BZUc7QLY",
@@ -1197,7 +1346,8 @@
     "published_at": "2022-04-07T01:33:50Z",
     "formatted_date": "April 07, 2022",
     "thumbnail": "https://img.youtube.com/vi/Q58BZUc7QLY/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=Q58BZUc7QLY"
+    "url": "https://www.youtube.com/watch?v=Q58BZUc7QLY",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "3QSvu7Q1X9Q",
@@ -1205,7 +1355,8 @@
     "published_at": "2022-04-07T01:07:13Z",
     "formatted_date": "April 07, 2022",
     "thumbnail": "https://img.youtube.com/vi/3QSvu7Q1X9Q/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=3QSvu7Q1X9Q"
+    "url": "https://www.youtube.com/watch?v=3QSvu7Q1X9Q",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "YolbPE2Sn8M",
@@ -1213,7 +1364,8 @@
     "published_at": "2022-04-06T01:20:21Z",
     "formatted_date": "April 06, 2022",
     "thumbnail": "https://img.youtube.com/vi/YolbPE2Sn8M/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=YolbPE2Sn8M"
+    "url": "https://www.youtube.com/watch?v=YolbPE2Sn8M",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "oWVluO6U7FI",
@@ -1221,7 +1373,8 @@
     "published_at": "2022-04-04T01:11:40Z",
     "formatted_date": "April 04, 2022",
     "thumbnail": "https://img.youtube.com/vi/oWVluO6U7FI/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=oWVluO6U7FI"
+    "url": "https://www.youtube.com/watch?v=oWVluO6U7FI",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "9c_LRYp_FSI",
@@ -1229,7 +1382,8 @@
     "published_at": "2022-04-01T23:21:22Z",
     "formatted_date": "April 01, 2022",
     "thumbnail": "https://img.youtube.com/vi/9c_LRYp_FSI/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=9c_LRYp_FSI"
+    "url": "https://www.youtube.com/watch?v=9c_LRYp_FSI",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   },
   {
     "id": "OQWbsSViWac",
@@ -1237,6 +1391,7 @@
     "published_at": "2022-03-24T23:04:38Z",
     "formatted_date": "March 24, 2022",
     "thumbnail": "https://img.youtube.com/vi/OQWbsSViWac/mqdefault.jpg",
-    "url": "https://www.youtube.com/watch?v=OQWbsSViWac"
+    "url": "https://www.youtube.com/watch?v=OQWbsSViWac",
+    "description": "This is a sample description for the video. It can be a long text that needs to be truncated to show a \"View more\" and \"View less\" button."
   }
 ]

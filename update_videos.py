@@ -37,12 +37,28 @@ def fetch_all_youtube_videos():
                 pageToken=next_page_token
             ).execute()
 
-            for item in playlist_items_response["items"]:
-                video_id = item["snippet"]["resourceId"]["videoId"]
-                title = item["snippet"]["title"]
-                published_at = item["snippet"]["publishedAt"] # ISO 8601 format
+            video_ids = [item["snippet"]["resourceId"]["videoId"] for item in playlist_items_response.get("items", [])]
 
-                # Format the published date
+            if not video_ids:
+                break
+
+            # Get video details, including description, in batches
+            videos_response = youtube.videos().list(
+                id=",".join(video_ids),
+                part="snippet"
+            ).execute()
+
+            video_details = {item['id']: item['snippet'] for item in videos_response.get("items", [])}
+
+            for video_id in video_ids:
+                if video_id not in video_details:
+                    continue
+
+                snippet = video_details[video_id]
+                title = snippet["title"]
+                description = snippet.get("description", "")
+                published_at = snippet["publishedAt"]
+
                 try:
                     dt_object = datetime.fromisoformat(published_at.replace('Z', '+00:00'))
                     formatted_date = dt_object.strftime("%B %d, %Y")
@@ -52,7 +68,8 @@ def fetch_all_youtube_videos():
                 all_videos.append({
                     "id": video_id,
                     "title": title,
-                    "published_at": published_at, # Keep original for sorting
+                    "description": description,
+                    "published_at": published_at,
                     "formatted_date": formatted_date,
                     "thumbnail": f"https://img.youtube.com/vi/{video_id}/mqdefault.jpg",
                     "url": f"https://www.youtube.com/watch?v={video_id}"
