@@ -58,3 +58,10 @@
 /* For example, you might want to adjust spacing or responsiveness beyond Tailwind's defaults. */
 /* #youtube-videos-container { margin-top: 20px; } */
 /* .video-item { border: 1px solid #ccc; } */
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
