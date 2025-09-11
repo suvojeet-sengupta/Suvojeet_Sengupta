@@ -1,9 +1,12 @@
-name: Update YouTube Videos
+name: Update YouTube Videos & Build CSS
 
 on:
   schedule:
     - cron: '0 8 * * *' # Runs daily at 8 AM UTC. You can adjust this cron expression.
   workflow_dispatch: # Allows manual triggering from GitHub UI
+  push:
+    branches:
+      - main
 
 jobs:
   update-videos:
@@ -39,4 +42,36 @@ jobs:
             git push
           else
             echo "No changes to music.html. Skipping commit."
+          fi
+
+  build-css:
+    runs-on: ubuntu-latest
+    needs: update-videos
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Tailwind CSS
+        run: npm run build
+
+      - name: Commit and push CSS changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add dist/output.css
+          if ! git diff --staged --quiet; then
+            git commit -m "Automated: Build Tailwind CSS"
+            git push
+          else
+            echo "No changes to CSS. Skipping commit."
           fi
