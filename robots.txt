@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://suvojit213.github.io/bio_page/sitemap.xml
