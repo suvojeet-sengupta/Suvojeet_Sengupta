@@ -23,3 +23,11 @@
     from { transform: translateX(20px); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
+
+html.dark .fa-moon {
+    display: none !important;
+}
+
+html.dark .fa-sun {
+    display: inline !important;
+}
