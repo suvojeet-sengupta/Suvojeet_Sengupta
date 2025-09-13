@@ -7,7 +7,7 @@ const Home = () => {
     <main className="w-full max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden md:flex">
       {/* Left Column */}
       <div className="md:w-1/3 p-8 bg-gradient-to-b from-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center slide-in-left">
-        <img className="w-32 h-32 rounded-full border-4 border-white shadow-lg" src={suvojeet} alt="Profile Picture" />
+        <img className="w-32 h-32 rounded-full border-4 border-white shadow-lg" src={suvojeet} alt="Suvojeet Sengupta" />
         <h1 className="text-3xl font-bold mt-4 text-center">Suvojeet Sengupta</h1>
         <p className="text-indigo-200 text-center mt-2">🎤 Singer | Performer | Composer</p>
         <div className="mt-4 text-center text-sm text-indigo-100">
