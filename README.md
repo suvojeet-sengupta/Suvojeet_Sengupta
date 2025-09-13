@@ -1,16 +1,35 @@
-# Bio Link Website
+# Bio Page - React Version
 
-This is a simple bio link website created using HTML, Tailwind CSS, and JavaScript.
+This is the React version of Suvojeet Sengupta's personal bio page.
 
-## How to use
+## Available Scripts
 
-1.  Clone this repository.
-2.  Open the `index.html` file in your browser.
+In the project directory, you can run:
 
-## How to deploy to GitHub Pages
+### `npm start`
 
-1.  Create a new repository on GitHub.
-2.  Push the `index.html` file to the repository.
-3.  Go to the repository's settings.
-4.  In the "Pages" section, select the `main` branch as the source.
-5.  Your website will be deployed to `https://<your-username>.github.io/<repository-name>/`.
+Runs the app in the development mode.<br />
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.<br />
+You will also see any lint errors in the console.
+
+### `npm test`
+
+Launches the test runner in the interactive watch mode.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.<br />
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.<br />
+Your app is ready to be deployed!
+
+### `npm run deploy`
+
+Deploys the app to GitHub Pages.
+
+## Deployment
+
+This project is automatically deployed to GitHub Pages whenever a push is made to the `main` branch. The deployment is handled by the `.github/workflows/deploy.yml` workflow.
