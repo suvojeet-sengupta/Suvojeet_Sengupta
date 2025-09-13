@@ -1,4 +1,4 @@
-# Bio Page - React Version
+ # Bio Page - React Version
 
 This is the React version of Suvojeet Sengupta's personal bio page.
 
