@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import suvojeet from '../assets/suvojeet.jpg';
 
 const Home = () => {
@@ -59,7 +60,7 @@ const Home = () => {
             </div>
           </div>
           <div className="mt-6 text-center">
-            <a href="/music" className="inline-block px-8 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105">View More</a>
+            <Link to="/music" className="inline-block px-8 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105">View More</Link>
           </div>
         </div>
         <div className="mt-8">
