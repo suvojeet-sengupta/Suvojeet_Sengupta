@@ -102,15 +102,15 @@ const Home = () => {
           <form id="contact-form" action="https://formsubmit.co/suvojitsengupta21@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Name</label>
-              <input type="text" name="name" id="name" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500" required />
+              <input type="text" name="name" id="name" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required />
             </div>
             <div>
               <label htmlFor="email" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Email</label>
-              <input type="email" name="email" id="email" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500" required />
+              <input type="email" name="email" id="email" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required />
             </div>
             <div>
               <label htmlFor="message" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Message</label>
-              <textarea name="message" id="message" rows="4" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500" required></textarea>
+              <textarea name="message" id="message" rows="4" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required></textarea>
             </div>
             <button type="submit" className="w-full px-6 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300">Send Message</button>
           </form>
