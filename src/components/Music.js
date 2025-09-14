@@ -11,7 +11,7 @@ const videos = [
 
 const Music = () => {
   return (
-    <div className="dark:bg-dark bg-light text-white pt-20">
+    <div className="bg-dark text-white pt-20">
       {/* Page Header */}
       <header className="py-20 text-center">
         <h1 className="text-5xl font-bold font-montserrat">Music Collection</h1>
@@ -21,7 +21,7 @@ const Music = () => {
       <main className="w-full max-w-7xl mx-auto p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video) => (
-            <div key={video.id} className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+            <div key={video.id} className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 shadow-primary/10">
               <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"

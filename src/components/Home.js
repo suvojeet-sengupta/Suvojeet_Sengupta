@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import SocialLinks from './SocialLinks'; // I'll update SocialLinks to use SVGs later
+import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 
 const Home = () => {
@@ -39,13 +39,13 @@ const Home = () => {
   };
 
   return (
-    <div className="dark:bg-dark bg-light text-white">
+    <div className="bg-dark text-white">
       {/* Hero Section */}
       <section
         className="relative h-screen flex items-center justify-center text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${suvojeet})` }}
       >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute inset-0 bg-black opacity-60"></div>
         <div className="relative z-10 p-4">
           <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 animate-fade-in-down">
             Suvojeet Sengupta
@@ -55,7 +55,7 @@ const Home = () => {
           </p>
           <Link
             to="/music"
-            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 transform hover:scale-105 animate-bounce"
+            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 transform hover:scale-105 animate-pulse"
           >
             Listen Now
           </Link>
@@ -72,13 +72,13 @@ const Home = () => {
             Music Showcase
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300" style={{paddingTop: '56.25%'}}>
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/t7zF5Ye0JwE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300" style={{paddingTop: '56.25%'}}>
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Uuv-GwwNhGY" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1" style={{paddingTop: '56.25%'}}>
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/qFovu9M41UE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
           </div>
