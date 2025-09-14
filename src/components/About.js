@@ -71,14 +71,7 @@ const About = () => {
         </div>
       </main>
 
-      <footer className="bg-gray-800 text-white text-center py-8 mt-16">
-        <div className="flex justify-center space-x-6 mb-4">
-          <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-instagram fa-2x"></i></a>
-          <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-youtube fa-2x"></i></a>
-          <a href="https://www.facebook.com/suvojeetsengupta21" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-facebook fa-2x"></i></a>
-        </div>
-        <p>&copy; 2025 Suvojeet Sengupta. All Rights Reserved.</p>
-      </footer>
+      
     </div>
   );
 };
