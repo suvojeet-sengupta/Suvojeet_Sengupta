@@ -53,33 +53,7 @@ const Home = () => {
 
       {/* Right Column */}
       <div className="md:w-2/3 p-8 slide-in-right">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Follow Me</h2>
-        <div className="space-y-5">
-          <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" className="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white">
-            <i className="fab fa-instagram text-3xl text-purple-500 group-hover:text-white transition-colors duration-300"></i>
-            <div className="ml-4 flex-grow">
-              <span className="block text-lg">Instagram</span>
-              <span className="block text-sm text-gray-500 dark:text-gray-400 group-hover:text-white">@suvojeet__sengupta</span>
-            </div>
-            <i className="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-          </a>
-          <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" className="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-red-600 hover:text-white">
-            <i className="fab fa-youtube text-3xl text-red-500 group-hover:text-white transition-colors duration-300"></i>
-            <div className="ml-4 flex-grow">
-              <span className="block text-lg">YouTube</span>
-              <span className="block text-sm text-gray-500 dark:text-gray-400 group-hover:text-white">@suvojeetsengupta</span>
-            </div>
-            <i className="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-          </a>
-          <a href="https://www.facebook.com/suvojeetsengupta21" className="group flex items-center w-full px-6 py-4 font-semibold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 rounded-lg transition-all duration-300 hover:shadow-lg hover:bg-blue-600 hover:text-white">
-            <i className="fab fa-facebook text-3xl text-blue-500 group-hover:text-white transition-colors duration-300"></i>
-            <div className="ml-4 flex-grow">
-              <span className="block text-lg">Facebook</span>
-              <span className="block text-sm text-gray-500 dark:text-gray-400 group-hover:text-white">@suvojeetsengupta21</span>
-            </div>
-            <i className="fas fa-arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-300"></i>
-          </a>
-        </div>
+        
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Music Showcase</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -1,6 +1,39 @@
 
 import React from 'react';
 
+const videos = [
+  {
+    id: 't7zF5Ye0JwE',
+    title: 'Heeriye (Cover)',
+    description: 'A soulful rendition of the popular track.',
+  },
+  {
+    id: 'Uuv-GwwNhGY',
+    title: 'Tum Hi Ho (Acoustic)',
+    description: 'An acoustic cover of the classic love anthem.',
+  },
+  {
+    id: 'qFovu9M41UE',
+    title: 'Channa Mereya (Unplugged)',
+    description: 'A heartfelt unplugged version.',
+  },
+  {
+    id: 'Ka-jwAbw1E4',
+    title: 'Bekhayali (Cover)',
+    description: 'A powerful cover of the rock ballad.',
+  },
+  {
+    id: 'iXIu2_dF42w',
+    title: 'Shayad (Cover)',
+    description: 'A melodious take on the romantic song.',
+  },
+  {
+    id: 'bzstfhq1a4M',
+    title: 'Kalank (Title Track)',
+    description: 'A soulful cover of the title track from Kalank.',
+  },
+];
+
 const Music = () => {
   return (
     <div>
@@ -13,17 +46,27 @@ const Music = () => {
       </header>
 
       <main className="w-full max-w-7xl mx-auto p-8">
-        <p className="text-center text-gray-600 dark:text-gray-300 text-lg">Music functionality is currently disabled.</p>
-      </main>
-
-      <footer className="bg-gray-800 text-white text-center py-8 mt-16">
-        <div className="flex justify-center space-x-6 mb-4">
-          <a href="https://www.instagram.com/suvojeet__sengupta?igsh=MWhyMXE4YzhxaDVvNg==" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-instagram fa-2x"></i></a>
-          <a href="https://youtube.com/@suvojeetsengupta?si=xmXfnPFgxoYOzuzq" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-youtube fa-2x"></i></a>
-          <a href="https://www.facebook.com/suvojeetsengupta21" className="hover:text-purple-400 transition-colors duration-300"><i className="fab fa-facebook fa-2x"></i></a>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {videos.map((video) => (
+            <div key={video.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+              <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src={`https://www.youtube.com/embed/${video.id}`}
+                  title={video.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{video.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400">{video.description}</p>
+              </div>
+            </div>
+          ))}
         </div>
-        <p>&copy; 2025 Suvojeet Sengupta. All Rights Reserved.</p>
-      </footer>
+      </main>
     </div>
   );
 };
