@@ -1,9 +1,37 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import suvojeet from '../assets/suvojeet.jpg';
 
 const Home = () => {
+  const [formStatus, setFormStatus] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: data,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      setFormStatus('Thanks for your message! I will get back to you soon.');
+      form.reset();
+    } else {
+      response.json().then(data => {
+        if (Object.hasOwn(data, 'errors')) {
+          setFormStatus(data["errors"].map(error => error["message"]).join(", "));
+        } else {
+          setFormStatus('Oops! There was a problem submitting your form');
+        }
+      });
+    }
+  };
+
   return (
     <main className="w-full max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden md:flex">
       {/* Left Column */}
@@ -65,7 +93,7 @@ const Home = () => {
         </div>
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Get in Touch</h2>
-          <form id="contact-form" action="https://formsubmit.co/suvojitsengupta21@gmail.com" method="POST" className="space-y-4">
+          <form id="contact-form" action="https://formsubmit.co/suvojitsengupta21@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Name</label>
               <input type="text" name="name" id="name" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500" required />
@@ -80,7 +108,7 @@ const Home = () => {
             </div>
             <button type="submit" className="w-full px-6 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300">Send Message</button>
           </form>
-          <div id="form-status" className="mt-4 text-center"></div>
+          <div id="form-status" className="mt-4 text-center">{formStatus}</div>
         </div>
       </div>
     </main>
