@@ -22,7 +22,7 @@ jobs:
     - name: Run script to update videos
       run: node scripts/update-youtube-videos.js
       env:
-        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_DATA_API }}
+        YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
     - name: Commit and push changes
       uses: stefanzweifel/git-auto-commit-action@v5
