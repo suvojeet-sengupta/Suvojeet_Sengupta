@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import videos from '../data/videos.json';
 
 const Music = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 7;
+
+  // Calculate the videos for the current page
+  const indexOfLastVideo = currentPage * videosPerPage;
+  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+  const currentVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
+
+  // Pagination controls
+  const totalPages = Math.ceil(videos.length / videosPerPage);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="bg-dark text-white pt-20">
       {/* Page Header */}
@@ -12,7 +35,7 @@ const Music = () => {
 
       <main className="w-full max-w-7xl mx-auto p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {videos.map((video) => (
+          {currentVideos.map((video) => (
             <div key={video.id} className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 shadow-primary/10">
               <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
                 <iframe
@@ -22,6 +45,7 @@ const Music = () => {
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  loading="lazy" // Already present, which is good
                 ></iframe>
               </div>
               <div className="p-6">
@@ -31,6 +55,27 @@ const Music = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-center items-center mt-12">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className="bg-primary text-dark font-bold py-2 px-4 rounded-l-lg hover:bg-opacity-80 transition duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <div className="bg-gray-700 text-white font-bold py-2 px-4">
+            Page {currentPage} of {totalPages}
+          </div>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className="bg-primary text-dark font-bold py-2 px-4 rounded-r-lg hover:bg-opacity-80 transition duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
       </main>
     </div>
