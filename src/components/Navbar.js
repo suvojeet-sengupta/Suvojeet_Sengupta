@@ -28,7 +28,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
+    <nav className="relative pt-8">
       <div className="absolute top-5 right-5 z-50">
         <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none">
           {isDarkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
