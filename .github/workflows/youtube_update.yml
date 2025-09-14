@@ -27,12 +27,13 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python update_videos.py
 
-      - name: Commit and push changes
-        run: |
-          git config --global user.name 'suvojit213'
-          git config --global user.email 'suvojitsengupta21@gmail.com'
-          git add src/data/videos.json
-          if ! git diff --staged --quiet; then
-            git commit -m "Automated: Update YouTube videos"
-            git push https://suvojit213:${{ secrets.PAT }}@github.com/suvojit213/bio_page.git HEAD:main
-          fi
+      - name: Commit and push if it changed
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Automated: Update YouTube videos"
+          file_pattern: src/data/videos.json
+          commit_user_name: suvojit213
+          commit_user_email: suvojitsengupta21@gmail.com
+          commit_author: suvojit213 <suvojitsengupta21@gmail.com>
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
