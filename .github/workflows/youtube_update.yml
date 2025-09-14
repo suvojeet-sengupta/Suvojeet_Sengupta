@@ -29,7 +29,10 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'suvojit213'
+          git config --global user.email 'suvojitsengupta21@gmail.com'
           git add src/data/videos.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Automated: Update YouTube videos" && git push)
+          if ! git diff --staged --quiet; then
+            git commit -m "Automated: Update YouTube videos"
+            git push https://suvojit213:${{ secrets.PAT }}@github.com/suvojit213/bio_page.git HEAD:main
+          fi
