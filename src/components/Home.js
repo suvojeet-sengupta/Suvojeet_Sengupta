@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SocialLinks from './SocialLinks'; // I'll update SocialLinks to use SVGs later
 import suvojeet from '../assets/suvojeet.jpg';
 
 const Home = () => {
@@ -39,59 +39,86 @@ const Home = () => {
   };
 
   return (
-    <main className="w-full max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden md:flex">
-      {/* Left Column */}
-      <div className="md:w-1/3 p-8 bg-gradient-to-b from-purple-600 to-indigo-700 text-white flex flex-col items-center justify-center slide-in-left">
-        <img className="w-32 h-32 rounded-full border-4 border-white shadow-lg" src={suvojeet} alt="Suvojeet Sengupta" />
-        <h1 className="text-3xl font-bold mt-4 text-center">Suvojeet Sengupta</h1>
-        <p className="text-indigo-200 text-center mt-2">🎤 Singer | Performer | Composer</p>
-        <div className="mt-4 text-center text-sm text-indigo-100">
-          <p>✨ Introvert, but music makes me shine</p>
-          <p>🎶 Living my childhood dream – where words turn into melodies & emotions into magic.</p>
+    <div className="dark:bg-dark bg-light text-white">
+      {/* Hero Section */}
+      <section
+        className="relative h-screen flex items-center justify-center text-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${suvojeet})` }}
+      >
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative z-10 p-4">
+          <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 animate-fade-in-down">
+            Suvojeet Sengupta
+          </h1>
+          <p className="text-lg md:text-2xl font-poppins mb-8 animate-fade-in-up">
+            Singer | Performer | Composer
+          </p>
+          <Link
+            to="/music"
+            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 transform hover:scale-105 animate-bounce"
+          >
+            Listen Now
+          </Link>
         </div>
-      </div>
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <SocialLinks />
+        </div>
+      </section>
 
-      {/* Right Column */}
-      <div className="md:w-2/3 p-8 slide-in-right">
-        
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Music Showcase</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg" style={{paddingTop: '56.25%'}}>
+      {/* Music Showcase Section */}
+      <section id="music" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center font-montserrat mb-12">
+            Music Showcase
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/t7zF5Ye0JwE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg" style={{paddingTop: '56.25%'}}>
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Uuv-GwwNhGY" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg md:col-span-2" style={{paddingTop: '56.25%'}}>
+            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/qFovu9M41UE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
             </div>
           </div>
-          <div className="mt-6 text-center">
-            <Link to="/music" className="inline-block px-8 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:scale-105">View More</Link>
+          <div className="mt-12 text-center">
+            <Link to="/music" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-opacity-80 transition-all duration-300 transform hover:scale-105">
+              View More
+            </Link>
           </div>
         </div>
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">Get in Touch</h2>
-          <form id="contact-form" action="https://formsubmit.co/suvojitsengupta21@gmail.com" method="POST" onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Name</label>
-              <input type="text" name="name" id="name" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required />
-            </div>
-            <div>
-              <label htmlFor="email" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Email</label>
-              <input type="email" name="email" id="email" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required />
-            </div>
-            <div>
-              <label htmlFor="message" className="block mb-1 font-semibold text-gray-700 dark:text-gray-300">Message</label>
-              <textarea name="message" id="message" rows="4" className="w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-purple-500 focus:border-purple-500 text-gray-900 dark:text-white" required></textarea>
-            </div>
-            <button type="submit" className="w-full px-6 py-3 font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-700 rounded-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300">Send Message</button>
-          </form>
-          <div id="form-status" className="mt-4 text-center">{formStatus}</div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-dark">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center font-montserrat mb-12">
+            Get in Touch
+          </h2>
+          <div className="max-w-3xl mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block mb-2 font-semibold text-gray-300">Name</label>
+                <input type="text" name="name" id="name" className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+              </div>
+              <div>
+                <label htmlFor="email" className="block mb-2 font-semibold text-gray-300">Email</label>
+                <input type="email" name="email" id="email" className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+              </div>
+              <div>
+                <label htmlFor="message" className="block mb-2 font-semibold text-gray-300">Message</label>
+                <textarea name="message" id="message" rows="4" className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
+              </div>
+              <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-opacity-80 transition-all duration-300">
+                Send Message
+              </button>
+            </form>
+            <div className="mt-6 text-center text-gray-400">{formStatus}</div>
+          </div>
         </div>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 };
 
