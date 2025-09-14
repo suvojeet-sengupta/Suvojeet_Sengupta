@@ -1,13 +1,5 @@
 import React from 'react';
-
-const videos = [
-  { id: 't7zF5Ye0JwE', title: 'Heeriye (Cover)', description: 'A soulful rendition of the popular track.' },
-  { id: 'Uuv-GwwNhGY', title: 'Tum Hi Ho (Acoustic)', description: 'An acoustic cover of the classic love anthem.' },
-  { id: 'qFovu9M41UE', title: 'Channa Mereya (Unplugged)', description: 'A heartfelt unplugged version.' },
-  { id: 'Ka-jwAbw1E4', title: 'Bekhayali (Cover)', description: 'A powerful cover of the rock ballad.' },
-  { id: 'iXIu2_dF42w', title: 'Shayad (Cover)', description: 'A melodious take on the romantic song.' },
-  { id: 'bzstfhq1a4M', title: 'Kalank (Title Track)', description: 'A soulful cover of the title track from Kalank.' },
-];
+import videos from '../data/videos.json';
 
 const Music = () => {
   return (
@@ -35,6 +27,7 @@ const Music = () => {
               <div className="p-6">
                 <h3 className="text-xl font-bold text-primary mb-2 font-montserrat">{video.title}</h3>
                 <p className="text-grey">{video.description}</p>
+                <p className="text-xs text-gray-400 mt-2">Published on: {new Date(video.publishedAt).toLocaleDateString()}</p>
               </div>
             </div>
           ))}
