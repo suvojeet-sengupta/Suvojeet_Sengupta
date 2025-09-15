@@ -1,5 +1,4 @@
-/* Reset or base styles can go here if needed, but we'll primarily use Tailwind. */
-/* Keyframe animations can also be defined here. */
+/* Keyframe animations */
 
 @keyframes fade-in-down {
   0% {
@@ -23,6 +22,26 @@
   }
 }
 
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .8;
+  }
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.1) translate(-2%, -1%);
+  }
+}
+
+/* Animation utility classes */
+
 .animate-fade-in-down {
   animation: fade-in-down 0.8s ease-out forwards;
 }
@@ -35,11 +54,6 @@
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: .8;
-  }
+.animate-ken-burns {
+  animation: ken-burns 15s ease-out forwards;
 }

@@ -41,10 +41,11 @@ const Home = () => {
   return (
     <div className="bg-dark text-white">
       {/* Hero Section */}
-      <section
-        className="relative h-screen flex items-center justify-center text-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${suvojeet})` }}
-      >
+      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center animate-ken-burns"
+          style={{ backgroundImage: `url(${suvojeet})` }}
+        ></div>
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 p-4 flex flex-col items-center">
           <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 text-white animate-fade-in-down">
@@ -60,7 +61,7 @@ const Home = () => {
             Listen Now
           </Link>
         </div>
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10">
           <SocialLinks />
         </div>
       </section>
