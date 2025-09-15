@@ -72,8 +72,8 @@ const Home = () => {
         <motion.div
           className="absolute inset-0 bg-cover bg-top"
           style={{ backgroundImage: `url(${suvojeet})` }}
-          initial={{ scale: 1, opacity: 1 }}
-          animate={{ scale: 1.05, transition: { duration: 30, ease: "linear", repeat: Infinity, repeatType: "reverse" } }}
+          initial={{ scale: 1 }}
+          animate={{ scale: 1.1, transition: { duration: 10, ease: "easeOut" } }}
         ></motion.div>
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <motion.div
