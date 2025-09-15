@@ -29,8 +29,8 @@ const Music = () => {
     <div className="bg-dark text-white pt-20">
       {/* Page Header */}
       <header className="py-20 text-center">
-        <h1 className="text-5xl font-bold font-montserrat">Music Collection</h1>
-        <p className="mt-4 text-lg text-grey">Explore the melodies and stories behind the songs.</p>
+        <h1 className="text-4xl font-bold text-center mb-12">My Music</h1>
+        <p className="mt-4 text-base md:text-lg text-grey px-4">Explore the melodies and stories behind the songs.</p>
       </header>
 
       <main className="w-full max-w-7xl mx-auto p-8">
@@ -66,7 +66,7 @@ const Music = () => {
           >
             Previous
           </button>
-          <div className="bg-gray-700 text-white font-bold py-2 px-4">
+          <div className="bg-gray-700 text-white font-bold py-2 px-4 rounded-md">
             Page {currentPage} of {totalPages}
           </div>
           <button
