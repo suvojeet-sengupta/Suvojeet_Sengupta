@@ -57,15 +57,12 @@ const Home = () => {
     <div className="bg-dark text-white">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
-        <div
-          className="absolute inset-0"
+        <img
+          src={suvojeet}
+          alt="Suvojeet Sengupta"
+          className="absolute top-0 left-0 w-full h-full object-cover object-center"
           style={{ transform: `translateY(${offsetY * 0.5}px)` }}
-        >
-          <div
-            className="h-full w-full bg-cover bg-center animate-ken-burns"
-            style={{ backgroundImage: `url(${suvojeet})` }}
-          ></div>
-        </div>
+        />
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 w-full p-4 flex flex-col items-center">
           <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 text-white animate-fade-in-down">
@@ -76,8 +73,7 @@ const Home = () => {
           </p>
           <Link
             to="/music"
-            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-fade-in"
-            style={{ animationDelay: '1.2s' }}
+            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-pulse"
           >
             Listen Now
           </Link>
