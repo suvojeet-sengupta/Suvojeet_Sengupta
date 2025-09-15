@@ -39,7 +39,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-dark text-white">
+    <div className="text-white">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
         <div
@@ -97,7 +97,7 @@ const Home = () => {
           <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
             Get in Touch
           </h2>
-          <div className="max-w-3xl mx-auto bg-dark-2 p-8 rounded-lg shadow-lg">
+          <div className="max-w-5xl mx-auto bg-dark-2 p-8 rounded-lg shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block mb-2 font-semibold text-grey">Name</label>
