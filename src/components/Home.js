@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const [formStatus, setFormStatus] = useState('');
@@ -38,50 +39,84 @@ const Home = () => {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
   return (
     <div className="bg-dark text-white">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-top animate-ken-burns"
+        <motion.div
+          className="absolute inset-0 bg-cover bg-top"
           style={{ backgroundImage: `url(${suvojeet})` }}
-        ></div>
+          initial={{ scale: 1.2, opacity: 0.8 }}
+          animate={{ scale: 1, opacity: 1, transition: { duration: 15, ease: "linear", repeat: Infinity, repeatType: "reverse" } }}
+        ></motion.div>
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div className="relative z-10 w-full p-4 flex flex-col items-center">
-          <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 text-white animate-fade-in-down">
+        <motion.div
+          className="relative z-10 w-full p-4 flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold font-montserrat mb-4 text-white">
             Suvojeet Sengupta
-          </h1>
-          <p className="text-xl md:text-3xl font-poppins mb-8 text-light-grey animate-fade-in-up">
+          </motion.h1>
+          <motion.p variants={itemVariants} className="text-xl md:text-3xl font-poppins mb-8 text-light-grey">
             Singer | Performer | Composer
-          </p>
-          <Link
-            to="/music"
-            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-pulse"
-          >
-            Listen Now
-          </Link>
-        </div>
+          </motion.p>
+          <motion.div variants={itemVariants}>
+            <Link
+              to="/music"
+              className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-pulse"
+            >
+              Listen Now
+            </Link>
+          </motion.div>
+        </motion.div>
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10">
           <SocialLinks />
         </div>
       </section>
 
       {/* Music Showcase Section */}
-      <section id="music" className="py-20 bg-dark-2">
+      <motion.section
+        id="music"
+        className="py-20 bg-dark-2"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
             Music Showcase
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
+            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/t7zF5Ye0JwE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
+            </motion.div>
+            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Uuv-GwwNhGY" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
-            <div className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1 shadow-primary/20" style={{paddingTop: '56.25%'}}>
+            </motion.div>
+            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1 shadow-primary/20" style={{paddingTop: '56.25%'}}>
               <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/qFovu9M41UE" title="Music video by Suvojeet Sengupta" loading="lazy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
+            </motion.div>
           </div>
           <div className="mt-12 text-center">
             <Link to="/music" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
@@ -89,10 +124,17 @@ const Home = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-dark">
+      <motion.section
+        id="contact"
+        className="py-20 bg-dark"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
             Get in Touch
@@ -118,7 +160,7 @@ const Home = () => {
             <div className="mt-6 text-center text-grey">{formStatus}</div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 };
