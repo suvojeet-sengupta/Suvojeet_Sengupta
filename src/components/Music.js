@@ -10,7 +10,17 @@ const Music = () => {
   const currentVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
   const totalPages = Math.ceil(videos.length / videosPerPage);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
     <div className="bg-dark text-white pt-20">
@@ -43,20 +53,24 @@ const Music = () => {
           ))}
         </div>
 
-        <div className="flex justify-center items-center mt-12 space-x-2">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
-            <button
-              key={pageNumber}
-              onClick={() => paginate(pageNumber)}
-              className={`px-4 py-2 font-bold rounded-lg transition-colors duration-300 ${
-                currentPage === pageNumber
-                  ? 'bg-primary text-dark'
-                  : 'bg-dark-2 text-white hover:bg-primary hover:text-dark'
-              }`}
-            >
-              {pageNumber}
-            </button>
-          ))}
+        <div className="flex justify-center items-center mt-12 space-x-4">
+          <button
+            onClick={prevPage}
+            disabled={currentPage === 1}
+            className="px-6 py-3 font-bold rounded-lg transition-all duration-300 bg-primary text-dark hover:bg-primary-dark shadow-primary transform hover:scale-105 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100"
+          >
+            Previous
+          </button>
+          <div className="text-lg font-semibold text-grey">
+            Page {currentPage} of {totalPages}
+          </div>
+          <button
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            className="px-6 py-3 font-bold rounded-lg transition-all duration-300 bg-primary text-dark hover:bg-primary-dark shadow-primary transform hover:scale-105 disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100"
+          >
+            Next
+          </button>
         </div>
       </main>
     </div>
