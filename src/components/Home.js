@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 
 const Home = () => {
   const [formStatus, setFormStatus] = useState('');
+
+  const [offsetY, setOffsetY] = useState(0);
+  const handleScroll = () => {
+    if (window.innerWidth >= 768) { // md breakpoint in tailwind is 768px
+      setOffsetY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,9 +58,14 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-top animate-ken-burns"
-          style={{ backgroundImage: `url(${suvojeet})` }}
-        ></div>
+          className="absolute inset-0"
+          style={{ transform: `translateY(${offsetY * 0.5}px)` }}
+        >
+          <div
+            className="h-full w-full bg-cover bg-center animate-ken-burns"
+            style={{ backgroundImage: `url(${suvojeet})` }}
+          ></div>
+        </div>
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <div className="relative z-10 w-full p-4 flex flex-col items-center">
           <h1 className="text-5xl md:text-7xl font-bold font-montserrat mb-4 text-white animate-fade-in-down">
@@ -56,7 +76,8 @@ const Home = () => {
           </p>
           <Link
             to="/music"
-            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-pulse"
+            className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-fade-in"
+            style={{ animationDelay: '1.2s' }}
           >
             Listen Now
           </Link>
