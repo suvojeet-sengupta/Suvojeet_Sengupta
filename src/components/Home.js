@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
-  const [formStatus, setFormStatus] = useState('');
+  const [formStatus, setFormStatus] = useState(null);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,14 +27,15 @@ const Home = () => {
     });
 
     if (response.ok) {
-      setFormStatus('Thanks for your message! I will get back to you soon.');
+      setFormStatus({ type: 'success', message: 'Thanks for your message! I will get back to you soon.' });
+      setIsFormSubmitted(true);
       form.reset();
     } else {
       response.json().then(data => {
         if (Object.hasOwn(data, 'errors')) {
-          setFormStatus(data["errors"].map(error => error["message"]).join(", "));
+          setFormStatus({ type: 'error', message: data["errors"].map(error => error["message"]).join(", ") });
         } else {
-          setFormStatus('Oops! There was a problem submitting your form');
+          setFormStatus({ type: 'error', message: 'Oops! There was a problem submitting your form' });
         }
       });
     }
@@ -55,6 +57,12 @@ const Home = () => {
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  };
+
+  const formContainerVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: { opacity: 1, height: 'auto', transition: { duration: 0.5, ease: 'easeOut' } },
+    exit: { opacity: 0, height: 0, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
   return (
@@ -140,24 +148,55 @@ const Home = () => {
             Get in Touch
           </h2>
           <div className="max-w-3xl mx-auto bg-dark-2 p-8 rounded-lg shadow-lg">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block mb-2 font-semibold text-grey">Name</label>
-                <input type="text" name="name" id="name" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
-              </div>
-              <div>
-                <label htmlFor="email" className="block mb-2 font-semibold text-grey">Email</label>
-                <input type="email" name="email" id="email" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
-              </div>
-              <div>
-                <label htmlFor="message" className="block mb-2 font-semibold text-grey">Message</label>
-                <textarea name="message" id="message" rows="4" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
-              </div>
-              <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary">
-                Send Message
-              </button>
-            </form>
-            <div className="mt-6 text-center text-grey">{formStatus}</div>
+            <AnimatePresence>
+              {!isFormSubmitted ? (
+                <motion.form
+                  key="form"
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                  variants={formContainerVariants}
+                  initial="visible"
+                  exit="exit"
+                >
+                  <div>
+                    <label htmlFor="name" className="block mb-2 font-semibold text-grey">Name</label>
+                    <input type="text" name="name" id="name" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block mb-2 font-semibold text-grey">Email</label>
+                    <input type="email" name="email" id="email" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block mb-2 font-semibold text-grey">Message</label>
+                    <textarea name="message" id="message" rows="4" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
+                  </div>
+                  <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary">
+                    Send Message
+                  </button>
+                </motion.form>
+              ) : (
+                <motion.div
+                  key="success-message"
+                  className="text-center"
+                  variants={formContainerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5, type: 'spring', stiffness: 150 }}
+                  >
+                    <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                    <p className="text-grey">{formStatus?.message}</p>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {formStatus && formStatus.type === 'error' && (
+              <div className="mt-6 text-center text-red-500">{formStatus.message}</div>
+            )}
           </div>
         </div>
       </motion.section>
