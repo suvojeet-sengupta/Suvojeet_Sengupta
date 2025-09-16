@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://suvojit213.github.io/bio_page",
+  "homepage": "https://suvojit213.github.io/Suvojeet_Sengupta",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "PUBLIC_URL=/bio_page npm run build",
+    "predeploy": "PUBLIC_URL=/Suvojeet_Sengupta npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {

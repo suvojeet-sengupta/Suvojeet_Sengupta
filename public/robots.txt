@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://suvojit213.github.io/bio_page/sitemap.xml
+Sitemap: https://suvojit213.github.io/Suvojeet_Sengupta/sitemap.xml
