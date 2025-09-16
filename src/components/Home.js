@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
+  useEffect(() => {
+    document.title = "Suvojeet Sengupta - Official Website";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Welcome to the official website of Suvojeet Sengupta, a talented singer, performer, and composer. Explore his music, biography, and get in touch for collaborations and events.";
+  }, []);
+
   const [formStatus, setFormStatus] = useState(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -74,6 +85,8 @@ const Home = () => {
           style={{ backgroundImage: `url(${suvojeet})` }}
           initial={{ scale: 1 }}
           animate={{ scale: 1.1, transition: { duration: 10, ease: "easeOut" } }}
+          role="img"
+          aria-label="Suvojeet Sengupta performing"
         ></motion.div>
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         <motion.div

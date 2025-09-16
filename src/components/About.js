@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion } from 'framer-motion';
 
 const About = () => {
+  useEffect(() => {
+    document.title = "About | Suvojeet Sengupta";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Learn more about Suvojeet Sengupta, a passionate singer and composer from India. Discover his musical journey, inspirations, and the story behind his music.";
+  }, []);
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
