@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import './App.css';
 
@@ -15,7 +15,7 @@ const LoadingSpinner = () => (
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter basename="/bio_page">
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -25,7 +25,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
