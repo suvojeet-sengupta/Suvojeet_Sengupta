@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import videos from '../data/videos.json';
 import { motion } from 'framer-motion';
 
 const Music = () => {
+  useEffect(() => {
+    document.title = "Music | Suvojeet Sengupta";
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = "Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works.";
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const videosPerPage = 7;
 
