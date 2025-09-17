@@ -51,7 +51,7 @@ const About = () => {
               <img src={suvojeet} alt="Suvojeet Sengupta" className="rounded-lg shadow-lg w-full h-auto mx-auto" />
             </motion.div>
             <div className="md:col-span-2">
-              <h2 className="text-3xl font-bold text-primary mb-4 font-montserrat">About Me</h2>
+              
               <p className="text-grey">
                 Suvojeet Sengupta is a passionate singer, music lover, and dedicated performer with a unique ability to bring emotions alive through music. A student of History (BA Honours, Semester 3), he balances academics with his deep commitment to music, practicing daily and constantly refining his vocal style.
               </p>
