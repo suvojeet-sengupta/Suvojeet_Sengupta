@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import blogPosts from '../data/blog.json';
+import client from '../contentful';
 import { motion } from 'framer-motion';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    const currentPost = blogPosts.find((post) => post.slug === slug);
-    setPost(currentPost);
-
-    if (currentPost) {
-      document.title = `${currentPost.title} | Suvojeet Sengupta`;
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.name = 'description';
-        document.head.appendChild(metaDesc);
+    client.getEntries({
+      content_type: 'blogPost',
+      'fields.slug': slug,
+    })
+    .then((response) => {
+      setPost(response.items[0]);
+      if (response.items[0]) {
+        document.title = `${response.items[0].fields.title} | Suvojeet Sengupta`;
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+          metaDesc = document.createElement('meta');
+          metaDesc.name = 'description';
+          document.head.appendChild(metaDesc);
+        }
+        metaDesc.content = response.items[0].fields.excerpt;
       }
-      metaDesc.content = currentPost.excerpt;
-    }
+    })
+    .catch(console.error);
   }, [slug]);
 
   if (!post) {
@@ -35,8 +41,8 @@ const BlogPost = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-center mb-4">{post.title}</h1>
-        <p className="text-xs text-gray-400 mt-2">Published on: {new Date(post.publishedAt).toLocaleDateString()} by {post.author}</p>
+        <h1 className="text-4xl font-bold text-center mb-4">{post.fields.title}</h1>
+        <p className="text-xs text-gray-400 mt-2">Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</p>
       </motion.header>
 
       <main className="w-full max-w-4xl mx-auto p-8">
@@ -47,9 +53,7 @@ const BlogPost = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="prose prose-invert max-w-none">
-            {post.content.split('\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+            {documentToReactComponents(post.fields.content)}
           </div>
         </motion.div>
       </main>
