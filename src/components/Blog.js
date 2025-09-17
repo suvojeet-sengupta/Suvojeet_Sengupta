@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import client from '../contentful';
 import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
