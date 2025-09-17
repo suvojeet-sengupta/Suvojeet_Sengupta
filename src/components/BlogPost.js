@@ -18,14 +18,35 @@ const BlogPost = () => {
     .then((response) => {
       setPost(response.items[0]);
       if (response.items[0]) {
-        document.title = `${response.items[0].fields.title} | Suvojeet Sengupta`;
+        const post = response.items[0];
+        document.title = `${post.fields.title} | Suvojeet Sengupta`;
+
+        const updateMetaTag = (property, content) => {
+          let element = document.querySelector(`meta[property="${property}"]`);
+          if (!element) {
+            element = document.createElement('meta');
+            element.setAttribute('property', property);
+            document.head.appendChild(element);
+          }
+          element.setAttribute('content', content);
+        };
+
+        updateMetaTag('og:title', post.fields.title);
+        updateMetaTag('og:description', post.fields.excerpt);
+        updateMetaTag('og:url', window.location.href);
+        if (post.fields.featuredImage) {
+          updateMetaTag('og:image', post.fields.featuredImage.fields.file.url);
+        } else {
+          updateMetaTag('og:image', '%PUBLIC_URL%/suvojeet.jpg');
+        }
+
         let metaDesc = document.querySelector('meta[name="description"]');
         if (!metaDesc) {
           metaDesc = document.createElement('meta');
           metaDesc.name = 'description';
           document.head.appendChild(metaDesc);
         }
-        metaDesc.content = response.items[0].fields.excerpt;
+        metaDesc.content = post.fields.excerpt;
       }
     })
     .catch(console.error);
