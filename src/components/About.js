@@ -128,7 +128,7 @@ const About = () => {
           <p className="text-grey mb-8">
             Follow Suvojeet’s journey on YouTube to explore his latest covers and performances. For bookings, collaborations, or special song requests, he is available through professional contact and social media channels.
           </p>
-          <a href="https://www.youtube.com/channel/UCAN26n1Y_yM2O_n0s0a8Z4A" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
+          <a href="https://youtube.com/@suvojeetsengupta?si=Fsp9wzuki9PzwXk4" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
             Visit YouTube Channel
           </a>
         </motion.div>
