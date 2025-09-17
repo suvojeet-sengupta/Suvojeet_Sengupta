@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import blogPosts from '../data/blog.json';
 import { motion } from 'framer-motion';
