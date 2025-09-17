@@ -36,7 +36,7 @@ const BlogCard = ({ post }) => {
         <h3 className="text-xl font-bold text-white mb-2 font-montserrat">{title}</h3>
         <p className="text-grey-2 leading-relaxed mb-4">{excerpt}</p>
         <div className="flex items-center justify-between">
-          <span className="text-gray-400 text-sm">{new Date(publishedAt).toLocaleDate-String()}</span>
+          <span className="text-gray-400 text-sm">{new Date(publishedAt).toLocaleDateString()}</span>
           <Link to={`/blog/${slug}`} className="inline-block px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
             Read More
           </Link>
