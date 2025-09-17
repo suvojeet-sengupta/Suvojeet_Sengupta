@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import blogPosts from '../data/blog.json';
+import client from '../contentful';
 import { motion } from 'framer-motion';
 
 const Blog = () => {
+  const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     document.title = "Blog | Suvojeet Sengupta";
     let metaDesc = document.querySelector('meta[name="description"]');
@@ -13,6 +15,12 @@ const Blog = () => {
       document.head.appendChild(metaDesc);
     }
     metaDesc.content = "Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey.";
+
+    client.getEntries({ content_type: 'blogPost' })
+      .then((response) => {
+        setPosts(response.items);
+      })
+      .catch(console.error);
   }, []);
 
   const containerVariants = {
@@ -47,18 +55,18 @@ const Blog = () => {
           initial="hidden"
           animate="visible"
         >
-          {blogPosts.map((post) => (
+          {posts.map((post) => (
             <motion.div
-              key={post.id}
+              key={post.sys.id}
               className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 shadow-primary/10"
               variants={itemVariants}
               whileHover={{ y: -10, transition: { duration: 0.2 } }}
             >
               <div className="p-6">
-                <h3 className="text-xl font-bold text-primary mb-2 font-montserrat">{post.title}</h3>
-                <p className="text-grey">{post.excerpt}</p>
-                <p className="text-xs text-gray-400 mt-2">Published on: {new Date(post.publishedAt).toLocaleDateString()}</p>
-                <Link to={`/blog/${post.slug}`} className="inline-block mt-4 px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
+                <h3 className="text-xl font-bold text-primary mb-2 font-montserrat">{post.fields.title}</h3>
+                <p className="text-grey">{post.fields.excerpt}</p>
+                <p className="text-xs text-gray-400 mt-2">Published on: {new Date(post.fields.publishedAt).toLocaleDateString()}</p>
+                <Link to={`/blog/${post.fields.slug}`} className="inline-block mt-4 px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
                   Read More
                 </Link>
               </div>
