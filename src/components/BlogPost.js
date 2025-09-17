@@ -8,6 +8,7 @@ import { BLOCKS } from '@contentful/rich-text-types';
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
+  const [showCopied, setShowCopied] = useState(false);
 
   useEffect(() => {
     client.getEntries({
@@ -29,6 +30,25 @@ const BlogPost = () => {
     })
     .catch(console.error);
   }, [slug]);
+
+  const handleShare = () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: post.fields.title,
+        text: post.fields.excerpt,
+        url: url,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(url);
+      setShowCopied(true);
+      setTimeout(() => {
+        setShowCopied(false);
+      }, 2000);
+    }
+  };
 
   if (!post) {
     return <div>Loading...</div>;
@@ -60,8 +80,24 @@ const BlogPost = () => {
               },
             })}
           </div>
+          <div className="mt-8 flex justify-end">
+            <button
+              onClick={handleShare}
+              className="flex items-center px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+              </svg>
+              Share
+            </button>
+          </div>
         </motion.div>
       </main>
+      {showCopied && (
+        <div className="fixed bottom-10 right-10 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 };
