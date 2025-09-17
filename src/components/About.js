@@ -53,7 +53,7 @@ const About = () => {
             <div className="md:col-span-2">
               <h2 className="text-3xl font-bold text-primary mb-4 font-montserrat">About Me</h2>
               <p className="text-grey">
-                Hi, I’m Suvojeet Sengupta – a passionate singer, performer, and music enthusiast from India. Music has been a part of my life since childhood, and I believe it’s the purest way to connect with people’s hearts. Whether it’s performing live, recording covers, or experimenting with new compositions, I always try to bring emotions alive through melodies.
+                Suvojeet Sengupta is a passionate singer, music lover, and dedicated performer with a unique ability to bring emotions alive through music. A student of History (BA Honours, Semester 3), he balances academics with his deep commitment to music, practicing daily and constantly refining his vocal style.
               </p>
             </div>
           </div>
@@ -71,9 +71,10 @@ const About = () => {
           <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
             <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">My Musical Journey</h3>
             <ul className="space-y-4 text-grey">
-              <li><strong>🎤 Inspiration:</strong> Inspired deeply by Arijit Singh, I admire his ability to blend soul with simplicity. While I look up to him, I’ve developed my own unique style that reflects my personality and emotions.</li>
-              <li><strong>🌍 Languages:</strong> I enjoy singing in Hindi and Bengali, and. I often explore songs across genres to challenge myself as an artist.</li>
-              <li><strong>📺 YouTube Journey:</strong> I also share my music through my YouTube channel – Suvojeet Sengupta, where I upload covers and performances to reach a wider audience.</li>
+              <li><strong>🎤 Regular practice and continuous vocal training</strong></li>
+              <li><strong>🎶 Genres:</strong> Romantic ballads, soulful covers, and contemporary Hindi & Bengali tracks</li>
+              <li><strong>🎸 Performances:</strong> Small shows, studio recordings, and online showcases</li>
+              <li><strong>⭐ Influences:</strong> Arijit Singh, with a focus on developing a personalized style</li>
             </ul>
           </motion.div>
 
@@ -81,7 +82,7 @@ const About = () => {
           <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
             <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Beyond Music</h3>
             <p className="text-grey">
-              Apart from music, I’m pursuing my Bachelor’s in History Honours with a Minor in Political Science. Balancing academics and passion hasn’t always been easy, but it has shaped me into someone disciplined and focused.
+              Alongside his singing career, Suvojeet works part-time as a Customer Care Executive at DishTV, managing his professional responsibilities while keeping his passion for music at the forefront.
             </p>
           </motion.div>
         </motion.div>
@@ -101,15 +102,35 @@ const About = () => {
               For me, music is not just about singing—it’s about creating an emotional connection. My dream is to continue growing as an artist, perform on bigger stages, and create original music that inspires people the same way music inspires me.
             </p>
           </motion.div>
-          {/* Fun Facts */}
+          {/* Quick Facts */}
           <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-            <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Fun Facts</h3>
+            <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Quick Facts</h3>
             <ul className="space-y-2 text-grey list-disc list-inside">
-              <li>First stage performance at a young age built my confidence.</li>
-              <li>A history student who finds stories not only in books but also in songs.</li>
-              <li>Coffee + Music = My perfect creative combo.</li>
+              <li><strong>Name:</strong> Suvojeet Sengupta</li>
+              <li><strong>Profession:</strong> Singer | Student | Content Creator</li>
+              <li><strong>Languages:</strong> Hindi & Bengali</li>
+              <li><strong>Inspiration:</strong> Arijit Singh</li>
+              <li><strong>Platform:</strong> YouTube channel “Suvojeet Sengupta”</li>
+              <li><strong>Personality:</strong> Tech-savvy, disciplined, and music-focused</li>
             </ul>
           </motion.div>
+        </motion.div>
+
+        {/* Call to Action Section */}
+        <motion.div
+          className="bg-dark rounded-lg shadow-xl p-8 md:p-12 mt-16 shadow-primary/10 text-center"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <h2 className="text-3xl font-bold text-primary mb-4 font-montserrat">Get in Touch</h2>
+          <p className="text-grey mb-8">
+            Follow Suvojeet’s journey on YouTube to explore his latest covers and performances. For bookings, collaborations, or special song requests, he is available through professional contact and social media channels.
+          </p>
+          <a href="https://www.youtube.com/channel/UCAN26n1Y_yM2O_n0s0a8Z4A" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
+            Visit YouTube Channel
+          </a>
         </motion.div>
       </main>
     </div>
