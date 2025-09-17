@@ -6,7 +6,7 @@ const VideoPlayer = ({ videoId, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
       <div className="relative bg-dark overflow-hidden w-full max-w-4xl mx-4" onClick={(e) => e.stopPropagation()}>
-        <div className="aspect-w-16 aspect-h-9">
+        <div className="aspect-w-16 aspect-h-12">
           <iframe 
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
             title="YouTube video player"
