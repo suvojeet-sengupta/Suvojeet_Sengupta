@@ -3,6 +3,17 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import GenerativePlaceholder from './GenerativePlaceholder';
 
+/**
+ * A card component to display a blog post summary.
+ * @param {object} props - The component props.
+ * @param {object} props.post - The blog post object from Contentful.
+ * @param {string} props.post.fields.title - The title of the blog post.
+ * @param {string} props.post.fields.excerpt - A short summary of the blog post.
+ * @param {string} props.post.fields.slug - The URL slug for the blog post.
+ * @param {object} props.post.fields.featuredImage - The featured image for the blog post.
+ * @param {string[]} props.post.fields.tags - An array of tags for the blog post.
+ * @param {string} props.post.fields.publishedAt - The publication date of the blog post.
+ */
 const BlogCard = ({ post }) => {
   const { title, excerpt, slug, featuredImage, tags, publishedAt } = post.fields;
 

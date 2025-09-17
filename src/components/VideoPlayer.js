@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * A component that displays a YouTube video player in a modal.
+ * @param {object} props - The component props.
+ * @param {string} props.videoId - The ID of the YouTube video to play.
+ * @param {Function} props.onClose - The function to call to close the player.
+ */
 const VideoPlayer = ({ videoId, onClose }) => {
   if (!videoId) return null;
 

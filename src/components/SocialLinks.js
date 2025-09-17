@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+/**
+ * A component that displays social media links with animated icons.
+ */
 const SocialLinks = () => {
   const socialLinksVariants = {
     hidden: { opacity: 0, y: 20 },

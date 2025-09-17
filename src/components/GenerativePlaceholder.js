@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * A component that generates a placeholder image with a gradient based on the post title.
+ * This is used when a blog post does not have a featured image.
+ * @param {object} props - The component props.
+ * @param {string} props.title - The title of the blog post, used to generate the gradient.
+ */
 const GenerativePlaceholder = ({ title }) => {
   const generateGradient = (str) => {
     let hash = 0;

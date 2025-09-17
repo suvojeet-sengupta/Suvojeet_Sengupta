@@ -3,6 +3,14 @@ import videos from '../data/videos.json';
 import { motion } from 'framer-motion';
 import VideoPlayer from './VideoPlayer'; // Assuming VideoPlayer component is in the same directory
 
+/**
+ * The Music page component.
+ * This component displays a collection of music videos from a local JSON file.
+ * It includes:
+ * - A featured video section for the latest video.
+ * - A paginated grid of other videos.
+ * - A video player that opens in a modal.
+ */
 const Music = () => {
   const [playingVideoId, setPlayingVideoId] = useState(null);
 

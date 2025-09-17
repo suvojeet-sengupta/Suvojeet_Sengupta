@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+/**
+ * A responsive navigation bar component.
+ * Features:
+ * - A sticky header that changes background on scroll.
+ * - A mobile menu that slides down.
+ * - Framer Motion animations for a smooth user experience.
+ * - Active link styling.
+ */
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);

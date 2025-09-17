@@ -5,6 +5,14 @@ import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 
+/**
+ * The BlogPost page component.
+ * This component fetches and displays a single blog post from Contentful based on the URL slug.
+ * It includes:
+ * - Dynamic update of the page title and meta tags for SEO.
+ * - Rendering of the blog post content from Contentful's rich text format.
+ * - A "Share" button to share the post using the Web Share API or copy the URL to the clipboard.
+ */
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
