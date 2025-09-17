@@ -18,9 +18,11 @@ const Home = () => {
 
   const [formStatus, setFormStatus] = useState(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const form = e.target;
     const formData = new FormData(form);
     const data = {};
@@ -28,27 +30,32 @@ const Home = () => {
       data[key] = value;
     }
 
-    const response = await fetch('https://formsubmit.co/ajax/suvojitsengupta21@gmail.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/suvojitsengupta21@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-    if (response.ok) {
-      setFormStatus({ type: 'success', message: 'Thanks for your message! I will get back to you soon.' });
-      setIsFormSubmitted(true);
-      form.reset();
-    } else {
-      response.json().then(data => {
-        if (Object.hasOwn(data, 'errors')) {
-          setFormStatus({ type: 'error', message: data["errors"].map(error => error["message"]).join(", ") });
+      if (response.ok) {
+        setFormStatus({ type: 'success', message: 'Thanks for your message! I will get back to you soon.' });
+        setIsFormSubmitted(true);
+        form.reset();
+      } else {
+        const data = await response.json();
+        if (data && data.errors) {
+          setFormStatus({ type: 'error', message: data.errors.map(error => error.message).join(", ") });
         } else {
           setFormStatus({ type: 'error', message: 'Oops! There was a problem submitting your form' });
         }
-      });
+      }
+    } catch (error) {
+      setFormStatus({ type: 'error', message: 'Something went wrong. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -183,8 +190,18 @@ const Home = () => {
                     <label htmlFor="message" className="block mb-2 font-semibold text-grey">Message</label>
                     <textarea name="message" id="message" rows="4" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
                   </div>
-                  <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary">
-                    Send Message
+                  <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      'Send Message'
+                    )}
                   </button>
                 </motion.form>
               ) : (
