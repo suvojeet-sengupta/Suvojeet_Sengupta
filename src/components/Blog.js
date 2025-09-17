@@ -55,13 +55,31 @@ const Blog = () => {
         <h1 className="text-4xl font-bold text-center mb-12">Blog</h1>
         <p className="mt-4 text-base md:text-lg text-grey px-4">Behind-the-scenes stories, upcoming projects, and my thoughts on music.</p>
         <div className="mt-8 w-full max-w-md mx-auto">
-          <input
-            type="text"
-            placeholder="Search posts..."
-            className="w-full px-4 py-2 rounded-lg bg-dark-2 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+            </span>
+            <input
+              type="text"
+              placeholder="Search posts..."
+              className="w-full pl-10 pr-4 py-2 rounded-lg bg-dark-2 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
       </motion.header>
 
