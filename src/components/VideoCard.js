@@ -1,6 +1,15 @@
 
 import React from 'react';
 
+/**
+ * A card component to display a video thumbnail and title.
+ * @param {object} props - The component props.
+ * @param {object} props.video - The video object.
+ * @param {string} props.video.id - The YouTube video ID.
+ * @param {string} props.video.title - The title of the video.
+ * @param {string} props.video.publishedAt - The publication date of the video.
+ * @param {Function} props.onPlay - The function to call when the card is clicked.
+ */
 const VideoCard = ({ video, onPlay }) => {
   return (
     <div 

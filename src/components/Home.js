@@ -4,6 +4,14 @@ import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 
+/**
+ * The Home page component.
+ * This component is the main landing page of the website.
+ * It includes:
+ * - A hero section with a background image and call-to-action.
+ * - A music showcase section with embedded YouTube videos.
+ * - A contact form that submits to formsubmit.co.
+ */
 const Home = () => {
   useEffect(() => {
     document.title = "Suvojeet Sengupta - Official Website";

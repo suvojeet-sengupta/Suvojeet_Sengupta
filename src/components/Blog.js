@@ -3,6 +3,14 @@ import client from '../contentful';
 import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
 
+/**
+ * The Blog page component.
+ * This component fetches and displays blog posts from Contentful.
+ * It includes:
+ * - A search bar to filter posts.
+ * - A featured post section.
+ * - A grid of other blog posts.
+ */
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');

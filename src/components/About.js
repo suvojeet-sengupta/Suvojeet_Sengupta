@@ -2,6 +2,14 @@ import React, { useEffect } from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion } from 'framer-motion';
 
+/**
+ * The About page component.
+ * This component displays information about Suvojeet Sengupta.
+ * It includes:
+ * - A brief introduction with a profile picture.
+ * - Sections for "My Musical Journey", "Beyond Music", "Vision", and "Quick Facts".
+ * - A call-to-action to visit his YouTube channel.
+ */
 const About = () => {
   useEffect(() => {
     document.title = "About | Suvojeet Sengupta";

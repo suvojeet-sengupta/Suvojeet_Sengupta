@@ -4,6 +4,10 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
+/**
+ * The main layout component for the application.
+ * It includes the Navbar, the main content area (using Outlet), and the Footer.
+ */
 const Layout = () => {
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col">
