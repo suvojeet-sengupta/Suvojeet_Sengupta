@@ -31,7 +31,7 @@ const Home = () => {
     }
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/suvojitsengupta21@gmail.com', {
+            const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
