@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import client from '../contentful';
 import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS } from '@contentful/rich-text-types';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -53,7 +54,11 @@ const BlogPost = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="prose prose-invert max-w-none">
-            {documentToReactComponents(post.fields.content)}
+            {documentToReactComponents(post.fields.content, {
+              renderNode: {
+                [BLOCKS.PARAGRAPH]: (node, children) => <p className="mb-4">{children}</p>,
+              },
+            })}
           </div>
         </motion.div>
       </main>
