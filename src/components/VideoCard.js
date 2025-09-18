@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const VideoCard = ({ video, onPlay }) => {
+const VideoCard = ({ video, onPlay, onViewDescription }) => {
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
@@ -30,6 +30,14 @@ const VideoCard = ({ video, onPlay }) => {
       <div className="p-6">
         <h3 className="text-xl font-bold text-primary mb-2 font-montserrat truncate">{video.title}</h3>
         <p className="text-xs text-gray-400 mt-2">{new Date(video.publishedAt).toLocaleDateString()}</p>
+        {video.description && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onViewDescription(video); }}
+            className="text-sm text-primary mt-2 hover:underline"
+          >
+            View Description
+          </button>
+        )}
       </div>
     </motion.div>
   );
