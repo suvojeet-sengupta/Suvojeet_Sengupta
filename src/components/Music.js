@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import videos from '../data/videos.json';
 import { motion } from 'framer-motion';
-import VideoPlayer from './VideoPlayer'; // Assuming VideoPlayer component is in the same directory
+import VideoPlayer from './VideoPlayer';
+import VideoCard from './VideoCard';
 
-/**
- * The Music page component.
- * This component displays a collection of music videos from a local JSON file.
- * It includes:
- * - A featured video section for the latest video.
- * - A paginated grid of other videos.
- * - A video player that opens in a modal.
- */
 const Music = () => {
   const [playingVideoId, setPlayingVideoId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const videosPerPage = 6;
 
   useEffect(() => {
     document.title = "Music | Suvojeet Sengupta";
@@ -25,12 +21,16 @@ const Music = () => {
     metaDesc.content = "Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works.";
   }, []);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const videosPerPage = 6;
-
   const sortedVideos = [...videos].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-  const latestVideo = sortedVideos[0];
-  const otherVideos = sortedVideos.slice(1);
+  
+  const categories = ['All', ...new Set(sortedVideos.map(video => video.category).filter(Boolean))];
+
+  const filteredVideos = selectedCategory === 'All' 
+    ? sortedVideos 
+    : sortedVideos.filter(video => video.category === selectedCategory);
+
+  const latestVideo = filteredVideos.length > 0 ? filteredVideos[0] : null;
+  const otherVideos = latestVideo ? filteredVideos.slice(1) : filteredVideos;
 
   const indexOfLastVideo = currentPage * videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
@@ -58,17 +58,17 @@ const Music = () => {
     setPlayingVideoId(null);
   };
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { staggerChildren: 0.1 },
     },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   return (
@@ -84,12 +84,28 @@ const Music = () => {
       </motion.header>
 
       <main className="w-full max-w-7xl mx-auto p-8">
-        {latestVideo && (
+        <div className="mb-12 flex justify-center flex-wrap gap-4">
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`px-4 py-2 font-semibold rounded-lg transition-colors duration-300 ${
+                selectedCategory === category 
+                  ? 'bg-primary text-dark' 
+                  : 'bg-gray-800 text-white hover:bg-gray-700'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {latestVideo && selectedCategory === 'All' && (
           <motion.div 
             className="mb-12 rounded-lg shadow-xl overflow-hidden bg-dark"
-            variants={itemVariants}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div 
@@ -131,30 +147,7 @@ const Music = () => {
           animate="visible"
         >
           {currentVideos.map((video) => (
-            <motion.div
-              key={video.id}
-              className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 shadow-primary/10 cursor-pointer group"
-              variants={itemVariants}
-              whileHover={{ y: -10, transition: { duration: 0.2 } }}
-              onClick={() => handlePlayVideo(video.id)}
-            >
-              <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-                 <img 
-                  src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} 
-                  alt={video.title} 
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
-                  </svg>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-primary mb-2 font-montserrat truncate">{video.title}</h3>
-                <p className="text-xs text-gray-400 mt-2">{new Date(video.publishedAt).toLocaleDateString()}</p>
-              </div>
-            </motion.div>
+            <VideoCard key={video.id} video={video} onPlay={handlePlayVideo} />
           ))}
         </motion.div>
 
