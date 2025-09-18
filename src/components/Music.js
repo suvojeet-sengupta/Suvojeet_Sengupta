@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import VideoPlayer from './VideoPlayer';
 import VideoCard from './VideoCard';
 
+import VideoDescriptionModal from './VideoDescriptionModal';
+
 const Music = () => {
   const [playingVideoId, setPlayingVideoId] = useState(null);
+  const [selectedVideoForDescription, setSelectedVideoForDescription] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const videosPerPage = 6;
@@ -56,6 +59,14 @@ const Music = () => {
 
   const handleClosePlayer = () => {
     setPlayingVideoId(null);
+  };
+
+  const handleViewDescription = (video) => {
+    setSelectedVideoForDescription(video);
+  };
+
+  const handleCloseDescription = () => {
+    setSelectedVideoForDescription(null);
   };
 
   const handleCategoryChange = (category) => {
@@ -147,7 +158,7 @@ const Music = () => {
           animate="visible"
         >
           {currentVideos.map((video) => (
-            <VideoCard key={video.id} video={video} onPlay={handlePlayVideo} />
+            <VideoCard key={video.id} video={video} onPlay={handlePlayVideo} onViewDescription={handleViewDescription} />
           ))}
         </motion.div>
 
@@ -174,6 +185,7 @@ const Music = () => {
         )}
       </main>
       <VideoPlayer videoId={playingVideoId} onClose={handleClosePlayer} />
+      <VideoDescriptionModal video={selectedVideoForDescription} onClose={handleCloseDescription} />
     </div>
   );
 };
