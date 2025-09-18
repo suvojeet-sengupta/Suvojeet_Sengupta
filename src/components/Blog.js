@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import client from '../contentful';
+import { getCachedEntries } from '../cachedContentful';
 import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
 
@@ -26,7 +26,7 @@ const Blog = () => {
     }
     metaDesc.content = "Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey.";
 
-    client.getEntries({ content_type: 'blogPost' })
+    getCachedEntries({ content_type: 'blogPost' })
       .then((response) => {
         setPosts(response.items);
         setFilteredPosts(response.items);

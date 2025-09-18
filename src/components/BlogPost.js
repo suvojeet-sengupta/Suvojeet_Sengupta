@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import client from '../contentful';
+import { getCachedEntries } from '../cachedContentful';
 import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
@@ -19,7 +19,7 @@ const BlogPost = () => {
   const [showCopied, setShowCopied] = useState(false);
 
   useEffect(() => {
-    client.getEntries({
+    getCachedEntries({
       content_type: 'blogPost',
       'fields.slug': slug,
     })
