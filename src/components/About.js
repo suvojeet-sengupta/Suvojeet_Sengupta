@@ -93,6 +93,14 @@ const About = () => {
               Alongside his singing career, Suvojeet works part-time as a Customer Care Executive at DishTV, managing his professional responsibilities while keeping his passion for music at the forefront.
             </p>
           </motion.div>
+
+          {/* AI-Powered Learning */}
+          <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
+            <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">AI-Powered Learning</h3>
+            <p className="text-grey">
+              Suvojeet leverages AI to accelerate his learning process in every field, from music to technology. This allows him to quickly adapt to new challenges and continuously expand his skills.
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Vision & Fun Facts Section */}
