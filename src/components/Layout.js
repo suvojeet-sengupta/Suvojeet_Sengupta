@@ -3,6 +3,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import BackToTopButton from './BackToTopButton';
 
 /**
  * The main layout component for the application.
@@ -16,6 +17,7 @@ const Layout = () => {
         <Outlet />
       </main>
       <Footer />
+      <BackToTopButton />
     </div>
   );
 };
