@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+
+Sitemap: https://suvojit213.github.io/Suvojeet_Sengupta/sitemap.xml

@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/Suvojeet_Sengupta/static/css/main.97d9ed54.css",
+    "main.js": "/Suvojeet_Sengupta/static/js/main.07415d4d.js",
+    "static/js/210.40028051.chunk.js": "/Suvojeet_Sengupta/static/js/210.40028051.chunk.js",
+    "static/js/284.5e348ce1.chunk.js": "/Suvojeet_Sengupta/static/js/284.5e348ce1.chunk.js",
+    "static/js/72.812ba349.chunk.js": "/Suvojeet_Sengupta/static/js/72.812ba349.chunk.js",
+    "static/js/656.6dbfb8d5.chunk.js": "/Suvojeet_Sengupta/static/js/656.6dbfb8d5.chunk.js",
+    "static/js/592.f48e4b2c.chunk.js": "/Suvojeet_Sengupta/static/js/592.f48e4b2c.chunk.js",
+    "static/js/991.1bae1a57.chunk.js": "/Suvojeet_Sengupta/static/js/991.1bae1a57.chunk.js",
+    "static/js/515.cae3edcf.chunk.js": "/Suvojeet_Sengupta/static/js/515.cae3edcf.chunk.js",
+    "static/media/suvojeet.jpg": "/Suvojeet_Sengupta/static/media/suvojeet.0169e56f4ebc8069d18b.jpg",
+    "static/media/index.cjs": "/Suvojeet_Sengupta/static/media/index.44e5fbc1b7cba1c4dc24.cjs",
+    "index.html": "/Suvojeet_Sengupta/index.html",
+    "main.97d9ed54.css.map": "/Suvojeet_Sengupta/static/css/main.97d9ed54.css.map",
+    "main.07415d4d.js.map": "/Suvojeet_Sengupta/static/js/main.07415d4d.js.map",
+    "210.40028051.chunk.js.map": "/Suvojeet_Sengupta/static/js/210.40028051.chunk.js.map",
+    "284.5e348ce1.chunk.js.map": "/Suvojeet_Sengupta/static/js/284.5e348ce1.chunk.js.map",
+    "72.812ba349.chunk.js.map": "/Suvojeet_Sengupta/static/js/72.812ba349.chunk.js.map",
+    "656.6dbfb8d5.chunk.js.map": "/Suvojeet_Sengupta/static/js/656.6dbfb8d5.chunk.js.map",
+    "592.f48e4b2c.chunk.js.map": "/Suvojeet_Sengupta/static/js/592.f48e4b2c.chunk.js.map",
+    "991.1bae1a57.chunk.js.map": "/Suvojeet_Sengupta/static/js/991.1bae1a57.chunk.js.map",
+    "515.cae3edcf.chunk.js.map": "/Suvojeet_Sengupta/static/js/515.cae3edcf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.97d9ed54.css",
+    "static/js/main.07415d4d.js"
+  ]
+}
