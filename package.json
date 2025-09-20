@@ -1,7 +1,6 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "https://suvojit213.github.io/Suvojeet_Sengupta",
   "private": true,
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.3",
@@ -24,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "PUBLIC_URL=/Suvojeet_Sengupta npm run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
