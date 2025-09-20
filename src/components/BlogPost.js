@@ -15,7 +15,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
  */
 const BlogPost = () => {
   const { slug } = useParams();
-  const { posts, loading } = useBlogPosts();
+  const { posts } = useBlogPosts();
   const [post, setPost] = useState(null);
   const [showCopied, setShowCopied] = useState(false);
 
