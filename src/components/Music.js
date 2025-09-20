@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import videos from '../data/videos.json';
 import { motion } from 'framer-motion';
 import VideoPlayer from './VideoPlayer';
 import VideoCard from './VideoCard';
+import useVideos from '../hooks/useVideos';
 
 import VideoDescriptionModal from './VideoDescriptionModal';
 
 const Music = () => {
+  const { videos } = useVideos();
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const [selectedVideoForDescription, setSelectedVideoForDescription] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);

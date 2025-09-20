@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getCachedEntries } from '../cachedContentful';
 import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
+import useBlogPosts from '../hooks/useBlogPosts';
 
 /**
  * The Blog page component.
@@ -12,7 +12,7 @@ import BlogCard from './BlogCard';
  * - A grid of other blog posts.
  */
 const Blog = () => {
-  const [posts, setPosts] = useState([]);
+  const { posts, loading, error } = useBlogPosts();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -25,13 +25,6 @@ const Blog = () => {
       document.head.appendChild(metaDesc);
     }
     metaDesc.content = "Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey.";
-
-    getCachedEntries({ content_type: 'blogPost' })
-      .then((response) => {
-        setPosts(response.items);
-        setFilteredPosts(response.items);
-      })
-      .catch(console.error);
   }, []);
 
   useEffect(() => {
