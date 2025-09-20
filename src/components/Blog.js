@@ -12,7 +12,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
  * - A grid of other blog posts.
  */
 const Blog = () => {
-  const { posts, loading, error } = useBlogPosts();
+  const { posts } = useBlogPosts();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
 
