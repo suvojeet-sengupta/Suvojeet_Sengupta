@@ -16,7 +16,7 @@ const Footer = () => {
             </p>
           </div>
           <div className="flex flex-col md:flex-row items-center">
-            <div className="mb-6 md:mb-0 md:mr-12 text-center">
+            <div className="mb-6 md:mb-0 md:mr-6 text-center">
               <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="flex flex-wrap justify-center md:justify-start space-x-4 sm:space-x-6">
                 <li><Link to="/" className="hover:text-gray-300 transition-colors duration-300">Home</Link></li>
