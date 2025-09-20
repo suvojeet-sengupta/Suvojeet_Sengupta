@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getCachedEntries } from '../cachedContentful';
 import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
+import useBlogPosts from '../hooks/useBlogPosts';
 
 /**
  * The BlogPost page component.
@@ -15,19 +15,17 @@ import { BLOCKS } from '@contentful/rich-text-types';
  */
 const BlogPost = () => {
   const { slug } = useParams();
+  const { posts, loading } = useBlogPosts();
   const [post, setPost] = useState(null);
   const [showCopied, setShowCopied] = useState(false);
 
   useEffect(() => {
-    getCachedEntries({
-      content_type: 'blogPost',
-      'fields.slug': slug,
-    })
-    .then((response) => {
-      setPost(response.items[0]);
-      if (response.items[0]) {
-        const post = response.items[0];
-        document.title = `${post.fields.title} | Suvojeet Sengupta`;
+    if (posts.length > 0) {
+      const currentPost = posts.find((p) => p.fields.slug === slug);
+      setPost(currentPost);
+
+      if (currentPost) {
+        document.title = `${currentPost.fields.title} | Suvojeet Sengupta`;
 
         const updateMetaTag = (property, content) => {
           let element = document.querySelector(`meta[property="${property}"]`);
@@ -39,11 +37,11 @@ const BlogPost = () => {
           element.setAttribute('content', content);
         };
 
-        updateMetaTag('og:title', post.fields.title);
-        updateMetaTag('og:description', post.fields.excerpt);
+        updateMetaTag('og:title', currentPost.fields.title);
+        updateMetaTag('og:description', currentPost.fields.excerpt);
         updateMetaTag('og:url', window.location.href);
-        if (post.fields.featuredImage) {
-          updateMetaTag('og:image', post.fields.featuredImage.fields.file.url);
+        if (currentPost.fields.featuredImage) {
+          updateMetaTag('og:image', currentPost.fields.featuredImage.fields.file.url);
         } else {
           updateMetaTag('og:image', '%PUBLIC_URL%/suvojeet.jpg');
         }
@@ -54,11 +52,10 @@ const BlogPost = () => {
           metaDesc.name = 'description';
           document.head.appendChild(metaDesc);
         }
-        metaDesc.content = post.fields.excerpt;
+        metaDesc.content = currentPost.fields.excerpt;
       }
-    })
-    .catch(console.error);
-  }, [slug]);
+    }
+  }, [slug, posts]);
 
   const handleShare = () => {
     const url = window.location.href;
