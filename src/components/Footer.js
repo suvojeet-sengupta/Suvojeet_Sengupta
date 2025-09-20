@@ -1,10 +1,12 @@
 import React from 'react';
 import SocialLinks from './SocialLinks';
 import { Link } from 'react-router-dom';
+import Newsletter from './Newsletter';
 
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
+      <Newsletter />
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0 text-center md:text-left">
