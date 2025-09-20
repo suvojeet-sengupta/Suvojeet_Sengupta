@@ -17,7 +17,7 @@ const LoadingSpinner = () => (
 
 function App() {
   return (
-    <BrowserRouter basename="/Suvojeet_Sengupta">
+    <BrowserRouter>
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<Layout />}>
