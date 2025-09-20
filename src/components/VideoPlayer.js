@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 /**
  * A component that displays a YouTube video player in a modal.
@@ -7,11 +7,47 @@ import React from 'react';
  * @param {Function} props.onClose - The function to call to close the player.
  */
 const VideoPlayer = ({ videoId, onClose }) => {
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (videoId) {
+      document.addEventListener('keydown', handleKeyDown);
+      modalRef.current?.focus();
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [videoId, onClose]);
+
   if (!videoId) return null;
 
+  const handleBlur = (event) => {
+    const relatedTarget = event.relatedTarget;
+    if (modalRef.current && !modalRef.current.contains(relatedTarget)) {
+      // If focus tries to escape, bring it back to the first focusable element
+      modalRef.current.focus();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={onClose}>
-      <div className="relative bg-dark overflow-hidden w-full max-w-4xl mx-4" onClick={(e) => e.stopPropagation()}>
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" 
+      onClick={onClose}
+      onBlur={handleBlur}
+    >
+      <div 
+        ref={modalRef}
+        tabIndex="-1"
+        className="relative bg-dark overflow-hidden w-full max-w-4xl mx-4" 
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="aspect-square">
           <iframe 
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
