@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
 import useBlogPosts from '../hooks/useBlogPosts';
+import SkeletonCard from './SkeletonCard';
 
 /**
  * The Blog page component.
@@ -12,7 +13,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
  * - A grid of other blog posts.
  */
 const Blog = () => {
-  const { posts } = useBlogPosts();
+  const { posts, loading, error } = useBlogPosts();
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
 
@@ -44,6 +45,47 @@ const Blog = () => {
 
   const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
   const otherPosts = filteredPosts.length > 1 ? filteredPosts.slice(1) : [];
+
+  if (loading) {
+    return (
+      <div className="bg-dark text-white pt-20">
+        <motion.header
+          className="py-20 text-center"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-4xl font-bold text-center mb-12">Blog</h1>
+          <p className="mt-4 text-base md:text-lg text-grey px-4">Behind-the-scenes stories, upcoming projects, and my thoughts on music.</p>
+        </motion.header>
+        <main className="w-full max-w-7xl mx-auto p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-dark text-white pt-20">
+        <motion.header
+          className="py-20 text-center"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-4xl font-bold text-center mb-12">Blog</h1>
+          <p className="mt-4 text-base md:text-lg text-grey px-4">Behind-the-scenes stories, upcoming projects, and my thoughts on music.</p>
+        </motion.header>
+        <main className="w-full max-w-7xl mx-auto p-8 text-center">
+          <h2 className="text-2xl font-bold text-red-500">Error loading blog posts</h2>
+          <p className="text-grey mt-4">Please try again later.</p>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-dark text-white pt-20">
