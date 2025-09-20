@@ -94,7 +94,7 @@ const Home = () => {
   return (
     <div className="bg-dark text-white">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+      <section className="relative h-screen lg:h-auto lg:aspect-video flex items-center justify-center text-center overflow-hidden">
         <motion.div
           className="absolute inset-0 bg-cover bg-top"
           style={{ backgroundImage: `url(${suvojeet})` }}
