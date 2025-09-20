@@ -13,7 +13,7 @@ import SkeletonCard from './SkeletonCard';
  * - A grid of other blog posts.
  */
 const Blog = () => {
-  const { posts, loading, error } = useBlogPosts();
+  const { posts, loading, error } = useBlogPosts({ bypassCache: true });
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
 
