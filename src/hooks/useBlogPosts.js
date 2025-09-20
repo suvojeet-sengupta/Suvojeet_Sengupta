@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCachedEntries } from '../cachedContentful';
+import client from '../contentful';
 
 const useBlogPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -9,7 +9,7 @@ const useBlogPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await getCachedEntries({ content_type: 'blogPost' });
+        const response = await client.getEntries({ content_type: 'blogPost' });
         setPosts(response.items);
       } catch (err) {
         setError(err);
