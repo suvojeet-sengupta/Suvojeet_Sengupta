@@ -51,7 +51,7 @@ const VideoDescriptionModal = ({ video, onClose }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <h2 className="text-2xl font-bold text-primary mb-4">{video.title}</h2>
-          <div className="text-grey text-base" style={{ whiteSpace: 'pre-wrap' }}>
+          <div className="text-grey text-base max-h-96 overflow-y-auto" style={{ whiteSpace: 'pre-wrap' }}>
             {video.description}
           </div>
           <button
