@@ -9,6 +9,7 @@ const About = lazy(() => import('./components/About'));
 const Music = lazy(() => import('./components/Music'));
 const Blog = lazy(() => import('./components/Blog'));
 const BlogPost = lazy(() => import('./components/BlogPost'));
+const VideoPage = lazy(() => import('./components/VideoPage'));
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -28,6 +29,7 @@ function App() {
             <Route path="music" element={<Music />} />
             <Route path="blog" element={<Blog />} />
             <Route path="blog/:slug" element={<BlogPost />} />
+            <Route path="video/:id" element={<VideoPage />} />
           </Route>
         </Routes>
       </Suspense>

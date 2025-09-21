@@ -1,69 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 /**
- * A component that displays a YouTube video player in a modal.
+ * A component that displays an embedded YouTube video player.
  * @param {object} props - The component props.
  * @param {string} props.videoId - The ID of the YouTube video to play.
- * @param {Function} props.onClose - The function to call to close the player.
  */
-const VideoPlayer = ({ videoId, onClose }) => {
-  const modalRef = useRef(null);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (videoId) {
-      document.addEventListener('keydown', handleKeyDown);
-      modalRef.current?.focus();
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [videoId, onClose]);
-
-  if (!videoId) return null;
-
-  const handleBlur = (event) => {
-    const relatedTarget = event.relatedTarget;
-    if (modalRef.current && !modalRef.current.contains(relatedTarget)) {
-      // If focus tries to escape, bring it back to the first focusable element
-      modalRef.current.focus();
-    }
-  };
+const VideoPlayer = ({ videoId }) => {
+  if (!videoId) {
+    return null;
+  }
 
   return (
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" 
-      onClick={onClose}
-      onBlur={handleBlur}
-    >
-      <div 
-        ref={modalRef}
-        tabIndex="-1"
-        className="relative bg-dark overflow-hidden w-full max-w-4xl mx-4" 
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="aspect-square">
-          <iframe 
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-            title="YouTube video player"
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
-        </div>
-        <button onClick={onClose} className="absolute top-2 right-2 text-white bg-primary rounded-full p-2 hover:bg-opacity-80 transition-colors">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
+    <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' }}>
+      {/* This paddingTop creates a 16:9 aspect ratio container */}
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="absolute top-0 left-0 w-full h-full"
+      ></iframe>
     </div>
   );
 };
