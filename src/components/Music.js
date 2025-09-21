@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import VideoPlayer from './VideoPlayer';
+import { Link } from 'react-router-dom';
 import VideoCard from './VideoCard';
 import useVideos from '../hooks/useVideos';
-import VideoDescriptionModal from './VideoDescriptionModal';
 import SkeletonCard from './SkeletonCard';
 
 const Music = () => {
   const { videos, loading, error } = useVideos();
-  const [playingVideoId, setPlayingVideoId] = useState(null);
-  const [selectedVideoForDescription, setSelectedVideoForDescription] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,22 +56,6 @@ const Music = () => {
     }
   };
   
-  const handlePlayVideo = (videoId) => {
-    setPlayingVideoId(videoId);
-  };
-
-  const handleClosePlayer = () => {
-    setPlayingVideoId(null);
-  };
-
-  const handleViewDescription = (video) => {
-    setSelectedVideoForDescription(video);
-  };
-
-  const handleCloseDescription = () => {
-    setSelectedVideoForDescription(null);
-  };
-
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
@@ -186,42 +167,42 @@ const Music = () => {
         </div>
 
         {latestVideo && selectedCategory === 'All' && (
-          <motion.div 
+          <motion.div
             className="mb-12 rounded-lg shadow-xl overflow-hidden bg-dark"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div 
-                className="relative cursor-pointer group"
-                onClick={() => handlePlayVideo(latestVideo.id)}
-              >
-                <img 
-                  src={`https://i.ytimg.com/vi/${latestVideo.id}/maxresdefault.jpg`} 
-                  alt={latestVideo.title} 
-                  className="w-full rounded-l-lg shadow-lg"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg className="w-20 h-20 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
-                  </svg>
+            <Link to={`/video/${latestVideo.id}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center group">
+                <div
+                  className="relative"
+                >
+                  <img
+                    src={`https://i.ytimg.com/vi/${latestVideo.id}/maxresdefault.jpg`}
+                    alt={latestVideo.title}
+                    className="w-full rounded-l-lg shadow-lg"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <svg className="w-20 h-20 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-3xl font-bold mb-2 text-primary">{latestVideo.title}</h3>
+                  <p className="text-grey mb-4">
+                    {new Date(latestVideo.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </p>
+                  <p className="text-base">{latestVideo.description || 'No description available.'}</p>
+                  <div
+                    className="mt-6 inline-block px-8 py-3 bg-primary text-dark font-bold rounded-lg hover:bg-opacity-80 transition duration-300"
+                  >
+                    Watch Now
+                  </div>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-3xl font-bold mb-2 text-primary">{latestVideo.title}</h3>
-                <p className="text-grey mb-4">
-                  {new Date(latestVideo.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                </p>
-                <p className="text-base">{latestVideo.description || 'No description available.'}</p>
-                 <button 
-                  onClick={() => handlePlayVideo(latestVideo.id)}
-                  className="mt-6 px-8 py-3 bg-primary text-dark font-bold rounded-lg hover:bg-opacity-80 transition duration-300"
-                >
-                  Watch Now
-                </button>
-              </div>
-            </div>
+            </Link>
           </motion.div>
         )}
 
@@ -232,7 +213,7 @@ const Music = () => {
           animate="visible"
         >
           {currentVideos.map((video) => (
-            <VideoCard key={video.id} video={video} onPlay={handlePlayVideo} onViewDescription={handleViewDescription} />
+            <VideoCard key={video.id} video={video} />
           ))}
         </motion.div>
 
@@ -258,8 +239,6 @@ const Music = () => {
           </div>
         )}
       </main>
-      <VideoPlayer videoId={playingVideoId} onClose={handleClosePlayer} />
-      <VideoDescriptionModal video={selectedVideoForDescription} onClose={handleCloseDescription} />
     </div>
   );
 };
