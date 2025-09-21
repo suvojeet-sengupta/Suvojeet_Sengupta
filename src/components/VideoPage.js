@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import videos from '../data/videos.json';
 import VideoPlayer from './VideoPlayer';
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from 'react-helmet';
 
 const VideoPage = () => {
   const { id } = useParams();
