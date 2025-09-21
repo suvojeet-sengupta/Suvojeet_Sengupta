@@ -40,16 +40,32 @@ def main():
         if "Private video" in video_title or "Deleted video" in video_title:
             continue
 
+        category = get_category(video_title)
         videos.append({
             "id": video_id,
             "title": video_title,
             "description": video_description,
-            "publishedAt": video_published_at
+            "publishedAt": video_published_at,
+            "category": category
         })
 
     # Write the video data to a JSON file
     with open("src/data/videos.json", "w") as f:
         json.dump(videos, f, indent=2)
+
+def get_category(title):
+    title = title.lower()
+    if "live" in title or "performance" in title or "program" in title:
+        return "Live Performance"
+    if "retro" in title or "lag jaa gale" in title:
+        return "Retro"
+    if "arijit" in title or "vida karo" in title:
+        return "Arijit Singh"
+    if "rabindra sangeet" in title:
+        return "Rabindra Sangeet"
+    if "bhajan" in title or "bhakti" in title or "devotional" in title or "satyam shivam sundaram" in title:
+        return "Bhajan"
+    return "Cover"
 
 if __name__ == "__main__":
     main()
