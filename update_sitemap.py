@@ -71,7 +71,7 @@ def generate_sitemap(space_id, access_token):
         slug = post.fields().get("slug")
         if slug:
             post_url = f"https://www.suvojeetsengupta.in/blog/{slug}"
-            lastmod = post.sys['updatedAt'].split("T")[0]
+            lastmod = post.updated_at.strftime("%Y-%m-%d")
             sitemap_xml += f'''
   <url>
     <loc>{post_url}</loc>
