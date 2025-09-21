@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import videos from '../data/videos.json';
 import VideoPlayer from './VideoPlayer';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -34,6 +35,17 @@ const VideoPage = () => {
       exit={{ opacity: 0 }}
       className="container mx-auto px-4 pt-24 pb-8 text-white"
     >
+      <Helmet>
+        <title>{video.title} - Suvojeet Sengupta</title>
+        <meta name="description" content={video.description} />
+        <meta property="og:title" content={video.title} />
+        <meta property="og:description" content={video.description} />
+        <meta property="og:image" content={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:title" content={video.title} />
+        <meta name="twitter:description" content={video.description} />
+        <meta name="twitter:image" content={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} />
+      </Helmet>
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <VideoPlayer videoId={video.id} />
