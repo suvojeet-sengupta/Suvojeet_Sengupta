@@ -1,11 +1,13 @@
 import contentful
 import os
 import argparse
+import json
 from datetime import datetime
 
 def generate_sitemap(space_id, access_token):
     """
-    Generates a sitemap with static URLs and dynamic blog post URLs from Contentful.
+    Generates a sitemap with static URLs, dynamic blog post URLs from Contentful,
+    and video URLs from a local JSON file.
     """
     # Initialize Contentful client
     try:
@@ -14,29 +16,31 @@ def generate_sitemap(space_id, access_token):
         print(f"Error initializing Contentful client: {e}")
         return
 
+    current_date = datetime.now().strftime("%Y-%m-%d")
+
     # Static URLs
     static_urls = [
         {
             "loc": "https://www.suvojeetsengupta.in/",
-            "lastmod": "2025-09-20",
+            "lastmod": current_date,
             "changefreq": "daily",
             "priority": "1.0",
         },
         {
             "loc": "https://www.suvojeetsengupta.in/about",
-            "lastmod": "2025-09-20",
+            "lastmod": current_date,
             "changefreq": "monthly",
             "priority": "0.8",
         },
         {
             "loc": "https://www.suvojeetsengupta.in/music",
-            "lastmod": "2025-09-20",
+            "lastmod": current_date,
             "changefreq": "weekly",
             "priority": "0.9",
         },
         {
             "loc": "https://www.suvojeetsengupta.in/blog",
-            "lastmod": "2025-09-20",
+            "lastmod": current_date,
             "changefreq": "weekly",
             "priority": "0.9",
         },
@@ -47,6 +51,14 @@ def generate_sitemap(space_id, access_token):
         blog_posts = client.entries({"content_type": "blogPost"})
     except Exception as e:
         print(f"Error fetching blog posts from Contentful: {e}")
+        return
+
+    # Load videos from JSON file
+    try:
+        with open("src/data/videos.json", "r") as f:
+            videos = json.load(f)
+    except Exception as e:
+        print(f"Error reading videos.json: {e}")
         return
 
     # Start XML sitemap
@@ -67,7 +79,6 @@ def generate_sitemap(space_id, access_token):
 
     # Add blog post URLs to sitemap
     for post in blog_posts:
-        # Assuming the slug is a field in your Contentful blog post model
         slug = post.fields().get("slug")
         if slug:
             post_url = f"https://www.suvojeetsengupta.in/blog/{slug}"
@@ -76,6 +87,18 @@ def generate_sitemap(space_id, access_token):
   <url>
     <loc>{post_url}</loc>
     <lastmod>{lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+'''
+
+    # Add video URLs to sitemap
+    for video in videos:
+        video_url = f'https://www.suvojeetsengupta.in/video/{video["id"]}'
+        sitemap_xml += f'''
+  <url>
+    <loc>{video_url}</loc>
+    <lastmod>{current_date}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
