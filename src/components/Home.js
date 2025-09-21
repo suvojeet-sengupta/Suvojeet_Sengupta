@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
-import VideoPlayer from './VideoPlayer';
 import useBlogPosts from '../hooks/useBlogPosts';
 import BlogPostCard from './BlogPostCard';
+import videos from '../data/videos.json';
+import VideoCard from './VideoCard';
 
 /**
  * The Home page component.
@@ -30,16 +31,7 @@ const Home = () => {
   const [formStatus, setFormStatus] = useState(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState(null);
   const { posts, loading, error } = useBlogPosts();
-
-  const openVideoPlayer = (videoId) => {
-    setSelectedVideo(videoId);
-  };
-
-  const closeVideoPlayer = () => {
-    setSelectedVideo(null);
-  };
 
 
   const handleSubmit = async (e) => {
@@ -158,24 +150,9 @@ const Home = () => {
             Music Showcase
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}} onClick={() => openVideoPlayer('t7zF5Ye0JwE')}>
-              <img src="https://img.youtube.com/vi/t7zF5Ye0JwE/hqdefault.jpg" alt="Music video by Suvojeet Sengupta" className="absolute top-0 left-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path></svg>
-              </div>
-            </motion.div>
-            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 shadow-primary/20" style={{paddingTop: '56.25%'}} onClick={() => openVideoPlayer('Uuv-GwwNhGY')}>
-              <img src="https://img.youtube.com/vi/Uuv-GwwNhGY/hqdefault.jpg" alt="Music video by Suvojeet Sengupta" className="absolute top-0 left-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path></svg>
-              </div>
-            </motion.div>
-            <motion.div variants={itemVariants} className="relative w-full overflow-hidden rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 md:col-span-2 lg:col-span-1 shadow-primary/20" style={{paddingTop: '56.25%'}} onClick={() => openVideoPlayer('qFovu9M41UE')}>
-              <img src="https://img.youtube.com/vi/qFovu9M41UE/hqdefault.jpg" alt="Music video by Suvojeet Sengupta" className="absolute top-0 left-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path></svg>
-              </div>
-            </motion.div>
+            {videos.slice(0, 3).map(video => (
+              <VideoCard key={video.id} video={video} />
+            ))}
           </div>
           <div className="mt-12 text-center">
             <Link to="/music" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
@@ -198,7 +175,7 @@ const Home = () => {
           <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
             Latest From The Blog
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-s-3 gap-8">
             {!loading && !error && posts.slice(0, 3).map(post => (
               <BlogPostCard key={post.sys.id} post={post} />
             ))}
@@ -288,7 +265,6 @@ const Home = () => {
           </div>
         </div>
       </motion.section>
-      {selectedVideo && <VideoPlayer videoId={selectedVideo} onClose={closeVideoPlayer} />}
     </div>
   );
 };
