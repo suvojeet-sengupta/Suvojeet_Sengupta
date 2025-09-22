@@ -2,6 +2,33 @@ import os
 import json
 from googleapiclient.discovery import build
 
+def get_video_comments(youtube, video_id):
+    """
+    Fetches top-level comments for a given video.
+    """
+    comments = []
+    try:
+        request = youtube.commentThreads().list(
+            part="snippet",
+            videoId=video_id,
+            maxResults=20,  # Limiting to 20 comments for now
+            textFormat="plainText"
+        )
+        response = request.execute()
+
+        for item in response["items"]:
+            comment = item["snippet"]["topLevelComment"]["snippet"]
+            comments.append({
+                "author": comment["authorDisplayName"],
+                "text": comment["textDisplay"],
+                "publishedAt": comment["publishedAt"],
+            })
+    except Exception as e:
+        # Comments might be disabled or other errors
+        print(f"Could not fetch comments for video {video_id}: {e}")
+    
+    return comments
+
 def main():
     api_key = os.environ.get("YOUTUBE_API_KEY")
     if not api_key:
@@ -41,12 +68,14 @@ def main():
             continue
 
         category = get_category(video_title)
+        comments = get_video_comments(youtube, video_id)
         videos.append({
             "id": video_id,
             "title": video_title,
             "description": video_description,
             "publishedAt": video_published_at,
-            "category": category
+            "category": category,
+            "comments": comments
         })
 
     # Write the video data to a JSON file

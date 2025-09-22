@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import videos from '../data/videos.json';
 import VideoPlayer from './VideoPlayer';
+import Comments from './Comments';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 
@@ -59,9 +60,11 @@ const VideoPage = () => {
           </div>
         )}
 
+        <Comments comments={video.comments} />
+
         <button
           onClick={handleShare}
-          className="bg-primary text-dark font-bold py-2 px-4 rounded-lg hover:bg-opacity-80 transition duration-300"
+          className="bg-primary text-dark font-bold py-2 px-4 rounded-lg hover:bg-opacity-80 transition duration-300 mt-6"
         >
           Share
         </button>
