@@ -59,7 +59,7 @@ const Navbar = () => {
       initial="initial"
       animate="animate"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-dark/70 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        (isScrolled || isMenuOpen) ? 'bg-dark/70 backdrop-blur-lg shadow-lg' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
