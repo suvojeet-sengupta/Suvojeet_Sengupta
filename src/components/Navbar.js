@@ -81,6 +81,7 @@ const Navbar = () => {
             <NavLinkMotion to="/about" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>About</NavLinkMotion>
             <NavLinkMotion to="/music" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Music</NavLinkMotion>
             <NavLinkMotion to="/blog" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Blog</NavLinkMotion>
+            <NavLinkMotion to="/posts" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Posts</NavLinkMotion>
           </div>
 
           <div className="flex items-center">
@@ -118,6 +119,7 @@ const Navbar = () => {
               <NavLink to="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>About</NavLink>
               <NavLink to="/music" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Music</NavLink>
               <NavLink to="/blog" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Blog</NavLink>
+              <NavLink to="/posts" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Posts</NavLink>
             </div>
           </motion.div>
         )}
