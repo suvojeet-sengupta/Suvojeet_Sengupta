@@ -27,6 +27,12 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python update_videos.py
 
+      - name: Pull latest changes and rebase
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull --rebase --autostash
+
       - name: Commit and push if it changed
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -60,6 +66,12 @@ jobs:
           CONTENTFUL_SPACE_ID: ${{ secrets.REACT_APP_CONTENTFUL_SPACE_ID }}
           CONTENTFUL_ACCESS_TOKEN: ${{ secrets.REACT_APP_CONTENTFUL_ACCESS_TOKEN }}
         run: python update_sitemap.py --space-id "$CONTENTFUL_SPACE_ID" --access-token "$CONTENTFUL_ACCESS_TOKEN"
+
+      - name: Pull latest changes and rebase
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull --rebase --autostash
 
       - name: Commit and push if it changed
         uses: stefanzweifel/git-auto-commit-action@v4
