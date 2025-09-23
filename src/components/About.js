@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion } from 'framer-motion';
+import SocialLinks from './SocialLinks';
 
 /**
  * The About page component.
@@ -149,6 +150,9 @@ const About = () => {
           </a>
         </motion.div>
       </main>
+      <div className="pb-16">
+        <SocialLinks />
+      </div>
     </div>
   );
 };

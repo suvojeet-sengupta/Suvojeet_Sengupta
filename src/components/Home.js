@@ -188,7 +188,6 @@ const Home = () => {
         </div>
       </motion.section>
 
-
       {/* Contact Section */}
       <motion.section
         id="contact"
