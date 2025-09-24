@@ -31,6 +31,10 @@ const VideoCard = ({ video }) => {
         <div className="p-6">
           <h3 className="text-xl font-bold text-primary mb-2 font-montserrat truncate">{video.title}</h3>
           <p className="text-xs text-gray-400 mt-2">{new Date(video.publishedAt).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-300 mt-4">
+            {video.description.substring(0, 100)}...
+          </p>
+          <p className="text-primary mt-2 font-semibold">Read More...</p>
         </div>
       </motion.div>
     </Link>

@@ -198,11 +198,11 @@ const Music = () => {
                   <p className="text-grey mb-4">
                     {new Date(latestVideo.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                   </p>
-                  <p className="text-base">{latestVideo.description || 'No description available.'}</p>
+                  <p className="text-base">{latestVideo.description ? `${latestVideo.description.substring(0, 150)}...` : 'No description available.'}</p>
                   <div
                     className="mt-6 inline-block px-8 py-3 bg-primary text-dark font-bold rounded-lg hover:bg-opacity-80 transition duration-300"
                   >
-                    Watch Now
+                    Read More...
                   </div>
                 </div>
               </div>
