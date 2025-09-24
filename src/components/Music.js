@@ -39,14 +39,14 @@ const Music = () => {
     video.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const latestVideo = filteredVideos.length > 0 ? filteredVideos[0] : null;
-  const otherVideos = latestVideo ? filteredVideos.slice(1) : filteredVideos;
+  const latestVideo = selectedCategory === 'All' && filteredVideos.length > 0 ? filteredVideos[0] : null;
+  const videosToPaginate = latestVideo ? filteredVideos.slice(1) : filteredVideos;
 
   const indexOfLastVideo = currentPage * videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-  const currentVideos = otherVideos.slice(indexOfFirstVideo, indexOfLastVideo);
+  const currentVideos = videosToPaginate.slice(indexOfFirstVideo, indexOfLastVideo);
 
-  const totalPages = Math.ceil(otherVideos.length / videosPerPage);
+  const totalPages = Math.ceil(videosToPaginate.length / videosPerPage);
 
   const nextPage = () => {
     if (currentPage < totalPages) {
