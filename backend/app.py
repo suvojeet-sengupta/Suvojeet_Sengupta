@@ -11,6 +11,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # In-memory storage
 live_visitors_count = 0
 viewers_per_room = {}
+sid_to_room = {}
 
 @app.route('/')
 def home():
@@ -36,13 +37,20 @@ def handle_disconnect():
     live_visitors_count -= 1
     emit('update_visitor_count', {'count': live_visitors_count}, broadcast=True)
 
-    # Room cleanup on disconnect will be handled via 'leave_room' from the frontend
-    # for better accuracy when a user navigates away from a page.
+    if request.sid in sid_to_room:
+        room = sid_to_room[request.sid]
+        if room in viewers_per_room:
+            viewers_per_room[room] -= 1
+            if viewers_per_room[room] < 0:
+                viewers_per_room[room] = 0
+            emit('update_viewer_count', {'count': viewers_per_room.get(room, 0)}, to=room)
+        del sid_to_room[request.sid]
 
 @socketio.on('join_room')
 def handle_join_room(data):
     room = data['room']
     join_room(room)
+    sid_to_room[request.sid] = room
     
     if room not in viewers_per_room:
         viewers_per_room[room] = 0
@@ -56,6 +64,9 @@ def handle_leave_room(data):
     room = data['room']
     leave_room(room)
     
+    if request.sid in sid_to_room:
+        del sid_to_room[request.sid]
+        
     if room in viewers_per_room:
         viewers_per_room[room] -= 1
         if viewers_per_room[room] < 0:

@@ -67,17 +67,7 @@ const VideoPage = () => {
     }
   }, [showToast]);
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      socket.emit('leave_room', { room });
-    };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [room]);
 
   const handleAnimationComplete = (reactionId) => {
     setReactions(prev => prev.filter(r => r.id !== reactionId));
