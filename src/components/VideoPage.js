@@ -4,16 +4,25 @@ import videos from '../data/videos.json';
 import VideoPlayer from './VideoPlayer';
 import Comments from './Comments';
 import RelatedVideoCard from './RelatedVideoCard';
-import Toast from './Toast'; // Import the Toast component
+import Toast from './Toast';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
+import { socket } from '../socket'; // Import the socket instance
+import EmojiReactionButton from './EmojiReactionButton'; // Import the reaction button
+import FloatingEmoji from './FloatingEmoji'; // Import the floating emoji component
 
 const VideoPage = () => {
   const { id } = useParams();
   const video = videos.find(v => v.id === id);
+  const room = `video-${id}`;
+
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  
+  // Real-time state
+  const [viewerCount, setViewerCount] = useState(0);
+  const [reactions, setReactions] = useState([]);
 
   useEffect(() => {
     if (video) {
@@ -23,7 +32,31 @@ const VideoPage = () => {
         .slice(0, 4);
       setRelatedVideos(related);
     }
-  }, [id, video]);
+
+    // Join the video-specific room on mount
+    socket.emit('join_room', { room });
+
+    // Listen for viewer count updates
+    socket.on('update_viewer_count', (data) => {
+      setViewerCount(data.count);
+    });
+
+    // Listen for new emoji reactions
+    socket.on('new_reaction', (data) => {
+      const newReaction = {
+        id: Date.now() + Math.random(), // Unique key for the component
+        emoji: data.emoji,
+      };
+      setReactions(prev => [...prev, newReaction]);
+    });
+
+    // Clean up on unmount
+    return () => {
+      socket.emit('leave_room', { room });
+      socket.off('update_viewer_count');
+      socket.off('new_reaction');
+    };
+  }, [id, video, room]);
 
   useEffect(() => {
     if (showToast) {
@@ -33,6 +66,10 @@ const VideoPage = () => {
       return () => clearTimeout(timer);
     }
   }, [showToast]);
+
+  const handleAnimationComplete = (reactionId) => {
+    setReactions(prev => prev.filter(r => r.id !== reactionId));
+  };
 
   if (!video) {
     return <div className="text-center text-white py-10">Video not found</div>;
@@ -75,20 +112,43 @@ const VideoPage = () => {
       
       <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-3 lg:gap-8">
         {/* Left Column: Video Player and Details */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 relative">
+          {/* Floating Emojis Container */}
+          <div className="absolute bottom-20 left-0 w-full h-64 pointer-events-none z-50">
+            {reactions.map(reaction => (
+              <FloatingEmoji 
+                key={reaction.id} 
+                emoji={reaction.emoji} 
+                onAnimationComplete={() => handleAnimationComplete(reaction.id)}
+              />
+            ))}
+          </div>
+
           <div className="mb-6">
             <VideoPlayer videoId={video.id} />
           </div>
           
-          <div className="flex justify-between items-start">
-            <h1 className="text-3xl font-bold text-primary mb-4">{video.title}</h1>
-            <button
-              onClick={handleShare}
-              className="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 mt-1 flex items-center space-x-2"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg>
-              <span>Share</span>
-            </button>
+          <div className="flex justify-between items-start mb-2">
+            <h1 className="text-3xl font-bold text-primary mb-2">{video.title}</h1>
+            <div className="flex items-center space-x-4">
+              <EmojiReactionButton room={room} />
+              <button
+                onClick={handleShare}
+                className="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center space-x-2"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Now Viewing Status */}
+          <div className="flex items-center text-gray-400 mb-4">
+            <span className="relative flex h-3 w-3 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
+            </span>
+            <span>{viewerCount} {viewerCount === 1 ? 'person is' : 'people are'} watching right now</span>
           </div>
 
           {video.description && (

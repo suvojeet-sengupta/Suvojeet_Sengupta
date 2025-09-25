@@ -1,25 +1,73 @@
-# backend/app.py
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
-CORS(app) # This will allow the frontend to make requests to the backend
+CORS(app, resources={r"/*": {"origins": "*"}})
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# In-memory storage
+live_visitors_count = 0
+viewers_per_room = {}
 
 @app.route('/')
 def home():
     return "Hello from the backend!"
 
+# Existing comment endpoint - no changes needed here
 @app.route('/api/comment', methods=['POST'])
 def handle_comment():
     data = request.get_json()
-    
-    # We will add the logic to post to YouTube here
-    # For now, let's just print the data we receive
     print("Received comment data:", data)
-    
-    # TODO: Use the access token to post a comment to YouTube
-    
     return jsonify({'status': 'success', 'message': 'Comment received and will be processed.'})
 
+# Socket.IO event handlers
+@socketio.on('connect')
+def handle_connect():
+    global live_visitors_count
+    live_visitors_count += 1
+    emit('update_visitor_count', {'count': live_visitors_count}, broadcast=True)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    global live_visitors_count
+    live_visitors_count -= 1
+    emit('update_visitor_count', {'count': live_visitors_count}, broadcast=True)
+
+    # Room cleanup on disconnect will be handled via 'leave_room' from the frontend
+    # for better accuracy when a user navigates away from a page.
+
+@socketio.on('join_room')
+def handle_join_room(data):
+    room = data['room']
+    join_room(room)
+    
+    if room not in viewers_per_room:
+        viewers_per_room[room] = 0
+    viewers_per_room[room] += 1
+    
+    # Broadcast the updated count to everyone in that room
+    emit('update_viewer_count', {'count': viewers_per_room[room]}, to=room)
+
+@socketio.on('leave_room')
+def handle_leave_room(data):
+    room = data['room']
+    leave_room(room)
+    
+    if room in viewers_per_room:
+        viewers_per_room[room] -= 1
+        if viewers_per_room[room] < 0:
+            viewers_per_room[room] = 0
+        
+        # Broadcast the updated count to everyone in that room
+        emit('update_viewer_count', {'count': viewers_per_room.get(room, 0)}, to=room)
+
+@socketio.on('send_reaction')
+def handle_send_reaction(data):
+    room = data['room']
+    emoji = data['emoji']
+    # Broadcast the emoji to everyone in that room
+    emit('new_reaction', {'emoji': emoji}, to=room)
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    socketio.run(app, debug=True, port=5001)

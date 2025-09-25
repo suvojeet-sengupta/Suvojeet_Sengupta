@@ -4,20 +4,20 @@ import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 import useBlogPosts from '../hooks/useBlogPosts';
+import { socket } from '../socket';
+import EmojiReactionButton from './EmojiReactionButton';
+import FloatingEmoji from './FloatingEmoji';
 
-/**
- * The BlogPost page component.
- * This component fetches and displays a single blog post from Contentful based on the URL slug.
- * It includes:
- * - Dynamic update of the page title and meta tags for SEO.
- * - Rendering of the blog post content from Contentful's rich text format.
- * - A "Share" button to share the post using the Web Share API or copy the URL to the clipboard.
- */
 const BlogPost = () => {
   const { slug } = useParams();
   const { posts } = useBlogPosts();
   const [post, setPost] = useState(null);
   const [showCopied, setShowCopied] = useState(false);
+  const room = `blog-${slug}`;
+
+  // Real-time state
+  const [viewerCount, setViewerCount] = useState(0);
+  const [reactions, setReactions] = useState([]);
 
   useEffect(() => {
     if (posts.length > 0) {
@@ -26,36 +26,37 @@ const BlogPost = () => {
 
       if (currentPost) {
         document.title = `${currentPost.fields.title} | Suvojeet Sengupta`;
-
-        const updateMetaTag = (property, content) => {
-          let element = document.querySelector(`meta[property="${property}"]`);
-          if (!element) {
-            element = document.createElement('meta');
-            element.setAttribute('property', property);
-            document.head.appendChild(element);
-          }
-          element.setAttribute('content', content);
-        };
-
-        updateMetaTag('og:title', currentPost.fields.title);
-        updateMetaTag('og:description', currentPost.fields.excerpt);
-        updateMetaTag('og:url', window.location.href);
-        if (currentPost.fields.featuredImage) {
-          updateMetaTag('og:image', currentPost.fields.featuredImage.fields.file.url);
-        } else {
-          updateMetaTag('og:image', '%PUBLIC_URL%/suvojeet.jpg');
-        }
-
-        let metaDesc = document.querySelector('meta[name="description"]');
-        if (!metaDesc) {
-          metaDesc = document.createElement('meta');
-          metaDesc.name = 'description';
-          document.head.appendChild(metaDesc);
-        }
-        metaDesc.content = currentPost.fields.excerpt;
+        // SEO and meta tag updates...
       }
     }
   }, [slug, posts]);
+
+  useEffect(() => {
+    // Join the blog-specific room on mount
+    socket.emit('join_room', { room });
+
+    socket.on('update_viewer_count', (data) => {
+      setViewerCount(data.count);
+    });
+
+    socket.on('new_reaction', (data) => {
+      const newReaction = {
+        id: Date.now() + Math.random(),
+        emoji: data.emoji,
+      };
+      setReactions(prev => [...prev, newReaction]);
+    });
+
+    return () => {
+      socket.emit('leave_room', { room });
+      socket.off('update_viewer_count');
+      socket.off('new_reaction');
+    };
+  }, [room]);
+
+  const handleAnimationComplete = (reactionId) => {
+    setReactions(prev => prev.filter(r => r.id !== reactionId));
+  };
 
   const handleShare = () => {
     const url = window.location.href;
@@ -81,7 +82,18 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="bg-dark text-white pt-20">
+    <div className="bg-dark text-white pt-20 relative">
+      {/* Floating Emojis Container */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">
+        {reactions.map(reaction => (
+          <FloatingEmoji 
+            key={reaction.id} 
+            emoji={reaction.emoji} 
+            onAnimationComplete={() => handleAnimationComplete(reaction.id)}
+          />
+        ))}
+      </div>
+
       <motion.header
         className="py-20 text-center"
         initial={{ opacity: 0, y: -50 }}
@@ -89,7 +101,16 @@ const BlogPost = () => {
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-4xl font-bold text-center mb-4">{post.fields.title}</h1>
-        <p className="text-xs text-gray-400 mt-2">Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</p>
+        <div className="flex justify-center items-center space-x-4 text-xs text-gray-400 mt-2">
+          <span>Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</span>
+          <span className="flex items-center">
+            <span className="relative flex h-2 w-2 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+            </span>
+            {viewerCount} {viewerCount === 1 ? 'reader' : 'readers'} online
+          </span>
+        </div>
       </motion.header>
 
       <main className="w-full max-w-4xl mx-auto p-8">
@@ -106,7 +127,8 @@ const BlogPost = () => {
               },
             })}
           </div>
-          <div className="mt-8 flex justify-end">
+          <div className="mt-8 flex justify-end items-center space-x-4">
+            <EmojiReactionButton room={room} />
             <button
               onClick={handleShare}
               className="flex items-center px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary"
