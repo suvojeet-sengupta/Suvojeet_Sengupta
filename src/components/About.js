@@ -57,7 +57,7 @@ const About = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center">
             <motion.div className="md:col-span-1" whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
-              <img src={suvojeet} alt="Suvojeet Sengupta" className="rounded-lg shadow-lg w-full h-auto mx-auto" />
+              <img src={suvojeet} alt="Suvojeet Sengupta" className="rounded-lg shadow-lg w-full h-auto mx-auto" loading="lazy" />
             </motion.div>
             <div className="md:col-span-2">
               
