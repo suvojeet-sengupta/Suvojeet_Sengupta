@@ -7,6 +7,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
 import { socket } from '../socket';
 import EmojiReactionButton from './EmojiReactionButton';
 import FloatingEmoji from './FloatingEmoji';
+import LiveIndicator from './LiveIndicator';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -103,13 +104,7 @@ const BlogPost = () => {
         <h1 className="text-4xl font-bold text-center mb-4">{post.fields.title}</h1>
         <div className="flex justify-center items-center space-x-4 text-xs text-gray-400 mt-2">
           <span>Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</span>
-          <span className="flex items-center">
-            <span className="relative flex h-2 w-2 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
-            </span>
-            {viewerCount} {viewerCount === 1 ? 'reader' : 'readers'} online
-          </span>
+          <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'reader online' : 'readers online'} />
         </div>
       </motion.header>
 

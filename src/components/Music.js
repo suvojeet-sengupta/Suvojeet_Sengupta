@@ -4,13 +4,30 @@ import { Link } from 'react-router-dom';
 import VideoCard from './VideoCard';
 import useVideos from '../hooks/useVideos';
 import SkeletonCard from './SkeletonCard';
+import { socket } from '../socket';
+import LiveIndicator from './LiveIndicator';
 
 const Music = () => {
   const { videos, loading, error } = useVideos();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewerCount, setViewerCount] = useState(0);
   const videosPerPage = 6;
+
+  useEffect(() => {
+    const room = 'music';
+    socket.emit('join_room', { room });
+
+    socket.on('update_viewer_count', (data) => {
+      setViewerCount(data.count);
+    });
+
+    return () => {
+      socket.emit('leave_room', { room });
+      socket.off('update_viewer_count');
+    };
+  }, []);
 
   useEffect(() => {
     document.title = "Music | Suvojeet Sengupta";
@@ -122,8 +139,11 @@ const Music = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-center mb-12">My Music</h1>
-        <p className="mt-4 text-base md:text-lg text-grey px-4">Explore the melodies and stories behind the songs.</p>
+        <h1 className="text-4xl font-bold text-center mb-4">My Music</h1>
+        <p className="mt-4 text-base md:text-lg text-grey px-4 mb-4">Explore the melodies and stories behind the songs.</p>
+        <div className="flex justify-center">
+            <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'person listening' : 'people listening'} />
+        </div>
       </motion.header>
 
       <main className="w-full max-w-7xl mx-auto p-8">

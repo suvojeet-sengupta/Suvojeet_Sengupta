@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { socket } from '../socket'; // Import the socket instance
 import EmojiReactionButton from './EmojiReactionButton'; // Import the reaction button
 import FloatingEmoji from './FloatingEmoji'; // Import the floating emoji component
+import LiveIndicator from './LiveIndicator';
 
 const VideoPage = () => {
   const { id } = useParams();
@@ -131,11 +132,13 @@ const VideoPage = () => {
           </div>
           
           <div className="mb-4">
-            <h1 className="text-3xl font-bold text-primary mb-3">{video.title}</h1>
-            <div className="flex items-center justify-between">
-                {/* Placeholder for any left-aligned items */}
-                <div></div>
-                
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+              <h1 className="text-3xl font-bold text-primary mb-3 sm:mb-0">{video.title}</h1>
+              <div className="mt-2 sm:mt-0">
+                <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'person watching' : 'people watching'} />
+              </div>
+            </div>
+            <div className="flex items-center justify-end mt-4">
                 {/* Right-aligned buttons */}
                 <div className="flex items-center space-x-4">
                     <EmojiReactionButton room={room} />
@@ -148,15 +151,6 @@ const VideoPage = () => {
                     </button>
                 </div>
             </div>
-          </div>
-
-          {/* Now Viewing Status */}
-          <div className="flex items-center text-gray-400 mb-4">
-            <span className="relative flex h-3 w-3 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-teal-500"></span>
-            </span>
-            <span>{viewerCount} {viewerCount === 1 ? 'person is' : 'people are'} watching right now</span>
           </div>
 
           {video.description && (
