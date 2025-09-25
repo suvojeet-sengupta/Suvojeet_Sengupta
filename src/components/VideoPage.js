@@ -130,17 +130,23 @@ const VideoPage = () => {
             <VideoPlayer videoId={video.id} />
           </div>
           
-          <div className="flex justify-between items-start mb-2">
-            <h1 className="text-3xl font-bold text-primary mb-2">{video.title}</h1>
-            <div className="flex items-center space-x-4">
-              <EmojiReactionButton room={room} />
-              <button
-                onClick={handleShare}
-                className="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center space-x-2"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg>
-                <span>Share</span>
-              </button>
+          <div className="mb-4">
+            <h1 className="text-3xl font-bold text-primary mb-3">{video.title}</h1>
+            <div className="flex items-center justify-between">
+                {/* Placeholder for any left-aligned items */}
+                <div></div>
+                
+                {/* Right-aligned buttons */}
+                <div className="flex items-center space-x-4">
+                    <EmojiReactionButton room={room} />
+                    <button
+                        onClick={handleShare}
+                        className="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center space-x-2"
+                    >
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg>
+                        <span>Share</span>
+                    </button>
+                </div>
             </div>
           </div>
 
