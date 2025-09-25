@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react';
 import SocialLinks from './SocialLinks';
 import { Link } from 'react-router-dom';
 import Newsletter from './Newsletter';
-import { socket } from '../socket'; // Import the socket instance
+import { socket } from '../socket';
+import LiveIndicator from './LiveIndicator';
 
 const Footer = () => {
   const [visitorCount, setVisitorCount] = useState(0);
 
   useEffect(() => {
-    // Listen for visitor count updates
     socket.on('update_visitor_count', (data) => {
       setVisitorCount(data.count);
     });
 
-    // Clean up the socket listener when the component unmounts
     return () => {
       socket.off('update_visitor_count');
     };
@@ -48,12 +47,8 @@ const Footer = () => {
           <p>
             &copy; {new Date().getFullYear()} Suvojeet Sengupta. All Rights Reserved.
           </p>
-          <div className="flex items-center mt-4 sm:mt-0">
-            <span className="relative flex h-3 w-3 mr-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            <span>{visitorCount} {visitorCount === 1 ? 'visitor' : 'visitors'} online</span>
+          <div className="md:hidden mt-4 sm:mt-0">
+            {visitorCount > 0 && <LiveIndicator count={visitorCount} text={visitorCount === 1 ? 'visitor online' : 'visitors online'} />}
           </div>
         </div>
       </div>
