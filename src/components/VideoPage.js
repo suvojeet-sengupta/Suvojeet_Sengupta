@@ -20,10 +20,20 @@ const VideoPage = () => {
   const [relatedVideos, setRelatedVideos] = useState([]);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState(`https://i.ytimg.com/vi/${id}/hqdefault.jpg`);
   
   // Real-time state
   const [viewerCount, setViewerCount] = useState(0);
   const [reactions, setReactions] = useState([]);
+
+  useEffect(() => {
+    const maxResUrl = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+    const img = new Image();
+    img.src = maxResUrl;
+    img.onload = () => {
+      setThumbnailUrl(maxResUrl);
+    };
+  }, [id]);
 
   useEffect(() => {
     if (video) {
@@ -105,12 +115,12 @@ const VideoPage = () => {
         <meta name="description" content={video.description} />
         <meta property="og:title" content={`${video.title} - Suvojeet Sengupta`} />
         <meta property="og:description" content={video.description} />
-        <meta property="og:image" content={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`} />
+        <meta property="og:image" content={thumbnailUrl} />
         <meta property="og:url" content={window.location.href} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${video.title} - Suvojeet Sengupta`} />
         <meta name="twitter:description" content={video.description} />
-        <meta name="twitter:image" content={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`} />
+        <meta name="twitter:image" content={thumbnailUrl} />
       </Helmet>
       
       <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-3 lg:gap-8">
