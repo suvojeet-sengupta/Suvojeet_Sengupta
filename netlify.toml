@@ -2,6 +2,16 @@
   command = "npm run build"
   publish = "build"
 
+# Rule for social media crawlers on video pages
+# IMPORTANT: Replace "https://your-backend-service.com" with your actual backend URL.
+[[redirects]]
+  from = "/video/:id"
+  to = "https://your-backend-service.com/video/:id"
+  status = 200
+  force = true # This ensures the redirect happens even if a file exists at the path
+  conditions = {User-Agent = ["Twitterbot", "facebookexternalhit", "LinkedInBot", "WhatsApp", "TelegramBot"]}
+
+# Catch-all rule for the single-page app
 [[redirects]]
   from = "/*"
   to = "/index.html"

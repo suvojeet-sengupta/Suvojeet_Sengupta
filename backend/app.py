@@ -3,6 +3,9 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
 import eventlet
 eventlet.monkey_patch()
+import json
+import os
+from html import escape
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -16,6 +19,74 @@ sid_to_room = {}
 @app.route('/')
 def home():
     return "Hello from the backend!"
+
+@app.route('/video/<video_id>')
+def video_seo(video_id):
+    # Build absolute paths
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    videos_json_path = os.path.join(project_root, 'src', 'data', 'videos.json')
+    index_html_path = os.path.join(project_root, 'public', 'index.html')
+
+    try:
+        with open(videos_json_path, 'r') as f:
+            videos = json.load(f)
+    except (IOError, json.JSONDecodeError):
+        videos = []
+
+    video = next((v for v in videos if v.get('id') == video_id), None)
+
+    try:
+        with open(index_html_path, 'r') as f:
+            html_content = f.read()
+    except IOError:
+        return "Error: index.html not found", 500
+
+
+    if video:
+        # Replace meta tags
+        title = escape(video.get('title', 'Suvojeet Sengupta - Official Website'))
+        description = escape(video.get('description', 'The official website of Suvojeet Sengupta, a singer, performer, and composer. Explore his music, blog, and musical journey.'))
+        if len(description) > 200:
+            description = description[:197] + '...'
+        image = escape(video.get('thumbnail', 'https://www.suvojeetsengupta.in/suvojeet.jpg'))
+        url = f"https://www.suvojeetsengupta.in/video/{video_id}"
+
+        # Regular meta description
+        html_content = html_content.replace(
+            'content="The official website of Suvojeet Sengupta, a singer, performer, and composer. Explore his music, blog, and musical journey."',
+            f'content="{description}"'
+        )
+
+        # Open Graph
+        html_content = html_content.replace(
+            'property="og:title" content="Suvojeet Sengupta - Official Website"',
+            f'property="og:title" content="{title}"'
+        )
+        html_content = html_content.replace(
+            'property="og:image" content="https://www.suvojeetsengupta.in/suvojeet.jpg"',
+            f'property="og:image" content="{image}"'
+        )
+        html_content = html_content.replace(
+            'property="og:url" content="https://www.suvojeetsengupta.in/"',
+            f'property="og:url" content="{url}"'
+        )
+
+        # Twitter Card
+        html_content = html_content.replace(
+            'name="twitter:title" content="Suvojeet Sengupta - Official Website"',
+            f'name="twitter:title" content="{title}"'
+        )
+        html_content = html_content.replace(
+            'name="twitter:image" content="https://www.suvojeetsengupta.in/suvojeet.jpg"',
+            f'name="twitter:image" content="{image}"'
+        )
+        html_content = html_content.replace(
+            'name="twitter:url" content="https://www.suvojeetsengupta.in/"',
+            f'name="twitter:url" content="{url}"'
+        )
+
+
+    return html_content
 
 # Existing comment endpoint - no changes needed here
 @app.route('/api/comment', methods=['POST'])
