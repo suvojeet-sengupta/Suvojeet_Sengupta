@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const VideoCard = ({ video }) => {
-  const [thumbnailUrl, setThumbnailUrl] = useState(`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`);
-
-  useEffect(() => {
-    const maxResUrl = `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`;
-    const img = new Image();
-    img.src = maxResUrl;
-    img.onload = () => {
-      setThumbnailUrl(maxResUrl);
-    };
-  }, [video.id]);
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
@@ -29,7 +18,7 @@ const VideoCard = ({ video }) => {
       >
         <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
           <img
-            src={thumbnailUrl}
+            src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
             alt={video.title}
             className="absolute top-0 left-0 w-full h-full object-cover"
           />

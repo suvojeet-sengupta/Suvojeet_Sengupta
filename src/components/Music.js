@@ -13,24 +13,7 @@ const Music = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewerCount, setViewerCount] = useState(0);
-  const [latestVideoThumbnailUrl, setLatestVideoThumbnailUrl] = useState(null);
   const videosPerPage = 6;
-
-  useEffect(() => {
-    if (videos.length > 0) {
-      const latestVideo = videos.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))[0];
-      const maxResUrl = `https://i.ytimg.com/vi/${latestVideo.id}/maxresdefault.jpg`;
-      const hqUrl = `https://i.ytimg.com/vi/${latestVideo.id}/hqdefault.jpg`;
-
-      setLatestVideoThumbnailUrl(hqUrl); // Default to hq
-
-      const img = new Image();
-      img.src = maxResUrl;
-      img.onload = () => {
-        setLatestVideoThumbnailUrl(maxResUrl);
-      };
-    }
-  }, [videos]);
 
   useEffect(() => {
     const room = 'music';
@@ -220,7 +203,7 @@ const Music = () => {
                   className="relative"
                 >
                   <img
-                    src={latestVideoThumbnailUrl}
+                    src={`https://i.ytimg.com/vi/${latestVideo.id}/maxresdefault.jpg`}
                     alt={latestVideo.title}
                     className="w-full rounded-l-lg shadow-lg"
                   />
