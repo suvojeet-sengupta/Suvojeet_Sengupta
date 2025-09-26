@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SocialLinks from './SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
@@ -7,6 +7,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
 import BlogPostCard from './BlogPostCard';
 import videos from '../data/videos.json';
 import VideoCard from './VideoCard';
+import { Helmet } from 'react-helmet-async';
 
 /**
  * The Home page component.
@@ -17,17 +18,6 @@ import VideoCard from './VideoCard';
  * - A contact form that submits to formsubmit.co.
  */
 const Home = () => {
-  useEffect(() => {
-    document.title = "Suvojeet Sengupta - Official Website";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = "Welcome to the official website of Suvojeet Sengupta, a talented singer, performer, and composer. Explore his music, biography, and get in touch for collaborations and events.";
-  }, []);
-
   const [formStatus, setFormStatus] = useState(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -99,6 +89,10 @@ const Home = () => {
 
   return (
     <div className="bg-dark text-white">
+      <Helmet>
+        <title>Suvojeet Sengupta - Official Website</title>
+        <meta name="description" content="Welcome to the official website of Suvojeet Sengupta, a talented singer, performer, and composer. Explore his music, biography, and get in touch for collaborations and events." />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
         <motion.div

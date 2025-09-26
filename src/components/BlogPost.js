@@ -8,6 +8,7 @@ import { socket } from '../socket';
 import EmojiReactionButton from './EmojiReactionButton';
 import FloatingEmoji from './FloatingEmoji';
 import LiveIndicator from './LiveIndicator';
+import { Helmet } from 'react-helmet-async';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -26,8 +27,7 @@ const BlogPost = () => {
       setPost(currentPost);
 
       if (currentPost) {
-        document.title = `${currentPost.fields.title} | Suvojeet Sengupta`;
-        // SEO and meta tag updates...
+        setPost(currentPost);
       }
     }
   }, [slug, posts]);
@@ -84,6 +84,22 @@ const BlogPost = () => {
 
   return (
     <div className="bg-dark text-white pt-20 relative">
+      <Helmet>
+        <title>{`${post.fields.title} | Suvojeet Sengupta`}</title>
+        <meta name="description" content={post.fields.excerpt} />
+        <meta property="og:title" content={post.fields.title} />
+        <meta property="og:description" content={post.fields.excerpt} />
+        {post.fields.coverImage?.fields?.file?.url && (
+          <meta property="og:image" content={`https:${post.fields.coverImage.fields.file.url}`} />
+        )}
+        <meta property="og:url" content={window.location.href} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.fields.title} />
+        <meta name="twitter:description" content={post.fields.excerpt} />
+        {post.fields.coverImage?.fields?.file?.url && (
+          <meta name="twitter:image" content={`https:${post.fields.coverImage.fields.file.url}`} />
+        )}
+      </Helmet>
       {/* Floating Emojis Container */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">
         {reactions.map(reaction => (

@@ -6,6 +6,7 @@ import useVideos from '../hooks/useVideos';
 import SkeletonCard from './SkeletonCard';
 import { socket } from '../socket';
 import LiveIndicator from './LiveIndicator';
+import { Helmet } from 'react-helmet-async';
 
 const Music = () => {
   const { videos, loading, error } = useVideos();
@@ -27,17 +28,6 @@ const Music = () => {
       socket.emit('leave_room', { room });
       socket.off('update_viewer_count');
     };
-  }, []);
-
-  useEffect(() => {
-    document.title = "Music | Suvojeet Sengupta";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = "Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works.";
   }, []);
 
   useEffect(() => {
@@ -95,6 +85,10 @@ const Music = () => {
   if (loading) {
     return (
       <div className="bg-dark text-white pt-20">
+        <Helmet>
+          <title>Music | Suvojeet Sengupta</title>
+          <meta name="description" content="Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works." />
+        </Helmet>
         <motion.header
           className="py-20 text-center"
           initial={{ opacity: 0, y: -50 }}
@@ -116,6 +110,10 @@ const Music = () => {
   if (error) {
     return (
       <div className="bg-dark text-white pt-20">
+        <Helmet>
+          <title>Music | Suvojeet Sengupta</title>
+          <meta name="description" content="Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works." />
+        </Helmet>
         <motion.header
           className="py-20 text-center"
           initial={{ opacity: 0, y: -50 }}
@@ -135,6 +133,10 @@ const Music = () => {
 
   return (
     <div className="bg-dark text-white pt-20">
+      <Helmet>
+        <title>Music | Suvojeet Sengupta</title>
+        <meta name="description" content="Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works." />
+      </Helmet>
       <motion.header
         className="py-20 text-center"
         initial={{ opacity: 0, y: -50 }}

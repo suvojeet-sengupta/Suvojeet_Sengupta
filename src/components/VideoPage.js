@@ -6,7 +6,7 @@ import Comments from './Comments';
 import RelatedVideoCard from './RelatedVideoCard';
 import Toast from './Toast';
 import { motion } from 'framer-motion';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { socket } from '../socket'; // Import the socket instance
 import EmojiReactionButton from './EmojiReactionButton'; // Import the reaction button
 import FloatingEmoji from './FloatingEmoji'; // Import the floating emoji component

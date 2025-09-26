@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion } from 'framer-motion';
 import SocialLinks from './SocialLinks';
+import { Helmet } from 'react-helmet-async';
 
 /**
  * The About page component.
@@ -12,17 +13,6 @@ import SocialLinks from './SocialLinks';
  * - A call-to-action to visit his YouTube channel.
  */
 const About = () => {
-  useEffect(() => {
-    document.title = "About | Suvojeet Sengupta";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = "Learn more about Suvojeet Sengupta, a passionate singer and composer from India. Discover his musical journey, inspirations, and the story behind his music.";
-  }, []);
-
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -35,6 +25,10 @@ const About = () => {
 
   return (
     <div className="bg-dark text-white pt-20">
+      <Helmet>
+        <title>About | Suvojeet Sengupta</title>
+        <meta name="description" content="Learn more about Suvojeet Sengupta, a passionate singer and composer from India. Discover his musical journey, inspirations, and the story behind his music." />
+      </Helmet>
       {/* Page Header */}
       <motion.header
         className="py-20 text-center"

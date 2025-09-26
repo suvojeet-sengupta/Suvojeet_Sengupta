@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import BlogCard from './BlogCard';
 import useBlogPosts from '../hooks/useBlogPosts';
 import SkeletonCard from './SkeletonCard';
+import { Helmet } from 'react-helmet-async';
 
 const POSTS_PER_PAGE = 6;
 
@@ -20,17 +21,6 @@ const Blog = () => {
     skip: (currentPage - 1) * POSTS_PER_PAGE,
     query: searchQuery,
   });
-
-  useEffect(() => {
-    document.title = "Blog | Suvojeet Sengupta";
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.name = 'description';
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.content = "Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey.";
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -93,6 +83,11 @@ const Blog = () => {
 
   return (
     <div className="bg-dark text-white pt-20">
+      <Helmet>
+        <title>Blog | Suvojeet Sengupta</title>
+        <meta name="description" content="Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey." />
+      </Helmet>
+
       <motion.header
         className="py-20 text-center"
         initial={{ opacity: 0, y: -50 }}
