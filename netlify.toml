@@ -6,7 +6,7 @@
 # IMPORTANT: Replace "https://your-backend-service.com" with your actual backend URL.
 [[redirects]]
   from = "/video/:id"
-  to = "https://your-backend-service.com/video/:id"
+  to = "https://bio-page-backend.onrender.com/video/:id"
   status = 200
   force = true # This ensures the redirect happens even if a file exists at the path
   conditions = {User-Agent = ["Twitterbot", "facebookexternalhit", "LinkedInBot", "WhatsApp", "TelegramBot"]}
