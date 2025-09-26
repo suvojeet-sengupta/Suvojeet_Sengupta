@@ -48,35 +48,43 @@ def main():
     uploads_playlist_id = channel_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
     # Get the videos from the uploads playlist
-    playlist_request = youtube.playlistItems().list(
-        part="snippet",
-        playlistId=uploads_playlist_id,
-        maxResults=50  # Get the latest 50 videos
-    )
-    playlist_response = playlist_request.execute()
-
     videos = []
-    for item in playlist_response["items"]:
-        snippet = item["snippet"]
-        video_id = snippet["resourceId"]["videoId"]
-        video_title = snippet["title"]
-        video_description = snippet["description"]
-        video_published_at = snippet["publishedAt"]
+    next_page_token = None
 
-        # Skip private or deleted videos
-        if "Private video" in video_title or "Deleted video" in video_title:
-            continue
+    while True:
+        playlist_request = youtube.playlistItems().list(
+            part="snippet",
+            playlistId=uploads_playlist_id,
+            maxResults=50,
+            pageToken=next_page_token
+        )
+        playlist_response = playlist_request.execute()
 
-        category = get_category(video_title)
-        comments = get_video_comments(youtube, video_id)
-        videos.append({
-            "id": video_id,
-            "title": video_title,
-            "description": video_description,
-            "publishedAt": video_published_at,
-            "category": category,
-            "comments": comments
-        })
+        for item in playlist_response["items"]:
+            snippet = item["snippet"]
+            video_id = snippet["resourceId"]["videoId"]
+            video_title = snippet["title"]
+            video_description = snippet["description"]
+            video_published_at = snippet["publishedAt"]
+
+            # Skip private or deleted videos
+            if "Private video" in video_title or "Deleted video" in video_title:
+                continue
+
+            category = get_category(video_title)
+            comments = get_video_comments(youtube, video_id)
+            videos.append({
+                "id": video_id,
+                "title": video_title,
+                "description": video_description,
+                "publishedAt": video_published_at,
+                "category": category,
+                "comments": comments
+            })
+
+        next_page_token = playlist_response.get("nextPageToken")
+        if not next_page_token:
+            break
 
     # Write the video data to a JSON file
     with open("src/data/videos.json", "w") as f:
