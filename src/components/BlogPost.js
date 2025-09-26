@@ -99,6 +99,35 @@ const BlogPost = () => {
         {post.fields.coverImage?.fields?.file?.url && (
           <meta name="twitter:image" content={`https:${post.fields.coverImage.fields.file.url}`} />
         )}
+        <script type="application/ld+json">
+          {
+            JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": window.location.href
+              },
+              "headline": post.fields.title,
+              "description": post.fields.excerpt,
+              "image": post.fields.coverImage?.fields?.file?.url ? `https:${post.fields.coverImage.fields.file.url}` : '',
+              "author": {
+                "@type": "Person",
+                "name": post.fields.author
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Suvojeet Sengupta",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://www.suvojeetsengupta.in/logo.svg"
+                }
+              },
+              "datePublished": post.fields.publishedAt,
+              "dateModified": post.sys.updatedAt
+            })
+          }
+        </script>
       </Helmet>
       {/* Floating Emojis Container */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">

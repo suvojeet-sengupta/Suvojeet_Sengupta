@@ -112,6 +112,28 @@ const VideoPage = () => {
         <meta name="twitter:title" content={`${video.title} - Suvojeet Sengupta`} />
         <meta name="twitter:description" content={video.description} />
         <meta name="twitter:image" content={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`} />
+        <script type="application/ld+json">
+          {
+            JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "VideoObject",
+              "name": video.title,
+              "description": video.description,
+              "thumbnailUrl": `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`,
+              "uploadDate": video.publishedAt,
+              "publisher": {
+                "@type": "Organization",
+                "name": "Suvojeet Sengupta",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://www.suvojeetsengupta.in/logo.svg"
+                }
+              },
+              "contentUrl": `https://www.youtube.com/watch?v=${video.id}`,
+              "embedUrl": `https://www.youtube.com/embed/${video.id}`
+            })
+          }
+        </script>
       </Helmet>
       
       <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-3 lg:gap-8">
