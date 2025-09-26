@@ -13,7 +13,7 @@ const Music = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewerCount, setViewerCount] = useState(0);
-  const videosPerPage = 6;
+  const videosPerPage = 10;
 
   useEffect(() => {
     const room = 'music';
@@ -81,6 +81,8 @@ const Music = () => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
+
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
