@@ -48,7 +48,15 @@ def video_seo(video_id):
         description = escape(video.get('description', 'The official website of Suvojeet Sengupta, a singer, performer, and composer. Explore his music, blog, and musical journey.'))
         if len(description) > 200:
             description = description[:197] + '...'
-        image = escape(video.get('thumbnail', 'https://www.suvojeetsengupta.in/suvojeet.jpg'))
+        
+        # Dynamically generate thumbnail URL
+        image_url = video.get('thumbnail')
+        if not image_url and 'id' in video:
+            image_url = f"https://i.ytimg.com/vi/{video['id']}/hqdefault.jpg"
+        if not image_url:
+            image_url = 'https://www.suvojeetsengupta.in/suvojeet.jpg'
+        image = escape(image_url)
+
         url = f"https://www.suvojeetsengupta.in/video/{video_id}"
 
         # Regular meta description
