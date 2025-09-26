@@ -89,15 +89,16 @@ const VideoPage = () => {
   }
 
   const handleShare = () => {
+    const url = `${window.location.href}?v=${Date.now()}`;
     if (navigator.share) {
       navigator.share({
         title: video.title,
-        url: window.location.href,
+        url: url,
       })
       .then(() => console.log('Successful share'))
       .catch((error) => console.log('Error sharing', error));
     } else {
-      navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard.writeText(url);
       setToastMessage('Link Copied!');
       setShowToast(true);
     }
