@@ -4,6 +4,27 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import BackToTopButton from './BackToTopButton';
+import { motion } from 'framer-motion';
+
+// Simplified variants for a simple fade
+const pageVariants = {
+  initial: {
+    opacity: 0,
+  },
+  in: {
+    opacity: 1,
+  },
+  out: {
+    opacity: 0,
+  },
+};
+
+// Shorter and simpler transition
+const pageTransition = {
+  type: 'tween',
+  ease: 'easeInOut',
+  duration: 0.3, // Reduced duration
+};
 
 /**
  * The main layout component for the application.
@@ -13,9 +34,16 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <motion.main
+        className="flex-grow"
+        initial="initial"
+        animate="in"
+        exit="out"
+        variants={pageVariants}
+        transition={pageTransition}
+      >
         <Outlet />
-      </main>
+      </motion.main>
       <Footer />
       <BackToTopButton />
     </div>
