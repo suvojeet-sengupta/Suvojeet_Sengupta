@@ -41,4 +41,4 @@ const VideoCard = ({ video }) => {
   );
 };
 
-export default VideoCard;
+export default React.memo(VideoCard);

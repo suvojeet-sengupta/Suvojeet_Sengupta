@@ -57,4 +57,4 @@ const BlogCard = ({ post }) => {
   );
 };
 
-export default BlogCard;
+export default React.memo(BlogCard);

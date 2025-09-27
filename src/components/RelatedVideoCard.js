@@ -23,4 +23,4 @@ const RelatedVideoCard = ({ video }) => {
   );
 };
 
-export default RelatedVideoCard;
+export default React.memo(RelatedVideoCard);
