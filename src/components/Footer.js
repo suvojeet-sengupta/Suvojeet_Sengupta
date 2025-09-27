@@ -44,8 +44,19 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-gray-500">
-          <p>
+          <p className="text-sm">
             &copy; {new Date().getFullYear()} Suvojeet Sengupta. All Rights Reserved.
+          </p>
+          <p className="text-sm mt-4 sm:mt-0">
+            Designed & Built by{' '}
+            <a
+              href="https://github.com/suvojit213"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Suvojeet Sengupta
+            </a>
           </p>
           <div className="md:hidden mt-4 sm:mt-0">
             {visitorCount > 0 && <LiveIndicator count={visitorCount} text={visitorCount === 1 ? 'visitor online' : 'visitors online'} />}
