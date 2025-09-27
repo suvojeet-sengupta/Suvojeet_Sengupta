@@ -1,18 +1,71 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from './SocialLinks';
 import { Helmet } from 'react-helmet-async';
+
+// Reducer function for form state management
+const formInitialState = {
+  status: 'idle', // 'idle', 'submitting', 'success', 'error'
+  message: null,
+};
+
+function formReducer(state, action) {
+  switch (action.type) {
+    case 'SUBMIT':
+      return { ...state, status: 'submitting', message: null };
+    case 'SUCCESS':
+      return { ...state, status: 'success', message: action.payload };
+    case 'ERROR':
+      return { ...state, status: 'error', message: action.payload };
+    default:
+      throw new Error(`Unhandled action type: ${action.type}`);
+  }
+}
 
 /**
  * The About page component.
  * This component displays information about Suvojeet Sengupta.
- * It includes:
- * - A brief introduction with a profile picture.
- * - Sections for "My Musical Journey", "Beyond Music", "Vision", and "Quick Facts".
- * - A call-to-action to visit his YouTube channel.
  */
 const About = () => {
+  const [formState, dispatch] = useReducer(formReducer, formInitialState);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch({ type: 'SUBMIT' });
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        dispatch({ type: 'SUCCESS', payload: 'Thanks for your message! I will get back to you soon.' });
+        form.reset();
+      } else {
+        const responseData = await response.json();
+        const errorMessage = responseData.errors 
+          ? responseData.errors.map(error => error.message).join(", ")
+          : 'Oops! There was a problem submitting your form';
+        dispatch({ type: 'ERROR', payload: errorMessage });
+      }
+    } catch (error) {
+      dispatch({ type: 'ERROR', payload: 'Something went wrong. Please try again.' });
+    }
+  };
+
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
@@ -21,6 +74,12 @@ const About = () => {
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+  };
+  
+  const formContainerVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: { opacity: 1, height: 'auto', transition: { duration: 0.5, ease: 'easeOut' } },
+    exit: { opacity: 0, height: 0, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
   return (
@@ -133,22 +192,83 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Call to Action Section */}
-        <motion.div
-          className="bg-dark rounded-lg shadow-xl p-8 md:p-12 mt-16 shadow-primary/10 text-center"
+        {/* New Contact Form Section */}
+        <motion.section
+          id="contact-about"
+          className="py-20"
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <h2 className="text-3xl font-bold text-primary mb-4 font-montserrat">Get in Touch</h2>
-          <p className="text-grey mb-8">
-            Follow Suvojeet’s journey on YouTube to explore his latest covers and performances. For bookings, collaborations, or special song requests, he is available through professional contact and social media channels.
-          </p>
-          <a href="https://youtube.com/@suvojeetsengupta?si=Fsp9wzuki9PzwXk4" target="_blank" rel="noopener noreferrer" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
-            Visit YouTube Channel
-          </a>
-        </motion.div>
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto bg-dark-2 p-8 rounded-lg shadow-lg grid md:grid-cols-2 gap-12 items-center">
+              {/* Left Column: Text */}
+              <div className="text-center md:text-left">
+                <h3 className="text-3xl font-bold text-primary mb-4 font-montserrat">Get in Touch</h3>
+                <p className="text-grey mb-6">
+                  Have a question, a project proposal, or just want to say hello? Use the form, and I'll get back to you as soon as possible.
+                </p>
+                <p className="text-grey">
+                  For bookings and collaborations, please provide as much detail as you can.
+                </p>
+              </div>
+
+              {/* Right Column: Form */}
+              <div>
+                <AnimatePresence>
+                  {formState.status !== 'success' ? (
+                    <motion.form
+                      key="form"
+                      onSubmit={handleSubmit}
+                      className="space-y-6"
+                      variants={formContainerVariants}
+                      initial="visible"
+                      exit="exit"
+                    >
+                      <div>
+                        <label htmlFor="name-about" className="block mb-2 font-semibold text-grey">Name</label>
+                        <input type="text" name="name" id="name-about" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+                      </div>
+                      <div>
+                        <label htmlFor="email-about" className="block mb-2 font-semibold text-grey">Email</label>
+                        <input type="email" name="email" id="email-about" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+                      </div>
+                      <div>
+                        <label htmlFor="message-about" className="block mb-2 font-semibold text-grey">Message</label>
+                        <textarea name="message" id="message-about" rows="4" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
+                      </div>
+                      <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled={formState.status === 'submitting'}>
+                        {formState.status === 'submitting' ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </motion.form>
+                  ) : (
+                    <motion.div
+                      key="success-message"
+                      className="text-center"
+                      variants={formContainerVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, type: 'spring', stiffness: 150 }}
+                      >
+                        <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                        <p className="text-grey">{formState.message}</p>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                {formState.status === 'error' && (
+                  <div className="mt-6 text-center text-red-500">{formState.message}</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.section>
       </main>
       <div className="pb-16">
         <SocialLinks />
