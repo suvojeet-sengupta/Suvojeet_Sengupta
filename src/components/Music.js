@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import VideoCard from './VideoCard';
@@ -34,26 +34,37 @@ const Music = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentPage]);
 
-  const sortedVideos = [...videos].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-  
-  const categories = ['All', ...new Set(sortedVideos.map(video => video.category).filter(Boolean))];
+  const categories = useMemo(() => ['All', ...new Set(videos.map(video => video.category).filter(Boolean))], [videos]);
 
-  const filteredByCategory = selectedCategory === 'All' 
-    ? sortedVideos 
-    : sortedVideos.filter(video => video.category === selectedCategory);
+  const filteredVideos = useMemo(() => {
+    const sortedVideos = [...videos].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+    
+    const filteredByCategory = selectedCategory === 'All' 
+      ? sortedVideos 
+      : sortedVideos.filter(video => video.category === selectedCategory);
 
-  const filteredVideos = filteredByCategory.filter(video =>
-    video.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    return filteredByCategory.filter(video =>
+      video.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [videos, selectedCategory, searchQuery]);
 
-  const latestVideo = selectedCategory === 'All' && filteredVideos.length > 0 ? filteredVideos[0] : null;
-  const videosToPaginate = latestVideo ? filteredVideos.slice(1) : filteredVideos;
+  const latestVideo = useMemo(() => 
+    selectedCategory === 'All' && filteredVideos.length > 0 ? filteredVideos[0] : null
+  , [filteredVideos, selectedCategory]);
 
-  const indexOfLastVideo = currentPage * videosPerPage;
-  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-  const currentVideos = videosToPaginate.slice(indexOfFirstVideo, indexOfLastVideo);
+  const videosToPaginate = useMemo(() => 
+    latestVideo ? filteredVideos.slice(1) : filteredVideos
+  , [filteredVideos, latestVideo]);
 
-  const totalPages = Math.ceil(videosToPaginate.length / videosPerPage);
+  const totalPages = useMemo(() => 
+    Math.ceil(videosToPaginate.length / videosPerPage)
+  , [videosToPaginate, videosPerPage]);
+
+  const currentVideos = useMemo(() => {
+    const indexOfLastVideo = currentPage * videosPerPage;
+    const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+    return videosToPaginate.slice(indexOfFirstVideo, indexOfLastVideo);
+  }, [videosToPaginate, currentPage, videosPerPage]);
 
   const nextPage = () => {
     if (currentPage < totalPages) {
@@ -71,8 +82,6 @@ const Music = () => {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
-
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
