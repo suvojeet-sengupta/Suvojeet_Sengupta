@@ -1,22 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SocialLinks from './SocialLinks';
 import { Link } from 'react-router-dom';
 import Newsletter from './Newsletter';
-import { socket } from '../socket';
 import LiveIndicator from './LiveIndicator';
 
-const Footer = () => {
-  const [visitorCount, setVisitorCount] = useState(0);
-
-  useEffect(() => {
-    socket.on('update_visitor_count', (data) => {
-      setVisitorCount(data.count);
-    });
-
-    return () => {
-      socket.off('update_visitor_count');
-    };
-  }, []);
+const Footer = ({ visitorCount }) => {
 
   return (
     <footer className="bg-gray-900 text-white">
