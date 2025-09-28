@@ -30,7 +30,7 @@ const pageTransition = {
  * The main layout component for the application.
  * It includes the Navbar, the main content area (using Outlet), and the Footer.
  */
-const Layout = () => {
+const Layout = ({ visitorCount }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -44,7 +44,7 @@ const Layout = () => {
       >
         <Outlet />
       </motion.main>
-      <Footer />
+      <Footer visitorCount={visitorCount} />
       <BackToTopButton />
     </div>
   );

@@ -1,9 +1,10 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import GlobalVisitorCount from './components/GlobalVisitorCount';
 import ScrollToTop from './components/ScrollToTop';
 import { AnimatePresence } from 'framer-motion';
+import { socket } from './socket';
 import './App.css';
 
 const Home = lazy(() => import('./components/Home'));
@@ -21,12 +22,12 @@ const LoadingSpinner = () => (
 );
 
 // This new component will handle the animation logic
-const AnimatedRoutes = () => {
+const AnimatedRoutes = ({ visitorCount }) => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout visitorCount={visitorCount} />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="music" element={<Music />} />
@@ -41,16 +42,27 @@ const AnimatedRoutes = () => {
 };
 
 function App() {
+  const [visitorCount, setVisitorCount] = useState(0);
+
+  useEffect(() => {
+    socket.on('update_visitor_count', (data) => {
+      setVisitorCount(data.count);
+    });
+
+    return () => {
+      socket.off('update_visitor_count');
+    };
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <GlobalVisitorCount />
+      <GlobalVisitorCount count={visitorCount} />
       <Suspense fallback={<LoadingSpinner />}>
         {/* We render the new animated routes component here */}
-        <AnimatedRoutes />
+        <AnimatedRoutes visitorCount={visitorCount} />
       </Suspense>
     </BrowserRouter>
   );
 }
-
 export default App;
