@@ -163,7 +163,7 @@ This is a personal portfolio project and is not actively seeking external contri
 
 ## 📄 License
 
-This project is licensed under a custom license. See the [LICENSE](LICENSE) file for details.
+This project is licensed under a standard copyright license. See the [LICENSE](LICENSE) file for details.
 
 ## 📬 Contact
 
