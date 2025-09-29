@@ -161,47 +161,51 @@ const Music = () => {
       </motion.header>
 
       <main className="w-full max-w-7xl mx-auto p-8">
-        <div className="mb-12 flex flex-col md:flex-row justify-center items-center gap-4">
-          <div className="relative w-full md:w-1/2 lg:w-1/3">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg
-                className="w-5 h-5 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
-              </svg>
-            </span>
-            <input
-              type="text"
-              placeholder="Search for videos..."
-              className="w-full pl-10 pr-4 py-3 rounded-full bg-white bg-opacity-10 text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-in-out shadow-lg"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex justify-center flex-wrap gap-4">
+        <div className="mb-12 flex flex-col items-center gap-8">
+          <div className="text-center">
             <Button to="/request-song" primary>Request a Song</Button>
-            {categories.map(category => (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 font-semibold rounded-lg transition-colors duration-300 ${
-                  selectedCategory === category 
-                    ? 'bg-primary text-dark' 
-                    : 'bg-gray-800 text-white hover:bg-gray-700'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+          </div>
+          <div className="w-full flex flex-col md:flex-row justify-center items-center gap-4">
+            <div className="relative w-full md:w-1/2 lg:w-1/3">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <svg
+                  className="w-5 h-5 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+              </span>
+              <input
+                type="text"
+                placeholder="Search for videos..."
+                className="w-full pl-10 pr-4 py-3 rounded-full bg-white bg-opacity-10 text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-in-out shadow-lg"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex justify-center flex-wrap gap-4">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => handleCategoryChange(category)}
+                  className={`px-4 py-2 font-semibold rounded-lg transition-colors duration-300 ${
+                    selectedCategory === category 
+                      ? 'bg-primary text-dark' 
+                      : 'bg-gray-800 text-white hover:bg-gray-700'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
