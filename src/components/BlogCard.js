@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import GenerativePlaceholder from './GenerativePlaceholder';
+import Button from './Button';
 
 /**
  * A card component to display a blog post summary.
@@ -24,8 +25,9 @@ const BlogCard = ({ post }) => {
 
   return (
     <motion.div
-      className="bg-dark-2 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 shadow-primary/10"
+      className="bg-dark-2 rounded-lg shadow-lg overflow-hidden shadow-primary/10"
       variants={itemVariants}
+      whileHover={{ y: -5, boxShadow: "0px 10px 20px rgba(249, 168, 40, 0.2)" }}
     >
       <Link to={`/blog/${slug}`}>
         {featuredImage ? (
@@ -48,9 +50,9 @@ const BlogCard = ({ post }) => {
         <p className="text-grey-2 leading-relaxed mb-4">{excerpt}</p>
         <div className="flex items-center justify-between">
           <span className="text-gray-400 text-sm">{new Date(publishedAt).toLocaleDateString()}</span>
-          <Link to={`/blog/${slug}`} className="inline-block px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
+          <Button to={`/blog/${slug}`} primary={false} className="py-2 px-4 text-sm">
             Read More
-          </Link>
+          </Button>
         </div>
       </div>
     </motion.div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 const VideoCard = ({ video }) => {
   const itemVariants = {
@@ -12,9 +13,9 @@ const VideoCard = ({ video }) => {
     <Link to={`/video/${video.id}`}>
       <motion.div
         key={video.id}
-        className="bg-dark rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300 shadow-primary/10 group"
+        className="bg-dark rounded-lg shadow-xl overflow-hidden shadow-primary/10 group"
         variants={itemVariants}
-        whileHover={{ y: -10, transition: { duration: 0.2 } }}
+        whileHover={{ y: -5, boxShadow: "0px 10px 20px rgba(249, 168, 40, 0.2)" }}
       >
         <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
           <img
@@ -34,7 +35,11 @@ const VideoCard = ({ video }) => {
           <p className="text-sm text-gray-300 mt-4">
             {video.description.substring(0, 100)}...
           </p>
-          <p className="text-primary mt-2 font-semibold">Read More...</p>
+          <div className="mt-4">
+            <Button to={`/video/${video.id}`} primary={false} className="py-2 px-4 text-sm">
+              Watch Now
+            </Button>
+          </div>
         </div>
       </motion.div>
     </Link>
