@@ -127,9 +127,8 @@ const RequestSongForm = () => {
                 <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
                 <p className="text-grey mb-8">{formState.message}</p>
-                <div className="flex justify-center gap-4">
-                  <Button to="/music">Back to Music</Button>
-                  <Button onClick={() => dispatch({ type: 'RESET' })} primary>Request Another Song</Button>
+                <div className="flex justify-center">
+                  <Button onClick={() => window.history.back()} primary>Go Back</Button>
                 </div>
               </motion.div>
             </motion.div>
