@@ -68,6 +68,10 @@ const VideoPage = () => {
     }
   }, [showToast]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
 
 
   const handleAnimationComplete = (reactionId) => {
