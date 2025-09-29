@@ -14,6 +14,7 @@ const Blog = lazy(() => import('./components/Blog'));
 const BlogPost = lazy(() => import('./components/BlogPost'));
 const VideoPage = lazy(() => import('./components/VideoPage'));
 const Posts = lazy(() => import('./components/Posts'));
+const RequestSongPage = lazy(() => import('./pages/RequestSongPage'));
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
@@ -35,6 +36,7 @@ const AnimatedRoutes = ({ visitorCount }) => {
           <Route path="blog/:slug" element={<BlogPost />} />
           <Route path="video/:id" element={<VideoPage />} />
           <Route path="posts" element={<Posts />} />
+          <Route path="request-song" element={<RequestSongPage />} />
         </Route>
       </Routes>
     </AnimatePresence>
