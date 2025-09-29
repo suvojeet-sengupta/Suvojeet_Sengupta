@@ -83,7 +83,7 @@ const VideoPage = () => {
   }
 
   const handleShare = () => {
-    const url = `${window.location.href}?v=${Date.now()}`;
+    const url = window.location.href;
     if (navigator.share) {
       navigator.share({
         title: video.title,
