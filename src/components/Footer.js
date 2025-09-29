@@ -14,7 +14,7 @@ const Footer = ({ visitorCount }) => {
           <div className="mb-6 md:mb-0 text-center md:text-left">
             <h3 className="text-2xl font-bold mb-2">Suvojeet</h3>
             <p className="text-gray-400">
-              Musician, Developer, and Content Creator.
+              Singer, Developer, and Content Creator.
             </p>
           </div>
           <div className="mb-6 md:mb-0 text-center">
