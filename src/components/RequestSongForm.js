@@ -48,7 +48,7 @@ const RequestSongForm = () => {
       });
 
       if (response.ok) {
-        dispatch({ type: 'SUCCESS', payload: 'Thanks for your song suggestion! I will check it out.' });
+        dispatch({ type: 'SUCCESS', payload: 'Your song suggestion has been received! I\'ll give it a listen and might even cover it if I like it.' });
         form.reset();
       } else {
         const responseData = await response.json();
@@ -125,8 +125,12 @@ const RequestSongForm = () => {
                 transition={{ duration: 0.5, type: 'spring', stiffness: 150 }}
               >
                 <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <h3 className="text-2xl font-bold text-white mb-2">Request Sent!</h3>
-                <p className="text-grey">{formState.message}</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
+                <p className="text-grey mb-8">{formState.message}</p>
+                <div className="flex justify-center gap-4">
+                  <Button to="/music">Back to Music</Button>
+                  <Button onClick={() => dispatch({ type: 'RESET' })} primary>Request Another Song</Button>
+                </div>
               </motion.div>
             </motion.div>
           )}
