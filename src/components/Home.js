@@ -7,6 +7,7 @@ import useBlogPosts from '../hooks/useBlogPosts';
 import BlogPostCard from './BlogPostCard';
 import videos from '../data/videos.json';
 import VideoCard from './VideoCard';
+import Button from './Button';
 import { Helmet } from 'react-helmet-async';
 
 // Reducer function for form state management
@@ -132,12 +133,9 @@ const Home = () => {
             Singer | Performer | Composer
           </motion.p>
           <motion.div variants={itemVariants}>
-            <Link
-              to="/music"
-              className="bg-primary text-dark font-bold py-3 px-8 rounded-full hover:bg-primary-dark transition duration-300 transform hover:scale-105 shadow-primary animate-pulse"
-            >
+            <Button to="/music" primary className="animate-pulse">
               Listen Now
-            </Link>
+            </Button>
           </motion.div>
         </motion.div>
         <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10">
@@ -164,9 +162,7 @@ const Home = () => {
             ))}
           </div>
           <div className="mt-12 text-center">
-            <Link to="/music" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
-              View More
-            </Link>
+            <Button to="/music">View More</Button>
           </div>
         </div>
       </motion.section>
@@ -190,9 +186,7 @@ const Home = () => {
             ))}
           </div>
           <div className="mt-12 text-center">
-            <Link to="/blog" className="inline-block px-8 py-3 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary">
-              View All Posts
-            </Link>
+            <Button to="/blog">View All Posts</Button>
           </div>
         </div>
       </motion.section>
@@ -233,7 +227,7 @@ const Home = () => {
                     <label htmlFor="message" className="block mb-2 font-semibold text-grey">Message</label>
                     <textarea name="message" id="message" rows="4" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required></textarea>
                   </div>
-                  <button type="submit" className="w-full px-6 py-4 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled={formState.status === 'submitting'}>
+                  <Button type="submit" primary className="w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled={formState.status === 'submitting'}>
                     {formState.status === 'submitting' ? (
                       <>
                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -245,7 +239,7 @@ const Home = () => {
                     ) : (
                       'Send Message'
                     )}
-                  </button>
+                  </Button>
                 </motion.form>
               ) : (
                 <motion.div
