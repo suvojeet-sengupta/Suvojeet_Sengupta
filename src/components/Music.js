@@ -31,6 +31,16 @@ const Music = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      const scrollPos = sessionStorage.getItem('musicScrollPos');
+      if (scrollPos) {
+        window.scrollTo(0, parseInt(scrollPos, 10));
+        sessionStorage.removeItem('musicScrollPos');
+      }
+    }
+  }, [loading]);
+
 
 
   const categories = useMemo(() => ['All', ...new Set(videos.map(video => video.category).filter(Boolean))], [videos]);
@@ -257,7 +267,9 @@ const Music = () => {
           animate="visible"
         >
           {currentVideos.map((video) => (
-            <VideoCard key={video.id} video={video} />
+            <div key={video.id} onClick={() => sessionStorage.setItem('musicScrollPos', window.scrollY)}>
+              <VideoCard video={video} />
+            </div>
           ))}
         </motion.div>
 
