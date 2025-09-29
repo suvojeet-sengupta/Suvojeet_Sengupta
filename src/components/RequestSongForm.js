@@ -23,7 +23,7 @@ function formReducer(state, action) {
   }
 }
 
-const RequestSongForm = ({ onClose }) => {
+const RequestSongForm = () => {
   const [formState, dispatch] = useReducer(formReducer, formInitialState);
 
   const handleSubmit = async (e) => {
@@ -69,14 +69,7 @@ const RequestSongForm = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
-      <div className="bg-dark-2 p-8 rounded-lg shadow-lg max-w-3xl w-full relative">
-        <button onClick={() => {
-          dispatch({type: 'RESET'});
-          onClose();
-        }} className="absolute top-4 right-4 text-gray-400 hover:text-white">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-        </button>
+    <div className="bg-dark-2 p-8 rounded-lg shadow-lg max-w-3xl w-full">
         <h2 className="text-3xl font-bold text-center font-montserrat mb-8 text-white">Request a Song</h2>
         <AnimatePresence>
           {formState.status !== 'success' ? (
@@ -141,7 +134,6 @@ const RequestSongForm = ({ onClose }) => {
         {formState.status === 'error' && (
             <div className="mt-6 text-center text-red-500">{formState.message}</div>
           )}
-      </div>
     </div>
   );
 };
