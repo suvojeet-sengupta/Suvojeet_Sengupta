@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import RequestSongForm from './RequestSongForm';
+import Button from './Button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import VideoCard from './VideoCard';
@@ -14,6 +16,7 @@ const Music = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewerCount, setViewerCount] = useState(0);
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
   const videosPerPage = 10;
 
   useEffect(() => {
@@ -187,6 +190,7 @@ const Music = () => {
             />
           </div>
           <div className="flex justify-center flex-wrap gap-4">
+            <Button onClick={() => setIsRequestFormOpen(true)} primary>Request a Song</Button>
             {categories.map(category => (
               <button
                 key={category}
@@ -276,6 +280,7 @@ const Music = () => {
           </div>
         )}
       </main>
+      {isRequestFormOpen && <RequestSongForm onClose={() => setIsRequestFormOpen(false)} />}
     </div>
   );
 };
