@@ -28,7 +28,10 @@ const pageTransition = {
 
 /**
  * The main layout component for the application.
- * It includes the Navbar, the main content area (using Outlet), and the Footer.
+ * It includes the Navbar, the main content area (using Outlet), the Footer, and a BackToTopButton.
+ * It also provides a consistent page transition animation for all pages.
+ * @param {{visitorCount: number}} props - The props for the component.
+ * @returns {JSX.Element} The main layout component.
  */
 const Layout = ({ visitorCount }) => {
   return (

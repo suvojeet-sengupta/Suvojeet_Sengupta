@@ -35,13 +35,17 @@ function formReducer(state, action) {
  * It includes:
  * - A hero section with a background image and call-to-action.
  * - A music showcase section with embedded YouTube videos.
+ * - A latest blog posts section.
  * - A contact form that submits to formsubmit.co.
  */
 const Home = () => {
   const [formState, dispatch] = useReducer(formReducer, formInitialState);
   const { posts, loading, error } = useBlogPosts();
 
-
+  /**
+   * Handles the form submission for the contact form.
+   * @param {React.FormEvent} e - The form event.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: 'SUBMIT' });
@@ -78,6 +82,7 @@ const Home = () => {
     }
   };
 
+  // Animation variants for Framer Motion.
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

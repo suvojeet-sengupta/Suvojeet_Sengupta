@@ -1,3 +1,8 @@
+/**
+ * @file App.js is the main entry point for the React application.
+ * It sets up the main routing, lazy loading for pages, and global components.
+ */
+
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/layout/Layout';
@@ -7,6 +12,8 @@ import { AnimatePresence } from 'framer-motion';
 import { socket } from './services/socket';
 import './styles/App.css';
 
+// Lazy load pages to improve initial load time.
+// Components are only loaded when they are needed.
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Music = lazy(() => import('./pages/Music'));
@@ -16,13 +23,22 @@ const VideoPage = lazy(() => import('./pages/VideoPage'));
 const Posts = lazy(() => import('./pages/Posts'));
 const RequestSongPage = lazy(() => import('./pages/RequestSongPage'));
 
+/**
+ * A simple loading spinner component to show while pages are loading.
+ * @returns {JSX.Element} The loading spinner.
+ */
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-screen">
     <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
   </div>
 );
 
-// This new component will handle the animation logic
+/**
+ * Handles the animated transitions between routes.
+ * Uses Framer Motion's AnimatePresence to animate routes as they enter and exit.
+ * @param {{visitorCount: number}} props - The props for the component.
+ * @returns {JSX.Element} The animated routes.
+ */
 const AnimatedRoutes = ({ visitorCount }) => {
   const location = useLocation();
   return (
@@ -43,14 +59,22 @@ const AnimatedRoutes = ({ visitorCount }) => {
   );
 };
 
+/**
+ * The main App component.
+ * It initializes the socket connection to get the global visitor count
+ * and sets up the main structure of the application with routing.
+ * @returns {JSX.Element} The main application component.
+ */
 function App() {
   const [visitorCount, setVisitorCount] = useState(0);
 
+  // Effect to listen for visitor count updates from the socket server.
   useEffect(() => {
     socket.on('update_visitor_count', (data) => {
       setVisitorCount(data.count);
     });
 
+    // Clean up the socket listener on component unmount.
     return () => {
       socket.off('update_visitor_count');
     };
@@ -58,10 +82,12 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* Scrolls to the top of the page on route changes */}
       <ScrollToTop />
+      {/* Displays the global visitor count */}
       <GlobalVisitorCount count={visitorCount} />
+      {/* Suspense handles the loading state of lazy-loaded components */}
       <Suspense fallback={<LoadingSpinner />}>
-        {/* We render the new animated routes component here */}
         <AnimatedRoutes visitorCount={visitorCount} />
       </Suspense>
     </BrowserRouter>

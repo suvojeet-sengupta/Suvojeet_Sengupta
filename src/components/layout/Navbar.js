@@ -14,6 +14,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Effect to handle the navbar background change on scroll.
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -29,6 +30,7 @@ const Navbar = () => {
     };
   }, []);
 
+  // Effect to prevent scrolling when the mobile menu is open.
   useEffect(() => {
     if (isMenuOpen) {
       document.body.classList.add('overflow-hidden');
@@ -46,6 +48,7 @@ const Navbar = () => {
     fontWeight: '600',
   };
 
+  // Animation variants for Framer Motion.
   const navVariants = {
     initial: { y: -100, opacity: 0 },
     animate: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
@@ -57,6 +60,11 @@ const Navbar = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: 'easeIn' } },
   };
 
+  /**
+   * A wrapper around NavLink to add motion effects.
+   * @param {{to: string, children: React.ReactNode, style: object, onClick: function}} props - The props for the component.
+   * @returns {JSX.Element} The animated NavLink.
+   */
   const NavLinkMotion = ({ to, children, style, onClick }) => (
     <motion.div whileHover={{ scale: 1.1, color: '#f9a828' }} transition={{ duration: 0.2 }}>
       <NavLink to={to} className="text-gray-300 transition-colors duration-300" style={style} onClick={onClick}>
