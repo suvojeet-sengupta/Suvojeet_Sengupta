@@ -83,7 +83,15 @@ const VideoPage = () => {
   }
 
   const handleShare = () => {
-    const url = window.location.href;
+    let url = window.location.href;
+    
+    // Append a cache-busting parameter to invalidate the cache when sharing
+    if (url.includes('?')) {
+      url += `&v=${Date.now()}`;
+    } else {
+      url += `?v=${Date.now()}`;
+    }
+
     if (navigator.share) {
       navigator.share({
         title: video.title,
