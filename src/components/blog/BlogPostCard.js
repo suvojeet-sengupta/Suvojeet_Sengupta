@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import GenerativePlaceholder from './GenerativePlaceholder';
+import GenerativePlaceholder from '../common/GenerativePlaceholder';
 
 const BlogPostCard = ({ post }) => {
   const { title, slug, featuredImage } = post.fields;

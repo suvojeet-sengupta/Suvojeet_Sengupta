@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react';
-import SocialLinks from './SocialLinks';
+import SocialLinks from '../components/contact/SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 import useBlogPosts from '../hooks/useBlogPosts';
-import BlogPostCard from './BlogPostCard';
+import BlogPostCard from '../components/blog/BlogPostCard';
 import videos from '../data/videos.json';
-import VideoCard from './VideoCard';
-import Button from './Button';
+import VideoCard from '../components/video/VideoCard';
+import Button from '../components/common/Button';
 import { Helmet } from 'react-helmet-async';
 
 // Reducer function for form state management

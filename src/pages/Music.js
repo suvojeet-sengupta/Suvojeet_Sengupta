@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Button from './Button';
+import Button from '../components/common/Button';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import VideoCard from './VideoCard';
+import VideoCard from '../components/video/VideoCard';
 import useVideos from '../hooks/useVideos';
-import SkeletonCard from './SkeletonCard';
-import { socket } from '../socket';
-import LiveIndicator from './LiveIndicator';
+import SkeletonCard from '../components/common/SkeletonCard';
+import { socket } from '../services/socket';
+import LiveIndicator from '../components/common/LiveIndicator';
 import { Helmet } from 'react-helmet-async';
 
 const Music = () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import GenerativePlaceholder from './GenerativePlaceholder';
-import Button from './Button';
+import GenerativePlaceholder from '../common/GenerativePlaceholder';
+import Button from '../common/Button';
 
 /**
  * A card component to display a blog post summary.

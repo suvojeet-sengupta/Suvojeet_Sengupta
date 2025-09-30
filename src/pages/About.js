@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
-import SocialLinks from './SocialLinks';
+import SocialLinks from '../components/contact/SocialLinks';
 import { Helmet } from 'react-helmet-async';
 
 // Reducer function for form state management

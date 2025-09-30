@@ -1,19 +1,19 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Layout from './components/Layout';
-import GlobalVisitorCount from './components/GlobalVisitorCount';
-import ScrollToTop from './components/ScrollToTop';
+import Layout from './components/layout/Layout';
+import GlobalVisitorCount from './components/common/GlobalVisitorCount';
+import ScrollToTop from './components/common/ScrollToTop';
 import { AnimatePresence } from 'framer-motion';
-import { socket } from './socket';
-import './App.css';
+import { socket } from './services/socket';
+import './styles/App.css';
 
-const Home = lazy(() => import('./components/Home'));
-const About = lazy(() => import('./components/About'));
-const Music = lazy(() => import('./components/Music'));
-const Blog = lazy(() => import('./components/Blog'));
-const BlogPost = lazy(() => import('./components/BlogPost'));
-const VideoPage = lazy(() => import('./components/VideoPage'));
-const Posts = lazy(() => import('./components/Posts'));
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Music = lazy(() => import('./pages/Music'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const VideoPage = lazy(() => import('./pages/VideoPage'));
+const Posts = lazy(() => import('./pages/Posts'));
 const RequestSongPage = lazy(() => import('./pages/RequestSongPage'));
 
 const LoadingSpinner = () => (

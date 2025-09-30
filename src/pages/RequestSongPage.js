@@ -1,5 +1,5 @@
 import React from 'react';
-import RequestSongForm from '../components/RequestSongForm';
+import RequestSongForm from '../components/contact/RequestSongForm';
 import { Helmet } from 'react-helmet-async';
 
 const RequestSongPage = () => {

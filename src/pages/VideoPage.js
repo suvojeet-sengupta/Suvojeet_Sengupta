@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import videos from '../data/videos.json';
-import VideoPlayer from './VideoPlayer';
-import Comments from './Comments';
-import RelatedVideoCard from './RelatedVideoCard';
-import Toast from './Toast';
+import VideoPlayer from '../components/video/VideoPlayer';
+import Comments from '../components/video/Comments';
+import RelatedVideoCard from '../components/video/RelatedVideoCard';
+import Toast from '../components/common/Toast';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { socket } from '../socket'; // Import the socket instance
-import EmojiReactionButton from './EmojiReactionButton'; // Import the reaction button
-import FloatingEmoji from './FloatingEmoji'; // Import the floating emoji component
-import LiveIndicator from './LiveIndicator';
+import { socket } from '../services/socket'; // Import the socket instance
+import EmojiReactionButton from '../components/common/EmojiReactionButton'; // Import the reaction button
+import FloatingEmoji from '../components/common/FloatingEmoji'; // Import the floating emoji component
+import LiveIndicator from '../components/common/LiveIndicator';
 
 const VideoPage = () => {
   const { id } = useParams();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import Button from './Button';
+import Button from '../common/Button';
 
 const VideoCard = ({ video }) => {
   const itemVariants = {
