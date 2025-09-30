@@ -10,6 +10,10 @@ import FloatingEmoji from '../components/common/FloatingEmoji';
 import LiveIndicator from '../components/common/LiveIndicator';
 import { Helmet } from 'react-helmet-async';
 
+/**
+ * The BlogPost page component.
+ * Displays a single blog post with real-time features like viewer count and emoji reactions.
+ */
 const BlogPost = () => {
   const { slug } = useParams();
   const { posts } = useBlogPosts();
@@ -17,10 +21,11 @@ const BlogPost = () => {
   const [showCopied, setShowCopied] = useState(false);
   const room = `blog-${slug}`;
 
-  // Real-time state
+  // Real-time state for viewer count and reactions.
   const [viewerCount, setViewerCount] = useState(0);
   const [reactions, setReactions] = useState([]);
 
+  // Effect to find the current post from the list of all posts.
   useEffect(() => {
     if (posts.length > 0) {
       const currentPost = posts.find((p) => p.fields.slug === slug);
@@ -32,14 +37,17 @@ const BlogPost = () => {
     }
   }, [slug, posts]);
 
+  // Effect to handle real-time socket events for the current blog post.
   useEffect(() => {
-    // Join the blog-specific room on mount
+    // Join a room specific to this blog post to receive real-time updates.
     socket.emit('join_room', { room });
 
+    // Listen for viewer count updates.
     socket.on('update_viewer_count', (data) => {
       setViewerCount(data.count);
     });
 
+    // Listen for new emoji reactions.
     socket.on('new_reaction', (data) => {
       const newReaction = {
         id: Date.now() + Math.random(),
@@ -48,6 +56,7 @@ const BlogPost = () => {
       setReactions(prev => [...prev, newReaction]);
     });
 
+    // Clean up socket listeners on component unmount.
     return () => {
       socket.emit('leave_room', { room });
       socket.off('update_viewer_count');
@@ -55,10 +64,18 @@ const BlogPost = () => {
     };
   }, [room]);
 
+  /**
+   * Removes a reaction from the state after its animation is complete.
+   * @param {number} reactionId - The ID of the reaction to remove.
+   */
   const handleAnimationComplete = (reactionId) => {
     setReactions(prev => prev.filter(r => r.id !== reactionId));
   };
 
+  /**
+   * Handles the share functionality.
+   * Uses the Web Share API if available, otherwise copies the URL to the clipboard.
+   */
   const handleShare = () => {
     const url = window.location.href;
     if (navigator.share) {
@@ -78,6 +95,7 @@ const BlogPost = () => {
     }
   };
 
+  // Display a loading message while the post is being fetched.
   if (!post) {
     return <div>Loading...</div>;
   }

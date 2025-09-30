@@ -7,6 +7,10 @@ import { Helmet } from 'react-helmet-async';
 
 const POSTS_PER_PAGE = 6;
 
+/**
+ * The Blog page component.
+ * Displays a list of blog posts with search and pagination functionality.
+ */
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +20,8 @@ const Blog = () => {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  // Fetch blog posts using the useBlogPosts custom hook.
+  // The hook handles loading, error, and data fetching from Contentful.
   const { posts, total, loading, error } = useBlogPosts({
     limit: POSTS_PER_PAGE,
     skip: (currentPage - 1) * POSTS_PER_PAGE,
@@ -40,7 +46,12 @@ const Blog = () => {
     setCurrentPage(prev => Math.min(prev + 1, totalPages));
   };
 
+  /**
+   * Renders the main content of the blog page based on the current state.
+   * @returns {JSX.Element} The content to render.
+   */
   const renderContent = () => {
+    // Display skeleton cards while loading.
     if (loading) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -49,6 +60,7 @@ const Blog = () => {
       );
     }
 
+    // Display an error message if fetching posts failed.
     if (error) {
       return (
         <div className="text-center">
@@ -58,6 +70,7 @@ const Blog = () => {
       );
     }
 
+    // Display a message if no posts are found for the current search query.
     if (posts.length === 0) {
       return (
         <div className="text-center">
@@ -67,6 +80,7 @@ const Blog = () => {
       );
     }
 
+    // Display the list of blog posts.
     return (
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"

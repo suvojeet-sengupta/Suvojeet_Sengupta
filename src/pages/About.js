@@ -10,6 +10,12 @@ const formInitialState = {
   message: null,
 };
 
+/**
+ * @file Manages the state of the contact form.
+ * @param {object} state - The current state.
+ * @param {object} action - The dispatched action.
+ * @returns {object} The new state.
+ */
 function formReducer(state, action) {
   switch (action.type) {
     case 'SUBMIT':
@@ -25,11 +31,15 @@ function formReducer(state, action) {
 
 /**
  * The About page component.
- * This component displays information about Suvojeet Sengupta.
+ * This component displays information about Suvojeet Sengupta, including his story, skills, and a contact form.
  */
 const About = () => {
   const [formState, dispatch] = useReducer(formReducer, formInitialState);
 
+  /**
+   * Handles the submission of the contact form.
+   * @param {React.FormEvent} e - The form event.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: 'SUBMIT' });
@@ -66,6 +76,7 @@ const About = () => {
     }
   };
 
+  // Animation variants for Framer Motion.
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
