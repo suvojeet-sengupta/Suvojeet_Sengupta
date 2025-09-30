@@ -1,8 +1,8 @@
 import React from 'react';
-import SocialLinks from './SocialLinks';
+import SocialLinks from '../contact/SocialLinks';
 import { Link } from 'react-router-dom';
-import Newsletter from './Newsletter';
-import LiveIndicator from './LiveIndicator';
+import Newsletter from '../contact/Newsletter';
+import LiveIndicator from '../common/LiveIndicator';
 
 const Footer = ({ visitorCount }) => {
 

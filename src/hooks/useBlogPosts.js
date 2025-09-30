@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import client from '../contentful';
+import client from '../services/contentful';
 
 const useBlogPosts = ({ limit, skip, query, bypassCache = false } = {}) => {
   const [posts, setPosts] = useState([]);

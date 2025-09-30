@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Button from './Button';
+import Button from '../common/Button';
 
 // Reducer function for form state management
 const formInitialState = {

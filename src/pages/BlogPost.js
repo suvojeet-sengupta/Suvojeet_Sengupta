@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS } from '@contentful/rich-text-types';
 import useBlogPosts from '../hooks/useBlogPosts';
-import { socket } from '../socket';
-import EmojiReactionButton from './EmojiReactionButton';
-import FloatingEmoji from './FloatingEmoji';
-import LiveIndicator from './LiveIndicator';
+import { socket } from '../services/socket';
+import EmojiReactionButton from '../components/common/EmojiReactionButton';
+import FloatingEmoji from '../components/common/FloatingEmoji';
+import LiveIndicator from '../components/common/LiveIndicator';
 import { Helmet } from 'react-helmet-async';
 
 const BlogPost = () => {

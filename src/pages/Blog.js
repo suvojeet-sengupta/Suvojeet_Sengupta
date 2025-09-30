@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import BlogCard from './BlogCard';
+import BlogCard from '../components/blog/BlogCard';
 import useBlogPosts from '../hooks/useBlogPosts';
-import SkeletonCard from './SkeletonCard';
+import SkeletonCard from '../components/common/SkeletonCard';
 import { Helmet } from 'react-helmet-async';
 
 const POSTS_PER_PAGE = 6;
