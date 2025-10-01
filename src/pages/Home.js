@@ -156,8 +156,8 @@ const Home = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center mb-12">
             Music Showcase
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -180,8 +180,8 @@ const Home = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center mb-12">
             Latest From The Blog
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-s-3 gap-8">
@@ -204,8 +204,8 @@ const Home = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center font-montserrat mb-12 text-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center mb-12">
             Get in Touch
           </h2>
           <div className="max-w-3xl mx-auto bg-dark-2 p-8 rounded-lg shadow-lg">
