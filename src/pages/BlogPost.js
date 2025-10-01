@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { BLOCKS } from '@contentful/rich-text-types';
+
 import useBlogPosts from '../hooks/useBlogPosts';
 import { socket } from '../services/socket';
 import EmojiReactionButton from '../components/common/EmojiReactionButton';
