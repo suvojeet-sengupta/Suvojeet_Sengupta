@@ -96,19 +96,19 @@ const Blog = () => {
   };
 
   return (
-    <div className="bg-dark text-white pt-20">
+    <div className="bg-dark text-white">
       <Helmet>
         <title>Blog | Suvojeet Sengupta</title>
         <meta name="description" content="Read the latest blog posts and updates from Suvojeet Sengupta. Get a behind-the-scenes look at his musical journey." />
       </Helmet>
 
       <motion.header
-        className="py-20 text-center"
+        className="py-12 text-center"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-center mb-12">Blog</h1>
+        <h1 className="text-center mb-12">Blog</h1>
         <p className="mt-4 text-base md:text-lg text-grey px-4">Behind-the-scenes stories, upcoming projects, and my thoughts on music.</p>
         <div className="mt-8 w-full max-w-md mx-auto">
           <div className="relative">
@@ -128,7 +128,7 @@ const Blog = () => {
         </div>
       </motion.header>
 
-      <main className="w-full max-w-7xl mx-auto p-8">
+      <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderContent()}
         {total > POSTS_PER_PAGE && (
           <div className="flex justify-center items-center mt-16 space-x-4">

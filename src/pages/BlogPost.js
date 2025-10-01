@@ -101,7 +101,7 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="bg-dark text-white pt-20 relative">
+    <div className="bg-dark text-white relative">
       <Helmet>
         <title>{`${post.fields.title} | Suvojeet Sengupta`}</title>
         <meta name="description" content={post.fields.excerpt} />
@@ -159,31 +159,27 @@ const BlogPost = () => {
       </div>
 
       <motion.header
-        className="py-20 text-center"
+        className="py-12 text-center"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl font-bold text-center mb-4">{post.fields.title}</h1>
+        <h1 className="text-center mb-4">{post.fields.title}</h1>
         <div className="flex justify-center items-center space-x-4 text-xs text-gray-400 mt-2">
           <span>Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</span>
           <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'reader online' : 'readers online'} />
         </div>
       </motion.header>
 
-      <main className="w-full max-w-4xl mx-auto p-8">
+      <main className="w-full max-w-4xl mx-auto">
         <motion.div
-          className="bg-dark rounded-lg shadow-xl p-8 md:p-12 mb-16 shadow-primary/10"
+          className="bg-dark rounded-lg shadow-xl px-6 py-8 sm:p-12 mb-16 shadow-primary/10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="prose prose-invert max-w-none">
-            {documentToReactComponents(post.fields.content, {
-              renderNode: {
-                [BLOCKS.PARAGRAPH]: (node, children) => <p className="mb-4">{children}</p>,
-              },
-            })}
+            {documentToReactComponents(post.fields.content)}
           </div>
           <div className="mt-8 flex justify-end items-center space-x-4">
             <EmojiReactionButton room={room} />
