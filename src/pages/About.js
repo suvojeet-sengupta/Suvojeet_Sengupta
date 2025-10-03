@@ -97,7 +97,37 @@ const About = () => {
     <div className="bg-dark text-white pt-20">
       <Helmet>
         <title>About | Suvojeet Sengupta</title>
-        <meta name="description" content="Learn more about Suvojeet Sengupta, a passionate singer and composer from India. Discover his musical journey, inspirations, and the story behind his music." />
+        <meta name="description" content="Hi! I’m Suvojeet Sengupta, a singer, programmer, and tech enthusiast. Learn about my journey in music, my passion for technology, and my goal to become a professional singer." />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Suvojeet Sengupta",
+              "url": "https://www.suvojeetsengupta.in/about",
+              "image": "https://www.suvojeetsengupta.in/suvojeet.jpg",
+              "sameAs": [
+                "https://www.youtube.com/@suvojeetsengupta",
+                "https://www.instagram.com/suvojeet_sengupta/",
+                "https://www.facebook.com/suvojeet.sengupta.5/",
+                "https://x.com/suvojeet_sen/",
+                "https://www.linkedin.com/in/suvojeet-sengupta/",
+                "https://github.com/suvojeet-sengupta/"
+              ],
+              "jobTitle": "Singer",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "Suvojeet Sengupta"
+              },
+              "birthDate": "2005-08-01",
+              "birthPlace": {
+                "@type": "Place",
+                "name": "Asansol, West Bengal, India"
+              },
+              "nationality": "Indian"
+            }
+          `}
+        </script>
       </Helmet>
       {/* Page Header */}
       <motion.header
