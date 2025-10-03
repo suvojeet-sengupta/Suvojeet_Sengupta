@@ -124,9 +124,14 @@ const About = () => {
               <img src={suvojeet} alt="Suvojeet Sengupta" className="rounded-lg shadow-lg w-full h-auto mx-auto" loading="lazy" />
             </motion.div>
             <div className="md:col-span-2">
-              
               <p className="text-grey">
-                Suvojeet Sengupta is a passionate singer, music lover, and dedicated performer with a unique ability to bring emotions alive through music. A student of History (BA Honours, Semester 3), he balances academics with his deep commitment to music, practicing daily and constantly refining his vocal style.
+                Hi! I’m <strong>Suvojeet Sengupta</strong>, born on <strong>1st August 2005</strong> in Asansol, West Bengal, and currently living in Jharkhand. From a very young age, I found myself lost in the world of music. Singing wasn’t just something I enjoyed—it became a part of who I am. I used to hum and sing <strong>Kishore Kumar songs</strong> as a child, and over time, this simple joy grew into a lifelong passion.
+              </p>
+              <p className="text-grey mt-4">
+                Singing for me is more than just hitting notes or performing in front of people—it’s a way to express myself. Whether I am happy, thoughtful, or even just daydreaming, I find myself <strong>humming, practicing, and experimenting</strong> with my voice. Friends and family often ask, “Do you practice?” but honestly, my practice is instinctive. Music flows naturally, and I have learned to refine my voice through self-practice, patience, and dedication.
+              </p>
+              <p className="text-grey mt-4">
+                I’ve always been inspired by <strong>Arijit Singh</strong>. His voice, emotion, and style motivate me to push my own limits and develop my own unique singing style. Even without formal training, I focus on understanding nuances of melody, rhythm, and expression.
               </p>
             </div>
           </div>
@@ -142,32 +147,39 @@ const About = () => {
         >
           <h2 className="text-3xl font-bold text-center font-montserrat mb-12 text-white">My Story</h2>
           <div className="grid md:grid-cols-2 gap-12">
-            {/* My Musical Journey */}
+            {/* My Philosophy & Approach */}
             <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">My Musical Journey</h3>
-              <ul className="space-y-4 text-grey">
-                <li><strong>🎤 Regular practice and continuous vocal training</strong></li>
-                <li><strong>🎶 Genres:</strong> Romantic ballads, soulful covers, and contemporary Hindi & Bengali tracks</li>
-                <li><strong>🎸 Performances:</strong> Small shows, studio recordings, and online showcases</li>
-                <li><strong>⭐ Influences:</strong> Arijit Singh, with a focus on developing a personalized style</li>
-              </ul>
+              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">My Philosophy & Approach</h3>
+                <p className="text-grey mb-4">
+                I strongly believe that <strong>singing is not just learned—it’s lived</strong>. Every melody I create, every note I practice, is a step toward becoming better, more expressive, and more authentic. My approach is always:
+                </p>
+                <ul className="space-y-2 text-grey">
+                    <li><strong>1. Consistent Practice</strong> – Every day, even a few minutes, counts.</li>
+                    <li><strong>2. Experimentation</strong> – Trying new styles, genres, and techniques.</li>
+                    <li><strong>3. Learning from Inspiration</strong> – Drawing lessons from artists like Arijit Singh.</li>
+                    <li><strong>4. Expressing Emotion</strong> – Music is communication, not just sound.</li>
+                </ul>
+                <p className="text-grey mt-4">
+                Music and technology together teach me discipline, creativity, and patience—values I carry into every part of life.
+                </p>
             </motion.div>
 
-            {/* Beyond Music */}
+            {/* Education & Interests */}
             <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Beyond Music</h3>
-              <p className="text-grey">
-                Alongside his singing career, Suvojeet works part-time as a Customer Care Executive at DishTV, managing his professional responsibilities while keeping his passion for music at the forefront.
-              </p>
+              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Education & Interests</h3>
+                <p className="text-grey">
+                Currently, I am pursuing a <strong>BA in Arts</strong>, but my curiosity doesn’t stop at music. I am deeply interested in <strong>technology</strong>. I’ve even created <strong>a few apps and websites</strong> on my own, experimenting and learning along the way. This combination of technology and music allows me to think creatively and approach challenges with a unique perspective.
+                </p>
+                <ul className="space-y-2 text-grey list-disc list-inside mt-4">
+                    <li>Artificial Intelligence (AI)</li>
+                    <li>Programming Languages</li>
+                    <li>Custom ROMs and Mobile Tech</li>
+                    <li>Science & Innovation</li>
+                    <li>Web & App Development</li>
+                </ul>
             </motion.div>
 
-            {/* AI-Powered Learning */}
-            <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">AI-Powered Learning</h3>
-              <p className="text-grey">
-                Suvojeet leverages AI to accelerate his learning process in every field, from music to technology. This allows him to quickly adapt to new challenges and continuously expand his skills.
-              </p>
-            </motion.div>
+
           </div>
         </motion.div>
 
@@ -181,23 +193,21 @@ const About = () => {
         >
           <h2 className="text-3xl font-bold text-center font-montserrat mb-12 text-white">More About Me</h2>
           <div className="grid md:grid-cols-2 gap-12">
-            {/* Vision */}
+            {/* Future Goals */}
             <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Vision</h3>
+              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Future Goals</h3>
               <p className="text-grey">
-                For me, music is not just about singing—it’s about creating an emotional connection. My dream is to continue growing as an artist, perform on bigger stages, and create original music that inspires people the same way music inspires me.
+                My ultimate goal is to become a <strong>professional singer</strong> and share my music with the world. I want to inspire people, evoke emotions, and connect hearts through my voice. At the same time, I continue to explore technology and hope to blend creativity with innovation in meaningful ways.
               </p>
             </motion.div>
-            {/* Quick Facts */}
+            {/* Fun Facts */}
             <motion.div className="bg-dark rounded-lg shadow-xl p-8 shadow-primary/10" variants={cardVariants} whileHover={{ y: -10, transition: { duration: 0.2 } }}>
-              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Quick Facts</h3>
+              <h3 className="text-2xl font-bold text-primary mb-4 font-montserrat">Fun Facts</h3>
               <ul className="space-y-2 text-grey list-disc list-inside">
-                <li><strong>Name:</strong> Suvojeet Sengupta</li>
-                <li><strong>Profession:</strong> Singer | Student | Content Creator</li>
-                <li><strong>Languages:</strong> Hindi & Bengali</li>
-                <li><strong>Inspiration:</strong> Arijit Singh</li>
-                <li><strong>Platform:</strong> YouTube channel “Suvojeet Sengupta”</li>
-                <li><strong>Personality:</strong> Tech-savvy, disciplined, and music-focused</li>
+                <li>Singing is my default mood-lifter—I hum even while doing daily chores!</li>
+                <li>I love learning new things in tech just as much as I love experimenting with melodies.</li>
+                <li>My singing is self-taught, but I constantly work on improving my vocal techniques.</li>
+                <li>I strongly believe in following passion while balancing education and curiosity.</li>
               </ul>
             </motion.div>
           </div>
