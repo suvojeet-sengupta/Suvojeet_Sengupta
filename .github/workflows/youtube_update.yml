@@ -44,8 +44,8 @@ jobs:
         with:
           commit_message: "Automated: Update YouTube videos and sitemap"
           file_pattern: src/data/videos.json public/sitemap.xml
-          commit_user_name: suvojit213
+          commit_user_name: suvojeet-sengupta
           commit_user_email: suvojitsengupta21@gmail.com
-          commit_author: suvojit213 <suvojitsengupta21@gmail.com>
+          commit_author: suvojeet-sengupta <suvojitsengupta21@gmail.com>
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}

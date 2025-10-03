@@ -38,7 +38,7 @@ const Footer = ({ visitorCount }) => {
           <p className="text-sm mt-4 sm:mt-0">
             Designed & Built by{' '}
             <a
-              href="https://github.com/suvojit213"
+              href="https://github.com/suvojeet-sengupta"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
