@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/build/*", "/static/*", "/assets/*", "/logo.svg", "/manifest.json", "/robots.txt", "/sitemap.xml", "/suvojeet.jpg", "/index.html", "/49cf9b2bd59c466ab243a7e3ebaf73b4.txt"],
+  "fallbacks": {
+    "/index.html": "/index.html"
+  }
+}
