@@ -1,0 +1,42 @@
+export const projects = [
+  {
+    id: 1,
+    title: "Weather App",
+    description: "A modern, professional weather application providing real-time forecasts and detailed weather data with a clean, intuitive interface.",
+    link: "https://github.com/suvojeet-sengupta/Weather-App",
+    tags: ["React", "API Integration", "UI/UX"],
+    icon: "cloud",
+  },
+  {
+    id: 2,
+    title: "Notes App",
+    description: "A simple yet powerful notes application for quick capture and organization of thoughts, supporting Markdown and cloud synchronization.",
+    link: "https://github.com/suvojeet-sengupta/Notes-App",
+    tags: ["React", "Local Storage", "Productivity"],
+    icon: "note",
+  },
+  {
+    id: 3,
+    title: "Advisor Desk",
+    description: "A comprehensive project management and advisory dashboard designed to streamline workflow and decision-making for a professional setting.",
+    link: "https://github.com/suvojeet-sengupta/Advisor-Desk",
+    tags: ["React", "Dashboard", "Data Visualization"],
+    icon: "briefcase",
+  },
+  {
+    id: 4,
+    title: "Android Custom ROMs & Kernels",
+    description: "Various contributions to the Android open-source community, including custom ROMs, device trees, and optimized kernels for specific devices (e.g., Xiaomi Sky).",
+    link: "https://github.com/suvojeet-sengupta?tab=repositories&q=android",
+    tags: ["Android", "Linux Kernel", "Open Source", "Device Development"],
+    icon: "android",
+  },
+  {
+    id: 5,
+    title: "Personal Website",
+    description: "This very website, a platform to showcase my music, technical projects, and personal journey, built with React and Tailwind CSS.",
+    link: "https://github.com/suvojeet-sengupta/Suvojeet_Sengupta",
+    tags: ["React", "Tailwind CSS", "Web Development", "Portfolio"],
+    icon: "globe",
+  },
+];

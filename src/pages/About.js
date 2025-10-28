@@ -3,6 +3,7 @@ import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from '../components/contact/SocialLinks';
 import { Helmet } from 'react-helmet-async';
+import ProjectsSection from '../components/projects/ProjectsSection';
 
 // Reducer function for form state management
 const formInitialState = {
@@ -242,6 +243,9 @@ const About = () => {
             </motion.div>
           </div>
         </motion.div>
+
+        {/* Technical Projects Section */}
+        <ProjectsSection />
 
         {/* New Contact Form Section */}
         <motion.section
