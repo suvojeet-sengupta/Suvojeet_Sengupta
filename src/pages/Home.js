@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import SocialLinks from '../components/contact/SocialLinks';
 import suvojeet from '../assets/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,26 +8,8 @@ import videos from '../data/videos.json';
 import VideoCard from '../components/video/VideoCard';
 import Button from '../components/common/Button';
 import { Helmet } from 'react-helmet-async';
-
-// Reducer function for form state management
-const formInitialState = {
-  status: 'idle', // 'idle', 'submitting', 'success', 'error'
-  message: null,
-};
-
-function formReducer(state, action) {
-  switch (action.type) {
-    case 'SUBMIT':
-      return { ...state, status: 'submitting', message: null };
-    case 'SUCCESS':
-      return { ...state, status: 'success', message: action.payload };
-    case 'ERROR':
-      return { ...state, status: 'error', message: action.payload };
-    default:
-      throw new Error(`Unhandled action type: ${action.type}`);
-  }
-}
-
+import useContactForm from '../hooks/useContactForm';
+import SkeletonCard from '../components/common/SkeletonCard';
 
 /**
  * The Home page component.
@@ -39,7 +21,7 @@ function formReducer(state, action) {
  * - A contact form that submits to formsubmit.co.
  */
 const Home = () => {
-  const [formState, dispatch] = useReducer(formReducer, formInitialState);
+  const { formState, submitForm } = useContactForm();
   const { posts, loading, error } = useBlogPosts();
 
   /**
@@ -48,8 +30,6 @@ const Home = () => {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: 'SUBMIT' });
-
     const form = e.target;
     const formData = new FormData(form);
     const data = {};
@@ -57,28 +37,9 @@ const Home = () => {
       data[key] = value;
     }
 
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        dispatch({ type: 'SUCCESS', payload: 'Thanks for your message! I will get back to you soon.' });
-        form.reset();
-      } else {
-        const responseData = await response.json();
-        const errorMessage = responseData.errors 
-          ? responseData.errors.map(error => error.message).join(", ")
-          : 'Oops! There was a problem submitting your form';
-        dispatch({ type: 'ERROR', payload: errorMessage });
-      }
-    } catch (error) {
-      dispatch({ type: 'ERROR', payload: 'Something went wrong. Please try again.' });
+    const success = await submitForm(data);
+    if (success) {
+      form.reset();
     }
   };
 
@@ -184,10 +145,20 @@ const Home = () => {
           <h2 className="text-center mb-12">
             Latest From The Blog
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-s-3 gap-8">
-            {!loading && !error && posts.slice(0, 3).map(post => (
-              <BlogPostCard key={post.sys.id} post={post} />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading ? (
+              // Show Skeleton Cards while loading
+              Array.from({ length: 3 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))
+            ) : !error && posts.length > 0 ? (
+              posts.slice(0, 3).map(post => (
+                <BlogPostCard key={post.sys.id} post={post} />
+              ))
+            ) : (
+              // Fallback if no posts or error (optional: add error UI)
+              <p className="text-center col-span-full text-grey">No posts found.</p>
+            )}
           </div>
           <div className="mt-12 text-center">
             <Button to="/blog">View All Posts</Button>
