@@ -2,7 +2,7 @@
 
 import React from 'react';
 import SocialLinks from '../contact/SocialLinks';
-import suvojeet from '@/assets/suvojeet.jpg';
+const suvojeet = '/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 import useBlogPosts from '@/hooks/useBlogPosts';
 import BlogPostCard from '../blog/BlogPostCard';
