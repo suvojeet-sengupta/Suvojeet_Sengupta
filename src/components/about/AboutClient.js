@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useReducer } from 'react';
-import suvojeet from '@/assets/suvojeet.jpg';
+const suvojeet = '/suvojeet.jpg';
 import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 
