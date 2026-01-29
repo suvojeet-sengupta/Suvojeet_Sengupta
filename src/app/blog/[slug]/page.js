@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import BlogPostClient from "@/components/blog/BlogPostClient";
 import client from "@/services/contentful";
 
