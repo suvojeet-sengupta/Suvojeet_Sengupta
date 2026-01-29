@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import VideoPageClient from "@/components/video/VideoPageClient";
 import videos from '@/data/videos.json';
 
