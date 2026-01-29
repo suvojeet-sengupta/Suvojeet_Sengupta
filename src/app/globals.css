@@ -766,11 +766,13 @@ body {
   color: var(--text-primary);
 }
 
-.text-gray-300 {
+.text-gray-300,
+.text-grey {
   color: var(--text-secondary);
 }
 
-.text-gray-400 {
+.text-gray-400,
+.text-grey-2 {
   color: var(--text-tertiary);
 }
 
