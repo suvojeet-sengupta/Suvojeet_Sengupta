@@ -1,0 +1,34 @@
+[
+    {
+        "name": "SuvMusic",
+        "description": "A high-performance music application demonstrating advanced streaming and media handling capabilities.",
+        "language": "Kotlin",
+        "stars": 43,
+        "url": "https://github.com/suvojeet-sengupta/SuvMusic",
+        "lastUpdated": "2026-01-25"
+    },
+    {
+        "name": "NoteNext",
+        "description": "A modern, intuitive note-taking application built with native Android best practices.",
+        "language": "Kotlin",
+        "stars": 4,
+        "url": "https://github.com/suvojeet-sengupta/NoteNext",
+        "lastUpdated": "2026-01-06"
+    },
+    {
+        "name": "AuroraWeather",
+        "description": "A cross-platform weather application showcasing complex API integration and responsive UI design.",
+        "language": "Dart",
+        "stars": 3,
+        "url": "https://github.com/suvojeet-sengupta/AuroraWeather",
+        "lastUpdated": "2025-12-22"
+    },
+    {
+        "name": "Advisor-Desk",
+        "description": "A cross-platform advisory management tool, focusing on secure data management and user roles.",
+        "language": "Dart",
+        "stars": 2,
+        "url": "https://github.com/suvojeet-sengupta/Advisor-Desk",
+        "lastUpdated": "2025-12-26"
+    }
+]

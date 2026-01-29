@@ -1,22 +1,27 @@
 import HomePage from '@/components/home/HomePage';
 
 export const metadata = {
-  title: 'Suvojeet Sengupta - Official Website',
-  description: 'Welcome to the official website of Suvojeet Sengupta, a talented singer, performer, and composer. Explore his music, biography, and get in touch for collaborations and events.',
+  title: 'Suvojeet Sengupta | The Vibe Architect',
+  description: 'Product-First Software Engineer, System Architect, and Singer based in India. Specializing in mobile development with Android/Flutter, delivering complex applications with enterprise-grade precision.',
   openGraph: {
-    title: 'Suvojeet Sengupta - Official Website',
-    description: 'Singer • Performer • Composer',
-    url: 'https://suvojeetsengupta.com',
+    title: 'Suvojeet Sengupta | The Vibe Architect',
+    description: 'Singer • Android Vibe Coder • System Architect',
+    url: 'https://suvojeetsengupta.in',
     siteName: 'Suvojeet Sengupta',
     images: [
       {
-        url: 'https://suvojeetsengupta.com/og-image.jpg', // Replace with actual OG image if available
+        url: '/suvojeet.jpg',
         width: 1200,
         height: 630,
       },
     ],
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Suvojeet Sengupta | The Vibe Architect',
+    description: 'Singer • Android Vibe Coder • System Architect',
   },
 };
 
