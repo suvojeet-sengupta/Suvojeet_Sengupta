@@ -1,53 +1,104 @@
+"use client";
+
 import React from 'react';
-import SocialLinks from '../contact/SocialLinks';
 import Link from 'next/link';
+import SocialLinks from '../contact/SocialLinks';
 import Newsletter from '../contact/Newsletter';
 import LiveIndicator from '../common/LiveIndicator';
 
 const Footer = ({ visitorCount }) => {
+  const currentYear = new Date().getFullYear();
+
+  const quickLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/music', label: 'Music' },
+    { href: '/blog', label: 'Blog' },
+  ];
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-light)]">
       <Newsletter />
-      <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-6 md:mb-0 text-center md:text-left">
-            <h3 className="text-2xl font-bold mb-2">Suvojeet</h3>
-            <p className="text-gray-400">
-              Singer, Developer, and Content Creator.
+
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          {/* Brand Section */}
+          <div className="text-center md:text-left">
+            <Link href="/" className="inline-block mb-4">
+              <h3 className="text-2xl font-bold font-montserrat gradient-text">
+                Suvojeet
+              </h3>
+            </Link>
+            <p className="text-[var(--text-secondary)] text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
+              Singer, Android Vibe Coder, and System Architect. Building production-grade mobile applications with architectural precision.
             </p>
           </div>
-          <div className="mb-6 md:mb-0 text-center">
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <ul className="flex flex-wrap justify-center md:justify-start space-x-4 sm:space-x-6">
-              <li><Link href="/" className="hover:text-gray-300 transition-colors duration-300">Home</Link></li>
-              <li><Link href="/about" className="hover:text-gray-300 transition-colors duration-300">About</Link></li>
-              <li><Link href="/music" className="hover:text-gray-300 transition-colors duration-300">Music</Link></li>
-              <li><Link href="/blog" className="hover:text-gray-300 transition-colors duration-300">Blog</Link></li>
+
+          {/* Quick Links */}
+          <div className="text-center">
+            <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+              Quick Links
+            </h4>
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+              {quickLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 text-sm"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          <div className="text-center">
-            <h3 className="text-xl font-semibold mb-4">Follow Me</h3>
-            <SocialLinks />
+
+          {/* Social Links */}
+          <div className="text-center md:text-right">
+            <h4 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+              Connect
+            </h4>
+            <div className="flex justify-center md:justify-end">
+              <SocialLinks size="small" />
+            </div>
           </div>
         </div>
-        <div className="mt-8 border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center text-gray-500">
-          <p className="text-sm">
-            &copy; {new Date().getFullYear()} Suvojeet Sengupta. All Rights Reserved.
-          </p>
-          <p className="text-sm mt-4 sm:mt-0">
-            Designed & Built by{' '}
-            <a
-              href="https://github.com/suvojeet-sengupta"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary transition-colors"
-            >
-              Suvojeet Sengupta
-            </a>
-          </p>
-          <div className="md:hidden mt-4 sm:mt-0">
-            {visitorCount > 0 && <LiveIndicator count={visitorCount} text={visitorCount === 1 ? 'visitor online' : 'visitors online'} />}
+
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-[var(--border-light)]">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-[var(--text-muted)] text-sm">
+              © {currentYear} Suvojeet Sengupta. All Rights Reserved.
+            </p>
+
+            <div className="flex items-center gap-6">
+              {visitorCount > 0 && (
+                <LiveIndicator
+                  count={visitorCount}
+                  text={visitorCount === 1 ? 'visitor online' : 'visitors online'}
+                />
+              )}
+              <p className="text-[var(--text-muted)] text-sm">
+                Designed with{' '}
+                <span className="text-red-500">♥</span>
+                {' '}by{' '}
+                <a
+                  href="https://github.com/suvojeet-sengupta"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--accent-primary)] hover:underline"
+                >
+                  Suvojeet
+                </a>
+              </p>
+            </div>
+          </div>
+
+          {/* Quote */}
+          <div className="mt-6 text-center">
+            <p className="text-[var(--text-muted)] text-sm italic">
+              "Bolne wale sirf shor karte hain, dekhne wale khel samajh jate hain."
+            </p>
           </div>
         </div>
       </div>
