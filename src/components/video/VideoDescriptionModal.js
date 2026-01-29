@@ -14,22 +14,16 @@ const VideoDescriptionModal = ({ video, onClose }) => {
     if (video) {
       document.addEventListener('keydown', handleKeyDown);
       modalRef.current?.focus();
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
     };
   }, [video, onClose]);
 
   if (!video) return null;
-
-  const handleBlur = (event) => {
-    const relatedTarget = event.relatedTarget;
-    if (modalRef.current && !modalRef.current.contains(relatedTarget)) {
-      // If focus tries to escape, bring it back to the first focusable element
-      modalRef.current.focus();
-    }
-  };
 
   return (
     <AnimatePresence>
@@ -37,29 +31,50 @@ const VideoDescriptionModal = ({ video, onClose }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         onClick={onClose}
-        onBlur={handleBlur}
       >
         <motion.div
           ref={modalRef}
           tabIndex="-1"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 50, opacity: 0 }}
-          className="bg-dark rounded-lg shadow-xl p-8 max-w-2xl w-full mx-4"
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          className="card-elevated rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-2xl font-bold text-primary mb-4">{video.title}</h2>
-          <div className="text-grey text-base max-h-96 overflow-y-auto" style={{ whiteSpace: 'pre-wrap' }}>
-            {video.description}
+          {/* Header */}
+          <div className="flex items-start justify-between mb-6">
+            <h2 className="text-2xl font-bold text-[var(--text-primary)] pr-4">{video.title}</h2>
+            <button
+              onClick={onClose}
+              className="w-10 h-10 rounded-xl bg-[var(--bg-tertiary)] flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--accent-primary)]/20 transition-all flex-shrink-0"
+              aria-label="Close modal"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="mt-6 px-6 py-2 bg-primary text-dark font-bold rounded-lg hover:bg-opacity-80 transition duration-300"
+
+          {/* Content */}
+          <div
+            className="flex-1 overflow-y-auto text-[var(--text-secondary)] leading-relaxed pr-2 custom-scrollbar"
+            style={{ whiteSpace: 'pre-wrap' }}
           >
-            Close
-          </button>
+            {video.description || 'No description available.'}
+          </div>
+
+          {/* Footer */}
+          <div className="mt-6 pt-6 border-t border-[var(--border-subtle)] flex justify-end">
+            <button
+              onClick={onClose}
+              className="btn-primary"
+            >
+              Close
+            </button>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
