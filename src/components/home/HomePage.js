@@ -130,7 +130,7 @@ const HomePage = () => {
             {/* ========================================
                 HERO SECTION
             ======================================== */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+            <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-16 pb-8 sm:pt-20 sm:pb-0">
                 {/* Background Effects */}
                 <div className="hero-gradient" />
                 <div className="blob-1 animate-blob" />
@@ -139,7 +139,7 @@ const HomePage = () => {
 
                 {/* Hero Content */}
                 <motion.div
-                    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center"
+                    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center safe-area-inset"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -158,7 +158,7 @@ const HomePage = () => {
                     {/* Name & Title */}
                     <motion.h1
                         variants={itemVariants}
-                        className="text-4xl sm:text-5xl md:text-7xl font-bold font-montserrat mb-4"
+                        className="text-3xl sm:text-5xl md:text-7xl font-bold font-montserrat mb-3 sm:mb-4"
                     >
                         <span className="gradient-text">Suvojeet Sengupta</span>
                     </motion.h1>
@@ -172,17 +172,17 @@ const HomePage = () => {
 
                     <motion.p
                         variants={itemVariants}
-                        className="text-lg md:text-xl text-[var(--text-tertiary)] mb-8 flex items-center justify-center gap-3 flex-wrap"
+                        className="text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
                     >
-                        <span className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-[var(--accent-creative)]" fill="currentColor" viewBox="0 0 24 24">
+                        <span className="flex items-center gap-1.5 sm:gap-2">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-creative)]" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
                             </svg>
                             Singer
                         </span>
                         <span className="text-[var(--accent-primary)]">•</span>
-                        <span className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-[var(--accent-primary)]" fill="currentColor" viewBox="0 0 24 24">
+                        <span className="flex items-center gap-1.5 sm:gap-2">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-primary)]" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M17.6 11.48L19.44 9.64a1.12 1.12 0 0 0 0-1.58 1.1 1.1 0 0 0-1.59 0L16 9.9V6.62a9.89 9.89 0 0 0-12.34.43c-4.09 3.53-4.52 9.72-.97 13.81a9.89 9.89 0 0 0 15.08.78c3.43-3.77 3.27-9.53-.35-12.96L17.6 11.48z" />
                             </svg>
                             Android Vibe Coder
@@ -192,9 +192,9 @@ const HomePage = () => {
                     {/* CTA Buttons */}
                     <motion.div
                         variants={itemVariants}
-                        className="flex flex-wrap items-center justify-center gap-4 mb-12"
+                        className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 w-full max-w-sm sm:max-w-none mx-auto"
                     >
-                        <Link href="/music" className="btn-creative inline-flex items-center gap-2">
+                        <Link href="/music" className="btn-creative inline-flex items-center justify-center gap-2 w-full sm:w-auto">
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -205,7 +205,7 @@ const HomePage = () => {
                             href="https://github.com/suvojeet-sengupta"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="btn-secondary inline-flex items-center gap-2"
+                            className="btn-secondary inline-flex items-center justify-center gap-2 w-full sm:w-auto"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
@@ -220,9 +220,9 @@ const HomePage = () => {
                     </motion.div>
                 </motion.div>
 
-                {/* Scroll Indicator */}
+                {/* Scroll Indicator - hidden on very small screens */}
                 <motion.div
-                    className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+                    className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 0.5 }}
@@ -243,11 +243,11 @@ const HomePage = () => {
                 PROFESSIONAL PROFILE SECTION
             ======================================== */}
             <motion.section
-                className="py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
+                className="py-16 sm:py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto text-center">
@@ -295,21 +295,39 @@ const HomePage = () => {
                 CORE COMPETENCIES SECTION
             ======================================== */}
             <motion.section
-                className="py-24 bg-[var(--bg-primary)]"
+                className="py-16 sm:py-24 bg-[var(--bg-primary)]"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-12"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-8 sm:mb-12"
                     >
                         Core <span className="gradient-text">Competencies</span>
                     </motion.h2>
 
-                    <motion.div variants={itemVariants} className="max-w-4xl mx-auto overflow-x-auto">
+                    {/* Mobile Cards View */}
+                    <motion.div variants={itemVariants} className="md:hidden space-y-4">
+                        {competencies.map((item, index) => (
+                            <div key={index} className="card p-5">
+                                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{item.domain}</h3>
+                                <p className="text-sm text-[var(--text-secondary)] mb-3">{item.focus}</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {item.tech.split(', ').map((tech, i) => (
+                                        <span key={i} className="text-xs px-2 py-1 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </motion.div>
+
+                    {/* Desktop Table View */}
+                    <motion.div variants={itemVariants} className="hidden md:block max-w-4xl mx-auto overflow-x-auto">
                         <table className="table-modern w-full">
                             <thead>
                                 <tr>
@@ -338,24 +356,24 @@ const HomePage = () => {
                 ENGINEERING PHILOSOPHY SECTION
             ======================================== */}
             <motion.section
-                className="py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
+                className="py-16 sm:py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold font-montserrat mb-4">
+                    <motion.div variants={itemVariants} className="text-center mb-10 sm:mb-16">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat mb-3 sm:mb-4">
                             Logic-First <span className="gradient-text">Development</span>
                         </h2>
-                        <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
+                        <p className="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto px-2">
                             A structured, three-stage pipeline designed for maximum efficiency and code quality.
                             Logic-First, Syntax-Second ensures every line of code serves a validated architectural purpose.
                         </p>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 max-w-5xl mx-auto">
                         {pipeline.map((item, index) => (
                             <motion.div
                                 key={index}
@@ -363,11 +381,11 @@ const HomePage = () => {
                                 className="step-card relative"
                             >
                                 <div className="step-number">{item.step}</div>
-                                <div className="flex items-center gap-3 mb-3">
+                                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                                     <span className="text-[var(--accent-primary)]">{item.icon}</span>
-                                    <h3 className="text-xl font-bold text-[var(--text-primary)]">{item.title}</h3>
+                                    <h3 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">{item.title}</h3>
                                 </div>
-                                <p className="text-[var(--text-secondary)] text-sm">{item.description}</p>
+                                <p className="text-[var(--text-secondary)] text-xs sm:text-sm">{item.description}</p>
                                 {index < pipeline.length - 1 && (
                                     <div className="step-connector hidden md:block" />
                                 )}
@@ -381,25 +399,25 @@ const HomePage = () => {
                 TECHNICAL ARSENAL SECTION
             ======================================== */}
             <motion.section
-                className="py-24 bg-[var(--bg-primary)]"
+                className="py-16 sm:py-24 bg-[var(--bg-primary)]"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-12"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-8 sm:mb-12"
                     >
                         Technical <span className="gradient-text">Arsenal</span>
                     </motion.h2>
 
-                    <motion.div variants={itemVariants} className="max-w-4xl mx-auto space-y-8">
+                    <motion.div variants={itemVariants} className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
                         {/* Languages */}
                         <div>
-                            <h3 className="text-lg font-semibold text-[var(--text-secondary)] mb-4">Languages</h3>
-                            <div className="flex flex-wrap gap-3">
+                            <h3 className="text-base sm:text-lg font-semibold text-[var(--text-secondary)] mb-3 sm:mb-4">Languages</h3>
+                            <div className="flex flex-wrap gap-2 sm:gap-3">
                                 {techStack.languages.map((tech) => (
                                     <span key={tech} className="tech-badge">{tech}</span>
                                 ))}
@@ -408,8 +426,8 @@ const HomePage = () => {
 
                         {/* Frameworks */}
                         <div>
-                            <h3 className="text-lg font-semibold text-[var(--text-secondary)] mb-4">Frameworks & Platforms</h3>
-                            <div className="flex flex-wrap gap-3">
+                            <h3 className="text-base sm:text-lg font-semibold text-[var(--text-secondary)] mb-3 sm:mb-4">Frameworks & Platforms</h3>
+                            <div className="flex flex-wrap gap-2 sm:gap-3">
                                 {techStack.frameworks.map((tech) => (
                                     <span key={tech} className="tech-badge">{tech}</span>
                                 ))}
@@ -418,8 +436,8 @@ const HomePage = () => {
 
                         {/* Tools */}
                         <div>
-                            <h3 className="text-lg font-semibold text-[var(--text-secondary)] mb-4">Development Tools</h3>
-                            <div className="flex flex-wrap gap-3">
+                            <h3 className="text-base sm:text-lg font-semibold text-[var(--text-secondary)] mb-3 sm:mb-4">Development Tools</h3>
+                            <div className="flex flex-wrap gap-2 sm:gap-3">
                                 {techStack.tools.map((tech) => (
                                     <span key={tech} className="tech-badge">{tech}</span>
                                 ))}
@@ -433,22 +451,22 @@ const HomePage = () => {
                 FEATURED PROJECTS SECTION
             ======================================== */}
             <motion.section
-                className="py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
+                className="py-16 sm:py-24 bg-[var(--bg-secondary)] relative overflow-hidden"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-4"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
                     >
                         Featured <span className="gradient-text">Projects</span>
                     </motion.h2>
                     <motion.p
                         variants={itemVariants}
-                        className="text-[var(--text-secondary)] text-center mb-12 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Open-source projects demonstrating architectural complexity and product-first thinking.
                     </motion.p>
@@ -520,34 +538,34 @@ const HomePage = () => {
             ======================================== */}
             <motion.section
                 id="music"
-                className="py-24 bg-[var(--bg-primary)] relative overflow-hidden"
+                className="py-16 sm:py-24 bg-[var(--bg-primary)] relative overflow-hidden"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-4"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
                     >
                         Music <span className="gradient-text-creative">Showcase</span>
                     </motion.h2>
                     <motion.p
                         variants={itemVariants}
-                        className="text-[var(--text-secondary)] text-center mb-12 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Soulful covers and live performances from my musical journey.
                     </motion.p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                         {videos.slice(0, 3).map(video => (
                             <VideoCard key={video.id} video={video} />
                         ))}
                     </div>
-                    <div className="mt-12 text-center">
-                        <Link href="/music" className="btn-creative inline-flex items-center gap-2">
+                    <div className="mt-8 sm:mt-12 text-center">
+                        <Link href="/music" className="btn-creative inline-flex items-center justify-center gap-2 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                             </svg>
@@ -562,29 +580,29 @@ const HomePage = () => {
             ======================================== */}
             <motion.section
                 id="blog"
-                className="py-24 bg-[var(--bg-secondary)] relative"
+                className="py-16 sm:py-24 bg-[var(--bg-secondary)] relative"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
-                <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[var(--accent-primary)] opacity-10 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-[var(--accent-secondary)] opacity-10 rounded-full blur-3xl" />
+                <div className="absolute top-0 right-0 -mt-20 -mr-20 w-48 sm:w-96 h-48 sm:h-96 bg-[var(--accent-primary)] opacity-10 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-48 sm:w-96 h-48 sm:h-96 bg-[var(--accent-secondary)] opacity-10 rounded-full blur-3xl" />
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-4"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
                     >
                         Latest from the <span className="gradient-text">Blog</span>
                     </motion.h2>
                     <motion.p
                         variants={itemVariants}
-                        className="text-[var(--text-secondary)] text-center mb-12 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Thoughts on software architecture, mobile development, and technology.
                     </motion.p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
                         {loading ? (
                             Array.from({ length: 3 }).map((_, index) => (
                                 <SkeletonCard key={index} />
@@ -597,8 +615,8 @@ const HomePage = () => {
                             <p className="text-center col-span-full text-[var(--text-muted)]">No posts found.</p>
                         )}
                     </div>
-                    <div className="mt-12 text-center">
-                        <Link href="/blog" className="btn-primary inline-flex items-center gap-2">
+                    <div className="mt-8 sm:mt-12 text-center">
+                        <Link href="/blog" className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
                             View All Posts
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -613,29 +631,29 @@ const HomePage = () => {
             ======================================== */}
             <motion.section
                 id="contact"
-                className="py-24 bg-[var(--bg-primary)] relative overflow-hidden"
+                className="py-16 sm:py-24 bg-[var(--bg-primary)] relative overflow-hidden safe-area-bottom"
                 variants={sectionVariants}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: true, amount: 0.1 }}
             >
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <motion.h2
                         variants={itemVariants}
-                        className="text-3xl md:text-4xl font-bold font-montserrat text-center mb-4"
+                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
                     >
                         Get in <span className="gradient-text">Touch</span>
                     </motion.h2>
                     <motion.p
                         variants={itemVariants}
-                        className="text-[var(--text-secondary)] text-center mb-12 max-w-2xl mx-auto"
+                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
                     >
                         Open to discussing new architectural challenges, collaboration opportunities, and complex system design problems.
                     </motion.p>
 
                     <motion.div
                         variants={itemVariants}
-                        className="max-w-2xl mx-auto glass p-8 md:p-10 rounded-2xl"
+                        className="max-w-2xl mx-auto glass p-5 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl"
                     >
                         <AnimatePresence mode="wait">
                             {formState.status !== 'success' ? (
