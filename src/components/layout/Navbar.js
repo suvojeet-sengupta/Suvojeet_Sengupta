@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
@@ -13,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   // Effect to handle the navbar background change on scroll.
   useEffect(() => {
@@ -61,26 +65,25 @@ const Navbar = () => {
   };
 
   /**
-   * A wrapper around NavLink to add motion effects.
-   * @param {{to: string, children: React.ReactNode, style: object, onClick: function}} props - The props for the component.
-   * @returns {JSX.Element} The animated NavLink.
+   * A wrapper around Link to add motion effects.
    */
-  const NavLinkMotion = ({ to, children, style, onClick }) => (
+  const NavLinkMotion = ({ href, children, style, onClick }) => (
     <motion.div whileHover={{ scale: 1.1, color: '#f9a828' }} transition={{ duration: 0.2 }}>
-      <NavLink to={to} className="text-gray-300 transition-colors duration-300" style={style} onClick={onClick}>
+      <Link href={href} className="text-gray-300 transition-colors duration-300" style={style} onClick={onClick}>
         {children}
-      </NavLink>
+      </Link>
     </motion.div>
   );
+
+  const isActive = (path) => pathname === path;
 
   return (
     <motion.nav
       variants={navVariants}
       initial="initial"
       animate="animate"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        (isScrolled || isMenuOpen) ? 'bg-dark/70 backdrop-blur-lg shadow-lg' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${(isScrolled || isMenuOpen) ? 'bg-dark/70 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+        }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -90,18 +93,18 @@ const Navbar = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex-shrink-0"
           >
-            <NavLink to="/" className="text-2xl font-bold font-montserrat text-white">
+            <Link href="/" className="text-2xl font-bold font-montserrat text-white">
               Suvojeet
-            </NavLink>
+            </Link>
           </motion.div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            <NavLinkMotion to="/" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Home</NavLinkMotion>
-            <NavLinkMotion to="/about" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>About</NavLinkMotion>
-            <NavLinkMotion to="/music" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Music</NavLinkMotion>
-            <NavLinkMotion to="/blog" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Blog</NavLinkMotion>
-            <NavLinkMotion to="/posts" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>Posts</NavLinkMotion>
+            <NavLinkMotion href="/" style={isActive('/') ? activeLinkStyle : undefined}>Home</NavLinkMotion>
+            <NavLinkMotion href="/about" style={isActive('/about') ? activeLinkStyle : undefined}>About</NavLinkMotion>
+            <NavLinkMotion href="/music" style={isActive('/music') ? activeLinkStyle : undefined}>Music</NavLinkMotion>
+            <NavLinkMotion href="/blog" style={isActive('/blog') ? activeLinkStyle : undefined}>Blog</NavLinkMotion>
+            <NavLinkMotion href="/posts" style={isActive('/posts') ? activeLinkStyle : undefined}>Posts</NavLinkMotion>
           </div>
 
           <div className="flex items-center">
@@ -135,11 +138,11 @@ const Navbar = () => {
             exit="exit"
           >
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <NavLink to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Home</NavLink>
-              <NavLink to="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>About</NavLink>
-              <NavLink to="/music" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Music</NavLink>
-              <NavLink to="/blog" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Blog</NavLink>
-              <NavLink to="/posts" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={({ isActive }) => isActive ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Posts</NavLink>
+              <Link href="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={isActive('/') ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Home</Link>
+              <Link href="/about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={isActive('/about') ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>About</Link>
+              <Link href="/music" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={isActive('/music') ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Music</Link>
+              <Link href="/blog" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={isActive('/blog') ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Blog</Link>
+              <Link href="/posts" className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-primary hover:bg-gray-700" style={isActive('/posts') ? activeLinkStyle : undefined} onClick={() => setIsMenuOpen(false)}>Posts</Link>
             </div>
           </motion.div>
         )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const RelatedVideoCard = ({ video }) => {
@@ -14,7 +14,7 @@ const RelatedVideoCard = ({ video }) => {
       whileHover={{ y: -4, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)" }}
       className="rounded-lg"
     >
-      <Link to={`/video/${video.id}`} className="group flex items-start space-x-4 p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+      <Link href={`/video/${video.id}`} className="group flex items-start space-x-4 p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200">
         {/* --- IMPROVEMENT: Thumbnail container with hover effect --- */}
         <div className="relative w-32 h-20 flex-shrink-0">
           <img

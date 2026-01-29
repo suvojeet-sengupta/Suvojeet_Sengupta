@@ -1,171 +1,36 @@
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-# Suvojeet Sengupta - Personal Portfolio
+## Getting Started
 
-<p align="center">
-  <img src="public/logo.svg" alt="logo" width="120">
-</p>
+First, run the development server:
 
-<h3 align="center">Singer | Developer | Content Creator</h3>
-
-<p align="center">
-  <a href="https://suvojeetsengupta.in/"><strong>suvojeetsengupta.in</strong></a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
-  <img src="https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white" alt="Socket.io">
-  <img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Netlify">
-</p>
-
----
-
-## 🌟 About
-
-This is the source code for the personal portfolio website of **Suvojeet Sengupta**. The website showcases his work as a Singer, Developer, and Content Creator. It's a modern, single-page application built with the MERN stack, featuring a dynamic blog, a music portfolio, and real-time user engagement.
-
-## ✨ Features
-
-*   **🎤 Live Visitor Count:** Real-time display of current website visitors.
-*   **🎸 Emoji Reactions:** Interactive emoji reactions on blog posts and videos.
-*   **🎼 Music Showcase:** A dedicated page for musical work with embedded YouTube videos.
-*   **✍️ Dynamic Blog:** A blog section with articles fetched from Contentful CMS.
-*   **📱 Responsive Design:** Fully responsive and works seamlessly across all devices.
-*   **🚀 Automated Updates:** The music section is automatically updated with new videos from a YouTube channel via a GitHub Action.
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-*   **Framework:** [React](https://reactjs.org/)
-*   **Routing:** [React Router](https://reactrouter.com/)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **Animations:** [Framer Motion](https://www.framer.com/motion/)
-*   **CMS:** [Contentful](https://www.contentful.com/)
-*   **Real-time Communication:** [Socket.io Client](https://socket.io/docs/v4/client-api/)
-
-### Backend
-
-*   **Framework:** [Flask](https://flask.palletsprojects.com/)
-*   **Real-time Communication:** [Flask-SocketIO](https://flask-socketio.readthedocs.io/)
-*   **CORS:** [Flask-Cors](https://flask-cors.readthedocs.io/)
-*   **WSGI Server:** [Gunicorn](https://gunicorn.org/) & [Eventlet](http://eventlet.net/)
-
-### Deployment & CI/CD
-
-*   **Hosting:** [Netlify](https://www.netlify.com/)
-*   **CI/CD:** [GitHub Actions](https://github.com/features/actions)
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-*   Node.js (LTS version)
-*   npm or yarn
-*   Python 3.x
-*   pip
-
-### Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/suvojit213/Suvojeet_Sengupta.git
-    cd Suvojeet_Sengupta
-    ```
-
-2.  **Frontend Setup:**
-    ```bash
-    # Install dependencies
-    npm install
-
-    # Create a .env file in the root directory and add your Contentful API keys
-    REACT_APP_CONTENTFUL_SPACE_ID=YOUR_SPACE_ID
-    REACT_APP_CONTENTFUL_ACCESS_TOKEN=YOUR_ACCESS_TOKEN
-    ```
-
-3.  **Backend Setup:**
-    ```bash
-    # Navigate to the backend directory
-    cd backend
-
-    # Create a virtual environment
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-
-    # Install dependencies
-    pip install -r requirements.txt
-    ```
-
-### Running the Application
-
-1.  **Start the Backend Server:**
-    ```bash
-    # From the backend directory
-    python app.py
-    ```
-    The backend will be running at `http://localhost:5001`.
-
-2.  **Start the Frontend Development Server:**
-    ```bash
-    # From the root directory
-    npm start
-    ```
-    Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-## 📂 Project Structure
-
-```
-/
-├── backend/
-│   ├── app.py              # Flask backend with Socket.IO
-│   └── requirements.txt    # Python dependencies
-├── public/
-│   ├── index.html          # Main HTML file
-│   ├── logo.svg            # Website logo
-│   ├── manifest.json       # Web app manifest
-│   ├── robots.txt          # SEO optimization
-│   └── sitemap.xml         # Site navigation for search engines
-├── src/
-│   ├── assets/             # Images and other media
-│   ├── components/         # Reusable React components
-│   ├── data/               # Local data (e.g., videos.json)
-│   ├── hooks/              # Custom React hooks
-│   ├── App.js              # Main application component
-│   ├── index.js            # Entry point of the React app
-│   └── socket.js           # Socket.io client setup
-├── .github/
-│   └── workflows/
-│       ├── deploy.yml.disabled # Deployment workflow (disabled)
-│       └── youtube_update.yml  # YouTube video update workflow
-├── .gitignore
-├── netlify.toml            # Netlify deployment configuration
-├── package.json
-└── README.md
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## 📜 Available Scripts
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Frontend (from the root directory)
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-*   `npm start`: Runs the app in development mode.
-*   `npm test`: Launches the test runner.
-*   `npm run build`: Builds the app for production.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### Backend (from the `backend` directory)
+## Learn More
 
-*   `python app.py`: Starts the Flask development server.
-*   `gunicorn --worker-class eventlet -w 1 app:app`: Runs the app with Gunicorn for production.
+To learn more about Next.js, take a look at the following resources:
 
-## 🤝 Contributing
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-This is a personal portfolio project and is not actively seeking external contributions. However, if you find any issues or have suggestions, please feel free to open an issue.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 📄 License
+## Deploy on Vercel
 
-This project is proprietary and the code is not available under any open-source license. All rights are reserved. See the [LICENSE](LICENSE) file for details.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 📬 Contact
-
-*   **Email:** [suvojitsengupta21@gmail.com](mailto:suvojitsengupta21@gmail.com)
-*   **GitHub:** [suvojit213](https://github.com/suvojit213)
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

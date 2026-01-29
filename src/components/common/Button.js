@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const Button = ({ to, children, onClick, primary = true, className = '' }) => {
@@ -18,7 +18,7 @@ const Button = ({ to, children, onClick, primary = true, className = '' }) => {
   if (to) {
     return (
       <motion.div {...motionProps}>
-        <Link to={to} className={buttonClasses}>
+        <Link href={to} className={buttonClasses}>
           {children}
         </Link>
       </motion.div>
