@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import GenerativePlaceholder from '../common/GenerativePlaceholder';
 import Button from '../common/Button';
@@ -29,7 +28,7 @@ const BlogCard = ({ post }) => {
       variants={itemVariants}
       whileHover={{ y: -5, boxShadow: "0px 10px 20px rgba(249, 168, 40, 0.2)" }}
     >
-      <Link to={`/blog/${slug}`}>
+      <Link href={`/blog/${slug}`}>
         {featuredImage ? (
           <img
             className="w-full h-56 object-cover object-center"
