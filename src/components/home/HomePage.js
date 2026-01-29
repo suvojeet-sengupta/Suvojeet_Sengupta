@@ -172,7 +172,7 @@ const HomePage = () => {
 
                     <motion.p
                         variants={itemVariants}
-                        className="text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] mb-6 sm:mb-8 flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
+                        className="text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] mb-3 sm:mb-4 flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
                     >
                         <span className="flex items-center gap-1.5 sm:gap-2">
                             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-creative)]" fill="currentColor" viewBox="0 0 24 24">
@@ -187,6 +187,14 @@ const HomePage = () => {
                             </svg>
                             Android Vibe Coder
                         </span>
+                    </motion.p>
+
+                    {/* Music Passion Tagline */}
+                    <motion.p
+                        variants={itemVariants}
+                        className="text-sm sm:text-base text-[var(--text-muted)] mb-6 sm:mb-8 italic max-w-lg mx-auto"
+                    >
+                        "Singing since childhood • Inspired by <span className="text-[var(--accent-creative)] font-medium not-italic">Arijit Singh</span> • Music is not just a hobby, it's a part of my life"
                     </motion.p>
 
                     {/* CTA Buttons */}
@@ -556,7 +564,8 @@ const HomePage = () => {
                         variants={itemVariants}
                         className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
                     >
-                        Soulful covers and live performances from my musical journey.
+                        Singing is in my soul since childhood. Inspired by <span className="text-[var(--accent-creative)] font-medium">Arijit Singh</span>,
+                        music is not just a passion — it's a part of who I am. Without music, I simply can't live.
                     </motion.p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
