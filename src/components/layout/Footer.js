@@ -1,6 +1,6 @@
 import React from 'react';
 import SocialLinks from '../contact/SocialLinks';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Newsletter from '../contact/Newsletter';
 import LiveIndicator from '../common/LiveIndicator';
 
@@ -20,10 +20,10 @@ const Footer = ({ visitorCount }) => {
           <div className="mb-6 md:mb-0 text-center">
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="flex flex-wrap justify-center md:justify-start space-x-4 sm:space-x-6">
-              <li><Link to="/" className="hover:text-gray-300 transition-colors duration-300">Home</Link></li>
-              <li><Link to="/about" className="hover:text-gray-300 transition-colors duration-300">About</Link></li>
-              <li><Link to="/music" className="hover:text-gray-300 transition-colors duration-300">Music</Link></li>
-              <li><Link to="/blog" className="hover:text-gray-300 transition-colors duration-300">Blog</Link></li>
+              <li><Link href="/" className="hover:text-gray-300 transition-colors duration-300">Home</Link></li>
+              <li><Link href="/about" className="hover:text-gray-300 transition-colors duration-300">About</Link></li>
+              <li><Link href="/music" className="hover:text-gray-300 transition-colors duration-300">Music</Link></li>
+              <li><Link href="/blog" className="hover:text-gray-300 transition-colors duration-300">Blog</Link></li>
             </ul>
           </div>
           <div className="text-center">

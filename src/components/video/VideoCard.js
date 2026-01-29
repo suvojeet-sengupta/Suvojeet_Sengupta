@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import Button from '../common/Button';
 
 const VideoCard = ({ video }) => {
@@ -10,7 +10,7 @@ const VideoCard = ({ video }) => {
   };
 
   return (
-    <Link to={`/video/${video.id}`}>
+    <Link href={`/video/${video.id}`}>
       <motion.div
         key={video.id}
         className="bg-dark rounded-lg shadow-xl overflow-hidden shadow-primary/10 group"
