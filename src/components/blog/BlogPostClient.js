@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import Link from 'next/link';
 
 import useBlogPosts from '@/hooks/useBlogPosts';
 import { socket } from '@/services/socket';
@@ -11,10 +12,6 @@ import EmojiReactionButton from '../common/EmojiReactionButton';
 import FloatingEmoji from '../common/FloatingEmoji';
 import LiveIndicator from '../common/LiveIndicator';
 
-/**
- * The BlogPost page component.
- * Displays a single blog post with real-time features like viewer count and emoji reactions.
- */
 const BlogPostClient = () => {
     const { slug } = useParams();
     const { posts } = useBlogPosts();
@@ -22,11 +19,9 @@ const BlogPostClient = () => {
     const [showCopied, setShowCopied] = useState(false);
     const [room, setRoom] = useState(null);
 
-    // Real-time state for viewer count and reactions.
     const [viewerCount, setViewerCount] = useState(0);
     const [reactions, setReactions] = useState([]);
 
-    // Effect to find the current post from the list of all posts.
     useEffect(() => {
         if (posts.length > 0 && slug) {
             const currentPost = posts.find((p) => p.fields.slug === slug);
@@ -37,19 +32,15 @@ const BlogPostClient = () => {
         }
     }, [slug, posts]);
 
-    // Effect to handle real-time socket events for the current blog post.
     useEffect(() => {
         if (!room) return;
 
-        // Join a room specific to this blog post to receive real-time updates.
         socket.emit('join_room', { room });
 
-        // Listen for viewer count updates.
         socket.on('update_viewer_count', (data) => {
             setViewerCount(data.count);
         });
 
-        // Listen for new emoji reactions.
         socket.on('new_reaction', (data) => {
             const newReaction = {
                 id: Date.now() + Math.random(),
@@ -58,7 +49,6 @@ const BlogPostClient = () => {
             setReactions(prev => [...prev, newReaction]);
         });
 
-        // Clean up socket listeners on component unmount.
         return () => {
             socket.emit('leave_room', { room });
             socket.off('update_viewer_count');
@@ -66,18 +56,10 @@ const BlogPostClient = () => {
         };
     }, [room]);
 
-    /**
-     * Removes a reaction from the state after its animation is complete.
-     * @param {number} reactionId - The ID of the reaction to remove.
-     */
     const handleAnimationComplete = (reactionId) => {
         setReactions(prev => prev.filter(r => r.id !== reactionId));
     };
 
-    /**
-     * Handles the share functionality.
-     * Uses the Web Share API if available, otherwise copies the URL to the clipboard.
-     */
     const handleShare = () => {
         const url = window.location.href;
         if (navigator.share) {
@@ -97,19 +79,32 @@ const BlogPostClient = () => {
         }
     };
 
-    // Display a loading message while the post is being fetched.
+    // Loading State
     if (!post) {
         return (
-            <div className="bg-dark text-white min-h-screen flex items-center justify-center">
-                <div className="text-xl">Loading...</div>
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center animate-pulse">
+                        <svg className="w-8 h-8 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                        </svg>
+                    </div>
+                    <p className="text-[var(--text-secondary)]">Loading article...</p>
+                </div>
             </div>
         );
     }
 
+    const publishedDate = new Date(post.fields.publishedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
     return (
-        <div className="bg-dark text-white relative pt-20">
+        <div className="min-h-screen relative pt-20">
             {/* Floating Emojis Container */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-50">
+            <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-50">
                 {reactions.map(reaction => (
                     <FloatingEmoji
                         key={reaction.id}
@@ -119,54 +114,125 @@ const BlogPostClient = () => {
                 ))}
             </div>
 
-            <motion.header
-                className="py-12 text-center"
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <h1 className="text-4xl font-bold mb-4 px-4">{post.fields.title}</h1>
-                <div className="flex justify-center items-center space-x-4 text-xs text-gray-400 mt-2">
-                    <span>Published on: {new Date(post.fields.publishedAt).toLocaleDateString()} by {post.fields.author}</span>
-                    <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'reader online' : 'readers online'} />
-                </div>
-            </motion.header>
+            {/* Hero Section */}
+            <section className="relative overflow-hidden py-16 sm:py-20">
+                <div className="hero-gradient" />
 
-            <main className="w-full max-w-4xl mx-auto px-4">
                 <motion.div
-                    className="bg-dark rounded-lg shadow-xl px-6 py-8 sm:p-12 mb-16 shadow-primary/10"
-                    initial={{ opacity: 0, y: 20 }}
+                    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-4xl"
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.6 }}
                 >
-                    {post.fields.coverImage?.fields?.file?.url && (
-                        <img
-                            src={`https:${post.fields.coverImage.fields.file.url}`}
-                            alt={post.fields.title}
-                            className="w-full h-auto rounded-lg mb-8"
-                        />
+                    {/* Back Link */}
+                    <Link
+                        href="/blog"
+                        className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors mb-8"
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Back to Blog
+                    </Link>
+
+                    {/* Tags */}
+                    {post.fields.tags && post.fields.tags.length > 0 && (
+                        <div className="flex flex-wrap justify-center gap-2 mb-6">
+                            {post.fields.tags.map(tag => (
+                                <span
+                                    key={tag}
+                                    className="text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
                     )}
-                    <div className="prose prose-invert max-w-none">
-                        {documentToReactComponents(post.fields.content)}
-                    </div>
-                    <div className="mt-8 flex justify-end items-center space-x-4">
-                        {room && <EmojiReactionButton room={room} />}
-                        <button
-                            onClick={handleShare}
-                            className="flex items-center px-4 py-2 font-bold text-dark bg-primary rounded-lg hover:bg-primary-dark transition-all duration-300 transform hover:scale-105 shadow-primary"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+
+                    {/* Title */}
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--text-primary)] mb-6 leading-tight">
+                        {post.fields.title}
+                    </h1>
+
+                    {/* Meta Info */}
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-[var(--text-muted)] mb-6">
+                        <span className="flex items-center gap-1.5">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Share
-                        </button>
+                            {publishedDate}
+                        </span>
+                        {post.fields.author && (
+                            <span className="flex items-center gap-1.5">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                {post.fields.author}
+                            </span>
+                        )}
+                        <LiveIndicator count={viewerCount} text={viewerCount === 1 ? 'reading' : 'reading'} />
                     </div>
                 </motion.div>
+            </section>
+
+            {/* Article Content */}
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+                <motion.article
+                    className="max-w-4xl mx-auto"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                    {/* Cover Image */}
+                    {post.fields.coverImage?.fields?.file?.url && (
+                        <div className="rounded-2xl overflow-hidden shadow-2xl mb-10">
+                            <img
+                                src={`https:${post.fields.coverImage.fields.file.url}`}
+                                alt={post.fields.title}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                    )}
+
+                    {/* Article Body */}
+                    <div className="card-elevated rounded-2xl p-8 sm:p-10 lg:p-12">
+                        <div className="prose prose-lg prose-invert max-w-none">
+                            {documentToReactComponents(post.fields.content)}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="mt-10 pt-8 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-between gap-4">
+                            <div className="flex items-center gap-3">
+                                {room && <EmojiReactionButton room={room} />}
+                            </div>
+
+                            <button
+                                onClick={handleShare}
+                                className="btn-primary flex items-center gap-2"
+                            >
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                </svg>
+                                Share Article
+                            </button>
+                        </div>
+                    </div>
+                </motion.article>
             </main>
+
+            {/* Copied Toast */}
             {showCopied && (
-                <div className="fixed bottom-10 right-10 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg">
+                <motion.div
+                    className="fixed bottom-6 right-6 bg-green-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2"
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 20 }}
+                >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
                     Copied to clipboard!
-                </div>
+                </motion.div>
             )}
         </div>
     );
