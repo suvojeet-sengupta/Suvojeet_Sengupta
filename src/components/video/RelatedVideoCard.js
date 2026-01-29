@@ -14,7 +14,7 @@ const RelatedVideoCard = ({ video }) => {
       whileHover={{ y: -4, boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)" }}
       className="rounded-lg"
     >
-      <Link href={`/video/${video.id}`} className="group flex items-start space-x-4 p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200">
+      <Link href={`/video/${video.id}`} className="group flex items-start space-x-4 p-3 rounded-xl hover:bg-[var(--bg-secondary)] transition-all duration-300">
         {/* --- IMPROVEMENT: Thumbnail container with hover effect --- */}
         <div className="relative w-32 h-20 flex-shrink-0">
           <img
@@ -35,12 +35,12 @@ const RelatedVideoCard = ({ video }) => {
         </div>
         <div className="overflow-hidden pt-1">
           {/* --- IMPROVEMENT: Title truncates if too long --- */}
-          <h4 className="text-sm font-semibold text-white leading-tight truncate" title={video.title}>
+          <h4 className="text-sm font-semibold text-[var(--text-primary)] leading-tight line-clamp-2" title={video.title}>
             {video.title}
           </h4>
-          <p className="text-xs text-gray-400 mt-1">Suvojeet Sengupta</p>
+          <p className="text-xs text-[var(--text-tertiary)] mt-1.5 font-medium">Suvojeet Sengupta</p>
           {/* --- IMPROVEMENT: Dynamic published date --- */}
-          <p className="text-xs text-gray-500 mt-1">{publishedDate}</p>
+          <p className="text-[10px] text-[var(--text-muted)] mt-1 uppercase tracking-wider font-semibold">{publishedDate}</p>
           {/* 
             SUGGESTION: If you had 'viewCount', you could combine it here, 
             e.g., `${viewCount} views • ${publishedDate}` 

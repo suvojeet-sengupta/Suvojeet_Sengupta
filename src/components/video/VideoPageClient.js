@@ -111,7 +111,7 @@ const VideoPageClient = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="container mx-auto px-4 pt-24 pb-8 text-white"
+            className="container mx-auto px-4 pt-24 pb-8"
         >
 
             <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-3 lg:gap-8">
@@ -156,7 +156,7 @@ const VideoPageClient = () => {
                                 </a>
                                 <button
                                     onClick={handleShare}
-                                    className="bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-300 flex items-center space-x-2"
+                                    className="btn-secondary flex items-center gap-2"
                                 >
                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path></svg>
                                     <span>Share</span>
@@ -166,9 +166,9 @@ const VideoPageClient = () => {
                     </div>
 
                     {video.description && (
-                        <div className="bg-gray-800 p-4 rounded-lg mb-6">
-                            <h2 className="text-xl font-semibold text-primary mb-2">Description</h2>
-                            <p className="text-gray-300 whitespace-pre-wrap">{video.description}</p>
+                        <div className="card-elevated p-6 mb-6">
+                            <h2 className="text-xl font-bold gradient-text mb-3">Description</h2>
+                            <p className="text-[var(--text-secondary)] whitespace-pre-wrap leading-relaxed">{video.description}</p>
                         </div>
                     )}
 
