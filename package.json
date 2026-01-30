@@ -12,12 +12,14 @@
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.6",
     "@contentful/rich-text-types": "^17.2.5",
+    "clsx": "^2.1.1",
     "contentful": "^11.10.3",
     "framer-motion": "^12.29.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "socket.io-client": "^4.8.3"
+    "socket.io-client": "^4.8.3",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
