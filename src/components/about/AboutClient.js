@@ -4,6 +4,8 @@ import React, { useReducer } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { timeline, skills, philosophy, futureGoals } from '@/data/aboutData';
 
 const suvojeet = '/suvojeet.jpg';
 
@@ -85,39 +87,6 @@ const AboutClient = () => {
         transition: { duration: 0.3 }
     };
 
-    // Timeline data
-    const timeline = [
-        {
-            year: "2005",
-            title: "Birth & Early Years",
-            description: "Born on 1st August in Asansol, West Bengal. Started humming Kishore Kumar songs as a child."
-        },
-        {
-            year: "2015",
-            title: "Discovering Passion",
-            description: "Realized singing was more than a hobby—it became a part of my identity. Started self-practice."
-        },
-        {
-            year: "2020",
-            title: "Tech Meets Music",
-            description: "Combined technology skills with music passion. Started creating apps and websites."
-        },
-        {
-            year: "Present",
-            title: "The Journey Continues",
-            description: "Pursuing BA in Arts while building SuvMusic, NoteNext, and sharing music with the world."
-        }
-    ];
-
-    // Skills data
-    const skills = [
-        { name: "Singing", level: 90, icon: "🎤" },
-        { name: "Music Production", level: 70, icon: "🎵" },
-        { name: "Android Development", level: 95, icon: "📱" },
-        { name: "Web Development", level: 85, icon: "🌐" },
-        { name: "UI/UX Design", level: 80, icon: "🎨" },
-    ];
-
     return (
         <div className="min-h-screen pt-20">
             {/* Hero Section */}
@@ -145,10 +114,13 @@ const AboutClient = () => {
                                     whileHover={{ scale: 1.02 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <img
+                                    <Image
                                         src={suvojeet}
                                         alt="Suvojeet Sengupta"
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        priority
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                                 </motion.div>
@@ -316,12 +288,7 @@ const AboutClient = () => {
                                 Every melody I create, every note I practice, is a step toward becoming better and more authentic.
                             </p>
                             <ul className="space-y-3">
-                                {[
-                                    "Consistent Practice – Every day, even a few minutes, counts.",
-                                    "Experimentation – Trying new styles, genres, and techniques.",
-                                    "Learning from Inspiration – Drawing lessons from Arijit Singh.",
-                                    "Expressing Emotion – Music is communication, not just sound."
-                                ].map((item, i) => (
+                                {philosophy.map((item, i) => (
                                     <li key={i} className="flex items-start gap-3 text-[var(--text-secondary)]">
                                         <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <span className="text-xs font-bold text-[var(--accent-primary)]">{i + 1}</span>
@@ -351,12 +318,7 @@ const AboutClient = () => {
                                 I want to inspire people, evoke emotions, and connect hearts through my voice.
                             </p>
                             <div className="grid grid-cols-2 gap-4">
-                                {[
-                                    { icon: "🎤", label: "Professional Singer" },
-                                    { icon: "🌍", label: "Global Reach" },
-                                    { icon: "💿", label: "Album Release" },
-                                    { icon: "🚀", label: "Tech Innovation" }
-                                ].map((goal, i) => (
+                                {futureGoals.map((goal, i) => (
                                     <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-tertiary)]">
                                         <span className="text-2xl">{goal.icon}</span>
                                         <span className="text-sm font-medium text-[var(--text-secondary)]">{goal.label}</span>

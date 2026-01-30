@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const Button = ({
   to,
@@ -19,13 +20,12 @@ const Button = ({
     large: 'py-4 px-8 text-lg',
   };
 
-  const baseClasses = `
-    font-bold rounded-xl transition-all duration-300 
-    flex items-center justify-center gap-2
-    disabled:opacity-50 disabled:cursor-not-allowed
-    ${sizeClasses[size] || sizeClasses.default}
-    ${className}
-  `;
+  const baseClasses = cn(
+    "font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2",
+    "disabled:opacity-50 disabled:cursor-not-allowed",
+    sizeClasses[size] || sizeClasses.default,
+    className
+  );
 
   const variantClasses = primary
     ? 'btn-primary'
@@ -48,7 +48,7 @@ const Button = ({
       <motion.div {...motionProps} className="inline-block">
         <Link
           href={to}
-          className={`${baseClasses} ${variantClasses}`}
+          className={cn(baseClasses, variantClasses)}
         >
           {content}
         </Link>
@@ -60,7 +60,7 @@ const Button = ({
     <motion.button
       type={type}
       onClick={onClick}
-      className={`${baseClasses} ${variantClasses}`}
+      className={cn(baseClasses, variantClasses)}
       disabled={disabled}
       {...motionProps}
     >
