@@ -13,6 +13,7 @@ import EmojiReactionButton from '../common/EmojiReactionButton';
 import FloatingEmoji from '../common/FloatingEmoji';
 import LiveIndicator from '../common/LiveIndicator';
 import Link from 'next/link';
+import { Icons } from '../common/Icons';
 
 const VideoPageClient = () => {
     const { id } = useParams();
@@ -79,9 +80,7 @@ const VideoPageClient = () => {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[var(--bg-tertiary)] flex items-center justify-center">
-                        <svg className="w-10 h-10 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
+                        <Icons.VideoNotFound className="w-10 h-10 text-[var(--text-muted)]" />
                     </div>
                     <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Video not found</h2>
                     <p className="text-[var(--text-secondary)] mb-6">The video you're looking for doesn't exist.</p>
@@ -164,15 +163,11 @@ const VideoPageClient = () => {
                             {/* Meta Info */}
                             <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--text-muted)] mb-6 pb-6 border-b border-[var(--border-subtle)]">
                                 <span className="flex items-center gap-1.5">
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
+                                    <Icons.Calendar className="w-4 h-4" />
                                     {publishedDate}
                                 </span>
                                 <span className="flex items-center gap-1.5">
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
+                                    <Icons.User className="w-4 h-4" />
                                     Suvojeet Sengupta
                                 </span>
                             </div>
@@ -187,9 +182,7 @@ const VideoPageClient = () => {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white font-medium hover:bg-red-700 transition-all shadow-lg hover:shadow-red-500/25"
                                 >
-                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                    </svg>
+                                    <Icons.Watch className="w-5 h-5" />
                                     <span>Watch on YouTube</span>
                                 </a>
 
@@ -197,9 +190,7 @@ const VideoPageClient = () => {
                                     onClick={handleShare}
                                     className="btn-secondary flex items-center gap-2"
                                 >
-                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                                    </svg>
+                                    <Icons.Share className="w-5 h-5" />
                                     <span>Share</span>
                                 </button>
                             </div>
@@ -209,9 +200,7 @@ const VideoPageClient = () => {
                         {video.description && (
                             <div className="card-elevated rounded-2xl p-6 mb-6">
                                 <h2 className="text-lg font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
-                                    <svg className="w-5 h-5 text-[var(--accent-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-                                    </svg>
+                                    <Icons.Description className="w-5 h-5 text-[var(--accent-primary)]" />
                                     Description
                                 </h2>
                                 <p className="text-[var(--text-secondary)] whitespace-pre-wrap leading-relaxed">
@@ -242,9 +231,7 @@ const VideoPageClient = () => {
                                     href="/music"
                                     className="btn-secondary w-full flex items-center justify-center gap-2"
                                 >
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                    </svg>
+                                    <Icons.BrowseAll className="w-4 h-4" />
                                     Browse All Music
                                 </Link>
                             </div>
