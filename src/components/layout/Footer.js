@@ -6,15 +6,15 @@ import SocialLinks from '../contact/SocialLinks';
 import Newsletter from '../contact/Newsletter';
 import LiveIndicator from '../common/LiveIndicator';
 
+import { navLinks } from '@/data/config';
+
 const Footer = ({ visitorCount }) => {
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/music', label: 'Music' },
-    { href: '/blog', label: 'Blog' },
-  ];
+  // Use only the first 4 links for the footer or all if preferred. 
+  // Original had Home, About, Music, Blog. New Nav has Posts too. 
+  // Let's include all nav links for consistency.
+  const quickLinks = navLinks;
 
   return (
     <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-light)]">

@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Icons } from '../common/Icons';
+import { cn } from '@/lib/utils';
 
 const VideoCard = ({ video }) => {
   const itemVariants = {
@@ -13,6 +16,8 @@ const VideoCard = ({ video }) => {
     month: 'short',
     day: 'numeric'
   });
+
+  const isNew = (new Date() - new Date(video.publishedAt)) < 7 * 24 * 60 * 60 * 1000;
 
   return (
     <Link href={`/video/${video.id}`}>
@@ -28,10 +33,12 @@ const VideoCard = ({ video }) => {
       >
         {/* Thumbnail */}
         <div className="relative w-full aspect-video overflow-hidden">
-          <img
+          <Image
             src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
             alt={video.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -43,15 +50,20 @@ const VideoCard = ({ video }) => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M8 5v10l8-5-8-5z" />
-              </svg>
+              <Icons.Play className="w-7 h-7 text-white ml-1" />
             </motion.div>
           </div>
 
-          {/* Duration badge (placeholder) */}
-          <div className="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-black/70 text-white text-xs font-medium backdrop-blur-sm">
-            NEW
+          {/* Duration badge (placeholder) & New Badge */}
+          <div className="absolute bottom-3 right-3 flex gap-2">
+            {isNew && (
+              <span className="px-2 py-1 rounded-md bg-[var(--accent-primary)] text-white text-xs font-bold shadow-lg">
+                NEW
+              </span>
+            )}
+            <span className="px-2 py-1 rounded-md bg-black/70 text-white text-xs font-medium backdrop-blur-sm">
+              HD
+            </span>
           </div>
         </div>
 
@@ -62,7 +74,8 @@ const VideoCard = ({ video }) => {
           </h3>
 
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
+            <span className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-1">
+              <Icons.Calendar className="w-3 h-3" />
               {publishedDate}
             </span>
           </div>
@@ -73,9 +86,7 @@ const VideoCard = ({ video }) => {
 
           <div className="flex items-center gap-2 text-[var(--accent-primary)] font-medium text-sm group-hover:gap-3 transition-all">
             <span>Watch Now</span>
-            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            <Icons.ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </motion.div>

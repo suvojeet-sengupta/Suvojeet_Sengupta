@@ -6,6 +6,10 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '@/components/common/ThemeToggle';
 
+import { navLinks } from '@/data/config';
+import { cn } from '@/lib/utils';
+import { Icons } from '@/components/common/Icons';
+
 /**
  * Modern responsive navigation bar with theme toggle
  */
@@ -43,14 +47,6 @@ const Navbar = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: 'easeIn' } },
   };
 
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/music', label: 'Music' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/posts', label: 'Posts' },
-  ];
-
   const isActive = (path) => pathname === path;
 
   const NavLink = ({ href, label, mobile = false }) => {
@@ -67,7 +63,7 @@ const Navbar = () => {
     return (
       <Link
         href={href}
-        className={`${baseClasses} ${activeClasses} ${hoverBg}`}
+        className={cn(baseClasses, activeClasses, hoverBg)}
         onClick={() => mobile && setIsMenuOpen(false)}
       >
         {label}
@@ -87,10 +83,10 @@ const Navbar = () => {
       variants={navVariants}
       initial="initial"
       animate="animate"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${(isScrolled || isMenuOpen)
-          ? 'glass border-b border-[var(--glass-border)]'
-          : 'bg-transparent'
-        }`}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        (isScrolled || isMenuOpen) ? 'glass border-b border-[var(--glass-border)]' : 'bg-transparent'
+      )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -130,13 +126,11 @@ const Navbar = () => {
               className="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-300"
               aria-label="Toggle menu"
             >
-              <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-                )}
-              </svg>
+              {isMenuOpen ? (
+                <Icons.Close className="h-6 w-6" />
+              ) : (
+                <Icons.Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
