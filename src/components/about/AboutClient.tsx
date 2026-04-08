@@ -1,21 +1,30 @@
 "use client";
 
 import React, { useReducer } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 import { timeline, skills, philosophy, futureGoals } from '@/data/aboutData';
 
 const suvojeet = '/suvojeet.jpg';
 
-// Reducer function for form state management
-const formInitialState = {
-    status: 'idle', // 'idle', 'submitting', 'success', 'error'
+// Type definitions for form state
+interface FormState {
+    status: 'idle' | 'submitting' | 'success' | 'error';
+    message: string | null;
+}
+
+type FormAction = 
+    | { type: 'SUBMIT' }
+    | { type: 'SUCCESS'; payload: string }
+    | { type: 'ERROR'; payload: string };
+
+const formInitialState: FormState = {
+    status: 'idle',
     message: null,
 };
 
-function formReducer(state, action) {
+function formReducer(state: FormState, action: FormAction): FormState {
     switch (action.type) {
         case 'SUBMIT':
             return { ...state, status: 'submitting', message: null };
@@ -24,23 +33,23 @@ function formReducer(state, action) {
         case 'ERROR':
             return { ...state, status: 'error', message: action.payload };
         default:
-            throw new Error(`Unhandled action type: ${action.type}`);
+            return state;
     }
 }
 
 const AboutClient = () => {
     const [formState, dispatch] = useReducer(formReducer, formInitialState);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch({ type: 'SUBMIT' });
 
-        const form = e.target;
+        const form = e.currentTarget;
         const formData = new FormData(form);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
+        const data: Record<string, any> = {};
+        formData.forEach((value, key) => {
             data[key] = value;
-        }
+        });
 
         try {
             const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
@@ -58,7 +67,7 @@ const AboutClient = () => {
             } else {
                 const responseData = await response.json();
                 const errorMessage = responseData.errors
-                    ? responseData.errors.map(error => error.message).join(", ")
+                    ? responseData.errors.map((error: any) => error.message).join(", ")
                     : 'Oops! There was a problem submitting your form';
                 dispatch({ type: 'ERROR', payload: errorMessage });
             }
@@ -67,8 +76,8 @@ const AboutClient = () => {
         }
     };
 
-    // Animation variants
-    const containerVariants = {
+    // Animation variants with explicit typing
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -76,9 +85,13 @@ const AboutClient = () => {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+        visible: { 
+            opacity: 1, 
+            y: 0, 
+            transition: { duration: 0.6, ease: 'easeOut' } 
+        },
     };
 
     const cardHover = {
@@ -91,13 +104,11 @@ const AboutClient = () => {
         <div className="min-h-screen pt-20">
             {/* Hero Section */}
             <section className="relative overflow-hidden py-20 sm:py-28">
-                {/* Background Effects */}
-                <div className="hero-gradient" />
-                <div className="blob-1 animate-blob" />
-                <div className="blob-2 animate-blob animation-delay-200" />
+                {/* Background Effects - Kept for compatibility but styled minimally */}
+                <div className="hero-gradient opacity-20" />
 
                 <motion.div
-                    className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8"
+                    className="relative z-10 section-container"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
@@ -108,9 +119,9 @@ const AboutClient = () => {
                             variants={itemVariants}
                             className="relative mx-auto lg:mx-0"
                         >
-                            <div className="profile-image-container">
+                            <div className="profile-frame">
                                 <motion.div
-                                    className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-2xl"
+                                    className="relative w-64 h-64 sm:w-80 sm:h-80 overflow-hidden grayscale hover:grayscale-0 transition-all duration-500"
                                     whileHover={{ scale: 1.02 }}
                                     transition={{ duration: 0.3 }}
                                 >
@@ -122,38 +133,31 @@ const AboutClient = () => {
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         priority
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                                 </motion.div>
-                                {/* Decorative ring */}
-                                <div className="absolute -inset-4 rounded-3xl border-2 border-[var(--accent-primary)] opacity-20 animate-pulse-glow" />
                             </div>
                         </motion.div>
 
                         {/* Intro Text */}
                         <motion.div variants={itemVariants} className="text-center lg:text-left">
                             <motion.div
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/30 mb-6"
+                                className="inline-block px-3 py-1 bg-accent-subtle border border-brand-orange text-brand-orange text-sm font-medium rounded-sm mb-6"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2 }}
                             >
-                                <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
-                                <span className="text-sm font-medium text-[var(--accent-primary)]">Singer & Developer</span>
+                                Creative Developer & Music Artist
                             </motion.div>
 
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-montserrat mb-6">
-                                <span className="text-[var(--text-primary)]">About </span>
-                                <span className="gradient-text">Me</span>
+                            <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
+                                About <span className="text-accent">Suvojeet</span>
                             </h1>
 
-                            <p className="text-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
-                                Hi! I'm <strong className="text-[var(--text-primary)]">Suvojeet Sengupta</strong>, born on 1st August 2005 in Asansol, West Bengal.
-                                From a very young age, I found myself lost in the world of music. Singing wasn't just something I enjoyed—it became a part of who I am.
+                            <p className="text-xl text-secondary mb-6 leading-relaxed">
+                                Born on 1st August 2005 in Asansol, West Bengal. I find balance between the precision of code and the raw emotion of music.
                             </p>
 
-                            <p className="text-[var(--text-tertiary)] mb-8 leading-relaxed">
-                                I've always been inspired by <strong className="text-[var(--accent-secondary)]">Arijit Singh</strong>.
-                                His voice, emotion, and style motivate me to push my own limits and develop my own unique singing style.
+                            <p className="text-lg text-secondary mb-8 leading-relaxed">
+                                Inspired by legendary artists like <strong className="text-brand-orange">Arijit Singh</strong>, I strive to bring the same level of depth and authenticity to everything I build and sing.
                             </p>
 
                             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
@@ -165,26 +169,23 @@ const AboutClient = () => {
             </section>
 
             {/* Timeline Section */}
-            <section className="py-20 bg-[var(--bg-secondary)]">
+            <section className="py-24 bg-tertiary">
                 <motion.div
-                    className="container mx-auto px-4 sm:px-6 lg:px-8"
+                    className="section-container"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-3xl sm:text-4xl font-bold font-montserrat mb-4">
-                            My <span className="gradient-text">Journey</span>
-                        </h2>
-                        <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
-                            A timeline of the key moments that shaped who I am today.
+                        <h2 className="text-4xl font-bold mb-4">The Journey</h2>
+                        <p className="text-secondary max-w-2xl mx-auto font-medium">
+                            Milestones that define my path in tech and music.
                         </p>
                     </motion.div>
 
                     <div className="relative max-w-4xl mx-auto">
-                        {/* Timeline line */}
-                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-[var(--accent-primary)] via-[var(--accent-secondary)] to-[var(--accent-tertiary)] hidden md:block" />
+                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-brand-orange hidden md:block" />
 
                         {timeline.map((item, index) => (
                             <motion.div
@@ -194,19 +195,17 @@ const AboutClient = () => {
                             >
                                 <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
                                     <motion.div
-                                        className="card-elevated p-6 rounded-xl"
-                                        whileHover={cardHover}
+                                        className="professional-card"
+                                        whileHover={{ y: -4, borderColor: 'var(--accent-primary)' }}
                                     >
-                                        <span className="inline-block px-3 py-1 text-sm font-bold rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] mb-3">
+                                        <span className="inline-block px-3 py-1 text-xs font-black rounded-sm bg-brand-orange text-white mb-3">
                                             {item.year}
                                         </span>
-                                        <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">{item.title}</h3>
-                                        <p className="text-[var(--text-secondary)]">{item.description}</p>
+                                        <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                                        <p className="text-secondary">{item.description}</p>
                                     </motion.div>
                                 </div>
-
-                                {/* Timeline dot */}
-                                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-[var(--accent-primary)] border-4 border-[var(--bg-secondary)] shadow-lg hidden md:block" />
+                                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-brand-orange border-4 border-white hidden md:block" />
                             </motion.div>
                         ))}
                     </div>
@@ -214,20 +213,18 @@ const AboutClient = () => {
             </section>
 
             {/* Skills Section */}
-            <section className="py-20">
+            <section className="py-24">
                 <motion.div
-                    className="container mx-auto px-4 sm:px-6 lg:px-8"
+                    className="section-container"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-3xl sm:text-4xl font-bold font-montserrat mb-4">
-                            My <span className="gradient-text">Skills</span>
-                        </h2>
-                        <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
-                            A blend of creativity and technology that defines my approach.
+                        <h2 className="text-4xl font-bold mb-4">Core Expertise</h2>
+                        <p className="text-secondary max-w-2xl mx-auto font-medium">
+                            Synthesizing creative vision with technical execution.
                         </p>
                     </motion.div>
 
@@ -236,23 +233,23 @@ const AboutClient = () => {
                             <motion.div
                                 key={skill.name}
                                 variants={itemVariants}
-                                className="card-elevated p-6 rounded-xl"
-                                whileHover={cardHover}
+                                className="professional-card"
+                                whileHover={{ y: -4, borderColor: 'var(--accent-primary)' }}
                             >
                                 <div className="flex items-center gap-4 mb-4">
                                     <span className="text-3xl">{skill.icon}</span>
-                                    <h3 className="text-lg font-bold text-[var(--text-primary)]">{skill.name}</h3>
+                                    <h3 className="text-lg font-bold">{skill.name}</h3>
                                 </div>
-                                <div className="relative h-2 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
+                                <div className="relative h-2 bg-tertiary rounded-full overflow-hidden">
                                     <motion.div
-                                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] rounded-full"
+                                        className="absolute left-0 top-0 h-full bg-brand-orange rounded-full"
                                         initial={{ width: 0 }}
                                         whileInView={{ width: `${skill.level}%` }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 1, delay: index * 0.1 }}
                                     />
                                 </div>
-                                <p className="text-right text-sm text-[var(--text-tertiary)] mt-2">{skill.level}%</p>
+                                <p className="text-right text-xs font-bold text-muted mt-2 uppercase tracking-widest">{skill.level}% Proficiency</p>
                             </motion.div>
                         ))}
                     </div>
@@ -260,68 +257,52 @@ const AboutClient = () => {
             </section>
 
             {/* Philosophy & Goals Section */}
-            <section className="py-20 bg-[var(--bg-secondary)]">
+            <section className="py-24 bg-brand-black text-white">
                 <motion.div
-                    className="container mx-auto px-4 sm:px-6 lg:px-8"
+                    className="section-container"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Philosophy Card */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                         <motion.div
                             variants={itemVariants}
-                            className="card-elevated p-8 rounded-2xl"
-                            whileHover={cardHover}
+                            className="p-8 border border-gray-800 rounded-sm"
                         >
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                    </svg>
-                                </div>
-                                <h3 className="text-2xl font-bold text-[var(--text-primary)]">My Philosophy</h3>
-                            </div>
-                            <p className="text-[var(--text-secondary)] mb-6">
-                                I strongly believe that <strong className="text-[var(--text-primary)]">singing is not just learned—it's lived</strong>.
-                                Every melody I create, every note I practice, is a step toward becoming better and more authentic.
+                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-brand-orange flex items-center justify-center text-white text-sm">01</span>
+                                Philosophy
+                            </h3>
+                            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
+                                I believe music and code are two sides of the same coin: <strong className="text-white">Expression through Structure</strong>. Both require relentless practice and an obsession with detail.
                             </p>
-                            <ul className="space-y-3">
+                            <ul className="space-y-4">
                                 {philosophy.map((item, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-[var(--text-secondary)]">
-                                        <span className="w-6 h-6 rounded-full bg-[var(--accent-primary)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <span className="text-xs font-bold text-[var(--accent-primary)]">{i + 1}</span>
-                                        </span>
+                                    <li key={i} className="flex items-start gap-4 text-gray-400">
+                                        <span className="text-brand-orange font-bold">/</span>
                                         {item}
                                     </li>
                                 ))}
                             </ul>
                         </motion.div>
 
-                        {/* Goals Card */}
                         <motion.div
                             variants={itemVariants}
-                            className="card-elevated p-8 rounded-2xl"
-                            whileHover={cardHover}
+                            className="p-8 border border-gray-800 rounded-sm"
                         >
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--accent-secondary)] to-[var(--accent-tertiary)] flex items-center justify-center">
-                                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                </div>
-                                <h3 className="text-2xl font-bold text-[var(--text-primary)]">Future Goals</h3>
-                            </div>
-                            <p className="text-[var(--text-secondary)] mb-6">
-                                My ultimate goal is to become a <strong className="text-[var(--text-primary)]">professional singer</strong> and share my music with the world.
-                                I want to inspire people, evoke emotions, and connect hearts through my voice.
+                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-brand-orange flex items-center justify-center text-white text-sm">02</span>
+                                Vision
+                            </h3>
+                            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
+                                My mission is to push the boundaries of creative technology while maintaining a soul-deep connection to my music.
                             </p>
                             <div className="grid grid-cols-2 gap-4">
                                 {futureGoals.map((goal, i) => (
-                                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-tertiary)]">
+                                    <div key={i} className="flex items-center gap-3 p-4 bg-gray-900 border border-gray-800">
                                         <span className="text-2xl">{goal.icon}</span>
-                                        <span className="text-sm font-medium text-[var(--text-secondary)]">{goal.label}</span>
+                                        <span className="text-xs font-black uppercase tracking-widest">{goal.label}</span>
                                     </div>
                                 ))}
                             </div>
@@ -331,140 +312,104 @@ const AboutClient = () => {
             </section>
 
             {/* Contact Section */}
-            <section className="py-20">
+            <section className="py-24">
                 <motion.div
-                    className="container mx-auto px-4 sm:px-6 lg:px-8"
+                    className="section-container max-w-3xl"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-12">
-                        <h2 className="text-3xl sm:text-4xl font-bold font-montserrat mb-4">
-                            Get in <span className="gradient-text">Touch</span>
-                        </h2>
-                        <p className="text-[var(--text-secondary)] max-w-2xl mx-auto">
-                            Have a question, a project proposal, or just want to say hello? I'd love to hear from you.
+                        <h2 className="text-4xl font-bold mb-4">Direct Message</h2>
+                        <p className="text-secondary font-medium">
+                            Let's discuss collaborations, projects, or just talk music.
                         </p>
                     </motion.div>
 
-                    <motion.div
-                        variants={itemVariants}
-                        className="max-w-2xl mx-auto"
-                    >
-                        <div className="card-elevated p-8 sm:p-10 rounded-2xl">
-                            <AnimatePresence mode="wait">
-                                {formState.status !== 'success' ? (
-                                    <motion.form
-                                        key="form"
-                                        onSubmit={handleSubmit}
-                                        className="space-y-6"
-                                        initial={{ opacity: 1 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                    >
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                            <div>
-                                                <label htmlFor="name-about" className="block mb-2 text-sm font-medium text-[var(--text-secondary)]">
-                                                    Name
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="name"
-                                                    id="name-about"
-                                                    className="input-modern"
-                                                    placeholder="Your name"
-                                                    required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor="email-about" className="block mb-2 text-sm font-medium text-[var(--text-secondary)]">
-                                                    Email
-                                                </label>
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    id="email-about"
-                                                    className="input-modern"
-                                                    placeholder="your@email.com"
-                                                    required
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label htmlFor="message-about" className="block mb-2 text-sm font-medium text-[var(--text-secondary)]">
-                                                Message
-                                            </label>
-                                            <textarea
-                                                name="message"
-                                                id="message-about"
-                                                rows="5"
-                                                className="input-modern resize-none"
-                                                placeholder="Your message..."
-                                                required
-                                            ></textarea>
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            className="btn-primary w-full flex items-center justify-center gap-2 py-4"
-                                            disabled={formState.status === 'submitting'}
-                                        >
-                                            {formState.status === 'submitting' ? (
-                                                <>
-                                                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                                    </svg>
-                                                    Sending...
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                                    </svg>
-                                                    Send Message
-                                                </>
-                                            )}
-                                        </button>
-                                    </motion.form>
-                                ) : (
-                                    <motion.div
-                                        key="success"
-                                        className="text-center py-10"
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                    >
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                                            className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500/10 flex items-center justify-center"
-                                        >
-                                            <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </motion.div>
-                                        <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Message Sent!</h3>
-                                        <p className="text-[var(--text-secondary)]">{formState.message}</p>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            {formState.status === 'error' && (
-                                <motion.div
-                                    className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-center text-red-500"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                    <motion.div variants={itemVariants} className="professional-card">
+                        <AnimatePresence mode="wait">
+                            {formState.status !== 'success' ? (
+                                <motion.form
+                                    key="form"
+                                    onSubmit={handleSubmit}
+                                    className="space-y-6"
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0, y: -20 }}
                                 >
-                                    {formState.message}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label htmlFor="name-about" className="text-xs font-black uppercase tracking-widest text-muted">
+                                                Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                id="name-about"
+                                                className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary"
+                                                placeholder="Suvojeet"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="email-about" className="text-xs font-black uppercase tracking-widest text-muted">
+                                                Email
+                                            </label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                id="email-about"
+                                                className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary"
+                                                placeholder="suvojeet@example.com"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="message-about" className="text-xs font-black uppercase tracking-widest text-muted">
+                                            Message
+                                        </label>
+                                        <textarea
+                                            name="message"
+                                            id="message-about"
+                                            rows={5}
+                                            className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary resize-none"
+                                            placeholder="Your vision..."
+                                            required
+                                        ></textarea>
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="btn-solid w-full text-lg py-4"
+                                        disabled={formState.status === 'submitting'}
+                                    >
+                                        {formState.status === 'submitting' ? 'SENDING...' : 'SEND MESSAGE'}
+                                    </button>
+                                </motion.form>
+                            ) : (
+                                <motion.div
+                                    key="success"
+                                    className="text-center py-10"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                >
+                                    <div className="w-16 h-16 mx-auto mb-6 rounded-sm bg-brand-orange flex items-center justify-center text-white">
+                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-2xl font-black mb-2 uppercase tracking-tighter">Message Received</h3>
+                                    <p className="text-secondary font-medium">{formState.message}</p>
                                 </motion.div>
                             )}
-                        </div>
+                        </AnimatePresence>
                     </motion.div>
                 </motion.div>
             </section>
 
             {/* Social Links Footer */}
-            <section className="pb-20">
-                <div className="container mx-auto px-4 text-center">
+            <section className="pb-24">
+                <div className="section-container text-center">
                     <SocialLinks size="large" />
                 </div>
             </section>
