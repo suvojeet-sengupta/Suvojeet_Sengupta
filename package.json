@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "add-video": "node scripts/add-video.js"
+    "lint": "eslint"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^16.1.6",
