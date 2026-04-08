@@ -1,14 +1,25 @@
 import React, { useReducer } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Button from '../common/Button';
 
-// Reducer function for form state management
-const formInitialState = {
-  status: 'idle', // 'idle', 'submitting', 'success', 'error'
+// Type definitions for form state
+interface FormState {
+  status: 'idle' | 'submitting' | 'success' | 'error';
+  message: string | null;
+}
+
+type FormAction = 
+  | { type: 'SUBMIT' }
+  | { type: 'SUCCESS'; payload: string }
+  | { type: 'ERROR'; payload: string }
+  | { type: 'RESET' };
+
+const formInitialState: FormState = {
+  status: 'idle',
   message: null,
 };
 
-function formReducer(state, action) {
+function formReducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
     case 'SUBMIT':
       return { ...state, status: 'submitting', message: null };
@@ -19,23 +30,23 @@ function formReducer(state, action) {
     case 'RESET':
       return formInitialState;
     default:
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return state;
   }
 }
 
 const RequestSongForm = () => {
   const [formState, dispatch] = useReducer(formReducer, formInitialState);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch({ type: 'SUBMIT' });
 
-    const form = e.target;
+    const form = e.currentTarget;
     const formData = new FormData(form);
-    const data = {};
-    for (let [key, value] of formData.entries()) {
+    const data: Record<string, any> = {};
+    formData.forEach((value, key) => {
       data[key] = value;
-    }
+    });
 
     try {
       const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
@@ -53,7 +64,7 @@ const RequestSongForm = () => {
       } else {
         const responseData = await response.json();
         const errorMessage = responseData.errors 
-          ? responseData.errors.map(error => error.message).join(", ")
+          ? responseData.errors.map((error: any) => error.message).join(", ")
           : 'Oops! There was a problem submitting your form';
         dispatch({ type: 'ERROR', payload: errorMessage });
       }
@@ -62,16 +73,16 @@ const RequestSongForm = () => {
     }
   };
 
-  const formContainerVariants = {
+  const formContainerVariants: Variants = {
     hidden: { opacity: 0, height: 0 },
     visible: { opacity: 1, height: 'auto', transition: { duration: 0.5, ease: 'easeOut' } },
     exit: { opacity: 0, height: 0, transition: { duration: 0.5, ease: 'easeIn' } },
   };
 
   return (
-    <div className="bg-dark-2 p-8 rounded-lg shadow-lg max-w-3xl w-full">
-        <h2 className="text-3xl font-bold text-center font-montserrat mb-8 text-white">Request a Song</h2>
-        <AnimatePresence>
+    <div className="bg-tertiary p-8 rounded-sm border border-light max-w-3xl w-full">
+        <h2 className="text-3xl font-black mb-8 text-primary uppercase tracking-tighter text-center">Request a Song</h2>
+        <AnimatePresence mode="wait">
           {formState.status !== 'success' ? (
             <motion.form
               key="form"
@@ -81,61 +92,47 @@ const RequestSongForm = () => {
               initial="visible"
               exit="exit"
             >
-              <div>
-                <label htmlFor="songName" className="block mb-2 font-semibold text-grey">Song Name</label>
-                <input type="text" name="songName" id="songName" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+              <div className="space-y-2">
+                <label htmlFor="songName" className="text-xs font-black uppercase tracking-widest text-muted">Song Name</label>
+                <input type="text" name="songName" id="songName" className="w-full bg-background border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary" placeholder="Enter song title" required />
               </div>
-              <div>
-                <label htmlFor="artist" className="block mb-2 font-semibold text-grey">Artist</label>
-                <input type="text" name="artist" id="artist" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" />
+              <div className="space-y-2">
+                <label htmlFor="artist" className="text-xs font-black uppercase tracking-widest text-muted">Artist</label>
+                <input type="text" name="artist" id="artist" className="w-full bg-background border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary" placeholder="Original artist" />
               </div>
-              <div>
-                <label htmlFor="name" className="block mb-2 font-semibold text-grey">Your Name</label>
-                <input type="text" name="name" id="name" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-xs font-black uppercase tracking-widest text-muted">Your Name</label>
+                  <input type="text" name="name" id="name" className="w-full bg-background border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary" placeholder="Suvojeet" required />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-muted">Your Email</label>
+                  <input type="email" name="email" id="email" className="w-full bg-background border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary" placeholder="suvojeet@example.com" required />
+                </div>
               </div>
-              <div>
-                <label htmlFor="email" className="block mb-2 font-semibold text-grey">Your Email</label>
-                <input type="email" name="email" id="email" className="w-full px-4 py-3 bg-dark border border-gray-700 rounded-lg focus:ring-primary focus:border-primary text-white" required />
-              </div>
-              <Button type="submit" primary className="w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" disabled={formState.status === 'submitting'}>
-                {formState.status === 'submitting' ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Sending...
-                  </>
-                ) : (
-                  'Submit Request'
-                )}
+              <Button type="submit" primary className="w-full py-4 text-lg" disabled={formState.status === 'submitting'}>
+                {formState.status === 'submitting' ? 'SENDING...' : 'SUBMIT REQUEST'}
               </Button>
             </motion.form>
           ) : (
             <motion.div
               key="success-message"
-              className="text-center"
+              className="text-center py-10"
               variants={formContainerVariants}
               initial="hidden"
               animate="visible"
             >
-              <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, type: 'spring', stiffness: 150 }}
-              >
-                <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
-                <p className="text-grey mb-8">{formState.message}</p>
-                <div className="flex justify-center">
-                  <Button onClick={() => window.history.back()} primary>Go Back</Button>
-                </div>
-              </motion.div>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-sm bg-brand-orange flex items-center justify-center text-white">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <h3 className="text-2xl font-black mb-2 uppercase tracking-tighter">Suggestion Received</h3>
+              <p className="text-secondary font-medium mb-8">{formState.message}</p>
+              <Button onClick={() => window.history.back()} primary className="px-10">GO BACK</Button>
             </motion.div>
           )}
         </AnimatePresence>
         {formState.status === 'error' && (
-            <div className="mt-6 text-center text-red-500">{formState.message}</div>
+            <div className="mt-6 text-center text-red-500 font-bold uppercase text-xs">{formState.message}</div>
           )}
     </div>
   );
