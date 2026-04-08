@@ -36,7 +36,7 @@ const HomePage = () => {
               Suvojeet <span className="text-accent">Sengupta</span>
             </h1>
             <p className="text-xl md:text-2xl text-secondary max-w-2xl font-medium">
-              A {age}-year-old Creative Developer & Music Artist building high-performance Android solutions and digital experiences.
+              A {age}-year-old <span className="text-brand-orange font-bold">Singer</span> & Creative Developer building high-performance Android solutions and soul-stirring musical experiences.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="/about" className="btn-solid text-lg px-8">
