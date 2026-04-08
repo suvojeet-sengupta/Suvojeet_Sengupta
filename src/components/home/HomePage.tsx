@@ -1,19 +1,35 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { calculateAge } from '@/lib/utils';
-import projectsData from '@/data/projects.json';
+import { fetchGithubRepo, GithubRepo } from '@/lib/github';
 import uiStyles from '@/components/common/UI.module.css';
 
 const HomePage = () => {
   const age = calculateAge('2005-08-01');
+  const [repos, setRepos] = useState<Record<string, GithubRepo>>({});
+  const [loading, setLoading] = useState(true);
 
-  const featuredProjects = projectsData.filter(p => 
-    p.name === 'SuvMusic' || p.name === 'NoteNext'
-  );
+  const featuredProjectNames = ['SuvMusic', 'NoteNext'];
+
+  useEffect(() => {
+    const loadRepoData = async () => {
+      const data: Record<string, GithubRepo> = {};
+      for (const repoName of featuredProjectNames) {
+        const repoData = await fetchGithubRepo('suvojeet-sengupta', repoName);
+        if (repoData) {
+          data[repoName] = repoData;
+        }
+      }
+      setRepos(data);
+      setLoading(false);
+    };
+
+    loadRepoData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -77,28 +93,44 @@ const HomePage = () => {
           </div>
 
           <div className={uiStyles.projectGrid}>
-            {featuredProjects.map((project) => (
-              <div key={project.name} className={uiStyles.professionalCard + " group"}>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted">{project.language}</span>
-                  <div className="flex items-center gap-1 text-brand-orange font-bold">
-                    <span>★</span>
-                    <span>{project.stars}</span>
-                  </div>
+            {featuredProjectNames.map((name) => {
+              const repo = repos[name];
+              if (loading) return (
+                <div key={name} className={uiStyles.professionalCard + " animate-pulse"}>
+                  <div className="h-4 bg-background/50 rounded w-1/4 mb-4"></div>
+                  <div className="h-8 bg-background/50 rounded w-3/4 mb-4"></div>
+                  <div className="h-20 bg-background/50 rounded w-full mb-6"></div>
+                  <div className="h-4 bg-background/50 rounded w-1/2"></div>
                 </div>
-                <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{project.name}</h3>
-                <p className="text-secondary mb-6 line-clamp-3 font-medium">
-                  {project.description}
-                </p>
-                <Link 
-                  href={project.url} 
-                  target="_blank"
-                  className="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-brand-orange pb-1 hover:border-black transition-colors"
-                >
-                  EXPLORE SOURCE CODE
-                </Link>
-              </div>
-            ))}
+              );
+              
+              if (!repo) return null;
+
+              return (
+                <div key={name} className={uiStyles.professionalCard + " group"}>
+                  <div className="flex justify-between items-start mb-4">
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted">{repo.language || 'Kotlin'}</span>
+                    <div className="flex items-center gap-1 text-brand-orange font-bold">
+                      <span>★</span>
+                      <span>{repo.stargazers_count}</span>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{name}</h3>
+                  <p className="text-secondary mb-6 line-clamp-3 font-medium">
+                    {name === 'SuvMusic' 
+                      ? 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.'
+                      : repo.description}
+                  </p>
+                  <Link 
+                    href={repo.html_url} 
+                    target="_blank"
+                    className="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-brand-orange pb-1 hover:border-black transition-colors"
+                  >
+                    EXPLORE SOURCE CODE
+                  </Link>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
