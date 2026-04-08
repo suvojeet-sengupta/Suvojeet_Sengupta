@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+// @ts-ignore
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
