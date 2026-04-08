@@ -1,7 +1,11 @@
 import React from 'react';
 import LiveIndicator from './LiveIndicator';
 
-const GlobalVisitorCount = ({ count }) => {
+interface GlobalVisitorCountProps {
+  count: number;
+}
+
+const GlobalVisitorCount: React.FC<GlobalVisitorCountProps> = ({ count }) => {
   if (count === 0) return null;
 
   return (

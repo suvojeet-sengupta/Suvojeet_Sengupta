@@ -1,0 +1,76 @@
+/* Professional Card */
+.professionalCard {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  padding: 1.5rem;
+  border-radius: 4px;
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+
+.professionalCard:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+
+/* Solid Button (No Gradients) */
+.btnSolid {
+  background: var(--accent-primary);
+  color: white;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+}
+
+.btnSolid:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btnOutline {
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+}
+
+.btnOutline:hover {
+  border-color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+
+/* Profile Image Container */
+.profileFrame {
+  position: relative;
+  display: inline-block;
+  border: 8px solid var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.profileFrame::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: -12px;
+  bottom: -12px;
+  border: 2px solid var(--accent-primary);
+  z-index: -1;
+}
+
+/* Grid for Projects */
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}

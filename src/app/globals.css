@@ -106,61 +106,6 @@ body {
   background: var(--text-tertiary);
 }
 
-/* ============================================
-   ORGANIC UI COMPONENTS
-   ============================================ */
-
-/* Professional Card */
-.professional-card {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-light);
-  padding: 1.5rem;
-  border-radius: 4px; /* Sharper edges for professional feel */
-  transition: transform var(--transition-base), border-color var(--transition-base);
-}
-
-.professional-card:hover {
-  border-color: var(--border-accent);
-  transform: translateY(-2px);
-}
-
-/* Solid Button (No Gradients) */
-.btn-solid {
-  background: var(--accent-primary);
-  color: white;
-  padding: 0.625rem 1.25rem;
-  font-weight: 500;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all var(--transition-fast);
-}
-
-.btn-solid:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-}
-
-.btn-outline {
-  border: 1px solid var(--border-medium);
-  color: var(--text-primary);
-  padding: 0.625rem 1.25rem;
-  font-weight: 500;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all var(--transition-fast);
-}
-
-.btn-outline:hover {
-  border-color: var(--text-primary);
-  background: var(--bg-tertiary);
-}
-
 /* Heading Typography */
 h1, h2, h3, h4 {
   font-weight: 700;
@@ -175,44 +120,13 @@ h1, h2, h3, h4 {
   padding: 4rem 1.5rem;
 }
 
-/* Remove all AI Blobs/Gradients */
-.hero-gradient, .blob-1, .blob-2, .blob-3, .gradient-text, .gradient-bg {
-  display: none !important;
-}
-
-/* Accent Highlight */
+/* Accent Highlight Utilities */
 .text-accent {
   color: var(--accent-primary);
 }
 
 .bg-accent {
   background-color: var(--accent-primary);
-}
-
-/* Grid for Projects */
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-/* Profile Image Container */
-.profile-frame {
-  position: relative;
-  display: inline-block;
-  border: 8px solid var(--bg-tertiary);
-  border-radius: 4px;
-}
-
-.profile-frame::after {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: -12px;
-  bottom: -12px;
-  border: 2px solid var(--accent-primary);
-  z-index: -1;
 }
 
 /* Typography Overrides */

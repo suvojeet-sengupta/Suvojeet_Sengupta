@@ -1,13 +1,14 @@
 import React from 'react';
 
+interface GenerativePlaceholderProps {
+  title: string;
+}
+
 /**
- * A component that generates a placeholder image with a gradient based on the post title.
- * This is used when a blog post does not have a featured image.
- * @param {object} props - The component props.
- * @param {string} props.title - The title of the blog post, used to generate the gradient.
+ * A component that generates a placeholder image with a gradient based on the title.
  */
-const GenerativePlaceholder = ({ title }) => {
-  const generateGradient = (str) => {
+const GenerativePlaceholder: React.FC<GenerativePlaceholderProps> = ({ title }) => {
+  const generateGradient = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -25,10 +26,10 @@ const GenerativePlaceholder = ({ title }) => {
 
   return (
     <div
-      className="w-full h-56 flex items-center justify-center"
+      className="w-full h-56 flex items-center justify-center rounded-sm"
       style={{ background: gradient }}
     >
-      <h3 className="text-white text-2xl font-bold text-center p-4">{title}</h3>
+      <h3 className="text-white text-2xl font-black text-center p-4 uppercase tracking-tighter">{title}</h3>
     </div>
   );
 };

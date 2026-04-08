@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import styles from './UI.module.css';
 
 interface ButtonProps {
   to?: string;
@@ -33,18 +34,16 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const baseClasses = cn(
-    "font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2",
+    "font-bold rounded-sm transition-all duration-300 flex items-center justify-center gap-2",
     "disabled:opacity-50 disabled:cursor-not-allowed",
     sizeClasses[size] || sizeClasses.default,
     className
   );
 
-  const variantClasses = primary
-    ? 'btn-primary'
-    : 'btn-secondary';
+  const variantClass = primary ? styles.btnSolid : styles.btnOutline;
 
   const motionProps = {
-    whileHover: disabled ? {} : { y: -2, boxShadow: "0 10px 30px rgba(0,0,0,0.2)" },
+    whileHover: disabled ? {} : { y: -1 },
     whileTap: disabled ? {} : { scale: 0.98 },
   };
 
@@ -60,7 +59,7 @@ const Button: React.FC<ButtonProps> = ({
       <motion.div {...motionProps} className="inline-block">
         <Link
           href={to}
-          className={cn(baseClasses, variantClasses)}
+          className={cn(baseClasses, variantClass)}
         >
           {content}
         </Link>
@@ -72,7 +71,7 @@ const Button: React.FC<ButtonProps> = ({
     <motion.button
       type={type}
       onClick={onClick}
-      className={cn(baseClasses, variantClasses)}
+      className={cn(baseClasses, variantClass)}
       disabled={disabled}
       {...motionProps}
     >

@@ -4,19 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { calculateAge, cn } from '@/lib/utils';
+import { calculateAge } from '@/lib/utils';
 import projectsData from '@/data/projects.json';
+import uiStyles from '@/components/common/UI.module.css';
 
 const HomePage = () => {
   const age = calculateAge('2005-08-01');
 
-  // Filter for SuvMusic and NoteNext to highlight them
   const featuredProjects = projectsData.filter(p => 
     p.name === 'SuvMusic' || p.name === 'NoteNext'
-  );
-  
-  const otherProjects = projectsData.filter(p => 
-    p.name !== 'SuvMusic' && p.name !== 'NoteNext'
   );
 
   return (
@@ -39,10 +35,10 @@ const HomePage = () => {
               A {age}-year-old <span className="text-brand-orange font-bold">Singer</span> & Creative Developer building high-performance Android solutions and soul-stirring musical experiences.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <Link href="/about" className="btn-solid text-lg px-8">
+              <Link href="/about" className={uiStyles.btnSolid + " text-lg px-8"}>
                 About Me
               </Link>
-              <Link href="/music" className="btn-outline text-lg px-8">
+              <Link href="/music" className={uiStyles.btnOutline + " text-lg px-8"}>
                 Music Portfolio
               </Link>
             </div>
@@ -53,7 +49,7 @@ const HomePage = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="md:w-1/3 flex justify-center"
           >
-            <div className="profile-frame">
+            <div className={uiStyles.profileFrame}>
               <Image 
                 src="/suvojeet.jpg" 
                 alt="Suvojeet Sengupta" 
@@ -67,22 +63,22 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Projects - Organic Look */}
+      {/* Featured Projects */}
       <section className="bg-tertiary py-24">
         <div className="section-container">
           <div className="flex justify-between items-end mb-12">
             <div>
               <h2 className="text-4xl font-bold mb-4">Core Projects</h2>
-              <p className="text-secondary">Signature Android applications built with performance and user experience in mind.</p>
+              <p className="text-secondary font-medium">Signature Android applications built with performance and user experience in mind.</p>
             </div>
             <Link href="https://github.com/suvojeet-sengupta" target="_blank" className="text-brand-orange font-bold hover:underline mb-2">
               View All Github →
             </Link>
           </div>
 
-          <div className="project-grid">
+          <div className={uiStyles.projectGrid}>
             {featuredProjects.map((project) => (
-              <div key={project.name} className="professional-card group">
+              <div key={project.name} className={uiStyles.professionalCard + " group"}>
                 <div className="flex justify-between items-start mb-4">
                   <span className="text-xs font-bold uppercase tracking-widest text-muted">{project.language}</span>
                   <div className="flex items-center gap-1 text-brand-orange font-bold">
@@ -91,7 +87,7 @@ const HomePage = () => {
                   </div>
                 </div>
                 <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{project.name}</h3>
-                <p className="text-secondary mb-6 line-clamp-3">
+                <p className="text-secondary mb-6 line-clamp-3 font-medium">
                   {project.description}
                 </p>
                 <Link 
@@ -107,7 +103,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Philosophy Section - Professional & Minimal */}
+      {/* Approach Section */}
       <section className="section-container py-24">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
@@ -131,7 +127,7 @@ const HomePage = () => {
                 <div className="w-12 h-12 flex-shrink-0 bg-brand-black text-white flex items-center justify-center font-bold text-xl rounded-sm">03</div>
                 <div>
                   <h4 className="text-xl font-bold mb-2">Constant Evolution</h4>
-                  <p>I started with AI-assisted learning and am now mastering complex syntaxes and patterns. I believe in logic and creative problem solving over boilerplate knowledge.</p>
+                  <p>I believe in logic and creative problem solving over boilerplate knowledge. Every project is a step forward in mastering both arts.</p>
                 </div>
               </div>
             </div>
@@ -146,12 +142,12 @@ const HomePage = () => {
       {/* Call to Action */}
       <section className="bg-brand-black text-white py-20">
         <div className="section-container text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-black">Let's build something real together.</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Let's build something real together.</h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
             Whether you need a high-performance Android app, a modern web experience, or a musical collaboration, I'm ready to bring my creativity to your project.
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="/request-song" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm">
+            <Link href="/request-song" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm uppercase tracking-widest">
               Contact Me
             </Link>
           </div>
