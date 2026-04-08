@@ -3,7 +3,19 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-const Button = ({
+interface ButtonProps {
+  to?: string;
+  children: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  primary?: boolean;
+  className?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  icon?: React.ReactNode;
+  size?: 'small' | 'default' | 'large';
+}
+
+const Button: React.FC<ButtonProps> = ({
   to,
   children,
   onClick,
