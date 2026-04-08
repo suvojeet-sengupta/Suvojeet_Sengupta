@@ -1,7 +1,0 @@
-Flask
-Flask-Cors
-google-api-python-client
-python-dotenv
-Flask-SocketIO
-gunicorn
-eventlet

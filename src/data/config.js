@@ -14,12 +14,6 @@ export const socialLinks = [
         color: 'hover:bg-gray-700',
     },
     {
-        name: 'YouTube',
-        href: 'https://youtube.com/@suvojeetsengupta',
-        icon: 'YouTube',
-        color: 'hover:bg-red-600',
-    },
-    {
         name: 'Instagram',
         href: 'https://www.instagram.com/suvojeet__sengupta',
         icon: 'Instagram',

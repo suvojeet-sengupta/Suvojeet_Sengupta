@@ -5,10 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import useBlogPosts from '@/hooks/useBlogPosts';
 import BlogPostCard from '../blog/BlogPostCard';
-import videos from '@/data/videos.json';
 import projects from '@/data/projects.json';
-import VideoCard from '../video/VideoCard';
-import Button from '../common/Button';
 import useContactForm from '@/hooks/useContactForm';
 import SkeletonCard from '../common/SkeletonCard';
 import Link from 'next/link';
@@ -204,10 +201,9 @@ const HomePage = () => {
                     >
                         <Link href="/music" className="btn-creative inline-flex items-center justify-center gap-2 w-full sm:w-auto">
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                             </svg>
-                            Listen to Music
+                            Musical Journey
                         </Link>
                         <a
                             href="https://github.com/suvojeet-sengupta"
@@ -542,7 +538,7 @@ const HomePage = () => {
             </motion.section>
 
             {/* ========================================
-                MUSIC SHOWCASE SECTION
+                MUSICAL IDENTITY SECTION
             ======================================== */}
             <motion.section
                 id="music"
@@ -554,32 +550,49 @@ const HomePage = () => {
             >
                 <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.h2
-                        variants={itemVariants}
-                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
-                    >
-                        Music <span className="gradient-text-creative">Showcase</span>
-                    </motion.h2>
-                    <motion.p
-                        variants={itemVariants}
-                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
-                    >
-                        Singing is in my soul since childhood. Inspired by <span className="text-[var(--accent-creative)] font-medium">Arijit Singh</span>,
-                        music is not just a passion — it's a part of who I am. Without music, I simply can't live.
-                    </motion.p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-                        {videos.slice(0, 3).map(video => (
-                            <VideoCard key={video.id} video={video} />
-                        ))}
-                    </div>
-                    <div className="mt-8 sm:mt-12 text-center">
-                        <Link href="/music" className="btn-creative inline-flex items-center justify-center gap-2 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                            </svg>
-                            View All Music
-                        </Link>
+                    <div className="max-w-4xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <motion.div variants={itemVariants}>
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat mb-6">
+                                    Musical <span className="gradient-text-creative">Identity</span>
+                                </h2>
+                                <p className="text-lg text-[var(--text-secondary)] mb-6 leading-relaxed">
+                                    Beyond the logic of systems and code lies a deep-rooted passion for melody. Singing is the rhythm of my life—a journey inspired by the soulful artistry of <strong>Arijit Singh</strong>.
+                                </p>
+                                <p className="text-[var(--text-tertiary)] mb-8">
+                                    I bring the same architectural precision to my vocals as I do to my software, focusing on emotion, texture, and the 'vibe' that connects us all.
+                                </p>
+                                <Link href="/music" className="btn-creative inline-flex items-center gap-2">
+                                    Explore My Musical Journey
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                </Link>
+                            </motion.div>
+                            
+                            <motion.div 
+                                variants={itemVariants}
+                                className="relative hidden md:block"
+                            >
+                                <div className="aspect-square rounded-2xl overflow-hidden glass p-2 border border-[var(--glass-border)]">
+                                    <div className="w-full h-full rounded-xl overflow-hidden relative group">
+                                        <img 
+                                            src={suvojeet} 
+                                            alt="Suvojeet Music" 
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-transparent to-transparent opacity-60" />
+                                        <div className="absolute bottom-6 left-6 right-6 text-white">
+                                            <p className="text-sm font-medium uppercase tracking-widest opacity-80 mb-1">Lead Vocalist</p>
+                                            <p className="text-2xl font-bold font-montserrat">The Vibe Architect</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Decorative elements */}
+                                <div className="absolute -top-4 -right-4 w-24 h-24 bg-[var(--accent-creative)] opacity-10 rounded-full blur-2xl" />
+                                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[var(--accent-primary)] opacity-10 rounded-full blur-3xl" />
+                            </motion.div>
+                        </div>
                     </div>
                 </div>
             </motion.section>

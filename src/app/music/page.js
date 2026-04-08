@@ -1,10 +1,15 @@
-import MusicClient from "@/components/music/MusicClient";
+import MusicClient from '@/components/music/MusicClient';
 
 export const metadata = {
+  title: 'Music | Suvojeet Sengupta',
+  description: 'The musical journey and professional profile of Suvojeet Sengupta. Exploring the soul of music and the rhythm of life.',
+  openGraph: {
     title: 'Music | Suvojeet Sengupta',
-    description: 'Listen to the latest songs and covers by Suvojeet Sengupta. Explore a collection of his performances and musical works.',
+    description: 'Singer • Musician • The Vibe Architect',
+    url: 'https://suvojeetsengupta.in/music',
+  },
 };
 
-export default function MusicPage() {
-    return <MusicClient />;
+export default function Page() {
+  return <MusicClient />;
 }

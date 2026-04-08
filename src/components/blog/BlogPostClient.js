@@ -8,8 +8,6 @@ import Link from 'next/link';
 
 import useBlogPosts from '@/hooks/useBlogPosts';
 import { socket } from '@/services/socket';
-import EmojiReactionButton from '../common/EmojiReactionButton';
-import FloatingEmoji from '../common/FloatingEmoji';
 import LiveIndicator from '../common/LiveIndicator';
 
 const BlogPostClient = () => {
@@ -20,7 +18,6 @@ const BlogPostClient = () => {
     const [room, setRoom] = useState(null);
 
     const [viewerCount, setViewerCount] = useState(0);
-    const [reactions, setReactions] = useState([]);
 
     useEffect(() => {
         if (posts.length > 0 && slug) {
@@ -41,24 +38,11 @@ const BlogPostClient = () => {
             setViewerCount(data.count);
         });
 
-        socket.on('new_reaction', (data) => {
-            const newReaction = {
-                id: Date.now() + Math.random(),
-                emoji: data.emoji,
-            };
-            setReactions(prev => [...prev, newReaction]);
-        });
-
         return () => {
             socket.emit('leave_room', { room });
             socket.off('update_viewer_count');
-            socket.off('new_reaction');
         };
     }, [room]);
-
-    const handleAnimationComplete = (reactionId) => {
-        setReactions(prev => prev.filter(r => r.id !== reactionId));
-    };
 
     const handleShare = () => {
         const url = window.location.href;
@@ -103,17 +87,6 @@ const BlogPostClient = () => {
 
     return (
         <div className="min-h-screen relative pt-20">
-            {/* Floating Emojis Container */}
-            <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-50">
-                {reactions.map(reaction => (
-                    <FloatingEmoji
-                        key={reaction.id}
-                        emoji={reaction.emoji}
-                        onAnimationComplete={() => handleAnimationComplete(reaction.id)}
-                    />
-                ))}
-            </div>
-
             {/* Hero Section */}
             <section className="relative overflow-hidden py-16 sm:py-20">
                 <div className="hero-gradient" />
@@ -201,11 +174,7 @@ const BlogPostClient = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="mt-10 pt-8 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-between gap-4">
-                            <div className="flex items-center gap-3">
-                                {room && <EmojiReactionButton room={room} />}
-                            </div>
-
+                        <div className="mt-10 pt-8 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-end gap-4">
                             <button
                                 onClick={handleShare}
                                 className="btn-primary flex items-center gap-2"
