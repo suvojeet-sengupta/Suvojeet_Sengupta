@@ -1,15 +1,15 @@
 [
     {
         "name": "SuvMusic",
-        "description": "A high-performance music application demonstrating advanced streaming and media handling capabilities.",
+        "description": "A high-performance YouTube Music client (v2.2.2.0) built with Kotlin, featuring seamless streaming and advanced media handling.",
         "language": "Kotlin",
         "stars": 43,
         "url": "https://github.com/suvojeet-sengupta/SuvMusic",
-        "lastUpdated": "2026-01-25"
+        "lastUpdated": "2026-04-09"
     },
     {
         "name": "NoteNext",
-        "description": "A modern, intuitive note-taking application built with native Android best practices.",
+        "description": "A modern, intuitive note-taking application (v1.0.0) built with native Android best practices and offline-first architecture.",
         "language": "Kotlin",
         "stars": 4,
         "url": "https://github.com/suvojeet-sengupta/NoteNext",
