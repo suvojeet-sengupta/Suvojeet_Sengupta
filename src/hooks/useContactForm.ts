@@ -1,12 +1,22 @@
 import { useReducer } from 'react';
 import config from '../config';
 
-const formInitialState = {
-    status: 'idle', // 'idle', 'submitting', 'success', 'error'
+interface FormState {
+    status: 'idle' | 'submitting' | 'success' | 'error';
+    message: string | null;
+}
+
+type FormAction = 
+    | { type: 'SUBMIT' }
+    | { type: 'SUCCESS'; payload: string }
+    | { type: 'ERROR'; payload: string };
+
+const formInitialState: FormState = {
+    status: 'idle',
     message: null,
 };
 
-function formReducer(state, action) {
+function formReducer(state: FormState, action: FormAction): FormState {
     switch (action.type) {
         case 'SUBMIT':
             return { ...state, status: 'submitting', message: null };
@@ -15,14 +25,14 @@ function formReducer(state, action) {
         case 'ERROR':
             return { ...state, status: 'error', message: action.payload };
         default:
-            throw new Error(`Unhandled action type: ${action.type}`);
+            return state;
     }
 }
 
 const useContactForm = () => {
     const [formState, dispatch] = useReducer(formReducer, formInitialState);
 
-    const submitForm = async (data) => {
+    const submitForm = async (data: Record<string, any>) => {
         dispatch({ type: 'SUBMIT' });
 
         try {
@@ -41,7 +51,7 @@ const useContactForm = () => {
             } else {
                 const responseData = await response.json();
                 const errorMessage = responseData.errors
-                    ? responseData.errors.map(error => error.message).join(", ")
+                    ? responseData.errors.map((error: any) => error.message).join(", ")
                     : 'Oops! There was a problem submitting your form';
                 dispatch({ type: 'ERROR', payload: errorMessage });
                 return false;
