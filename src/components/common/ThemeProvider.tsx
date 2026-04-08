@@ -15,7 +15,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    // Return a dummy context during SSR to prevent crashes, 
+    // but ideally we should be inside a provider.
+    // In Next.js App Router, the provider in layout.tsx should be found.
+    return {
+        theme: 'light' as Theme,
+        toggleTheme: () => {},
+        setTheme: () => {},
+    };
   }
   return context;
 };
@@ -64,13 +71,13 @@ export const ThemeProvider = ({
     setThemeState(newTheme);
   };
 
-  if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>;
-  }
-
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {children}
+      {/* We wrap children in a div that is hidden until mounted to prevent FOUC, 
+          but we ALWAYS render the Provider so useTheme() doesn't fail during SSR */}
+      <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
