@@ -3,11 +3,8 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
-import useBlogPosts from '@/hooks/useBlogPosts';
-import BlogPostCard from '../blog/BlogPostCard';
 import projects from '@/data/projects.json';
 import useContactForm from '@/hooks/useContactForm';
-import SkeletonCard from '../common/SkeletonCard';
 import Link from 'next/link';
 
 const suvojeet = '/suvojeet.jpg';
@@ -18,7 +15,6 @@ const suvojeet = '/suvojeet.jpg';
  */
 const HomePage = () => {
     const { formState, submitForm } = useContactForm();
-    const { posts, loading, error } = useBlogPosts();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -593,57 +589,6 @@ const HomePage = () => {
                                 <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-[var(--accent-primary)] opacity-10 rounded-full blur-3xl" />
                             </motion.div>
                         </div>
-                    </div>
-                </div>
-            </motion.section>
-
-            {/* ========================================
-                BLOG POSTS SECTION
-            ======================================== */}
-            <motion.section
-                id="blog"
-                className="py-16 sm:py-24 bg-[var(--bg-secondary)] relative"
-                variants={sectionVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-            >
-                <div className="absolute top-0 right-0 -mt-20 -mr-20 w-48 sm:w-96 h-48 sm:h-96 bg-[var(--accent-primary)] opacity-10 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-48 sm:w-96 h-48 sm:h-96 bg-[var(--accent-secondary)] opacity-10 rounded-full blur-3xl" />
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <motion.h2
-                        variants={itemVariants}
-                        className="text-2xl sm:text-3xl md:text-4xl font-bold font-montserrat text-center mb-3 sm:mb-4"
-                    >
-                        Latest from the <span className="gradient-text">Blog</span>
-                    </motion.h2>
-                    <motion.p
-                        variants={itemVariants}
-                        className="text-sm sm:text-base text-[var(--text-secondary)] text-center mb-8 sm:mb-12 max-w-2xl mx-auto px-2"
-                    >
-                        Thoughts on software architecture, mobile development, and technology.
-                    </motion.p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-                        {loading ? (
-                            Array.from({ length: 3 }).map((_, index) => (
-                                <SkeletonCard key={index} />
-                            ))
-                        ) : !error && posts.length > 0 ? (
-                            posts.slice(0, 3).map(post => (
-                                <BlogPostCard key={post.sys.id} post={post} />
-                            ))
-                        ) : (
-                            <p className="text-center col-span-full text-[var(--text-muted)]">No posts found.</p>
-                        )}
-                    </div>
-                    <div className="mt-8 sm:mt-12 text-center">
-                        <Link href="/blog" className="btn-primary inline-flex items-center justify-center gap-2 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
-                            View All Posts
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </Link>
                     </div>
                 </div>
             </motion.section>

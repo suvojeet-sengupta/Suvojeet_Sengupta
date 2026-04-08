@@ -2,8 +2,6 @@ export const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/music', label: 'Music' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/posts', label: 'Posts' },
 ];
 
 export const socialLinks = [
