@@ -1,49 +1,19 @@
 "use client";
 
-import React, { useReducer } from 'react';
+import React from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
 import { timeline, skills, philosophy, futureGoals } from '@/data/aboutData';
+import useContactForm from '@/hooks/useContactForm';
 
 const suvojeet = '/suvojeet.jpg';
 
-// Type definitions for form state
-interface FormState {
-    status: 'idle' | 'submitting' | 'success' | 'error';
-    message: string | null;
-}
-
-type FormAction = 
-    | { type: 'SUBMIT' }
-    | { type: 'SUCCESS'; payload: string }
-    | { type: 'ERROR'; payload: string };
-
-const formInitialState: FormState = {
-    status: 'idle',
-    message: null,
-};
-
-function formReducer(state: FormState, action: FormAction): FormState {
-    switch (action.type) {
-        case 'SUBMIT':
-            return { ...state, status: 'submitting', message: null };
-        case 'SUCCESS':
-            return { ...state, status: 'success', message: action.payload };
-        case 'ERROR':
-            return { ...state, status: 'error', message: action.payload };
-        default:
-            return state;
-    }
-}
-
 const AboutClient = () => {
-    const [formState, dispatch] = useReducer(formReducer, formInitialState);
+    const { formState, submitForm } = useContactForm();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch({ type: 'SUBMIT' });
-
         const form = e.currentTarget;
         const formData = new FormData(form);
         const data: Record<string, any> = {};
@@ -51,28 +21,9 @@ const AboutClient = () => {
             data[key] = value;
         });
 
-        try {
-            const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (response.ok) {
-                dispatch({ type: 'SUCCESS', payload: 'Thanks for your message! I will get back to you soon.' });
-                form.reset();
-            } else {
-                const responseData = await response.json();
-                const errorMessage = responseData.errors
-                    ? responseData.errors.map((error: any) => error.message).join(", ")
-                    : 'Oops! There was a problem submitting your form';
-                dispatch({ type: 'ERROR', payload: errorMessage });
-            }
-        } catch (error) {
-            dispatch({ type: 'ERROR', payload: 'Something went wrong. Please try again.' });
+        await submitForm(data);
+        if (formState.status === 'success') {
+            form.reset();
         }
     };
 
