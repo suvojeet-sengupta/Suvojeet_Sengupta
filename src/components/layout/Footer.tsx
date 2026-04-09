@@ -13,7 +13,7 @@ const Footer = () => {
               SUVOJEET<span className="text-accent">.</span>
             </Link>
             <p className="mt-4 text-secondary max-w-sm">
-              Built with precision and passion. High-performance apps and organic design.
+              Built with precision and passion. High-performance software and soulful melodies.
             </p>
           </div>
 
