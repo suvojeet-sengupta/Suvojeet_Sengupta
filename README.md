@@ -1,114 +1,80 @@
-# Suvojeet Sengupta - The Vibe Architect 🚀🎵
+# Suvojeet Sengupta | Singer and Creative Developer
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg)
+Official portfolio of Suvojeet Sengupta, showcasing a unique integration of high-performance software engineering and professional vocal artistry.
 
-Welcome to the digital portfolio of **Suvojeet Sengupta** — where Logic meets Rhythm. This website is a premium, immersive showcase of a dual identity: **Professional Android/Web Developer** and **Passionate Singer**.
+## Professional Overview
 
-> *"Bolne wale sirf shor karte hain, dekhne wale khel samajh jate hain."*
+Based in Asansol, West Bengal, Suvojeet Sengupta is a dual-identity professional specializing in Android development and Indian vocal music. This platform serves as a central hub for technical projects and musical performances, reflecting a commitment to precision in code and emotion in sound.
 
-## ✨ Project Overview
+### Creative Developer Role
+Focused on building high-performance Android and Web solutions. Core projects include:
+- **SuvMusic**: A specialized music application designed for seamless user experiences.
+- **NoteNext**: A productivity-focused application for efficient information management.
 
-This is a modern, high-performance web application built with the latest web technologies. It creates a seamless, app-like experience with fluid animations, glassmorphism aesthetics, and a robust design system.
+### Singer Role
+A soulful vocalist performing in Hindi and Bengali.
+- **Inspirations**: Deeply rooted in the classics of Kishore Kumar and Lata Mangeshkar, with modern influence from Arijit Singh.
+- **Style**: Emphasizes organic practice and technical vocal precision.
+- **Repertoire**: Covers a wide range of soulful melodies and contemporary hits.
 
-The website serves two main purposes:
-1.  **Professional Portfolio**: Showcase of "Android Vibe Coder" skills, engineering philosophy, and technical arsenal.
-2.  **Musical Journey**: A dedicated space for the "Singer" identity, featuring covers and Arijit Singh-inspired performances.
+## Technical Architecture
 
-## 🚀 Key Features
+The website is built with a modern, high-performance stack designed for speed, SEO, and fluid user interaction.
 
--   **Dual Identity Hero Section**: A unique, interactive introduction highlighting both the Coder and Singer personas.
--   **Premium Glassmorphism UI**: A consistent, modern design language with frosted glass effects and vibrant gradients.
--   **Dynamic Theming**: Fully integrated Light & Dark modes with smooth color transitions and persistent user preference.
--   **Fluid Animations**: Powered by **Framer Motion** for scroll reveals, hover effects, and Page transitions.
--   **Responsive & Mobile-First**: Optimized for all devices, from large desktops to mobile phones, with touch-friendly interactions and safe-area support.
--   **CMS Integration**: Dynamic blog posts powered by **Contentful**.
--   **Featured Projects & Music**: Showcases top GitHub projects and YouTube music covers.
+### Core Technologies
+- **Next.js 16**: Utilizing the App Router for optimized server-side rendering and routing.
+- **React 19**: Leveraging the latest features for reactive and efficient UI components.
+- **Tailwind CSS v4**: Implementing a utility-first design system with high performance.
+- **TypeScript**: Ensuring type safety and maintainable code architecture.
+- **Framer Motion**: Providing professional-grade animations and transitions.
+- **Socket.io**: Enabling real-time communication features where applicable.
 
-## 🛠️ Tech Stack
+### Key Features
+- **Dynamic SEO**: Optimized metadata for improved visibility on search engines.
+- **Responsive Design**: Fully compatible across desktop, tablet, and mobile platforms.
+- **Interactive Forms**: Integrated song request and contact systems utilizing formsubmit.co.
+- **Theme Management**: Persistent light and dark mode support.
 
-This project is built using a cutting-edge stack focused on performance and developer experience:
-
-### Core
--   **[Next.js 16](https://nextjs.org/)**: React Framework (App Router).
--   **[React 19](https://react.dev/)**: For building interactive UIs.
-
-### Styling & Design
--   **[Tailwind CSS v4](https://tailwindcss.com/)**: Utility-first CSS framework for rapid UI development.
--   **CSS Variables**: For dynamic, performant theming.
--   **Inter & Montserrat Fonts**: Premium typography.
-
-### Animation
--   **[Framer Motion](https://www.framer.com/motion/)**: Production-ready animation library for React.
-
-### Content & Data
--   **[Contentful](https://www.contentful.com/)**: Headless CMS for managing blog posts.
-
-## 💻 Getting Started
-
-Follow these steps to set up the project locally on your machine.
+## Getting Started
 
 ### Prerequisites
-
--   Node.js 18+ installed
--   npm or yarn
+- Node.js 18.0.0 or higher
+- npm or yarn package manager
 
 ### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/suvojeet-sengupta/Suvojeet_Sengupta.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd Suvojeet_Sengupta
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/suvojeet-sengupta/portfolio.git
-    cd portfolio
-    ```
+## Project Structure
 
-2.  **Install dependencies**
-    ```bash
-    npm install
-    # or
-    yarn install
-    ```
+- `src/app/`: Core routing and page layouts.
+- `src/components/`: Modular UI components categorized by feature (Home, Music, About).
+- `src/data/`: Static and dynamic data configurations.
+- `src/hooks/`: Custom React hooks for shared logic.
+- `src/lib/`: Utility functions and third-party integrations.
+- `public/`: Static assets including images and configuration files.
 
-3.  **Run the development server**
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    ```
+## Contact and Connect
 
-4.  Open [http://localhost:3000](http://localhost:3000) in your browser.
+For collaborations in software development or musical performances, please use the following channels:
 
-## 📂 Project Structure
+- **GitHub**: [suvojeet-sengupta](https://github.com/suvojeet-sengupta)
+- **YouTube**: [suvojeetsengupta](https://youtube.com/@suvojeetsengupta)
+- **Website**: [suvojeetsengupta.in](https://suvojeetsengupta.in)
 
-```bash
-src/
-├── app/                  # App Router pages and layouts
-│   ├── globals.css       # Global styles & Tailwind v4 config
-│   ├── layout.js         # Root layout with ThemeProvider
-│   └── page.js           # Homepage entry
-├── components/           # Reusable UI components
-│   ├── home/             # Homepage-specific sections (Hero, Projects, etc.)
-│   ├── layout/           # Navbar, Footer
-│   ├── ui/               # Generic UI elements (Buttons, Cards)
-│   └── [feature]/        # Feature-based components
-├── context/              # React Context (ThemeProvider)
-└── lib/                  # Utilities and Contentful clients
-```
-
-## 🎨 Design Philosophy
-
-"Logic-First, Syntax-Second."
-
-The design adheres to a premium aesthetic using:
--   **Vibrant Gradients**: Used sparingly to guide attention (Primary: Indigo/Violet, Creative: Amber/Orange).
--   **Depth**: Achieved through layered glassmorphism and subtle shadows.
--   **Motion**: Meaningful animations that enhance the user journey without overwhelming it.
-
-## 🤝 Contact
-
-Open to discussing new architectural challenges and musical collaborations.
-
--   **GitHub**: [@suvojeet-sengupta](https://github.com/suvojeet-sengupta)
--   **Role**: Android Vibe Coder & Singer
-
----
-
-_Crafted with ❤️ and 🎶 by Suvojeet Sengupta_
+License: MIT
+Copyright (c) 2026 Suvojeet Sengupta

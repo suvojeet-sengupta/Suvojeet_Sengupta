@@ -32,7 +32,7 @@ export const socialLinks = [
 ];
 
 export const siteConfig = {
-    title: "Suvojeet Sengupta | The Vibe Architect",
-    description: "Product-First Software Engineer, System Architect, and Singer based in India.",
+    title: "Suvojeet Sengupta | Singer & Creative Developer",
+    description: "Official portfolio of Suvojeet Sengupta. Soulful Singer in Hindi & Bengali and Professional Android Developer.",
     formSubmitUrl: 'https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d',
 };
