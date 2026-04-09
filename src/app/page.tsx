@@ -1,11 +1,11 @@
 import HomePage from '@/components/home/HomePage';
 
 export const metadata = {
-  title: 'Suvojeet Sengupta | The Vibe Architect',
-  description: 'Product-First Software Engineer, System Architect, and Singer based in India. Specializing in mobile development with Android/Flutter, delivering complex applications with enterprise-grade precision.',
+  title: 'Suvojeet Sengupta | Singer & Creative Developer',
+  description: 'Soulful Singer in Hindi & Bengali inspired by Arijit Singh & Kishore Kumar. Professional Android Developer building high-performance solutions.',
   openGraph: {
-    title: 'Suvojeet Sengupta | The Vibe Architect',
-    description: 'Singer • Android Vibe Coder • System Architect',
+    title: 'Suvojeet Sengupta | Singer & Developer',
+    description: 'Arijit Singh & Kishore Kumar inspired Singer • Android Dev • Bengali & Hindi Vocals',
     url: 'https://suvojeetsengupta.in',
     siteName: 'Suvojeet Sengupta',
     images: [
@@ -20,8 +20,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Suvojeet Sengupta | The Vibe Architect',
-    description: 'Singer • Android Vibe Coder • System Architect',
+    title: 'Suvojeet Sengupta | Singer & Developer',
+    description: 'Singer • Bengali & Hindi Vocals • Android Developer',
   },
 };
 

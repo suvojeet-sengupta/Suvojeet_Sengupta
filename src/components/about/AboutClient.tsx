@@ -145,7 +145,7 @@ const AboutClient = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.2 }}
                             >
-                                Creative Developer & Music Artist
+                                Singer & Creative Developer
                             </motion.div>
 
                             <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">

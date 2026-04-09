@@ -10,8 +10,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Suvojeet Sengupta | Creative Developer & Music Artist",
-  description: "Portfolio of Suvojeet Sengupta, featuring SuvMusic, NoteNext, and professional music artistry.",
+  title: "Suvojeet Sengupta | Singer & Creative Developer",
+  description: "Official portfolio of Suvojeet Sengupta. A soulful singer in Hindi and Bengali, inspired by Kishore Kumar and Arijit Singh. Also a high-performance Android Developer.",
+  keywords: ["Suvojeet Sengupta", "Singer", "Bengali Singer", "Hindi Singer", "Android Developer", "SuvMusic", "NoteNext", "Asansol Singer"],
 };
 
 export default function RootLayout({

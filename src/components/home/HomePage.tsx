@@ -41,14 +41,11 @@ const HomePage = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex-1 space-y-6"
           >
-            <div className="inline-block px-3 py-1 bg-accent-subtle border border-brand-orange text-brand-orange text-sm font-medium rounded-sm">
-              Available for Collaboration
-            </div>
             <h1 className="text-5xl md:text-7xl font-black leading-tight">
               Suvojeet <span className="text-accent">Sengupta</span>
             </h1>
             <p className="text-xl md:text-2xl text-secondary max-w-2xl font-medium">
-              A {age}-year-old <span className="text-brand-orange font-bold">Singer</span> & Creative Developer building high-performance Android solutions and soul-stirring musical experiences.
+              A {age}-year-old <span className="text-brand-orange font-bold">Singer</span> & Creative Developer. Soulful voice in Hindi & Bengali, building high-performance Android solutions.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
               <Link href="/about" className={uiStyles.btnSolid + " text-lg px-8"}>
