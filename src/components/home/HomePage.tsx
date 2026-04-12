@@ -119,11 +119,18 @@ const HomePage = () => {
                       : repo.description}
                   </p>
                   <Link 
+                    href={name.toLowerCase()} 
+                    className="inline-flex items-center gap-2 font-bold text-sm bg-brand-orange text-white px-4 py-2 rounded-sm hover:bg-orange-600 transition-colors mb-4"
+                  >
+                    VIEW DETAILS
+                  </Link>
+                  <br />
+                  <Link 
                     href={repo.html_url} 
                     target="_blank"
-                    className="inline-flex items-center gap-2 font-bold text-sm border-b-2 border-brand-orange pb-1 hover:border-black transition-colors"
+                    className="inline-flex items-center gap-2 font-bold text-xs border-b border-muted text-muted hover:text-brand-orange hover:border-brand-orange transition-colors"
                   >
-                    EXPLORE SOURCE CODE
+                    GITHUB SOURCE →
                   </Link>
                 </div>
               );
