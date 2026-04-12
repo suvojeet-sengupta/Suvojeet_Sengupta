@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Icons } from './Icons';
-import ProjectContactForm from '../contact/ProjectContactForm';
+import ModularContactForm from '../contact/ModularContactForm';
 import Link from 'next/link';
 
 interface ProjectClientProps {
