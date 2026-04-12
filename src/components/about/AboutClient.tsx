@@ -1,32 +1,15 @@
 "use client";
 
 import React from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
 import { skills, philosophy, futureGoals } from '@/data/aboutData';
-import useContactForm from '@/hooks/useContactForm';
+import ModularContactForm from '../contact/ModularContactForm';
 
 const suvojeet = '/suvojeet.jpg';
 
 const AboutClient = () => {
-    const { formState, submitForm } = useContactForm();
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const form = e.currentTarget;
-        const formData = new FormData(form);
-        const data: Record<string, any> = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
-
-        await submitForm(data);
-        if (formState.status === 'success') {
-            form.reset();
-        }
-    };
-
     // Animation variants with explicit typing
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -43,12 +26,6 @@ const AboutClient = () => {
             y: 0, 
             transition: { duration: 0.6, ease: 'easeOut' } 
         },
-    };
-
-    const cardHover = {
-        y: -8,
-        boxShadow: "0 20px 40px rgba(99, 102, 241, 0.15)",
-        transition: { duration: 0.3 }
     };
 
     return (
@@ -236,108 +213,6 @@ const AboutClient = () => {
 
                     <motion.div variants={itemVariants} className="professional-card">
                         <ModularContactForm initialType="GENERAL" />
-                    </motion.div>
-                </motion.div>
-            </section>
-
-            {/* Social Links Footer */}
-            <section className="pb-24">
-                <div className="section-container text-center">
-                    <SocialLinks size="large" />
-                </div>
-            </section>
-        </div>
-    );
-};
-
-export default AboutClient;
-}}
-                                    exit={{ opacity: 0, y: -20 }}
-                                >
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label htmlFor="name-about" className="text-xs font-black uppercase tracking-widest text-muted">
-                                                Name
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                id="name-about"
-                                                className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary"
-                                                placeholder="Suvojeet"
-                                                required
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="email-about" className="text-xs font-black uppercase tracking-widest text-muted">
-                                                Email
-                                            </label>
-                                            <input
-                                                type="email"
-                                                name="email"
-                                                id="email-about"
-                                                className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary"
-                                                placeholder="suvojeet@example.com"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="type-about" className="text-xs font-black uppercase tracking-widest text-muted">
-                                            Inquiry Type
-                                        </label>
-                                        <select
-                                            name="type"
-                                            id="type-about"
-                                            className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary appearance-none cursor-pointer"
-                                            required
-                                        >
-                                            <option value="General Collaboration">General Collaboration</option>
-                                            <option value="Music Project">Music Project</option>
-                                            <option value="Android Development">Android Development</option>
-                                            <option value="AI Solutions">AI Solutions</option>
-                                            <option value="Custom ROM (sky)">Custom ROM (sky)</option>
-                                            <option value="Personal Inquiry">Personal Inquiry</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="message-about" className="text-xs font-black uppercase tracking-widest text-muted">
-                                            Message
-                                        </label>
-                                        <textarea
-                                            name="message"
-                                            id="message-about"
-                                            rows={5}
-                                            className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary resize-none"
-                                            placeholder="Your vision..."
-                                            required
-                                        ></textarea>
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        className="btn-solid w-full text-lg py-4"
-                                        disabled={formState.status === 'submitting'}
-                                    >
-                                        {formState.status === 'submitting' ? 'SENDING...' : 'SEND MESSAGE'}
-                                    </button>
-                                </motion.form>
-                            ) : (
-                                <motion.div
-                                    key="success"
-                                    className="text-center py-10"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                >
-                                    <div className="w-16 h-16 mx-auto mb-6 rounded-sm bg-brand-orange flex items-center justify-center text-white">
-                                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                    </div>
-                                    <h3 className="text-2xl font-black mb-2 uppercase tracking-tighter">Message Received</h3>
-                                    <p className="text-secondary font-medium">{formState.message}</p>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
                     </motion.div>
                 </motion.div>
             </section>
