@@ -235,13 +235,23 @@ const AboutClient = () => {
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="professional-card">
-                        <AnimatePresence mode="wait">
-                            {formState.status !== 'success' ? (
-                                <motion.form
-                                    key="form"
-                                    onSubmit={handleSubmit}
-                                    className="space-y-6"
-                                    initial={{ opacity: 1 }}
+                        <ModularContactForm initialType="GENERAL" />
+                    </motion.div>
+                </motion.div>
+            </section>
+
+            {/* Social Links Footer */}
+            <section className="pb-24">
+                <div className="section-container text-center">
+                    <SocialLinks size="large" />
+                </div>
+            </section>
+        </div>
+    );
+};
+
+export default AboutClient;
+}}
                                     exit={{ opacity: 0, y: -20 }}
                                 >
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

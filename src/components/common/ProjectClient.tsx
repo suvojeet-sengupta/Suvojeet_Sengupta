@@ -144,7 +144,10 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                 </div>
                             </section>
 
-                            <ProjectContactForm projectName={name} />
+                            <section className="professional-card border-brand-orange">
+                                <h3 className="text-xl font-bold mb-6">Project Inquiry</h3>
+                                <ModularContactForm initialType="PROJECT" projectName={name} />
+                            </section>
                         </div>
                     </div>
                 </motion.div>
