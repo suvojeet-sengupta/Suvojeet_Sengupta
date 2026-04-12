@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Icons } from './Icons';
+import ProjectContactForm from '../contact/ProjectContactForm';
 import Link from 'next/link';
 
 interface ProjectClientProps {
@@ -143,15 +144,7 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                 </div>
                             </section>
 
-                            <section className="professional-card border-brand-orange">
-                                <h3 className="text-xl font-bold mb-4">Want to collaborate?</h3>
-                                <p className="text-secondary mb-6">
-                                    I'm always open to discussing new features or optimizations for this project.
-                                </p>
-                                <Link href="/about" className="btn-solid w-full text-center">
-                                    Get in Touch
-                                </Link>
-                            </section>
+                            <ProjectContactForm projectName={name} />
                         </div>
                     </div>
                 </motion.div>

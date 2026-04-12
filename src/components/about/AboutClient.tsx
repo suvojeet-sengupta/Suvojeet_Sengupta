@@ -317,6 +317,24 @@ const AboutClient = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-2">
+                                        <label htmlFor="type-about" className="text-xs font-black uppercase tracking-widest text-muted">
+                                            Inquiry Type
+                                        </label>
+                                        <select
+                                            name="type"
+                                            id="type-about"
+                                            className="w-full bg-tertiary border border-light p-3 focus:border-brand-orange outline-none transition-colors rounded-sm text-primary appearance-none cursor-pointer"
+                                            required
+                                        >
+                                            <option value="General Collaboration">General Collaboration</option>
+                                            <option value="Music Project">Music Project</option>
+                                            <option value="Android Development">Android Development</option>
+                                            <option value="AI Solutions">AI Solutions</option>
+                                            <option value="Custom ROM (sky)">Custom ROM (sky)</option>
+                                            <option value="Personal Inquiry">Personal Inquiry</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
                                         <label htmlFor="message-about" className="text-xs font-black uppercase tracking-widest text-muted">
                                             Message
                                         </label>
