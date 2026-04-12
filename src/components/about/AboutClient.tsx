@@ -6,6 +6,7 @@ import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
 import { skills, philosophy, futureGoals } from '@/data/aboutData';
 import ModularContactForm from '../contact/ModularContactForm';
+import ResumeHub from './ResumeHub';
 
 const suvojeet = '/suvojeet.jpg';
 
@@ -81,7 +82,7 @@ const AboutClient = () => {
                             </h1>
 
                             <p className="text-xl text-secondary mb-6 leading-relaxed">
-                                Born on 1st August 2005 in Asansol, West Bengal. I find balance between the precision of code and the raw emotion of music.
+                                Born in Asansol, West Bengal, currently based in Dhanbad, Jharkhand. I find balance between the precision of code and the raw emotion of music.
                             </p>
 
                             <p className="text-lg text-secondary mb-8 leading-relaxed">
@@ -95,6 +96,8 @@ const AboutClient = () => {
                     </div>
                 </motion.div>
             </section>
+
+            <ResumeHub />
 
             {/* Skills Section */}
             <section className="py-24">
@@ -124,16 +127,6 @@ const AboutClient = () => {
                                     <span className="text-3xl">{skill.icon}</span>
                                     <h3 className="text-lg font-bold">{skill.name}</h3>
                                 </div>
-                                <div className="relative h-2 bg-tertiary rounded-full overflow-hidden">
-                                    <motion.div
-                                        className="absolute left-0 top-0 h-full bg-brand-orange rounded-full"
-                                        initial={{ width: 0 }}
-                                        whileInView={{ width: `${skill.level}%` }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 1, delay: index * 0.1 }}
-                                    />
-                                </div>
-                                <p className="text-right text-xs font-bold text-muted mt-2 uppercase tracking-widest">{skill.level}% Proficiency</p>
                             </motion.div>
                         ))}
                     </div>
