@@ -4,7 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import SocialLinks from '../contact/SocialLinks';
 import Image from 'next/image';
-import { timeline, skills, philosophy, futureGoals } from '@/data/aboutData';
+import { skills, philosophy, futureGoals } from '@/data/aboutData';
 import useContactForm from '@/hooks/useContactForm';
 
 const suvojeet = '/suvojeet.jpg';
@@ -115,50 +115,6 @@ const AboutClient = () => {
                                 <SocialLinks size="medium" />
                             </div>
                         </motion.div>
-                    </div>
-                </motion.div>
-            </section>
-
-            {/* Timeline Section */}
-            <section className="py-24 bg-tertiary">
-                <motion.div
-                    className="section-container"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">The Journey</h2>
-                        <p className="text-secondary max-w-2xl mx-auto font-medium">
-                            Milestones that define my path in tech and music.
-                        </p>
-                    </motion.div>
-
-                    <div className="relative max-w-4xl mx-auto">
-                        <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-brand-orange hidden md:block" />
-
-                        {timeline.map((item, index) => (
-                            <motion.div
-                                key={item.year}
-                                variants={itemVariants}
-                                className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                            >
-                                <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
-                                    <motion.div
-                                        className="professional-card"
-                                        whileHover={{ y: -4, borderColor: 'var(--accent-primary)' }}
-                                    >
-                                        <span className="inline-block px-3 py-1 text-xs font-black rounded-sm bg-brand-orange text-white mb-3">
-                                            {item.year}
-                                        </span>
-                                        <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                                        <p className="text-secondary">{item.description}</p>
-                                    </motion.div>
-                                </div>
-                                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-brand-orange border-4 border-white hidden md:block" />
-                            </motion.div>
-                        ))}
                     </div>
                 </motion.div>
             </section>
