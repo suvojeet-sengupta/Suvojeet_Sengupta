@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Icons } from './Icons';
 import Link from 'next/link';
 
 interface ProjectClientProps {
@@ -15,6 +15,22 @@ interface ProjectClientProps {
     liveUrl?: string;
     stats?: { label: string; value: string }[];
 }
+
+// Inline SVGs to replace lucide-react dependencies
+const ExternalLinkIcon = ({ size = 20 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+);
+
+const ArrowLeftIcon = ({ size = 20 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+    </svg>
+);
 
 const ProjectClient: React.FC<ProjectClientProps> = ({
     name,
@@ -33,8 +49,8 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                     href="/#projects" 
                     className="inline-flex items-center gap-2 text-secondary hover:text-brand-orange transition-colors mb-8 group"
                 >
-                    <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-                    Back to Projects
+                    <ArrowLeftIcon size={20} />
+                    <span className="group-hover:-translate-x-1 transition-transform">Back to Projects</span>
                 </Link>
 
                 <motion.div
@@ -58,7 +74,7 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                 rel="noopener noreferrer"
                                 className="btn-outline flex items-center gap-2"
                             >
-                                <Github size={20} /> GitHub
+                                <Icons.GitHub className="w-5 h-5" /> GitHub
                             </a>
                             {liveUrl && (
                                 <a 
@@ -67,7 +83,7 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                     rel="noopener noreferrer"
                                     className="btn-solid flex items-center gap-2"
                                 >
-                                    <ExternalLink size={20} /> View Live
+                                    <ExternalLinkIcon size={20} /> View Live
                                 </a>
                             )}
                         </div>
