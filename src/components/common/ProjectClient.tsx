@@ -10,6 +10,7 @@ interface ProjectClientProps {
     name: string;
     description: string;
     longDescription?: string;
+    story?: string;
     features: string[];
     techStack: string[];
     githubUrl: string;
@@ -17,26 +18,13 @@ interface ProjectClientProps {
     stats?: { label: string; value: string }[];
 }
 
-// Inline SVGs to replace lucide-react dependencies
-const ExternalLinkIcon = ({ size = 20 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-        <polyline points="15 3 21 3 21 9" />
-        <line x1="10" y1="14" x2="21" y2="3" />
-    </svg>
-);
-
-const ArrowLeftIcon = ({ size = 20 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12" />
-        <polyline points="12 19 5 12 12 5" />
-    </svg>
-);
+// ... rest of imports and icons ...
 
 const ProjectClient: React.FC<ProjectClientProps> = ({
     name,
     description,
     longDescription,
+    story,
     features,
     techStack,
     githubUrl,
@@ -112,6 +100,18 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                     {longDescription || description}
                                 </p>
                             </section>
+
+                            {story && (
+                                <section>
+                                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                                        <span className="w-2 h-8 bg-brand-orange" />
+                                        The Story
+                                    </h2>
+                                    <p className="text-lg text-secondary leading-relaxed mb-6 italic border-l-2 border-brand-orange/30 pl-6">
+                                        {story}
+                                    </p>
+                                </section>
+                            )}
 
                             <section>
                                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">

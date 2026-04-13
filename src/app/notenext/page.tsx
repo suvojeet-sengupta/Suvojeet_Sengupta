@@ -11,6 +11,7 @@ export default function NoteNextPage() {
             name="NoteNext"
             description="A modern, intuitive note-taking application built with native Android best practices and offline-first architecture."
             longDescription="NoteNext is designed for those who value speed and privacy in their note-taking workflow. It follows an offline-first approach, ensuring that your data is always accessible even without an internet connection. The app focuses on a 'no-distraction' interface while providing powerful organization tools underneath."
+            story="I created NoteNext because I needed a note-taking tool that was as fast as my thoughts. Most apps were either too bloated or required a constant internet connection. I wanted something that was offline-first, private, and followed the 'Zen' of simplicity. It's a reflection of my philosophy: build things that are fast, clean, and intuitive."
             features={[
                 "Offline-First Architecture",
                 "Biometric Privacy Lock",

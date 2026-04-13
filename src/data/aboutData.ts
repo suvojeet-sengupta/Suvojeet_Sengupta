@@ -27,11 +27,11 @@ export const timeline = [
 ];
 
 export const skills = [
-    { name: "Hindi & Bengali Singing", level: 95, icon: "🎤" },
-    { name: "AI Technologies", level: 92, icon: "🤖" },
-    { name: "Custom ROM Maintenance", level: 90, icon: "📱" },
-    { name: "Android (Kotlin/Java)", level: 95, icon: "📲" },
-    { name: "Web Development", level: 85, icon: "🌐" },
+    { name: "Hindi & Bengali Singing", level: 95, icon: "music" },
+    { name: "AI Technologies", level: 92, icon: "ai" },
+    { name: "Custom ROM Maintenance", level: 90, icon: "rom" },
+    { name: "Android (Kotlin/Java)", level: 95, icon: "android" },
+    { name: "Web Development", level: 85, icon: "web" },
 ];
 
 export const philosophy = [
@@ -42,8 +42,8 @@ export const philosophy = [
 ];
 
 export const futureGoals = [
-    { icon: "🎤", label: "Professional Vocalist" },
-    { icon: "🎶", label: "Hindi & Bengali Originals" },
-    { icon: "🤖", label: "AI-First Solutions" },
-    { icon: "🚀", label: "Custom ROM Mastery" }
+    { icon: "mic", label: "Professional Vocalist", description: "To release independent Hindi & Bengali singles that resonate with global audiences." },
+    { icon: "music-note", label: "Original Melodies", description: "Composing tracks that fuse classical Indian ragas with modern soul and pop." },
+    { icon: "cpu", label: "AI-First Solutions", description: "Developing apps where AI isn't just a feature, but the core engine of user experience." },
+    { icon: "rocket", label: "Custom ROM Mastery", description: "Continuing to provide optimized, privacy-focused Android experiences for the community." }
 ];
