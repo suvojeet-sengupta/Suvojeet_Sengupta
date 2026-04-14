@@ -9,11 +9,9 @@ interface PostsResponse {
 }
 
 function formatDate(value: string): string {
-  if (!value) {
-    return '—';
-  }
-
-  return new Date(value).toLocaleDateString('en-IN', {
+  if (!value) return '—';
+  
+  return new Date(value).toLocaleDateString(undefined, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -81,7 +79,7 @@ export default function BlogListPage() {
                   {post.category && (
                     <span className="bg-brand-orange text-white px-3 py-1 rounded-sm">{post.category}</span>
                   )}
-                  <span className="text-muted">{formatDate(post.publishedAt)}</span>
+                  <span className="text-muted" suppressHydrationWarning>{formatDate(post.publishedAt)}</span>
                 </div>
 
                 <h2 className="text-2xl font-black leading-tight">{post.title}</h2>

@@ -11,11 +11,10 @@ interface BlogPostPageProps {
 }
 
 function formatDate(value: string): string {
-  if (!value) {
-    return '—';
-  }
-
-  return new Date(value).toLocaleDateString('en-IN', {
+  if (!value) return '—';
+  
+  // This will now use the user's browser locale and local timezone
+  return new Date(value).toLocaleString(undefined, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
@@ -158,7 +157,7 @@ export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
       <article className="mt-6 border border-light rounded-sm p-6 md:p-10 bg-tertiary">
         <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wider font-bold">
           {post.category && <span className="bg-brand-orange text-white px-3 py-1 rounded-sm">{post.category}</span>}
-          <span className="text-muted">{formatDate(post.publishedAt)}</span>
+          <span className="text-muted" suppressHydrationWarning>{formatDate(post.publishedAt)}</span>
           <span className="text-muted">{readingTime} min read</span>
           <span className="text-muted">{post.views} views</span>
           <span className="text-muted">{post.commentsCount} comments</span>
@@ -285,7 +284,7 @@ export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
             <div key={comment.id} className="border border-light rounded-sm p-5 bg-tertiary">
               <div className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="font-bold">{comment.name}</span>
-                <span className="text-muted">• {formatDate(comment.createdAt)}</span>
+                <span className="text-muted" suppressHydrationWarning>• {formatDate(comment.createdAt)}</span>
               </div>
               <p className="mt-3 whitespace-pre-wrap">{comment.content}</p>
 
@@ -299,7 +298,7 @@ export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
                           ✔ Verified
                         </span>
                       )}
-                      <span className="text-muted">• {formatDate(reply.createdAt)}</span>
+                      <span className="text-muted" suppressHydrationWarning>• {formatDate(reply.createdAt)}</span>
                     </div>
                     <p className="mt-2 whitespace-pre-wrap">{reply.content}</p>
                   </div>
