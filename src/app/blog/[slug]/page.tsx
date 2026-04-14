@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/cloudflare';
 import { getClientIp, mapBlogSummary, sha256Hex, toBoolean } from '@/lib/blog-utils';
@@ -10,6 +11,43 @@ export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug || '').trim();
+  
+  const db = getDb();
+  const post = await db
+    .prepare('SELECT title, excerpt FROM blogs WHERE slug = ? LIMIT 1')
+    .bind(slug)
+    .first<Record<string, string>>();
+
+  if (!post) {
+    return { title: 'Post Not Found' };
+  }
+
+  const title = `${post.title} | Suvojeet Sengupta`;
+  const description = post.excerpt || `Read "${post.title}" on Suvojeet Sengupta's blog.`;
+  const ogImage = `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `https://suvojeetsengupta.in/blog/${slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
 }
 
 export default async function Page({ params }: PageProps) {

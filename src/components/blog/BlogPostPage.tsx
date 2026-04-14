@@ -42,6 +42,21 @@ export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
+  const toc = useMemo(() => {
+    if (!post?.content) return [];
+    const lines = post.content.split('\n');
+    return lines
+      .filter(line => line.startsWith('### ') || line.startsWith('## '))
+      .map(line => {
+        const text = line.replace(/^#+\s+/, '');
+        return {
+          id: text.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          text,
+          level: line.startsWith('###') ? 3 : 2
+        };
+      });
+  }, [post?.content]);
+
   const toggleLike = async () => {
     if (liking) return;
     setLiking(true);
@@ -179,8 +194,44 @@ export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
           </div>
         )}
 
+        {toc.length > 0 && (
+          <div className="mt-8 p-6 bg-background/50 border border-light rounded-sm">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-muted mb-4">Table of Contents</h2>
+            <nav className="flex flex-col gap-2">
+              {toc.map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={cn(
+                    "text-secondary hover:text-brand-orange transition-colors text-sm",
+                    item.level === 3 && "ml-4"
+                  )}
+                >
+                  {item.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+
         <div className="mt-8 whitespace-pre-wrap leading-8 text-[1.04rem] text-secondary border-b border-light pb-10">
-          {post.content}
+          {post.content.split('\n').map((line, index) => {
+            const isHeader = line.startsWith('## ') || line.startsWith('### ');
+            if (isHeader) {
+              const text = line.replace(/^#+\s+/, '');
+              const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+              const Level = line.startsWith('###') ? 'h3' : 'h2';
+              return (
+                <Level key={index} id={id} className={cn(
+                  "font-black text-primary mt-10 mb-4",
+                  Level === 'h2' ? "text-2xl" : "text-xl"
+                )}>
+                  {text}
+                </Level>
+              );
+            }
+            return <p key={index} className="mb-4">{line}</p>;
+          })}
         </div>
 
         {/* Reactions and Sharing */}
