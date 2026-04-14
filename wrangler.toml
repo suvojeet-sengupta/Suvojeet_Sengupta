@@ -1,0 +1,9 @@
+name = "suvojeet-sengupta-site"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2026-04-14"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "suvojeet-db"
+database_id = "59bccc80-bb22-46ff-9f54-6bf4be593af4"

@@ -68,6 +68,50 @@ The website is built with a modern, high-performance stack designed for speed, S
 - `src/lib/`: Utility functions and third-party integrations.
 - `public/`: Static assets including images and configuration files.
 
+## Blog + Dashboard (Cloudflare D1)
+
+### What is now added
+- Public blog listing and blog details: `/blog`, `/blog/[slug]`
+- User comments and replies on posts
+- Admin login and dashboard: `/dashboard/login`, `/dashboard`
+- Post management from dashboard:
+  - create post
+  - enable/disable comments
+  - delete post
+- Comment management from dashboard:
+  - approve/unapprove
+  - delete comment
+  - owner reply (shown with verified tick)
+- Stats in dashboard:
+  - post count, comment count, reply count
+  - blog views
+  - tracked page visits
+
+### D1 setup (your DB is already created)
+Your `wrangler.toml` is configured with:
+- database name: `suvojeet-db`
+- database id: `59bccc80-bb22-46ff-9f54-6bf4be593af4`
+- binding name: `DB`
+
+If you deploy through Cloudflare Pages UI, add D1 binding in **Pages → Settings → Functions → D1 bindings** with:
+- Variable name: `DB`
+- Database: `suvojeet-db`
+
+### Admin auth setup (secure email/password login)
+1. Generate password hash:
+   ```bash
+   npm run hash:admin-password -- "YOUR_ADMIN_PASSWORD"
+   ```
+   This generates a PBKDF2-SHA256 hash with **100000 iterations** (Cloudflare runtime limit).
+2. Copy `.dev.vars.example` to `.dev.vars` for local development and fill:
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD_HASH` (generated hash)
+   - `ADMIN_DISPLAY_NAME`
+   - `SESSION_TTL_HOURS`
+3. In Cloudflare Pages production, add the same values in **Settings → Environment variables / secrets**.
+
+Password is verified using PBKDF2-SHA256 hash, and admin session uses secure HTTP-only cookie with D1-backed session records.
+
 ## Contact and Connect
 
 For collaborations in software development or musical performances, please use the following channels:

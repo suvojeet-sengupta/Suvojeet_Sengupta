@@ -23,6 +23,8 @@ const Footer = () => {
               <Link href="/" className="hover:text-accent transition-colors">Home</Link>
               <Link href="/about" className="hover:text-accent transition-colors">About</Link>
               <Link href="/music" className="hover:text-accent transition-colors">Music</Link>
+              <Link href="/blog" className="hover:text-accent transition-colors">Blog</Link>
+              <Link href="/dashboard/login" className="hover:text-accent transition-colors">Dashboard</Link>
             </div>
             <div className="flex flex-col gap-3">
               <span className="text-muted text-xs">Social</span>

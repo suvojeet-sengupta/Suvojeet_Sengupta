@@ -1,0 +1,233 @@
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { getDb, getRuntimeString, requireRuntimeString } from '@/lib/cloudflare';
+import { sha256Hex } from '@/lib/blog-utils';
+
+const SESSION_COOKIE_NAME = 'admin_session';
+const MAX_PBKDF2_ITERATIONS = 100000;
+const DEFAULT_HASH_ITERATIONS = MAX_PBKDF2_ITERATIONS;
+const DEFAULT_SESSION_HOURS = 24;
+const DEFAULT_ADMIN_EMAIL = 'suvojeet@suvojeetsengupta.in';
+const encoder = new TextEncoder();
+
+function isProductionRuntime(): boolean {
+  if (typeof process !== 'undefined' && typeof process.env !== 'undefined') {
+    return process.env.NODE_ENV === 'production';
+  }
+
+  return false;
+}
+
+function bytesToBase64(bytes: Uint8Array): string {
+  let binary = '';
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary);
+}
+
+function base64ToBytes(value: string): Uint8Array {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return bytes;
+}
+
+function parsePasswordHash(storedHash: string) {
+  const [algorithm, rawIterations, salt, hash] = storedHash.split('$');
+  if (algorithm !== 'pbkdf2_sha256') {
+    throw new Error('Unsupported ADMIN_PASSWORD_HASH algorithm.');
+  }
+
+  const iterations = Number(rawIterations);
+  if (!Number.isFinite(iterations) || iterations <= 0) {
+    throw new Error('Invalid ADMIN_PASSWORD_HASH iteration count.');
+  }
+  if (iterations > MAX_PBKDF2_ITERATIONS) {
+    throw new Error(
+      `ADMIN_PASSWORD_HASH uses ${iterations} PBKDF2 iterations, but Cloudflare runtime supports up to ${MAX_PBKDF2_ITERATIONS}. Regenerate hash with npm run hash:admin-password.`,
+    );
+  }
+
+  return {
+    iterations,
+    salt: base64ToBytes(salt),
+    hash: base64ToBytes(hash),
+  };
+}
+
+async function derivePasswordHash(
+  password: string,
+  salt: Uint8Array,
+  iterations: number,
+): Promise<Uint8Array> {
+  const saltBytes = new Uint8Array(salt.byteLength);
+  saltBytes.set(salt);
+
+  const importedKey = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(password),
+    'PBKDF2',
+    false,
+    ['deriveBits'],
+  );
+
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      hash: 'SHA-256',
+      salt: saltBytes,
+      iterations,
+    },
+    importedKey,
+    256,
+  );
+
+  return new Uint8Array(derivedBits);
+}
+
+function timingSafeEqual(left: Uint8Array, right: Uint8Array): boolean {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  let mismatch = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    mismatch |= left[index] ^ right[index];
+  }
+
+  return mismatch === 0;
+}
+
+function parseCookieValue(cookieHeader: string | null, cookieName: string): string | null {
+  if (!cookieHeader) {
+    return null;
+  }
+
+  const cookiesList = cookieHeader.split(';');
+  for (const cookieEntry of cookiesList) {
+    const [rawName, ...rawValueParts] = cookieEntry.trim().split('=');
+    if (rawName === cookieName) {
+      return rawValueParts.join('=');
+    }
+  }
+
+  return null;
+}
+
+function getSessionMaxAgeSeconds(): number {
+  const configured = Number(getRuntimeString('SESSION_TTL_HOURS') || DEFAULT_SESSION_HOURS);
+  if (!Number.isFinite(configured) || configured <= 0) {
+    return DEFAULT_SESSION_HOURS * 60 * 60;
+  }
+
+  return Math.floor(configured * 60 * 60);
+}
+
+export async function generatePasswordHash(password: string): Promise<string> {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const hash = await derivePasswordHash(password, salt, DEFAULT_HASH_ITERATIONS);
+  return `pbkdf2_sha256$${DEFAULT_HASH_ITERATIONS}$${bytesToBase64(salt)}$${bytesToBase64(hash)}`;
+}
+
+export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+  const parsed = parsePasswordHash(storedHash);
+  const actualHash = await derivePasswordHash(password, parsed.salt, parsed.iterations);
+  return timingSafeEqual(actualHash, parsed.hash);
+}
+
+export async function validateAdminCredentials(email: string, password: string): Promise<boolean> {
+  const expectedEmail = (getRuntimeString('ADMIN_EMAIL') || DEFAULT_ADMIN_EMAIL).trim().toLowerCase();
+  const expectedPasswordHash = requireRuntimeString('ADMIN_PASSWORD_HASH').trim();
+
+  if (email.trim().toLowerCase() !== expectedEmail) {
+    return false;
+  }
+
+  return verifyPassword(password, expectedPasswordHash);
+}
+
+export async function createAdminSessionToken(): Promise<string> {
+  const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
+  const tokenHash = await sha256Hex(token);
+  const expiresAt = new Date(Date.now() + (getSessionMaxAgeSeconds() * 1000)).toISOString();
+
+  const db = getDb();
+  await db.prepare('DELETE FROM admin_sessions WHERE expires_at <= CURRENT_TIMESTAMP').run();
+  await db
+    .prepare('INSERT INTO admin_sessions (id, expires_at) VALUES (?, ?)')
+    .bind(tokenHash, expiresAt)
+    .run();
+
+  return token;
+}
+
+export async function revokeAdminSession(token: string): Promise<void> {
+  const db = getDb();
+  const tokenHash = await sha256Hex(token);
+  await db.prepare('DELETE FROM admin_sessions WHERE id = ?').bind(tokenHash).run();
+}
+
+export function getAdminTokenFromRequest(request: Request): string | null {
+  return parseCookieValue(request.headers.get('cookie'), SESSION_COOKIE_NAME);
+}
+
+export async function isAdminSessionValid(token: string | null): Promise<boolean> {
+  if (!token) {
+    return false;
+  }
+
+  const tokenHash = await sha256Hex(token);
+  const db = getDb();
+  const session = await db
+    .prepare('SELECT id FROM admin_sessions WHERE id = ? AND expires_at > CURRENT_TIMESTAMP')
+    .bind(tokenHash)
+    .first<{ id: string }>();
+
+  return Boolean(session?.id);
+}
+
+export async function isAdminRequestAuthenticated(request: Request): Promise<boolean> {
+  const token = getAdminTokenFromRequest(request);
+  return isAdminSessionValid(token);
+}
+
+export function attachAdminCookie(response: NextResponse, token: string): NextResponse {
+  response.cookies.set({
+    name: SESSION_COOKIE_NAME,
+    value: token,
+    httpOnly: true,
+    secure: isProductionRuntime(),
+    sameSite: 'lax',
+    path: '/',
+    maxAge: getSessionMaxAgeSeconds(),
+  });
+  return response;
+}
+
+export function clearAdminCookie(response: NextResponse): NextResponse {
+  response.cookies.set({
+    name: SESSION_COOKIE_NAME,
+    value: '',
+    httpOnly: true,
+    secure: isProductionRuntime(),
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 0,
+  });
+  return response;
+}
+
+export async function isDashboardSessionActive(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
+  return isAdminSessionValid(token);
+}
+
+export function adminCookieName(): string {
+  return SESSION_COOKIE_NAME;
+}

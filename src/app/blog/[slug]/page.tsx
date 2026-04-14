@@ -1,0 +1,8 @@
+import BlogPostPage from '@/components/blog/BlogPostPage';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
+export default function Page() {
+  return <BlogPostPage />;
+}
