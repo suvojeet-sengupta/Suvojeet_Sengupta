@@ -1,13 +1,13 @@
 'use client';
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
+import { Icons } from '@/components/common/Icons';
+import { cn } from '@/lib/utils';
 
-interface PostResponse {
-  post: BlogPost;
-  error?: string;
+interface BlogPostPageProps {
+  initialPost: BlogPost;
 }
 
 function formatDate(value: string): string {
@@ -24,60 +24,50 @@ function formatDate(value: string): string {
   });
 }
 
-export default function BlogPostPage() {
-  const params = useParams();
-  const slug = useMemo(() => {
-    const rawSlug = params?.slug;
-    return Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
-  }, [params]);
-
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+export default function BlogPostPage({ initialPost }: BlogPostPageProps) {
+  const [post, setPost] = useState<BlogPost>(initialPost);
   const [commentForm, setCommentForm] = useState({ name: '', email: '', content: '' });
   const [postingComment, setPostingComment] = useState(false);
   const [commentMessage, setCommentMessage] = useState('');
   const [activeReplyCommentId, setActiveReplyCommentId] = useState<number | null>(null);
   const [replyForms, setReplyForms] = useState<Record<number, { name: string; content: string }>>({});
   const [postingReplyCommentId, setPostingReplyCommentId] = useState<number | null>(null);
+  const [liking, setLiking] = useState(false);
 
-  useEffect(() => {
-    if (!slug) {
-      setError('Invalid blog URL.');
-      setLoading(false);
-      return;
-    }
+  const readingTime = useMemo(() => {
+    if (!post?.content) return 0;
+    const wordsPerMinute = 200;
+    const words = post.content.trim().split(/\s+/).length;
+    return Math.ceil(words / wordsPerMinute);
+  }, [post?.content]);
 
-    const loadPost = async () => {
-      try {
-        const response = await fetch(`/api/public/posts/${encodeURIComponent(slug)}`, {
-          cache: 'no-store',
-        });
-        const payload = await response.json() as PostResponse;
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
-        if (!response.ok) {
-          setError(payload.error || 'Unable to load this blog post.');
-          setLoading(false);
-          return;
-        }
+  const toggleLike = async () => {
+    if (liking) return;
+    setLiking(true);
 
-        setPost(payload.post);
-        setLoading(false);
-      } catch (fetchError) {
-        console.error(fetchError);
-        setError('Unable to load this blog post.');
-        setLoading(false);
+    try {
+      const response = await fetch(`/api/public/posts/${post.id}/like`, { method: 'POST' });
+      const payload = await response.json() as { liked: boolean };
+
+      if (response.ok) {
+        setPost((prev) => ({
+          ...prev,
+          likes: payload.liked ? prev.likes + 1 : Math.max(0, prev.likes - 1),
+          hasLiked: payload.liked,
+        }));
       }
-    };
-
-    loadPost();
-  }, [slug]);
+    } catch (err) {
+      console.error('Failed to toggle like:', err);
+    } finally {
+      setLiking(false);
+    }
+  };
 
   const submitComment = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!post || postingComment) {
-      return;
-    }
+    if (postingComment) return;
 
     setCommentMessage('');
     setPostingComment(true);
@@ -98,16 +88,11 @@ export default function BlogPostPage() {
         return;
       }
 
-      setPost((prev) => {
-        if (!prev) {
-          return prev;
-        }
-        return {
-          ...prev,
-          comments: [payload.comment as BlogComment, ...prev.comments],
-          commentsCount: prev.commentsCount + 1,
-        };
-      });
+      setPost((prev) => ({
+        ...prev,
+        comments: [payload.comment as BlogComment, ...prev.comments],
+        commentsCount: prev.commentsCount + 1,
+      }));
       setCommentForm({ name: '', email: '', content: '' });
       setCommentMessage('Comment posted successfully.');
       setPostingComment(false);
@@ -119,14 +104,10 @@ export default function BlogPostPage() {
   };
 
   const submitReply = async (commentId: number) => {
-    if (!post || postingReplyCommentId) {
-      return;
-    }
+    if (postingReplyCommentId) return;
 
     const currentForm = replyForms[commentId] || { name: '', content: '' };
-    if (!currentForm.name.trim() || !currentForm.content.trim()) {
-      return;
-    }
+    if (!currentForm.name.trim() || !currentForm.content.trim()) return;
 
     setPostingReplyCommentId(commentId);
 
@@ -145,24 +126,16 @@ export default function BlogPostPage() {
         return;
       }
 
-      setPost((prev) => {
-        if (!prev) {
-          return prev;
-        }
-
-        return {
-          ...prev,
-          comments: prev.comments.map((comment) => {
-            if (comment.id !== commentId) {
-              return comment;
-            }
-            return {
-              ...comment,
-              replies: [...comment.replies, payload.reply as BlogReply],
-            };
-          }),
-        };
-      });
+      setPost((prev) => ({
+        ...prev,
+        comments: prev.comments.map((comment) => {
+          if (comment.id !== commentId) return comment;
+          return {
+            ...comment,
+            replies: [...comment.replies, payload.reply as BlogReply],
+          };
+        }),
+      }));
 
       setReplyForms((prev) => ({
         ...prev,
@@ -176,25 +149,6 @@ export default function BlogPostPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <section className="section-container pt-32 pb-24">
-        <p>Loading post...</p>
-      </section>
-    );
-  }
-
-  if (error || !post) {
-    return (
-      <section className="section-container pt-32 pb-24">
-        <p className="text-red-500 font-medium">{error || 'Post not found.'}</p>
-        <Link href="/blog" className="inline-block mt-6 text-brand-orange font-bold">
-          ← Back to blog
-        </Link>
-      </section>
-    );
-  }
-
   return (
     <section className="section-container pt-32 pb-24">
       <Link href="/blog" className="text-brand-orange text-sm font-bold uppercase tracking-wider">
@@ -205,6 +159,7 @@ export default function BlogPostPage() {
         <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-wider font-bold">
           {post.category && <span className="bg-brand-orange text-white px-3 py-1 rounded-sm">{post.category}</span>}
           <span className="text-muted">{formatDate(post.publishedAt)}</span>
+          <span className="text-muted">{readingTime} min read</span>
           <span className="text-muted">{post.views} views</span>
           <span className="text-muted">{post.commentsCount} comments</span>
         </div>
@@ -225,8 +180,58 @@ export default function BlogPostPage() {
           </div>
         )}
 
-        <div className="mt-8 whitespace-pre-wrap leading-8 text-[1.04rem] text-secondary">
+        <div className="mt-8 whitespace-pre-wrap leading-8 text-[1.04rem] text-secondary border-b border-light pb-10">
           {post.content}
+        </div>
+
+        {/* Reactions and Sharing */}
+        <div className="mt-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleLike}
+              disabled={liking}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300",
+                post.hasLiked 
+                  ? "bg-red-50 border-red-200 text-red-500" 
+                  : "border-light hover:border-red-200 hover:text-red-500"
+              )}
+            >
+              <Icons.Heart className={cn("w-5 h-5", post.hasLiked && "fill-current")} />
+              <span className="font-bold">{post.likes}</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted">Share:</span>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 border border-light rounded-full hover:bg-zinc-100 transition-colors"
+              title="Share on Twitter"
+            >
+              <Icons.Twitter className="w-4 h-4" />
+            </a>
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 border border-light rounded-full hover:bg-zinc-100 transition-colors"
+              title="Share on LinkedIn"
+            >
+              <Icons.Linkedin className="w-4 h-4" />
+            </a>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(`${post.title} - ${shareUrl}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 border border-light rounded-full hover:bg-zinc-100 transition-colors"
+              title="Share on WhatsApp"
+            >
+              <Icons.WhatsApp className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </article>
 

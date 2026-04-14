@@ -7,6 +7,7 @@ export interface BlogSummary {
   imageUrl: string | null;
   publishedAt: string;
   views: number;
+  likes: number;
   author: string;
   tags: string[];
   commentsEnabled: boolean;
@@ -37,4 +38,5 @@ export interface BlogPost extends BlogSummary {
   content: string;
   updatedAt: string | null;
   comments: BlogComment[];
+  hasLiked?: boolean;
 }

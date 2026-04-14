@@ -9,7 +9,6 @@ export const dynamic = 'force-dynamic';
 interface RouteContext {
   params: Promise<{ slug: string }>;
 }
-
 export async function GET(request: Request, context: RouteContext) {
   const { slug: rawSlug } = await context.params;
   const slug = decodeURIComponent(rawSlug || '').trim();
@@ -17,6 +16,9 @@ export async function GET(request: Request, context: RouteContext) {
   if (!slug) {
     return NextResponse.json({ error: 'Invalid blog slug.' }, { status: 400 });
   }
+
+  const clientIp = getClientIp(request);
+  const ipHash = clientIp ? await sha256Hex(clientIp) : 'anonymous';
 
   const db = getDb();
   const postRow = await db
@@ -31,6 +33,7 @@ export async function GET(request: Request, context: RouteContext) {
         b.image_url,
         b.published_at,
         b.views,
+        b.likes,
         b.author,
         b.tags,
         b.comments_enabled,
@@ -39,12 +42,17 @@ export async function GET(request: Request, context: RouteContext) {
           SELECT COUNT(*)
           FROM comments c
           WHERE c.blog_id = b.id AND c.is_approved = 1
-        ) AS comments_count
+        ) AS comments_count,
+        (
+          SELECT COUNT(*)
+          FROM blog_likes bl
+          WHERE bl.blog_id = b.id AND bl.ip_hash = ?
+        ) AS has_liked
       FROM blogs b
       WHERE b.slug = ?
       LIMIT 1
     `)
-    .bind(slug)
+    .bind(ipHash, slug)
     .first<Record<string, unknown>>();
 
   if (!postRow) {
@@ -52,8 +60,6 @@ export async function GET(request: Request, context: RouteContext) {
   }
 
   const blogId = Number(postRow.id || 0);
-  const clientIp = getClientIp(request);
-  const ipHash = clientIp ? await sha256Hex(clientIp) : null;
   await db.batch([
     db
       .prepare('UPDATE blogs SET views = COALESCE(views, 0) + 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
@@ -137,6 +143,7 @@ export async function GET(request: Request, context: RouteContext) {
     content: String(postRow.content || ''),
     updatedAt: typeof postRow.updated_at === 'string' ? postRow.updated_at : null,
     comments,
+    hasLiked: toBoolean(postRow.has_liked),
   };
 
   return NextResponse.json(

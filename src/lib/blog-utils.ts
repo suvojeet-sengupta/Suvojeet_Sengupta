@@ -67,6 +67,7 @@ export function mapBlogSummary(row: Record<string, unknown>): BlogSummary {
       : (typeof row.imageUrl === 'string' ? row.imageUrl : null),
     publishedAt: String(row.published_at || row.publishedAt || ''),
     views: Number(row.views || 0),
+    likes: Number(row.likes || 0),
     author: String(row.author || 'Suvojeet Sengupta'),
     tags: parseTags(row.tags),
     commentsEnabled: toBoolean(rawCommentsEnabled),

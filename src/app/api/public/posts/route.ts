@@ -18,6 +18,7 @@ export async function GET() {
         b.image_url,
         b.published_at,
         b.views,
+        b.likes,
         b.author,
         b.tags,
         b.comments_enabled,
