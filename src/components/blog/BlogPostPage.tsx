@@ -5,7 +5,6 @@ import type { BlogPost } from '@/types/blog';
 import { formatDate } from '@/lib/utils';
 import { Icons } from '../common/Icons';
 import { CommentList } from './comments/CommentList';
-import { motion } from 'framer-motion';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -49,7 +48,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-4xl md:text-6xl font-black mb-8 uppercase tracking-tighter leading-[0.9]">
+        <h1 className="text-4xl md:text-6xl font-black mb-8 uppercase tracking-tighter leading-none">
           {post.title}
         </h1>
 
@@ -90,18 +89,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
               <button 
                 onClick={handleLike}
                 disabled={hasLiked}
-                className={`font-black text-xl tracking-tighter flex items-center gap-2 transition-all ${hasLiked ? 'text-brand-orange' : 'hover:text-brand-orange'}`}
+                className={`font-black text-xl tracking-tighter flex items-center gap-2 transition-colors ${hasLiked ? 'text-brand-orange' : 'hover:text-brand-orange'}`}
               >
-                <motion.span 
-                    initial={false}
-                    animate={hasLiked ? { scale: [1, 1.4, 1] } : {}}
-                    className="flex items-center gap-2"
-                >
-                    <svg className={`w-6 h-6 ${hasLiked ? 'fill-current' : 'fill-none stroke-current'}`} viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                    {likes}
-                </motion.span>
+                {likes}
               </button>
             </div>
           </div>
@@ -111,10 +101,10 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         <div 
           className="prose prose-invert prose-orange max-w-none mb-16 
           prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter
-          prose-p:text-secondary prose-p:leading-relaxed prose-p:text-lg
+          prose-p:text-secondary prose-p:leading-relaxed prose-p:text-lg prose-p:mb-6
           prose-strong:text-primary prose-strong:font-black
           prose-a:text-brand-orange prose-a:no-underline hover:prose-a:underline
-          prose-img:rounded-sm prose-img:border prose-img:border-light"
+          prose-img:rounded-sm prose-img:border prose-img:border-light prose-img:my-8"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
