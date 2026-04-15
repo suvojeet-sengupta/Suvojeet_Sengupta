@@ -48,7 +48,7 @@ export async function sendNotificationToAll(title: string, body: string, url: st
       } catch (error: any) {
         // If 410 (Gone) or 404 (Not Found), remove the expired subscription
         if (error.statusCode === 410 || error.statusCode === 404) {
-          await db.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').bind(sub.endpoint).run();
+          await db.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').bind(String(sub.endpoint)).run();
         }
         failCount++;
       }
