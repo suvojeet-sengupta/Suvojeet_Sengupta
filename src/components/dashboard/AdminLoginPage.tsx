@@ -1,17 +1,33 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+  import { FormEvent, useState, useEffect } from 'react';
+  import Link from 'next/link';
+  import { useRouter } from 'next/navigation';
 
-export default function AdminLoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  export default function AdminLoginPage() {
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+      const checkSession = async () => {
+        try {
+          const res = await fetch('/api/admin/overview', { cache: 'no-store' });
+          if (res.ok) {
+            router.push('/dashboard');
+          } else {
+            setLoading(false);
+          }
+        } catch {
+          setLoading(false);
+        }
+      };
+      checkSession();
+    }, [router]);
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (loading) {
       return;

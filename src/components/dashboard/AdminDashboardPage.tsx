@@ -88,6 +88,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState('');
   const [postForm, setPostForm] = useState<PostFormState>(initialPostForm);
   const [creatingPost, setCreatingPost] = useState(false);
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [actionMessage, setActionMessage] = useState('');
   const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(null);
@@ -463,10 +464,20 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <PlusCircle className="text-brand-orange" />
-          <h2 className="text-2xl font-black">Publish New Post</h2>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <PlusCircle className="text-brand-orange" />
+            <h2 className="text-2xl font-black">Publish New Post</h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsCreatePostOpen(!isCreatePostOpen)}
+            className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+          >
+            {isCreatePostOpen ? 'Close' : 'Create Post'}
+          </button>
         </div>
+        {isCreatePostOpen && (
         <form onSubmit={handleCreatePost} className="mt-6 space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <input
@@ -544,6 +555,7 @@ export default function AdminDashboardPage() {
             </button>
           </div>
         </form>
+        )}
       </div>
 
       <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">

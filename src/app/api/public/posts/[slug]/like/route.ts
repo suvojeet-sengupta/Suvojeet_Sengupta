@@ -5,11 +5,11 @@ import { getClientIp, sha256Hex, toBoolean } from '@/lib/blog-utils';
 export const runtime = 'edge';
 
 interface RouteContext {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  const { id: rawId } = await context.params;
+  const { slug: rawId } = await context.params;
   const blogId = Number(rawId);
   if (!Number.isFinite(blogId) || blogId <= 0) {
     return NextResponse.json({ error: 'Invalid blog id.' }, { status: 400 });

@@ -10,6 +10,7 @@
     "hash:admin-password": "node scripts/generate-admin-password-hash.mjs"
   },
   "dependencies": {
+    "@pushforge/builder": "^2.0.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.29.2",
     "jspdf": "^4.2.1",

@@ -51,6 +51,9 @@ const HomePage = () => {
               <Link href="/about" className={uiStyles.btnSolid + " text-lg px-8"}>
                 About Me
               </Link>
+              <Link href="/blog" className={uiStyles.btnSolid + " text-lg px-8"}>
+                Blog
+              </Link>
               <Link href="/music" className={uiStyles.btnOutline + " text-lg px-8"}>
                 Music Portfolio
               </Link>
@@ -183,7 +186,7 @@ const HomePage = () => {
             Whether you need a high-performance Android app, a modern web experience, or a musical collaboration, I'm ready to bring my creativity to your project.
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="/request-song" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm uppercase tracking-widest">
+            <Link href="/contact" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm uppercase tracking-widest">
               Contact Me
             </Link>
           </div>

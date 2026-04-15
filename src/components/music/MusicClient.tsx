@@ -43,7 +43,7 @@ const MusicClient = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Request a Song</h3>
               <p className="text-secondary mb-6">Have a favorite Kishore Kumar or Arijit Singh track you'd like me to cover? Let's connect.</p>
-              <a href="/request-song" className="btn-solid w-full">Make a Request</a>
+              <a href="/contact" className="btn-solid w-full">Make a Request</a>
             </div>
           </div>
         </div>

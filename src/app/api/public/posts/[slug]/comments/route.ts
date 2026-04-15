@@ -7,11 +7,11 @@ export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 interface RouteContext {
-  params: Promise<{ blogId: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  const { blogId: rawBlogId } = await context.params;
+  const { slug: rawBlogId } = await context.params;
   const blogId = Number(rawBlogId);
 
   if (!Number.isFinite(blogId) || blogId <= 0) {
