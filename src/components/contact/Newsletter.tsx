@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import uiStyles from '@/components/common/UI.module.css';
+import config from '@/config';
 
 interface NewsletterStatus {
   type: 'success' | 'error';
@@ -19,7 +20,7 @@ const Newsletter = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
+      const response = await fetch(config.formSubmitUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,6 +29,7 @@ const Newsletter = () => {
         body: JSON.stringify({
           email: email,
           _subject: "New Newsletter Subscription!",
+          _captcha: "false"
         })
       });
 

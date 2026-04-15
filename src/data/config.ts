@@ -1,3 +1,5 @@
+import config from '../config';
+
 export const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
@@ -34,5 +36,5 @@ export const socialLinks = [
 export const siteConfig = {
     title: "Suvojeet Sengupta | Singer & Creative Developer",
     description: "Official portfolio of Suvojeet Sengupta. Soulful Singer in Hindi & Bengali and Professional Android Developer.",
-    formSubmitUrl: 'https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d',
+    formSubmitUrl: config.formSubmitUrl,
 };

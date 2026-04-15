@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Button from '../common/Button';
+import config from '@/config';
 
 // Type definitions for form state
 interface FormState {
@@ -49,13 +50,16 @@ const RequestSongForm = () => {
     });
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/7bcff6a4aef91c254d8c32aaf5b0214d', {
+      const response = await fetch(config.formSubmitUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          ...data,
+          _captcha: "false"
+        })
       });
 
       if (response.ok) {

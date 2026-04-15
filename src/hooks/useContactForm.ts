@@ -42,7 +42,10 @@ const useContactForm = () => {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    ...data,
+                    _captcha: 'false'
+                })
             });
 
             if (response.ok) {

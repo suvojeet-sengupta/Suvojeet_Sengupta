@@ -16,8 +16,13 @@ function decodeVapidKeys(pub: string, priv: string) {
 }
 
 export async function sendNotificationToAll(title: string, body: string, url: string) {
-  const VAPID_PUBLIC_KEY = getRuntimeString('NEXT_PUBLIC_VAPID_KEY') || 'BALkX6Mm8qnve2mdG2ZPhth422pULKyehs68v8L0aH57ziTI4jYifwh0vo5MO1WHy7S28RJC1l3bgm6ezbsDxnE';
-  const VAPID_PRIVATE_KEY = getRuntimeString('VAPID_PRIVATE_KEY') || 'G4H_Y4Q4Uwx1WDa4ycc3mMAeATvjfH6rYMw_pEka6M4';
+  const VAPID_PUBLIC_KEY = getRuntimeString('NEXT_PUBLIC_VAPID_KEY');
+  const VAPID_PRIVATE_KEY = getRuntimeString('VAPID_PRIVATE_KEY');
+  
+  if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY) {
+    throw new Error('VAPID keys are missing. Ensure NEXT_PUBLIC_VAPID_KEY and VAPID_PRIVATE_KEY are set.');
+  }
+
   const SUBJECT = 'https://suvojeetsengupta.in';
   const privateJWK = decodeVapidKeys(VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
   const db = getDb();

@@ -168,6 +168,16 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                         <button type="submit" className="btn-solid w-full text-lg py-4" disabled={formState.status === 'submitting'}>
                             {formState.status === 'submitting' ? 'SENDING...' : `SUBMIT ${type} INQUIRY`}
                         </button>
+                        
+                        {formState.status === 'error' && (
+                            <motion.div 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-center text-red-500 font-bold uppercase tracking-widest text-xs mt-4"
+                            >
+                                {formState.message}
+                            </motion.div>
+                        )}
                     </motion.form>
                 ) : (
                     <motion.div key="success" className="text-center py-10" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
