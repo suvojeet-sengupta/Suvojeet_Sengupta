@@ -10,6 +10,71 @@ interface RouteContext {
   params: Promise<{ id: string }>;
 }
 
+export async function GET(request: Request, context: RouteContext) {
+  const authenticated = await isAdminRequestAuthenticated(request);
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id: rawId } = await context.params;
+  const postId = Number(rawId);
+  const db = getDb();
+
+  const post = await db.prepare(`
+    SELECT * FROM blogs WHERE id = ? LIMIT 1
+  `).bind(postId).first<any>();
+
+  if (!post) {
+    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+  }
+
+  // Tags are stored as JSON string in D1
+  const tags = typeof post.tags === 'string' ? JSON.parse(post.tags) : (post.tags || []);
+
+  return NextResponse.json({ 
+    post: {
+      ...post,
+      tags,
+      commentsEnabled: toBoolean(post.comments_enabled),
+      imageUrl: post.image_url
+    } 
+  });
+}
+
+export async function PUT(request: Request, context: RouteContext) {
+  const authenticated = await isAdminRequestAuthenticated(request);
+  if (!authenticated) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id: rawId } = await context.params;
+  const postId = Number(rawId);
+  const payload = await request.json();
+  const db = getDb();
+
+  const tagsJson = JSON.stringify(
+    payload.tags.split(',').map((t: string) => t.trim()).filter(Boolean)
+  );
+
+  await db.prepare(`
+    UPDATE blogs 
+    SET title = ?, slug = ?, excerpt = ?, category = ?, image_url = ?, tags = ?, content = ?, comments_enabled = ?, updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `).bind(
+    payload.title,
+    payload.slug || payload.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    payload.excerpt,
+    payload.category,
+    payload.imageUrl,
+    tagsJson,
+    payload.content,
+    payload.commentsEnabled ? 1 : 0,
+    postId
+  ).run();
+
+  return NextResponse.json({ success: true });
+}
+
 export async function PATCH(request: Request, context: RouteContext) {
   const authenticated = await isAdminRequestAuthenticated(request);
   if (!authenticated) {

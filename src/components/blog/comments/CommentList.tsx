@@ -37,16 +37,10 @@ export const CommentList: React.FC<CommentListProps> = ({
     });
 
     return (
-        <section className="mt-16 border-t border-light pt-10">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <section className="mt-10 border border-light rounded-sm p-6 md:p-8 bg-background">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-light pb-6">
                 <div>
-                    <h2 className="text-3xl font-black uppercase tracking-tighter">
-                        Discussion ({commentsCount})
-                    </h2>
-                    <p className="text-muted text-xs font-bold uppercase tracking-widest mt-1">
-                        Share your thoughts on this post
-                    </p>
-                </div>
+                    <h2 className="text-2xl font-black">Comments ({commentsCount})</h2>
 
                 {comments.length > 0 && (
                     <div className="flex items-center gap-2">
