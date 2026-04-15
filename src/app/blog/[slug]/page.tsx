@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/cloudflare';
 import { getClientIp, mapBlogSummary, sha256Hex, toBoolean } from '@/lib/blog-utils';
+import { isDashboardSessionActive } from '@/lib/admin-auth';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
 import BlogPostPage from '@/components/blog/BlogPostPage';
 import { headers } from 'next/headers';
@@ -89,6 +90,15 @@ export default async function Page({ params }: PageProps) {
     .first<Record<string, unknown>>();
 
   if (!postRow) {
+    notFound();
+  }
+
+  const postPublishedDate = new Date(postRow.published_at as string);
+  const isGlobalLive = postPublishedDate.getTime() <= Date.now();
+  const isAdmin = await isDashboardSessionActive();
+
+  // Hide scheduled posts from public visitors
+  if (!isGlobalLive && !isAdmin) {
     notFound();
   }
 

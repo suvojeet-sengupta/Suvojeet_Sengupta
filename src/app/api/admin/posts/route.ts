@@ -9,6 +9,7 @@ import {
   serializeTags,
   toBoolean,
 } from '@/lib/blog-utils';
+import { sendNotificationToAll } from '@/lib/push';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -120,6 +121,14 @@ export async function POST(request: Request) {
 
   if (!insertedPost) {
     return NextResponse.json({ error: 'Post created but could not be loaded.' }, { status: 500 });
+  }
+
+  // Fire Web Push Notifications in the background (no await blocking if possible, but edge requires await to not cancel)
+  try {
+    const pubUrl = `https://suvojeetsengupta.in/blog/${slug}`;
+    await sendNotificationToAll(title, excerpt, pubUrl);
+  } catch (pushErr) {
+    console.error('Failed to dispatch notifications:', pushErr);
   }
 
   return NextResponse.json({ post: mapBlogSummary(insertedPost) }, { status: 201 });

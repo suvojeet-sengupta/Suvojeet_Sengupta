@@ -6,7 +6,7 @@ import { sha256Hex } from '@/lib/blog-utils';
 const SESSION_COOKIE_NAME = 'admin_session';
 const MAX_PBKDF2_ITERATIONS = 100000;
 const DEFAULT_HASH_ITERATIONS = MAX_PBKDF2_ITERATIONS;
-const DEFAULT_SESSION_HOURS = 24;
+const DEFAULT_SESSION_HOURS = 168; // 7 days
 const DEFAULT_ADMIN_EMAIL = 'suvojeet@suvojeetsengupta.in';
 const encoder = new TextEncoder();
 

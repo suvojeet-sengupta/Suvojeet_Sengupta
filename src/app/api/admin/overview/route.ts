@@ -26,6 +26,34 @@ export async function GET(request: Request) {
   }
 
   const db = getDb();
+  
+  // Ensure tables exist natively via edge execution
+  try {
+    await db.prepare(`
+      CREATE TABLE IF NOT EXISTS push_subscriptions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        endpoint TEXT NOT NULL UNIQUE,
+        p256dh TEXT NOT NULL,
+        auth TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `).run();
+  } catch (e) {
+    console.error('Migration error:', e);
+  }
+
+  // Determine system health by capturing exact size
+  let databaseSizeBytes = 0;
+  try {
+    const pageCount = await db.prepare('PRAGMA page_count').first<{page_count: number}>();
+    const pageSize = await db.prepare('PRAGMA page_size').first<{page_size: number}>();
+    if (pageCount && pageSize) {
+      databaseSizeBytes = (pageCount.page_count || 0) * (pageSize.page_size || 0);
+    }
+  } catch (e) {
+    console.error('Pragma error:', e);
+  }
+
   const statsRow = await db
     .prepare(`
       SELECT
@@ -34,7 +62,8 @@ export async function GET(request: Request) {
         (SELECT COUNT(*) FROM comments WHERE is_approved = 0) AS pending_comments,
         (SELECT COUNT(*) FROM replies) AS total_replies,
         (SELECT COALESCE(SUM(views), 0) FROM blogs) AS total_blog_views,
-        (SELECT COUNT(*) FROM page_views) AS total_page_views
+        (SELECT COUNT(*) FROM page_views) AS total_page_views,
+        (SELECT COUNT(*) FROM push_subscriptions) AS total_subscribers
     `)
     .first<Record<string, unknown>>();
 
@@ -143,6 +172,11 @@ export async function GET(request: Request) {
       totalReplies: Number(statsRow?.total_replies || 0),
       totalBlogViews: Number(statsRow?.total_blog_views || 0),
       totalPageViews: Number(statsRow?.total_page_views || 0),
+      totalSubscribers: Number(statsRow?.total_subscribers || 0),
+    },
+    system: {
+      isOnline: true,
+      databaseSizeKb: Math.round(databaseSizeBytes / 1024),
     },
     posts,
     comments,

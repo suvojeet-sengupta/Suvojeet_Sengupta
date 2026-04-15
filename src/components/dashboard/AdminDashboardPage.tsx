@@ -17,6 +17,12 @@ interface DashboardStats {
   totalReplies: number;
   totalBlogViews: number;
   totalPageViews: number;
+  totalSubscribers: number;
+}
+
+interface SystemStatus {
+  isOnline: boolean;
+  databaseSizeKb: number;
 }
 
 interface AdminComment {
@@ -33,6 +39,7 @@ interface AdminComment {
 
 interface DashboardOverview {
   stats: DashboardStats;
+  system: SystemStatus;
   posts: BlogSummary[];
   comments: AdminComment[];
 }
@@ -402,6 +409,55 @@ export default function AdminDashboardPage() {
           </div>
           <div className="p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform">
             <Eye size={24} />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-6 mb-12">
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+              <ShieldCheck size={16} className="text-brand-orange" />
+              System Status
+            </h3>
+            {overview.system.isOnline ? (
+              <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2.5 py-1 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                Online
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 px-2.5 py-1 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                Offline
+              </span>
+            )}
+          </div>
+          <p className="text-2xl font-black">{overview.system.databaseSizeKb} KB <span className="text-sm text-secondary font-medium">Used Space (D1)</span></p>
+          <p className="text-sm text-secondary mt-2">Maximum allowed capacity: 500 MB</p>
+          <div className="w-full bg-light h-1.5 rounded-full mt-4 overflow-hidden">
+            <div 
+              className="bg-brand-orange h-full rounded-full transition-all" 
+              style={{ width: `${Math.max(1, (overview.system.databaseSizeKb / 512000) * 100)}%` }}
+            ></div>
+          </div>
+        </div>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+              <Globe size={16} className="text-blue-500" />
+              Audience
+            </h3>
+          </div>
+          <div className="flex gap-8">
+            <div>
+              <p className="text-4xl font-black">{overview.stats.totalSubscribers}</p>
+              <p className="text-sm text-secondary font-medium mt-1">Push Subscribers</p>
+            </div>
+            <div>
+              <p className="text-4xl font-black">{overview.stats.totalPageViews}</p>
+              <p className="text-sm text-secondary font-medium mt-1">Unique Tracked IPs</p>
+            </div>
           </div>
         </div>
       </div>

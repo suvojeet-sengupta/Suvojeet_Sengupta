@@ -28,6 +28,7 @@ export async function GET() {
           WHERE c.blog_id = b.id AND c.is_approved = 1
         ) AS comments_count
       FROM blogs b
+      WHERE b.published_at <= CURRENT_TIMESTAMP
       ORDER BY datetime(b.published_at) DESC
     `)
     .all<Record<string, unknown>>();
