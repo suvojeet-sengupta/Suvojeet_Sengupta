@@ -32,6 +32,7 @@ export default function SuvMusicPage() {
                 "MVVM Architecture"
             ]}
             githubUrl="https://github.com/suvojeet-sengupta/SuvMusic"
+            repo="suvojeet-sengupta/SuvMusic"
             stats={[
                 { label: "Language", value: "Kotlin" },
                 { label: "Version", value: "v2.2.2.0" },

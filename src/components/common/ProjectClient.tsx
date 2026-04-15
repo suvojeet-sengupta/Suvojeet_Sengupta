@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Icons } from './Icons';
 import ModularContactForm from '../contact/ModularContactForm';
@@ -14,7 +14,9 @@ interface ProjectClientProps {
     features: string[];
     techStack: string[];
     githubUrl: string;
+    repo?: string; // Format: "owner/repo"
     liveUrl?: string;
+    downloadUrl?: string;
     stats?: { label: string; value: string }[];
 }
 
@@ -24,6 +26,14 @@ const ExternalLinkIcon = ({ size = 20 }: { size?: number }) => (
         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
         <polyline points="15 3 21 3 21 9" />
         <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+);
+
+const DownloadIcon = ({ size = 20 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
     </svg>
 );
 
@@ -42,9 +52,27 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
     features,
     techStack,
     githubUrl,
+    repo,
     liveUrl,
+    downloadUrl: initialDownloadUrl,
     stats
 }) => {
+    const [dynamicDownloadUrl, setDynamicDownloadUrl] = useState<string | undefined>(initialDownloadUrl);
+
+    useEffect(() => {
+        if (repo) {
+            fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+                .then(res => res.json())
+                .then(data => {
+                    const apkAsset = data.assets?.find((asset: any) => asset.name.endsWith('.apk'));
+                    if (apkAsset) {
+                        setDynamicDownloadUrl(apkAsset.browser_download_url);
+                    }
+                })
+                .catch(err => console.error("Failed to fetch latest release:", err));
+        }
+    }, [repo]);
+
     return (
         <div className="min-h-screen pt-24 pb-12">
             <div className="section-container">
@@ -70,7 +98,7 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                                 {description}
                             </p>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex flex-wrap gap-4">
                             <a 
                                 href={githubUrl} 
                                 target="_blank" 
@@ -79,6 +107,16 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                             >
                                 <Icons.GitHub className="w-5 h-5" /> GitHub
                             </a>
+                            {dynamicDownloadUrl && (
+                                <a 
+                                    href={dynamicDownloadUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="btn-solid flex items-center gap-2 bg-brand-orange text-white"
+                                >
+                                    <DownloadIcon size={20} /> Download APK
+                                </a>
+                            )}
                             {liveUrl && (
                                 <a 
                                     href={liveUrl} 

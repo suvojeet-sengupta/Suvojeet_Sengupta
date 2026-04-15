@@ -25,6 +25,24 @@ export default function ContactPage() {
                     
                     <div className="space-y-8">
                         <div className="p-6 bg-tertiary border-l-4 border-brand-orange rounded-sm">
+                            <h3 className="font-black uppercase tracking-widest text-xs mb-4">Direct Email</h3>
+                            <div className="space-y-2">
+                                <a 
+                                    href="mailto:suvojeet@suvojeetsengupta.in" 
+                                    className="block text-sm font-bold text-secondary hover:text-brand-orange transition-colors"
+                                >
+                                    suvojeet@suvojeetsengupta.in
+                                </a>
+                                <a 
+                                    href="mailto:support@suvojeetsengupta.in" 
+                                    className="block text-sm font-bold text-secondary hover:text-brand-orange transition-colors"
+                                >
+                                    support@suvojeetsengupta.in
+                                </a>
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-tertiary border-l-4 border-brand-orange rounded-sm">
                             <h3 className="font-black uppercase tracking-widest text-xs mb-4">Response Time</h3>
                             <p className="text-sm text-secondary leading-relaxed">
                                 I typically respond to all inquiries within 24-48 hours. Please provide as much detail as possible so I can get back to you effectively.
