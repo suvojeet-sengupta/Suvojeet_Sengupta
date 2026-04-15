@@ -98,3 +98,11 @@ export function getClientIp(request: Request): string | null {
 
   return forwarded.split(',')[0].trim();
 }
+
+export function calculateReadingTime(content: string): string {
+  if (!content) return '1 min read';
+  const wordsPerMinute = 225;
+  const noOfWords = content.trim().split(/\s+/).length;
+  const minutes = noOfWords / wordsPerMinute;
+  return `${Math.ceil(minutes)} min read`;
+}

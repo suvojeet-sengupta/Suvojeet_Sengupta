@@ -9,10 +9,25 @@ interface RouteContext {
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  const { slug: rawId } = await context.params;
-  const blogId = Number(rawId);
-  if (!Number.isFinite(blogId) || blogId <= 0) {
-    return NextResponse.json({ error: 'Invalid blog id.' }, { status: 400 });
+  const { slug: rawSlugOrId } = await context.params;
+  const db = getDb();
+  
+  let blogId: number;
+  const possibleId = Number(rawSlugOrId);
+
+  if (Number.isFinite(possibleId) && possibleId > 0) {
+    blogId = possibleId;
+  } else {
+    // Lookup by slug
+    const post = await db
+      .prepare('SELECT id FROM blogs WHERE slug = ? LIMIT 1')
+      .bind(rawSlugOrId)
+      .first<Record<string, number>>();
+    
+    if (!post) {
+      return NextResponse.json({ error: 'Blog post not found.' }, { status: 404 });
+    }
+    blogId = post.id;
   }
 
   const clientIp = getClientIp(request);
