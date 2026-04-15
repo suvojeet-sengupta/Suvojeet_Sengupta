@@ -211,7 +211,7 @@ export default async function Page({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogPostPage initialPost={post} />
+      <BlogPostPage post={post} />
     </>
   );
 }
