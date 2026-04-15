@@ -33,8 +33,6 @@ export async function POST(request: Request, context: RouteContext) {
   const clientIp = getClientIp(request);
   const ipHash = clientIp ? await sha256Hex(clientIp) : 'anonymous';
 
-  const db = getDb();
-
   // Check if already liked
   const existingLike = await db
     .prepare('SELECT 1 FROM blog_likes WHERE blog_id = ? AND ip_hash = ?')
