@@ -16,14 +16,14 @@ export async function POST(request: Request) {
     const db = getDb();
     
     // Insert or update subscription
-    await db.prepare(\`
+    await db.prepare(`
       INSERT INTO push_subscriptions (endpoint, p256dh, auth)
       VALUES (?, ?, ?)
       ON CONFLICT(endpoint) DO UPDATE SET 
         p256dh = excluded.p256dh,
         auth = excluded.auth,
         created_at = CURRENT_TIMESTAMP
-    \`).bind(endpoint, p256dh, auth).run();
+    `).bind(endpoint, p256dh, auth).run();
 
     return NextResponse.json({ success: true });
   } catch (err) {
