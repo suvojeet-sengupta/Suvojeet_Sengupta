@@ -85,6 +85,10 @@ export async function DELETE(request: Request, context: RouteContext) {
   }
 
   const db = getDb();
+  
+  // Also delete associated replies
+  await db.prepare('DELETE FROM replies WHERE comment_id = ?').bind(commentId).run();
+  
   const deleteResult = await db.prepare('DELETE FROM comments WHERE id = ?').bind(commentId).run();
   const deletedRows = Number((deleteResult.meta || {}).changes || 0);
 

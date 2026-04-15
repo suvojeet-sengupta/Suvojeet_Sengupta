@@ -85,6 +85,11 @@ export async function DELETE(request: Request, context: RouteContext) {
   }
 
   const db = getDb();
+
+  // Also delete associated comments and replies
+  await db.prepare('DELETE FROM replies WHERE comment_id IN (SELECT id FROM comments WHERE blog_id = ?)').bind(postId).run();
+  await db.prepare('DELETE FROM comments WHERE blog_id = ?').bind(postId).run();
+
   const deleteResult = await db.prepare('DELETE FROM blogs WHERE id = ?').bind(postId).run();
   const deletedRows = Number((deleteResult.meta || {}).changes || 0);
 

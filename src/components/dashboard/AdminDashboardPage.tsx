@@ -233,6 +233,26 @@ export default function AdminDashboardPage() {
     await loadOverview();
   };
 
+  const deleteReply = async (replyId: number) => {
+    const shouldDelete = window.confirm('Delete this reply?');
+    if (!shouldDelete) {
+      return;
+    }
+
+    const response = await fetch(`/api/admin/replies/${replyId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const payload = await response.json() as { error?: string };
+      setActionMessage(payload.error || 'Unable to delete reply.');
+      return;
+    }
+
+    setActionMessage('Reply deleted.');
+    await loadOverview();
+  };
+
   const submitOwnerReply = async (commentId: number) => {
     const draft = (replyDrafts[commentId] || '').trim();
     if (!draft || replyingToCommentId) {
@@ -515,17 +535,30 @@ export default function AdminDashboardPage() {
               {comment.replies.length > 0 && (
                 <div className="mt-4 space-y-3">
                   {comment.replies.map((reply) => (
-                    <div key={reply.id} className="ml-4 border-l-2 border-light pl-4">
-                      <p className="font-bold text-sm">
-                        {reply.name}{' '}
-                        {reply.isOwner && (
-                          <span className="text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-sm">
-                            ✔ Verified
-                          </span>
-                        )}
-                      </p>
-                      <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
-                      <p className="text-xs text-muted mt-2">{formatDate(reply.createdAt)}</p>
+                    <div key={reply.id} className="ml-4 border-l-2 border-light pl-4 flex items-start justify-between gap-4 group">
+                      <div>
+                        <p className="font-bold text-sm">
+                          {reply.name}{' '}
+                          {reply.isOwner && (
+                            <span className="text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-sm">
+                              ✔ Verified
+                            </span>
+                          )}
+                        </p>
+                        <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
+                        <p className="text-xs text-muted mt-2">{formatDate(reply.createdAt)}</p>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => deleteReply(reply.id)}
+                        className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-0 group-hover:opacity-100"
+                        title="Delete Reply"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
                     </div>
                   ))}
                 </div>
