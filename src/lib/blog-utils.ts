@@ -30,7 +30,22 @@ export function parseTags(raw: unknown): string[] {
     return [];
   }
 
-  return raw
+  const trimmed = raw.trim();
+  
+  // Try to parse as JSON first (handles cases like '["tag1", "tag2"]')
+  if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (Array.isArray(parsed)) {
+        return parsed.map(t => String(t).trim()).filter(Boolean);
+      }
+    } catch (e) {
+      // Fallback to comma splitting if JSON parse fails
+    }
+  }
+
+  // Fallback to comma separated
+  return trimmed
     .split(',')
     .map((tag) => tag.trim())
     .filter(Boolean);

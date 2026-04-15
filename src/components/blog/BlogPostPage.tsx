@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { BlogPost } from '@/types/blog';
 import { formatDate, cn } from '@/lib/utils';
 import { calculateReadingTime } from '@/lib/blog-utils';
@@ -15,6 +15,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
   const [likes, setLikes] = useState(post.likes);
   const [hasLiked, setHasLiked] = useState(post.hasLiked || false);
   const [isLiking, setIsLiking] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
 
   const handleLike = async () => {
     if (isLiking) return;
@@ -39,7 +44,6 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
     }
   };
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareTitle = `Check out this post: ${post.title}`;
   const readingTime = calculateReadingTime(post.content);
 
@@ -188,7 +192,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
         {/* Content */}
         <div 
-          className="prose prose-invert prose-orange max-w-none mb-20
+          className="prose prose-invert prose-orange max-w-none mb-20 whitespace-pre-wrap
           prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-primary
           prose-h2:text-3xl md:prose-h2:text-5xl prose-h2:mt-16 prose-h2:mb-8
           prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-12 prose-h3:mb-6
