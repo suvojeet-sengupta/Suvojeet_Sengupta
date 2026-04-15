@@ -41,6 +41,7 @@ export const CommentList: React.FC<CommentListProps> = ({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-light pb-6">
                 <div>
                     <h2 className="text-2xl font-black">Comments ({commentsCount})</h2>
+                </div>
 
                 {comments.length > 0 && (
                     <div className="flex items-center gap-2">
