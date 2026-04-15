@@ -4,6 +4,11 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { BlogReply, BlogSummary } from '@/types/blog';
+import { 
+  LayoutDashboard, FileText, MessageSquare, 
+  Eye, CheckCircle, Trash2, Edit3, Globe, 
+  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck
+} from 'lucide-react';
 
 interface DashboardStats {
   totalPosts: number;
@@ -326,59 +331,86 @@ export default function AdminDashboardPage() {
   return (
     <section className="section-container pt-32 pb-24">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted mb-3">Admin Dashboard</p>
-          <h1 className="text-4xl font-black">Blog Management</h1>
-          <p className="mt-2">Create posts, control comments, and monitor activity stats.</p>
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-full">
+            <LayoutDashboard size={32} />
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted mb-1">Admin Control Center</p>
+            <h1 className="text-4xl font-black">Dashboard</h1>
+          </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
           <Link
             href="/blog"
-            className="border border-light hover:border-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider"
+            className="flex items-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
           >
-            View Blog
+            <Globe size={16} />
+            View Live
           </Link>
           <button
             type="button"
             onClick={logout}
-            className="bg-brand-black hover:bg-zinc-800 text-white px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider"
+            className="flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
           >
+            <PowerOff size={16} />
             Logout
           </button>
         </div>
       </div>
 
       {actionMessage && (
-        <p className="mb-6 text-sm font-medium text-secondary">{actionMessage}</p>
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-sm flex items-center gap-3 text-green-700">
+          <CheckCircle size={20} />
+          <p className="text-sm font-bold">{actionMessage}</p>
+        </div>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-          <p className="text-xs uppercase tracking-wider text-muted font-bold">Total Posts</p>
-          <p className="text-3xl font-black mt-2">{overview.stats.totalPosts}</p>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted font-bold">Total Posts</p>
+            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalPosts}</p>
+          </div>
+          <div className="p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
+            <Edit3 size={24} />
+          </div>
         </div>
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-          <p className="text-xs uppercase tracking-wider text-muted font-bold">Total Comments</p>
-          <p className="text-3xl font-black mt-2">{overview.stats.totalComments}</p>
-          <p className="text-sm mt-2 text-secondary">Pending: {overview.stats.pendingComments}</p>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
+              {overview.stats.pendingComments > 0 && (
+                <span className="text-[10px] bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">
+                  {overview.stats.pendingComments} pending
+                </span>
+              )}
+            </div>
+            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalComments}</p>
+          </div>
+          <div className="p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform">
+            <MessageSquare size={24} />
+          </div>
         </div>
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-          <p className="text-xs uppercase tracking-wider text-muted font-bold">Total Replies</p>
-          <p className="text-3xl font-black mt-2">{overview.stats.totalReplies}</p>
-        </div>
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-          <p className="text-xs uppercase tracking-wider text-muted font-bold">Blog Views</p>
-          <p className="text-3xl font-black mt-2">{overview.stats.totalBlogViews}</p>
-        </div>
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-          <p className="text-xs uppercase tracking-wider text-muted font-bold">Tracked Visits</p>
-          <p className="text-3xl font-black mt-2">{overview.stats.totalPageViews}</p>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted font-bold">Post Views</p>
+            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalBlogViews}</p>
+          </div>
+          <div className="p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform">
+            <Eye size={24} />
+          </div>
         </div>
       </div>
 
-      <div className="border border-light rounded-sm p-6 md:p-8 bg-tertiary mb-12">
-        <h2 className="text-2xl font-black">Create New Post</h2>
+      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <PlusCircle className="text-brand-orange" />
+          <h2 className="text-2xl font-black">Publish New Post</h2>
+        </div>
         <form onSubmit={handleCreatePost} className="mt-6 space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <input
@@ -458,8 +490,11 @@ export default function AdminDashboardPage() {
         </form>
       </div>
 
-      <div className="border border-light rounded-sm p-6 md:p-8 bg-tertiary mb-12">
-        <h2 className="text-2xl font-black">Posts</h2>
+      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <FileText className="text-brand-orange" />
+          <h2 className="text-2xl font-black">Manage Posts</h2>
+        </div>
         <div className="mt-6 space-y-4">
           {overview.posts.map((post) => (
             <div key={post.id} className="border border-light rounded-sm p-4 bg-background">
@@ -495,8 +530,11 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light rounded-sm p-6 md:p-8 bg-tertiary">
-        <h2 className="text-2xl font-black">Comments & Replies</h2>
+      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary">
+        <div className="flex items-center gap-3 mb-6">
+          <MessageSquare className="text-brand-orange" />
+          <h2 className="text-2xl font-black">Comments Moderation</h2>
+        </div>
         <div className="mt-6 space-y-5">
           {overview.comments.map((comment) => (
             <div key={comment.id} className="border border-light rounded-sm p-5 bg-background">
@@ -516,15 +554,17 @@ export default function AdminDashboardPage() {
                   <button
                     type="button"
                     onClick={() => toggleCommentApproval(comment)}
-                    className="border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                    className="flex items-center gap-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
                   >
+                    <ShieldCheck size={14} />
                     {comment.isApproved ? 'Unapprove' : 'Approve'}
                   </button>
                   <button
                     type="button"
                     onClick={() => deleteComment(comment.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                    className="flex items-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
                   >
+                    <Trash2 size={14} />
                     Delete
                   </button>
                 </div>

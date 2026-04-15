@@ -94,11 +94,21 @@ export default async function Page({ params }: PageProps) {
 
   const blogId = Number(postRow.id || 0);
   
-  // Track view on the server
-  await db.batch([
-    db.prepare('UPDATE blogs SET views = COALESCE(views, 0) + 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?').bind(blogId),
-    db.prepare('INSERT INTO page_views (path, ip_hash) VALUES (?, ?)').bind(`/blog/${slug}`, ipHash),
-  ]);
+  // Check if this IP has already viewed this post
+  const existingView = await db
+    .prepare('SELECT 1 FROM page_views WHERE path = ? AND ip_hash = ? LIMIT 1')
+    .bind(`/blog/${slug}`, ipHash)
+    .first();
+
+  let isNewView = false;
+  if (!existingView) {
+    // Only increment view if the IP hasn't seen this path before
+    await db.batch([
+      db.prepare('UPDATE blogs SET views = COALESCE(views, 0) + 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?').bind(blogId),
+      db.prepare('INSERT INTO page_views (path, ip_hash) VALUES (?, ?)').bind(`/blog/${slug}`, ipHash),
+    ]);
+    isNewView = true;
+  }
 
   const commentsQuery = await db
     .prepare(`
@@ -159,12 +169,39 @@ export default async function Page({ params }: PageProps) {
   const summary = mapBlogSummary(postRow);
   const post: BlogPost = {
     ...summary,
-    views: summary.views + 1, // Increment locally for initial render
+    views: summary.views + (isNewView ? 1 : 0), // Increment locally only if it's a new view
     content: String(postRow.content || ''),
     updatedAt: typeof postRow.updated_at === 'string' ? postRow.updated_at : null,
     comments,
     hasLiked: toBoolean(postRow.has_liked),
   };
 
-  return <BlogPostPage initialPost={post} />;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+      url: 'https://suvojeetsengupta.in',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://suvojeetsengupta.in/blog/${slug}`
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BlogPostPage initialPost={post} />
+    </>
+  );
 }
