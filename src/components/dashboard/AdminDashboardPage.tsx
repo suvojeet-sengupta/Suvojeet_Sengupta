@@ -552,7 +552,7 @@ export default function AdminDashboardPage() {
                       <button
                         type="button"
                         onClick={() => deleteReply(reply.id)}
-                        className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-0 group-hover:opacity-100"
+                        className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
                         title="Delete Reply"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
