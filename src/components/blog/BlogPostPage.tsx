@@ -53,7 +53,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         </h1>
 
         {/* Hero Image */}
-        {post.imageUrl && (
+        {post.imageUrl && post.imageUrl.trim() !== '' && (
           <div className="mb-12 rounded-sm overflow-hidden border border-light">
             <img 
               src={post.imageUrl} 

@@ -7,7 +7,7 @@ import type { BlogReply, BlogSummary } from '@/types/blog';
 import { 
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
-  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck
+  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X
 } from 'lucide-react';
 
 interface DashboardStats {
@@ -45,6 +45,7 @@ interface DashboardOverview {
 }
 
 interface PostFormState {
+  id?: number;
   title: string;
   slug: string;
   excerpt: string;
@@ -87,8 +88,9 @@ export default function AdminDashboardPage() {
   const [unauthorized, setUnauthorized] = useState(false);
   const [error, setError] = useState('');
   const [postForm, setPostForm] = useState<PostFormState>(initialPostForm);
-  const [creatingPost, setCreatingPost] = useState(false);
-  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [submittingPost, setSubmittingPost] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [actionMessage, setActionMessage] = useState('');
   const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(null);
@@ -125,43 +127,84 @@ export default function AdminDashboardPage() {
     loadOverview();
   }, [loadOverview]);
 
-  const handleCreatePost = async (event: FormEvent<HTMLFormElement>) => {
+  const handlePostSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (creatingPost) {
+    if (submittingPost) {
       return;
     }
 
-    setCreatingPost(true);
+    setSubmittingPost(true);
     setActionMessage('');
 
+    const url = isEditing ? `/api/admin/posts/${postForm.id}` : '/api/admin/posts';
+    const method = isEditing ? 'PUT' : 'POST';
+
     try {
-      const response = await fetch('/api/admin/posts', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...postForm,
-          tags: postForm.tags,
         }),
       });
       const payload = await response.json() as { error?: string };
 
       if (!response.ok) {
-        setActionMessage(payload.error || 'Unable to create post.');
-        setCreatingPost(false);
+        setActionMessage(payload.error || `Unable to ${isEditing ? 'update' : 'create'} post.`);
+        setSubmittingPost(false);
         return;
       }
 
       setPostForm(initialPostForm);
-      setActionMessage('Post created successfully.');
-      setCreatingPost(false);
+      setIsEditing(false);
+      setIsFormOpen(false);
+      setActionMessage(`Post ${isEditing ? 'updated' : 'created'} successfully.`);
+      setSubmittingPost(false);
       await loadOverview();
-    } catch (createError) {
-      console.error(createError);
-      setActionMessage('Unable to create post.');
-      setCreatingPost(false);
+    } catch (submitError) {
+      console.error(submitError);
+      setActionMessage(`Unable to ${isEditing ? 'update' : 'create'} post.`);
+      setSubmittingPost(false);
     }
+  };
+
+  const startEditPost = async (postId: number) => {
+      setActionMessage('Fetching post data...');
+      try {
+          // We need full content, which might not be in the summary.
+          // In this project structure, GET /api/admin/posts/[id] usually exists.
+          const response = await fetch(`/api/admin/posts/${postId}`);
+          const payload = await response.json() as any;
+          
+          if (!response.ok) throw new Error(payload.error || 'Failed to fetch post');
+          
+          const postData = payload.post;
+          setPostForm({
+              id: postData.id,
+              title: postData.title,
+              slug: postData.slug,
+              excerpt: postData.excerpt || '',
+              category: postData.category || '',
+              imageUrl: postData.imageUrl || '',
+              tags: Array.isArray(postData.tags) ? postData.tags.join(', ') : '',
+              content: postData.content || '',
+              commentsEnabled: postData.commentsEnabled
+          });
+          setIsEditing(true);
+          setIsFormOpen(true);
+          setActionMessage('');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err: any) {
+          setActionMessage(err.message);
+      }
+  };
+
+  const cancelEdit = () => {
+      setPostForm(initialPostForm);
+      setIsEditing(false);
+      setIsFormOpen(false);
   };
 
   const toggleCommentsStatus = async (post: BlogSummary) => {
@@ -369,9 +412,12 @@ export default function AdminDashboardPage() {
       </div>
 
       {actionMessage && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-sm flex items-center gap-3 text-green-700">
-          <CheckCircle size={20} />
-          <p className="text-sm font-bold">{actionMessage}</p>
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-sm flex items-center justify-between gap-3 text-green-700">
+          <div className="flex items-center gap-3">
+              <CheckCircle size={20} />
+              <p className="text-sm font-bold">{actionMessage}</p>
+          </div>
+          <button onClick={() => setActionMessage('')}><X size={16}/></button>
         </div>
       )}
 
@@ -467,18 +513,29 @@ export default function AdminDashboardPage() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <PlusCircle className="text-brand-orange" />
-            <h2 className="text-2xl font-black">Publish New Post</h2>
+            <h2 className="text-2xl font-black">{isEditing ? 'Edit Post' : 'Publish New Post'}</h2>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsCreatePostOpen(!isCreatePostOpen)}
-            className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
-          >
-            {isCreatePostOpen ? 'Close' : 'Create Post'}
-          </button>
+          <div className="flex gap-2">
+              {isEditing && (
+                  <button
+                  type="button"
+                  onClick={cancelEdit}
+                  className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsFormOpen(!isFormOpen)}
+                className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+              >
+                {isFormOpen ? 'Hide' : (isEditing ? 'Open Editor' : 'Create Post')}
+              </button>
+          </div>
         </div>
-        {isCreatePostOpen && (
-        <form onSubmit={handleCreatePost} className="mt-6 space-y-4">
+        {isFormOpen && (
+        <form onSubmit={handlePostSubmit} className="mt-6 space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -512,7 +569,7 @@ export default function AdminDashboardPage() {
           </div>
 
           <input
-            type="url"
+            type="text"
             placeholder="Cover image URL (optional)"
             value={postForm.imageUrl}
             onChange={(event) => setPostForm((prev) => ({ ...prev, imageUrl: event.target.value }))}
@@ -528,12 +585,12 @@ export default function AdminDashboardPage() {
           />
 
           <textarea
-            rows={10}
+            rows={15}
             required
-            placeholder="Full post content"
+            placeholder="Full post content (Markdown or HTML)"
             value={postForm.content}
             onChange={(event) => setPostForm((prev) => ({ ...prev, content: event.target.value }))}
-            className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+            className="w-full border border-light rounded-sm px-4 py-3 bg-background font-mono text-sm"
           />
 
           <label className="inline-flex items-center gap-2 text-sm font-medium">
@@ -545,14 +602,23 @@ export default function AdminDashboardPage() {
             Enable comments for this post
           </label>
 
-          <div>
+          <div className="flex gap-4">
             <button
               type="submit"
-              disabled={creatingPost}
-              className="bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-5 py-3 rounded-sm font-bold uppercase tracking-wider text-sm"
+              disabled={submittingPost}
+              className="bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm flex items-center gap-2"
             >
-              {creatingPost ? 'Publishing...' : 'Publish Post'}
+              {submittingPost ? 'Saving...' : (isEditing ? 'Update Post' : 'Publish Post')}
             </button>
+            {isEditing && (
+                <button
+                    type="button"
+                    onClick={cancelEdit}
+                    className="border border-light hover:bg-zinc-100 px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm"
+                >
+                    Cancel Edit
+                </button>
+            )}
           </div>
         </form>
         )}
@@ -565,9 +631,9 @@ export default function AdminDashboardPage() {
         </div>
         <div className="mt-6 space-y-4">
           {overview.posts.map((post) => (
-            <div key={post.id} className="border border-light rounded-sm p-4 bg-background">
+            <div key={post.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
               <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
+                <div className="flex-1 min-w-[200px]">
                   <h3 className="text-xl font-black">{post.title}</h3>
                   <p className="text-sm text-secondary mt-1">
                     /blog/{post.slug} • {post.views} views • {post.commentsCount} comments
@@ -576,17 +642,26 @@ export default function AdminDashboardPage() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
+                    onClick={() => startEditPost(post.id)}
+                    className="flex items-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                  >
+                    <Edit3 size={14} />
+                    Edit
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => toggleCommentsStatus(post)}
-                    className="border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                    className="border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
                   >
                     {post.commentsEnabled ? 'Disable Comments' : 'Enable Comments'}
                   </button>
                   <button
                     type="button"
                     onClick={() => deletePost(post.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                    className="flex items-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    Delete Post
+                    <Trash2 size={14} />
+                    Delete
                   </button>
                 </div>
               </div>
