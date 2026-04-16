@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Youtube, Facebook, Instagram, Music, Play, ExternalLink, Calendar } from 'lucide-react';
+import { Music, Play, ExternalLink, Calendar } from 'lucide-react';
+import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
 
 const MusicClient = () => {
@@ -71,7 +72,7 @@ const MusicClient = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
                 title="Subscribe on YouTube"
               >
-                <Youtube size={18} />
+                <Icons.YouTube className="w-4 h-4" />
                 YouTube
               </a>
               <a 
@@ -80,7 +81,7 @@ const MusicClient = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
                 title="Follow on Facebook"
               >
-                <Facebook size={18} />
+                <Icons.Facebook className="w-4 h-4" />
                 Facebook
               </a>
               <a 
@@ -89,7 +90,7 @@ const MusicClient = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-[#E4405F] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
                 title="Follow on Instagram"
               >
-                <Instagram size={18} />
+                <Icons.Instagram className="w-4 h-4" />
                 Instagram
               </a>
             </div>
@@ -130,7 +131,7 @@ const MusicClient = () => {
                         {formatDate(activeVideo.publishedAt)}
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <Youtube size={14} />
+                        <Icons.YouTube className="w-4 h-4" />
                         YouTube Official
                       </span>
                     </div>

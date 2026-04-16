@@ -8,8 +8,9 @@ import {
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
   LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Youtube, PlayCircle
+  Play
 } from 'lucide-react';
+import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
 
 interface DashboardStats {
@@ -542,7 +543,7 @@ export default function AdminDashboardPage() {
             <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalVideos}</p>
           </div>
           <div className="p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
-            <Youtube size={24} />
+            <Icons.YouTube className="w-6 h-6" />
           </div>
         </div>
       </div>
@@ -763,7 +764,7 @@ export default function AdminDashboardPage() {
       <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Youtube className="text-red-500" />
+            <Icons.YouTube className="text-red-500 w-6 h-6" />
             <h2 className="text-2xl font-black">Add Music Video</h2>
           </div>
           <button
@@ -815,7 +816,7 @@ export default function AdminDashboardPage() {
 
       <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <PlayCircle className="text-brand-orange" />
+          <Play className="text-brand-orange" size={24} />
           <h2 className="text-2xl font-black">Manage Music Videos</h2>
         </div>
         <div className="mt-6 space-y-4">
@@ -830,7 +831,7 @@ export default function AdminDashboardPage() {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Youtube size={20} className="text-white" />
+                      <Icons.YouTube className="text-white w-5 h-5" />
                     </div>
                   </div>
                   <div>
