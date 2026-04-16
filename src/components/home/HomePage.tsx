@@ -8,17 +8,17 @@ import { calculateAge } from '@/lib/utils';
 import { fetchGithubRepo, GithubRepo } from '@/lib/github';
 import uiStyles from '@/components/common/UI.module.css';
 
+const FEATURED_PROJECT_NAMES = ['SuvMusic', 'NoteNext'];
+
 const HomePage = () => {
   const age = calculateAge('2005-08-01');
   const [repos, setRepos] = useState<Record<string, GithubRepo>>({});
   const [loading, setLoading] = useState(true);
 
-  const featuredProjectNames = ['SuvMusic', 'NoteNext'];
-
   useEffect(() => {
     const loadRepoData = async () => {
       const data: Record<string, GithubRepo> = {};
-      for (const repoName of featuredProjectNames) {
+      for (const repoName of FEATURED_PROJECT_NAMES) {
         const repoData = await fetchGithubRepo('suvojeet-sengupta', repoName);
         if (repoData) {
           data[repoName] = repoData;
@@ -93,7 +93,7 @@ const HomePage = () => {
           </div>
 
           <div className={uiStyles.projectGrid}>
-            {featuredProjectNames.map((name) => {
+            {FEATURED_PROJECT_NAMES.map((name) => {
               const repo = repos[name];
               if (loading) return (
                 <div key={name} className={uiStyles.professionalCard + " animate-pulse"}>
@@ -159,7 +159,7 @@ const HomePage = () => {
                 <div className="w-12 h-12 flex-shrink-0 bg-brand-orange text-white flex items-center justify-center font-bold text-xl rounded-sm">02</div>
                 <div>
                   <h4 className="text-xl font-bold mb-2">Creative Thinking</h4>
-                  <p>Good code is just one part. I bring creativity from my music background into my UI/UX design, making applications that feel "organic" and human-centric.</p>
+                  <p>Good code is just one part. I bring creativity from my music background into my UI/UX design, making applications that feel &quot;organic&quot; and human-centric.</p>
                 </div>
               </div>
               <div className="flex gap-4">
@@ -172,7 +172,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="bg-tertiary p-8 rounded-sm border-l-4 border-brand-orange">
-            <h3 className="text-2xl font-bold mb-4 italic">"I build things that I want to use. If it's not fast, clean, and intuitive, it's not finished."</h3>
+            <h3 className="text-2xl font-bold mb-4 italic">&quot;I build things that I want to use. If it&apos;s not fast, clean, and intuitive, it&apos;s not finished.&quot;</h3>
             <p className="text-right font-bold">— Suvojeet Sengupta</p>
           </div>
         </div>
@@ -181,9 +181,9 @@ const HomePage = () => {
       {/* Call to Action */}
       <section className="bg-brand-black text-white py-20">
         <div className="section-container text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Let's build something real together.</h2>
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Let&apos;s build something real together.</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
-            Whether you need a high-performance Android app, a modern web experience, or a musical collaboration, I'm ready to bring my creativity to your project.
+            Whether you need a high-performance Android app, a modern web experience, or a musical collaboration, I&apos;m ready to bring my creativity to your project.
           </p>
           <div className="flex justify-center gap-4">
             <Link href="/contact" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm uppercase tracking-widest">

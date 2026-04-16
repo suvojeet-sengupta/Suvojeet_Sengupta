@@ -39,29 +39,23 @@ export const ThemeProvider = ({
   attribute = 'data-theme',
   defaultTheme = 'light'
 }: ThemeProviderProps) => {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === 'undefined') {
+      return defaultTheme;
+    }
 
-  useEffect(() => {
-    setMounted(true);
     const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-      document.documentElement.setAttribute(attribute, savedTheme);
-    } else {
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme = systemPrefersDark ? 'dark' : 'light';
-      setThemeState(initialTheme);
-      document.documentElement.setAttribute(attribute, initialTheme);
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      return savedTheme;
     }
-  }, [attribute]);
+
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.setAttribute(attribute, theme);
-      localStorage.setItem('theme', theme);
-    }
-  }, [theme, mounted, attribute]);
+    document.documentElement.setAttribute(attribute, theme);
+    localStorage.setItem('theme', theme);
+  }, [theme, attribute]);
 
   const toggleTheme = () => {
     setThemeState(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
@@ -73,11 +67,7 @@ export const ThemeProvider = ({
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {/* We wrap children in a div that is hidden until mounted to prevent FOUC, 
-          but we ALWAYS render the Provider so useTheme() doesn't fail during SSR */}
-      <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>
-        {children}
-      </div>
+      {children}
     </ThemeContext.Provider>
   );
 };

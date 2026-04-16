@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/cloudflare';
 import { getClientIp, mapBlogSummary, sha256Hex, toBoolean } from '@/lib/blog-utils';
+import { PUBLIC_READ_HEADERS } from '@/lib/http-cache';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
 
 export const runtime = 'edge';
@@ -150,7 +151,8 @@ export async function GET(request: Request, context: RouteContext) {
     { post },
     {
       headers: {
-        'Cache-Control': 'no-store',
+        ...PUBLIC_READ_HEADERS,
+        Vary: 'cf-connecting-ip, x-forwarded-for',
       },
     },
   );

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/cloudflare';
 import { getClientIp, mapBlogSummary, sha256Hex, toBoolean } from '@/lib/blog-utils';
 import { isDashboardSessionActive } from '@/lib/admin-auth';
+import { getE2ePostFixture, isE2ePostFixtureSlug } from '@/lib/e2e-fixtures';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
 import BlogPostPage from '@/components/blog/BlogPostPage';
 import { headers } from 'next/headers';
@@ -17,7 +18,15 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug: rawSlug } = await params;
   const slug = decodeURIComponent(rawSlug || '').trim();
-  
+
+  if (isE2ePostFixtureSlug(slug)) {
+    const fixture = getE2ePostFixture();
+    return {
+      title: `${fixture.title} | Suvojeet Sengupta`,
+      description: fixture.excerpt || fixture.title,
+    };
+  }
+
   const db = getDb();
   const post = await db
     .prepare('SELECT title, excerpt FROM blogs WHERE slug = ? LIMIT 1')
@@ -59,6 +68,10 @@ export default async function Page({ params }: PageProps) {
     notFound();
   }
 
+  if (isE2ePostFixtureSlug(slug)) {
+    return <BlogPostPage post={getE2ePostFixture()} />;
+  }
+
   const db = getDb();
   
   // Get IP and hash for hasLiked check
@@ -74,6 +87,10 @@ export default async function Page({ params }: PageProps) {
         b.id, b.title, b.slug, b.content, b.excerpt, b.category,
         b.image_url, b.published_at, b.views, b.likes, b.author,
         b.tags, b.comments_enabled, b.updated_at,
+        CASE
+          WHEN datetime(b.published_at) <= CURRENT_TIMESTAMP THEN 1
+          ELSE 0
+        END AS is_global_live,
         (
           SELECT COUNT(*) FROM comments c
           WHERE c.blog_id = b.id AND c.is_approved = 1
@@ -93,8 +110,7 @@ export default async function Page({ params }: PageProps) {
     notFound();
   }
 
-  const postPublishedDate = new Date(postRow.published_at as string);
-  const isGlobalLive = postPublishedDate.getTime() <= Date.now();
+  const isGlobalLive = toBoolean(postRow.is_global_live);
   const isAdmin = await isDashboardSessionActive();
 
   // Hide scheduled posts from public visitors

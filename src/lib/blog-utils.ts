@@ -1,4 +1,5 @@
 import type { BlogSummary } from '@/types/blog';
+import { sanitizeRichTextHtml } from '@/lib/html-sanitizer';
 
 const encoder = new TextEncoder();
 
@@ -10,17 +11,7 @@ export function normalizeText(value: unknown, maxLength: number): string {
   return value.trim().slice(0, maxLength);
 }
 
-const DANGEROUS_HTML_TAGS_REGEX = /<\/?(?:script|style|iframe|object|embed|link|meta|base|form|input|button|textarea|select)\b[^>]*>/gi;
-const DANGEROUS_HTML_ATTRIBUTES_REGEX = /\s+on[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi;
-const DANGEROUS_URL_PROTOCOL_REGEX = /\s+(href|src)\s*=\s*(["'])\s*(?:javascript:|data:text\/html)[\s\S]*?\2/gi;
 const PRESERVE_WHITESPACE_BLOCK_REGEX = /<(pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi;
-
-function sanitizeHtml(value: string): string {
-  return value
-    .replace(DANGEROUS_HTML_TAGS_REGEX, '')
-    .replace(DANGEROUS_HTML_ATTRIBUTES_REGEX, '')
-    .replace(DANGEROUS_URL_PROTOCOL_REGEX, '');
-}
 
 function normalizeHtmlWhitespace(value: string): string {
   const preservedBlocks: string[] = [];
@@ -50,7 +41,7 @@ export function normalizeHtmlContent(value: unknown, maxLength: number): string 
     return '';
   }
 
-  const sanitized = sanitizeHtml(value);
+  const sanitized = sanitizeRichTextHtml(value);
   const normalized = normalizeHtmlWhitespace(sanitized);
 
   return normalized.slice(0, maxLength);

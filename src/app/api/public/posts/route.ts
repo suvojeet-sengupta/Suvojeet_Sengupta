@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/cloudflare';
 import { mapBlogSummary } from '@/lib/blog-utils';
+import { PUBLIC_READ_HEADERS } from '@/lib/http-cache';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -39,7 +40,7 @@ export async function GET() {
     { posts },
     {
       headers: {
-        'Cache-Control': 'no-store',
+        ...PUBLIC_READ_HEADERS,
       },
     },
   );

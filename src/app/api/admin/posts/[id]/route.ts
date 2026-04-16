@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
 import { isAdminRequestAuthenticated } from '@/lib/admin-auth';
 import { getDb } from '@/lib/cloudflare';
-import { mapBlogSummary, toBoolean } from '@/lib/blog-utils';
+import {
+  createSlug,
+  mapBlogSummary,
+  normalizeHtmlContent,
+  normalizeText,
+  optionalText,
+  serializeTags,
+  toBoolean,
+} from '@/lib/blog-utils';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -62,27 +70,34 @@ export async function PUT(request: Request, context: RouteContext) {
     const payload = await request.json();
     const db = getDb();
 
-    if (!payload.title || !payload.content) {
+    const title = normalizeText(payload?.title, 180);
+    const content = normalizeHtmlContent(payload?.content, 40000);
+    const candidateSlug = normalizeText(payload?.slug, 180);
+    const slug = createSlug(candidateSlug || title);
+
+    if (!title || !content || !slug) {
         return NextResponse.json({ error: 'Title and content are required.' }, { status: 400 });
     }
 
-    const tagsJson = JSON.stringify(
-      (payload.tags || '').split(',').map((t: string) => t.trim()).filter(Boolean)
-    );
+    const excerpt = optionalText(payload?.excerpt, 500);
+    const category = optionalText(payload?.category, 80);
+    const imageUrl = optionalText(payload?.imageUrl, 500);
+    const tags = serializeTags(payload?.tags);
+    const commentsEnabled = toBoolean(payload?.commentsEnabled) ? 1 : 0;
 
     await db.prepare(`
       UPDATE blogs 
       SET title = ?, slug = ?, excerpt = ?, category = ?, image_url = ?, tags = ?, content = ?, comments_enabled = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).bind(
-      payload.title,
-      payload.slug || payload.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      payload.excerpt || '',
-      payload.category || '',
-      payload.imageUrl || '',
-      tagsJson,
-      payload.content,
-      payload.commentsEnabled ? 1 : 0,
+      title,
+      slug,
+      excerpt,
+      category,
+      imageUrl,
+      tags,
+      content,
+      commentsEnabled,
       postId
     ).run();
 

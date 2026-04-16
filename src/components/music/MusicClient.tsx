@@ -16,7 +16,7 @@ const MusicClient = () => {
             The <span className="text-accent">Voice</span>
           </h1>
           <p className="text-xl text-secondary leading-relaxed mb-6 italic">
-            "Sangeet mere liye saans lene jaisa hai." (Music is like breathing for me.)
+            &quot;Sangeet mere liye saans lene jaisa hai.&quot; (Music is like breathing for me.)
           </p>
           <p className="text-xl text-secondary leading-relaxed mb-6">
             From the timeless melodies of Kishore Kumar and Lata Mangeshkar to the soulful modern hits of Arijit Singh, my journey is a tribute to the legends of Indian music. Whether in Hindi or Bengali, every song I sing is a piece of my heart.
@@ -42,7 +42,7 @@ const MusicClient = () => {
                 <span className="text-3xl">✉️</span>
               </div>
               <h3 className="text-xl font-bold mb-2">Request a Song</h3>
-              <p className="text-secondary mb-6">Have a favorite Kishore Kumar or Arijit Singh track you'd like me to cover? Let's connect.</p>
+              <p className="text-secondary mb-6">Have a favorite Kishore Kumar or Arijit Singh track you&apos;d like me to cover? Let&apos;s connect.</p>
               <a href="/contact" className="btn-solid w-full">Make a Request</a>
             </div>
           </div>
@@ -58,7 +58,7 @@ const MusicClient = () => {
           <div>
             <h2 className="text-4xl font-bold mb-6">Organic Practice</h2>
             <p className="text-lg text-secondary mb-8">
-              I don't play instruments—I believe the human voice is the most powerful instrument of all. My practice is constant; I'm always humming, always singing. Even when I'm not in a studio, my voice is in training.
+              I don&apos;t play instruments—I believe the human voice is the most powerful instrument of all. My practice is constant; I&apos;m always humming, always singing. Even when I&apos;m not in a studio, my voice is in training.
             </p>
             <div className="space-y-4">
               <div className="p-4 border-l-4 border-brand-orange bg-tertiary">

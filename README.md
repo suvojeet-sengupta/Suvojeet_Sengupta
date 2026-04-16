@@ -59,6 +59,16 @@ The website is built with a modern, high-performance stack designed for speed, S
    npm run dev
    ```
 
+### E2E testing (Playwright)
+- Run headless E2E suite:
+  ```bash
+  npm run e2e
+  ```
+- Optional headed run:
+  ```bash
+  npm run e2e:headed
+  ```
+
 ## Project Structure
 
 - `src/app/`: Core routing and page layouts.
@@ -111,6 +121,14 @@ If you deploy through Cloudflare Pages UI, add D1 binding in **Pages → Setting
 3. In Cloudflare Pages production, add the same values in **Settings → Environment variables / secrets**.
 
 Password is verified using PBKDF2-SHA256 hash, and admin session uses secure HTTP-only cookie with D1-backed session records.
+
+## CI and deployment
+- `CI` workflow runs lint, build, and Playwright E2E checks.
+- Cloudflare deployment runs only on `main` branch pushes and only after CI job success (`needs: ci` in deploy workflow).
+- Required GitHub secrets for deploy workflow:
+  - `CLOUDFLARE_API_TOKEN`
+  - `CLOUDFLARE_ACCOUNT_ID`
+  - `CLOUDFLARE_PAGES_PROJECT_NAME`
 
 ## Contact and Connect
 

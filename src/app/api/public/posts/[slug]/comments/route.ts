@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/cloudflare';
 import { normalizeText, optionalText, toBoolean } from '@/lib/blog-utils';
+import { NO_STORE_HEADERS } from '@/lib/http-cache';
+import { enforceRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit';
 import type { BlogComment } from '@/types/blog';
 
 export const runtime = 'edge';
@@ -11,11 +13,20 @@ interface RouteContext {
 }
 
 export async function POST(request: Request, context: RouteContext) {
+  const rateLimitResult = await enforceRateLimit(request, {
+    endpointKey: 'public-comment-create',
+    limit: 10,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!rateLimitResult.allowed) {
+    return rateLimitExceededResponse(rateLimitResult, 'Too many comments from this IP. Try again in a few minutes.');
+  }
+
   const { slug: rawBlogId } = await context.params;
   const blogId = Number(rawBlogId);
 
   if (!Number.isFinite(blogId) || blogId <= 0) {
-    return NextResponse.json({ error: 'Invalid blog id.' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid blog id.' }, { status: 400, headers: NO_STORE_HEADERS });
   }
 
   const payload = await request.json();
@@ -24,7 +35,7 @@ export async function POST(request: Request, context: RouteContext) {
   const content = normalizeText(payload?.content, 2500);
 
   if (!name || !content) {
-    return NextResponse.json({ error: 'Name and comment are required.' }, { status: 400 });
+    return NextResponse.json({ error: 'Name and comment are required.' }, { status: 400, headers: NO_STORE_HEADERS });
   }
 
   const db = getDb();
@@ -34,11 +45,11 @@ export async function POST(request: Request, context: RouteContext) {
     .first<Record<string, unknown>>();
 
   if (!blogRow) {
-    return NextResponse.json({ error: 'Blog post not found.' }, { status: 404 });
+    return NextResponse.json({ error: 'Blog post not found.' }, { status: 404, headers: NO_STORE_HEADERS });
   }
 
   if (!toBoolean(blogRow.comments_enabled)) {
-    return NextResponse.json({ error: 'Comments are disabled for this post.' }, { status: 403 });
+    return NextResponse.json({ error: 'Comments are disabled for this post.' }, { status: 403, headers: NO_STORE_HEADERS });
   }
 
   const insertResult = await db
@@ -64,7 +75,7 @@ export async function POST(request: Request, context: RouteContext) {
       .first<Record<string, unknown>>();
 
   if (!insertedRow) {
-    return NextResponse.json({ error: 'Unable to create comment.' }, { status: 500 });
+    return NextResponse.json({ error: 'Unable to create comment.' }, { status: 500, headers: NO_STORE_HEADERS });
   }
 
   const comment: BlogComment = {
@@ -78,5 +89,5 @@ export async function POST(request: Request, context: RouteContext) {
     replies: [],
   };
 
-  return NextResponse.json({ comment }, { status: 201 });
+  return NextResponse.json({ comment }, { status: 201, headers: NO_STORE_HEADERS });
 }

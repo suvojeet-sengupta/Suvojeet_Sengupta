@@ -326,7 +326,7 @@ const AboutClient = () => {
                     <motion.div variants={itemVariants} className="text-center mb-12">
                         <h2 className="text-4xl font-bold mb-4">Direct Message</h2>
                         <p className="text-secondary font-medium">
-                            Let's discuss collaborations, projects, or just talk music.
+                            Let&apos;s discuss collaborations, projects, or just talk music.
                         </p>
                     </motion.div>
 

@@ -84,6 +84,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
          !post.imageUrl.includes('undefined') && 
          post.imageUrl.startsWith('http') && (
           <div className="mb-16 rounded-sm overflow-hidden border border-light relative group">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={post.imageUrl} 
               alt={post.title} 
