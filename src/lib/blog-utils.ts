@@ -10,6 +10,66 @@ export function normalizeText(value: unknown, maxLength: number): string {
   return value.trim().slice(0, maxLength);
 }
 
+const DANGEROUS_HTML_TAGS_REGEX = /<\/?(?:script|style|iframe|object|embed|link|meta|base|form|input|button|textarea|select)\b[^>]*>/gi;
+const DANGEROUS_HTML_ATTRIBUTES_REGEX = /\s+on[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi;
+const DANGEROUS_URL_PROTOCOL_REGEX = /\s+(href|src)\s*=\s*(["'])\s*(?:javascript:|data:text\/html)[\s\S]*?\2/gi;
+const PRESERVE_WHITESPACE_BLOCK_REGEX = /<(pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi;
+
+function sanitizeHtml(value: string): string {
+  return value
+    .replace(DANGEROUS_HTML_TAGS_REGEX, '')
+    .replace(DANGEROUS_HTML_ATTRIBUTES_REGEX, '')
+    .replace(DANGEROUS_URL_PROTOCOL_REGEX, '');
+}
+
+function normalizeHtmlWhitespace(value: string): string {
+  const preservedBlocks: string[] = [];
+  const withPlaceholders = value.replace(PRESERVE_WHITESPACE_BLOCK_REGEX, (block) => {
+    const placeholder = `__PRESERVE_HTML_BLOCK_${preservedBlocks.length}__`;
+    preservedBlocks.push(block);
+    return placeholder;
+  });
+
+  let normalized = withPlaceholders
+    .replace(/\r\n?/g, '\n')
+    .replace(/&nbsp;|\u00A0/g, ' ')
+    .replace(/>\s+</g, '><')
+    .replace(/[ \t\f\v]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  normalized = normalized.replace(/__PRESERVE_HTML_BLOCK_(\d+)__/g, (_, index: string) => {
+    return preservedBlocks[Number(index)] || '';
+  });
+
+  return normalized;
+}
+
+export function normalizeHtmlContent(value: unknown, maxLength: number): string {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  const sanitized = sanitizeHtml(value);
+  const normalized = normalizeHtmlWhitespace(sanitized);
+
+  return normalized.slice(0, maxLength);
+}
+
+export function extractPlainTextFromHtml(value: string, maxLength: number): string {
+  return value
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;|\u00A0/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+}
+
 export function optionalText(value: unknown, maxLength: number): string | null {
   const normalized = normalizeText(value, maxLength);
   return normalized.length > 0 ? normalized : null;

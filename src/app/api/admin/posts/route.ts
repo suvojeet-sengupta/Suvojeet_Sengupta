@@ -3,7 +3,9 @@ import { isAdminRequestAuthenticated } from '@/lib/admin-auth';
 import { getDb, getRuntimeString } from '@/lib/cloudflare';
 import {
   createSlug,
+  extractPlainTextFromHtml,
   mapBlogSummary,
+  normalizeHtmlContent,
   normalizeText,
   optionalText,
   serializeTags,
@@ -22,7 +24,7 @@ export async function POST(request: Request) {
 
   const payload = await request.json();
   const title = normalizeText(payload?.title, 180);
-  const content = normalizeText(payload?.content, 40000);
+  const content = normalizeHtmlContent(payload?.content, 40000);
   const candidateSlug = normalizeText(payload?.slug, 180);
   const slug = createSlug(candidateSlug || title);
 
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Title, slug, and content are required.' }, { status: 400 });
   }
 
-  const excerpt = optionalText(payload?.excerpt, 500) || content.slice(0, 180);
+  const excerpt = optionalText(payload?.excerpt, 500) || extractPlainTextFromHtml(content, 180);
   const category = optionalText(payload?.category, 80);
   const imageUrl = optionalText(payload?.imageUrl, 500);
   const tags = serializeTags(payload?.tags);
