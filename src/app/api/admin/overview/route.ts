@@ -29,15 +29,26 @@ export async function GET(request: Request) {
   
   // Ensure tables exist natively via edge execution
   try {
-    await db.prepare(`
-      CREATE TABLE IF NOT EXISTS push_subscriptions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        endpoint TEXT NOT NULL UNIQUE,
-        p256dh TEXT NOT NULL,
-        auth TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `).run();
+    await db.batch([
+      db.prepare(`
+        CREATE TABLE IF NOT EXISTS push_subscriptions (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          endpoint TEXT NOT NULL UNIQUE,
+          p256dh TEXT NOT NULL,
+          auth TEXT NOT NULL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `),
+      db.prepare(`
+        CREATE TABLE IF NOT EXISTS music_videos (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT NOT NULL,
+          youtube_id TEXT NOT NULL,
+          description TEXT,
+          published_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `)
+    ]);
   } catch (e) {
     console.error('Migration error:', e);
   }
@@ -63,9 +74,22 @@ export async function GET(request: Request) {
         (SELECT COUNT(*) FROM replies) AS total_replies,
         (SELECT COALESCE(SUM(views), 0) FROM blogs) AS total_blog_views,
         (SELECT COUNT(*) FROM page_views) AS total_page_views,
-        (SELECT COUNT(*) FROM push_subscriptions) AS total_subscribers
+        (SELECT COUNT(*) FROM push_subscriptions) AS total_subscribers,
+        (SELECT COUNT(*) FROM music_videos) AS total_videos
     `)
     .first<Record<string, unknown>>();
+
+  const videosResult = await db
+    .prepare('SELECT * FROM music_videos ORDER BY datetime(published_at) DESC')
+    .all<Record<string, unknown>>();
+  
+  const videos = videosResult.results.map(row => ({
+    id: Number(row.id || 0),
+    title: String(row.title || ''),
+    youtubeId: String(row.youtube_id || ''),
+    description: typeof row.description === 'string' ? row.description : null,
+    publishedAt: String(row.published_at || '')
+  }));
 
   const postsResult = await db
     .prepare(`
@@ -173,6 +197,7 @@ export async function GET(request: Request) {
       totalBlogViews: Number(statsRow?.total_blog_views || 0),
       totalPageViews: Number(statsRow?.total_page_views || 0),
       totalSubscribers: Number(statsRow?.total_subscribers || 0),
+      totalVideos: Number(statsRow?.total_videos || 0),
     },
     system: {
       isOnline: true,
@@ -180,5 +205,6 @@ export async function GET(request: Request) {
     },
     posts,
     comments,
+    videos,
   });
 }

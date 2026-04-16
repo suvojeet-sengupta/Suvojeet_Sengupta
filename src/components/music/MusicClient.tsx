@@ -1,51 +1,187 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Youtube, Facebook, Instagram, Music, Play, ExternalLink, Calendar } from 'lucide-react';
+import type { MusicVideo } from '@/types/music';
 
 const MusicClient = () => {
+  const [videos, setVideos] = useState<MusicVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeVideo, setActiveVideo] = useState<MusicVideo | null>(null);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await fetch('/api/public/music-videos');
+        const data = await response.json();
+        if (data.videos) {
+          setVideos(data.videos);
+          if (data.videos.length > 0) {
+            setActiveVideo(data.videos[0]);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch videos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div className="pt-32 pb-20">
       <section className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl"
-        >
-          <h1 className="text-5xl md:text-7xl font-black mb-8">
-            The <span className="text-accent">Voice</span>
-          </h1>
-          <p className="text-xl text-secondary leading-relaxed mb-6 italic">
-            &quot;Sangeet mere liye saans lene jaisa hai.&quot; (Music is like breathing for me.)
-          </p>
-          <p className="text-xl text-secondary leading-relaxed mb-6">
-            From the timeless melodies of Kishore Kumar and Lata Mangeshkar to the soulful modern hits of Arijit Singh, my journey is a tribute to the legends of Indian music. Whether in Hindi or Bengali, every song I sing is a piece of my heart.
-          </p>
-        </motion.div>
+        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="max-w-3xl"
+          >
+            <h1 className="text-5xl md:text-7xl font-black mb-6">
+              The <span className="text-accent">Voice</span>
+            </h1>
+            <p className="text-xl text-secondary leading-relaxed mb-6 italic">
+              &quot;Sangeet mere liye saans lene jaisa hai.&quot; (Music is like breathing for me.)
+            </p>
+            <p className="text-lg text-secondary leading-relaxed font-medium">
+              From the timeless melodies of Kishore Kumar and Lata Mangeshkar to the soulful modern hits of Arijit Singh, my journey is a tribute to the legends of Indian music. Whether in Hindi or Bengali, every song I sing is a piece of my heart.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex flex-col gap-4"
+          >
+            <h3 className="text-sm font-bold uppercase tracking-widest text-muted">Join the Community</h3>
+            <div className="flex flex-wrap gap-3">
+              <a 
+                href="https://youtube.com/@suvojeetsengupta" 
+                target="_blank" 
+                className="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
+                title="Subscribe on YouTube"
+              >
+                <Youtube size={18} />
+                YouTube
+              </a>
+              <a 
+                href="https://facebook.com/suvojeetsenguptaofficial" 
+                target="_blank" 
+                className="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
+                title="Follow on Facebook"
+              >
+                <Facebook size={18} />
+                Facebook
+              </a>
+              <a 
+                href="https://instagram.com/suvojeet_sengupta" 
+                target="_blank" 
+                className="flex items-center gap-2 px-4 py-2 bg-[#E4405F] text-white rounded-sm font-bold text-sm hover:scale-105 transition-transform"
+                title="Follow on Instagram"
+              >
+                <Instagram size={18} />
+                Instagram
+              </a>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Connection Section */}
-      <section className="bg-tertiary py-24 mt-20">
+      {/* Featured Video Section */}
+      <section className="bg-tertiary py-20 mt-10">
         <div className="section-container">
-          <h2 className="text-4xl font-bold mb-12">Connect with My Music</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="professional-card flex flex-col items-center text-center p-10">
-              <div className="w-16 h-16 bg-brand-black text-white flex items-center justify-center rounded-sm mb-6">
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 4-8 4z"/></svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2">YouTube Channel</h3>
-              <p className="text-secondary mb-6">Watch my latest covers, soulful renditions, and singing logs in Hindi and Bengali.</p>
-              <a href="https://youtube.com/@suvojeetsengupta" target="_blank" className="btn-solid w-full">Subscribe Now</a>
-            </div>
-            <div className="professional-card flex flex-col items-center text-center p-10">
-              <div className="w-16 h-16 bg-brand-orange text-white flex items-center justify-center rounded-sm mb-6">
-                <span className="text-3xl">✉️</span>
-              </div>
-              <h3 className="text-xl font-bold mb-2">Request a Song</h3>
-              <p className="text-secondary mb-6">Have a favorite Kishore Kumar or Arijit Singh track you&apos;d like me to cover? Let&apos;s connect.</p>
-              <a href="/contact" className="btn-solid w-full">Make a Request</a>
-            </div>
+          <div className="flex items-center gap-3 mb-10">
+            <Music className="text-brand-orange" size={32} />
+            <h2 className="text-4xl font-black uppercase tracking-tight">Featured Performances</h2>
           </div>
+
+          {loading ? (
+            <div className="aspect-video bg-zinc-200 animate-pulse rounded-sm"></div>
+          ) : videos.length > 0 ? (
+            <div className="grid lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-2 space-y-6">
+                <div className="relative aspect-video bg-black rounded-sm overflow-hidden shadow-2xl border border-white/5">
+                  {activeVideo && (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=0&rel=0`}
+                      title={activeVideo.title}
+                      className="absolute inset-0 w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  )}
+                </div>
+                {activeVideo && (
+                  <div className="p-6 bg-background rounded-sm border-l-4 border-brand-orange shadow-sm">
+                    <h3 className="text-2xl font-black mb-2">{activeVideo.title}</h3>
+                    <div className="flex items-center gap-4 text-muted text-sm font-bold uppercase tracking-wider mb-4">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar size={14} />
+                        {formatDate(activeVideo.publishedAt)}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Youtube size={14} />
+                        YouTube Official
+                      </span>
+                    </div>
+                    {activeVideo.description && (
+                      <p className="text-secondary leading-relaxed">{activeVideo.description}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                <h4 className="text-xs font-bold uppercase tracking-[0.3em] text-muted mb-4 sticky top-0 bg-tertiary py-2 z-10">More Songs</h4>
+                {videos.map((video) => (
+                  <button
+                    key={video.id}
+                    onClick={() => {
+                      setActiveVideo(video);
+                      window.scrollTo({ top: 400, behavior: 'smooth' });
+                    }}
+                    className={`w-full flex gap-4 p-3 rounded-sm transition-all text-left border ${
+                      activeVideo?.id === video.id 
+                      ? 'bg-background border-brand-orange shadow-md scale-[1.02]' 
+                      : 'bg-background/50 border-transparent hover:bg-background hover:border-light'
+                    }`}
+                  >
+                    <div className="w-32 aspect-video bg-zinc-200 rounded-sm overflow-hidden flex-shrink-0 relative">
+                      <img 
+                        src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                        <Play size={16} className="text-white fill-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h5 className="font-bold text-sm line-clamp-2 leading-tight">{video.title}</h5>
+                      <p className="text-[10px] text-muted mt-2 font-bold uppercase tracking-wider">
+                        {formatDate(video.publishedAt)}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="p-20 text-center border-2 border-dashed border-light rounded-sm">
+              <Music className="mx-auto text-muted mb-4" size={48} />
+              <p className="text-secondary font-medium italic">No performances added yet. Check back soon!</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -71,6 +207,18 @@ const MusicClient = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-brand-black text-white py-24">
+        <div className="section-container text-center">
+          <h2 className="text-4xl font-black mb-8 uppercase tracking-tighter">Collaborate with the Voice</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-lg">
+            Looking for a soulful cover, a live performance, or a vocal collaboration? Let&apos;s create something beautiful together.
+          </p>
+          <a href="/contact" className="inline-block bg-brand-orange hover:bg-orange-600 text-white font-black py-4 px-10 rounded-sm uppercase tracking-widest transition-colors">
+            Contact for Collaboration
+          </a>
         </div>
       </section>
     </div>

@@ -7,8 +7,10 @@ import type { BlogReply, BlogSummary } from '@/types/blog';
 import { 
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
-  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X
+  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
+  Youtube, PlayCircle
 } from 'lucide-react';
+import type { MusicVideo } from '@/types/music';
 
 interface DashboardStats {
   totalPosts: number;
@@ -18,6 +20,7 @@ interface DashboardStats {
   totalBlogViews: number;
   totalPageViews: number;
   totalSubscribers: number;
+  totalVideos: number;
 }
 
 interface SystemStatus {
@@ -42,6 +45,7 @@ interface DashboardOverview {
   system: SystemStatus;
   posts: BlogSummary[];
   comments: AdminComment[];
+  videos: MusicVideo[];
 }
 
 interface PostFormState {
@@ -65,6 +69,18 @@ const initialPostForm: PostFormState = {
   tags: '',
   content: '',
   commentsEnabled: true,
+};
+
+interface VideoFormState {
+  title: string;
+  videoUrl: string;
+  description: string;
+}
+
+const initialVideoForm: VideoFormState = {
+  title: '',
+  videoUrl: '',
+  description: '',
 };
 
 function formatDate(value: string): string {
@@ -94,6 +110,10 @@ export default function AdminDashboardPage() {
   const [actionMessage, setActionMessage] = useState('');
   const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(null);
+
+  const [videoForm, setVideoForm] = useState<VideoFormState>(initialVideoForm);
+  const [submittingVideo, setSubmittingVideo] = useState(false);
+  const [isVideoFormOpen, setIsVideoFormOpen] = useState(false);
 
   const loadOverview = useCallback(async () => {
     setError('');
@@ -168,6 +188,63 @@ export default function AdminDashboardPage() {
       setActionMessage(`Unable to ${isEditing ? 'update' : 'create'} post.`);
       setSubmittingPost(false);
     }
+  };
+
+  const handleVideoSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (submittingVideo) {
+      return;
+    }
+
+    setSubmittingVideo(true);
+    setActionMessage('');
+
+    try {
+      const response = await fetch('/api/admin/music-videos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(videoForm),
+      });
+      const payload = await response.json() as { error?: string };
+
+      if (!response.ok) {
+        setActionMessage(payload.error || 'Unable to add video.');
+        setSubmittingVideo(false);
+        return;
+      }
+
+      setVideoForm(initialVideoForm);
+      setIsVideoFormOpen(false);
+      setActionMessage('Video added successfully.');
+      setSubmittingVideo(false);
+      await loadOverview();
+    } catch (err) {
+      console.error(err);
+      setActionMessage('Unable to add video.');
+      setSubmittingVideo(false);
+    }
+  };
+
+  const deleteVideo = async (videoId: number) => {
+    const shouldDelete = window.confirm('Delete this video?');
+    if (!shouldDelete) {
+      return;
+    }
+
+    const response = await fetch(`/api/admin/music-videos/${videoId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const payload = await response.json() as { error?: string };
+      setActionMessage(payload.error || 'Unable to delete video.');
+      return;
+    }
+
+    setActionMessage('Video deleted.');
+    await loadOverview();
   };
 
   const startEditPost = async (postId: number) => {
@@ -458,6 +535,16 @@ export default function AdminDashboardPage() {
             <Eye size={24} />
           </div>
         </div>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted font-bold">Music Videos</p>
+            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalVideos}</p>
+          </div>
+          <div className="p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
+            <Youtube size={24} />
+          </div>
+        </div>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-6 mb-12">
@@ -669,6 +756,109 @@ export default function AdminDashboardPage() {
           ))}
           {overview.posts.length === 0 && (
             <p className="text-muted">No posts available.</p>
+          )}
+        </div>
+      </div>
+
+      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Youtube className="text-red-500" />
+            <h2 className="text-2xl font-black">Add Music Video</h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsVideoFormOpen(!isVideoFormOpen)}
+            className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+          >
+            {isVideoFormOpen ? 'Hide' : 'Add Video'}
+          </button>
+        </div>
+        {isVideoFormOpen && (
+        <form onSubmit={handleVideoSubmit} className="mt-6 space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Song Title"
+              required
+              value={videoForm.title}
+              onChange={(event) => setVideoForm((prev) => ({ ...prev, title: event.target.value }))}
+              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+            />
+            <input
+              type="text"
+              placeholder="YouTube URL"
+              required
+              value={videoForm.videoUrl}
+              onChange={(event) => setVideoForm((prev) => ({ ...prev, videoUrl: event.target.value }))}
+              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+            />
+          </div>
+          <textarea
+            rows={3}
+            placeholder="Description (optional)"
+            value={videoForm.description}
+            onChange={(event) => setVideoForm((prev) => ({ ...prev, description: event.target.value }))}
+            className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+          />
+          <button
+            type="submit"
+            disabled={submittingVideo}
+            className="bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm flex items-center gap-2"
+          >
+            <PlusCircle size={18} />
+            {submittingVideo ? 'Adding...' : 'Add Video'}
+          </button>
+        </form>
+        )}
+      </div>
+
+      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <PlayCircle className="text-brand-orange" />
+          <h2 className="text-2xl font-black">Manage Music Videos</h2>
+        </div>
+        <div className="mt-6 space-y-4">
+          {overview.videos.map((video) => (
+            <div key={video.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-4 flex-1 min-w-[200px]">
+                  <div className="w-24 aspect-video bg-zinc-100 rounded-sm overflow-hidden flex-shrink-0 relative group">
+                    <img 
+                      src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Youtube size={20} className="text-white" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold">{video.title}</h3>
+                    <p className="text-xs text-muted font-medium mt-0.5">ID: {video.youtubeId} • Added {formatDate(video.publishedAt)}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <a 
+                    href={`https://youtube.com/watch?v=${video.youtubeId}`} 
+                    target="_blank" 
+                    className="p-2 border border-light hover:border-brand-orange hover:text-brand-orange rounded-sm transition-colors"
+                  >
+                    <Globe size={18} />
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => deleteVideo(video.id)}
+                    className="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          {overview.videos.length === 0 && (
+            <p className="text-muted">No music videos added yet.</p>
           )}
         </div>
       </div>
