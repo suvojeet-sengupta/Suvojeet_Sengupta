@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { jsPDF } from 'jspdf';
 import { experiences, summary } from '@/data/resumeData';
 
 const DownloadIcon = () => (
@@ -37,11 +36,13 @@ const ResumeHub = () => {
         setExpandedId(expandedId === id ? null : id);
     };
 
-    const handleDownload = () => {
+    const handleDownload = async () => {
         setDownloading(true);
 
-        const doc = new jsPDF();
-        const pageWidth = doc.internal.pageSize.getWidth();
+        try {
+            const { jsPDF } = await import('jspdf');
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
         const margin = 18;
         const contentWidth = pageWidth - margin * 2;
         let y = 18;
@@ -235,7 +236,12 @@ const ResumeHub = () => {
         doc.text('Last Updated: April 2026', pageWidth / 2, y, { align: 'center' });
 
         doc.save('Suvojeet_Sengupta_Resume.pdf');
-        setDownloading(false);
+        } catch (error) {
+            console.error('Failed to generate PDF:', error);
+            alert('Could not generate PDF. Please try again later.');
+        } finally {
+            setDownloading(false);
+        }
     };
 
     return (
