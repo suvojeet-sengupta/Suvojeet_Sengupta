@@ -6,14 +6,14 @@ export const runtime = 'edge';
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authenticated = await isAdminRequestAuthenticated(request);
   if (!authenticated) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = params.id;
+  const { id } = await params;
   const db = getDb();
 
   await db.prepare('DELETE FROM music_videos WHERE id = ?').bind(id).run();
