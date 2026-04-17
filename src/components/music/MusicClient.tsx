@@ -33,6 +33,15 @@ const MusicClient = () => {
     fetchVideos();
   }, []);
 
+  const handleVideoPlay = async (video: MusicVideo) => {
+    setActiveVideo(video);
+    try {
+      await fetch(`/api/public/music-videos/${video.id}/play`, { method: 'POST' });
+    } catch (err) {
+      console.error('Failed to track play:', err);
+    }
+  };
+
   return (
     <div className="pt-32 pb-16">
       <section className="section-container !pb-0">
@@ -142,7 +151,7 @@ const MusicClient = () => {
                   <button
                     key={video.id}
                     onClick={() => {
-                      setActiveVideo(video);
+                      handleVideoPlay(video);
                       window.scrollTo({ top: 400, behavior: 'smooth' });
                     }}
                     className={`w-full flex gap-4 p-3 rounded-sm transition-all text-left border ${

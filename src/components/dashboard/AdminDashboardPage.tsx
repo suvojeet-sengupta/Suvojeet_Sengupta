@@ -8,7 +8,7 @@ import {
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
   LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play
+  Play, ChevronDown, Filter
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
@@ -98,6 +98,9 @@ export default function AdminDashboardPage() {
   const [actionMessage, setActionMessage] = useState('');
   const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(null);
+
+  const [selectedPostForComments, setSelectedPostForComments] = useState<number | 'all'>('all');
+  const [commentSortOrder, setCommentSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   const [videoForm, setVideoForm] = useState<VideoFormState>(initialVideoForm);
   const [submittingVideo, setSubmittingVideo] = useState(false);
@@ -823,7 +826,12 @@ export default function AdminDashboardPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold">{video.title}</h3>
-                    <p className="text-xs text-muted font-medium mt-0.5">ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
+                    <p className="text-xs text-muted font-medium mt-0.5">
+                      ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                    </p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-brand-orange mt-1 bg-brand-orange/5 inline-block px-2 py-0.5 rounded-full">
+                      {video.plays || 0} plays recorded
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -852,13 +860,50 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary">
-        <div className="flex items-center gap-3 mb-6">
-          <MessageSquare className="text-brand-orange" />
-          <h2 className="text-2xl font-black">Comments Moderation</h2>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <MessageSquare className="text-brand-orange" />
+            <h2 className="text-2xl font-black">Comments Moderation</h2>
+          </div>
+          
+          <div className="flex flex-wrap gap-3">
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-1.5">
+              <Filter size={14} className="text-muted" />
+              <select 
+                value={selectedPostForComments} 
+                onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                className="bg-transparent text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
+              >
+                <option value="all">All Posts</option>
+                {overview.posts.map(post => (
+                  <option key={post.id} value={post.id}>{post.title}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-1.5">
+              <select 
+                value={commentSortOrder} 
+                onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
+                className="bg-transparent text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </div>
+          </div>
         </div>
+
         <div className="mt-6 space-y-5">
-          {overview.comments.map((comment) => (
-            <div key={comment.id} className="border border-light rounded-sm p-5 bg-background">
+          {overview.comments
+            .filter(c => selectedPostForComments === 'all' || c.blogId === selectedPostForComments)
+            .sort((a, b) => {
+              const timeA = new Date(a.createdAt).getTime();
+              const timeB = new Date(b.createdAt).getTime();
+              return commentSortOrder === 'newest' ? timeB - timeA : timeA - timeB;
+            })
+            .map((comment) => (
+            <div key={comment.id} className="border border-light rounded-sm p-5 bg-background shadow-sm hover:shadow-md transition-shadow">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-wider text-muted font-bold">
@@ -949,6 +994,18 @@ export default function AdminDashboardPage() {
           ))}
           {overview.comments.length === 0 && (
             <p className="text-muted">No comments yet.</p>
+          )}
+
+          {overview.comments.length > 0 && overview.comments.filter(c => selectedPostForComments === 'all' || c.blogId === selectedPostForComments).length === 0 && (
+            <div className="text-center py-10 bg-background rounded-sm border border-dashed border-light">
+              <p className="text-muted font-medium italic">No comments found for this specific post.</p>
+              <button 
+                onClick={() => setSelectedPostForComments('all')}
+                className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
+              >
+                Show all comments
+              </button>
+            </div>
           )}
         </div>
       </div>

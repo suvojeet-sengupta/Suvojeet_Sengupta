@@ -45,10 +45,18 @@ export async function GET(request: Request) {
           title TEXT NOT NULL,
           youtube_id TEXT NOT NULL,
           description TEXT,
-          published_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          plays INTEGER DEFAULT 0
         )
       `)
     ]);
+    
+    // Attempt to add column separately to avoid breaking batch if it exists
+    try {
+      await db.prepare('ALTER TABLE music_videos ADD COLUMN plays INTEGER DEFAULT 0').run();
+    } catch (colError) {
+      // Column probably exists, safe to ignore
+    }
   } catch (e) {
     console.error('Migration error:', e);
   }
@@ -88,7 +96,8 @@ export async function GET(request: Request) {
     title: String(row.title || ''),
     youtubeId: String(row.youtube_id || ''),
     description: typeof row.description === 'string' ? row.description : null,
-    publishedAt: String(row.published_at || '')
+    publishedAt: String(row.published_at || ''),
+    plays: Number(row.plays || 0)
   }));
 
   const postsResult = await db

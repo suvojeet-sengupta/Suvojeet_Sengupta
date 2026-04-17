@@ -4,4 +4,5 @@ export interface MusicVideo {
   youtubeId: string;
   description: string | null;
   publishedAt: string;
+  plays: number;
 }
