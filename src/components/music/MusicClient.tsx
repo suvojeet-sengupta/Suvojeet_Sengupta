@@ -34,9 +34,9 @@ const MusicClient = () => {
   }, []);
 
   return (
-    <div className="pt-32 pb-20">
-      <section className="section-container">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+    <div className="pt-32 pb-16">
+      <section className="section-container !pb-0">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -93,11 +93,11 @@ const MusicClient = () => {
       </section>
 
       {/* Featured Video Section */}
-      <section className="bg-tertiary py-20 mt-10">
-        <div className="section-container">
-          <div className="flex items-center gap-3 mb-10">
+      <section className="bg-tertiary py-16 mt-8">
+        <div className="section-container !py-0">
+          <div className="flex items-center gap-3 mb-8">
             <Music className="text-brand-orange" size={32} />
-            <h2 className="text-4xl font-black uppercase tracking-tight">Featured Performances</h2>
+            <h2 className="text-3xl font-black uppercase tracking-tight">Featured Performances</h2>
           </div>
 
           {loading ? (
@@ -181,14 +181,14 @@ const MusicClient = () => {
       </section>
 
       {/* Philosophy Section */}
-      <section className="section-container py-24">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+      <section className="section-container py-16">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="profile-frame">
             <div className="aspect-square bg-tertiary flex items-center justify-center text-6xl">🎙️</div>
           </div>
           <div>
-            <h2 className="text-4xl font-bold mb-6">Organic Practice</h2>
-            <p className="text-lg text-secondary mb-8">
+            <h2 className="text-3xl font-bold mb-6">Organic Practice</h2>
+            <p className="text-lg text-secondary mb-6">
               I don&apos;t play instruments—I believe the human voice is the most powerful instrument of all. My practice is constant; I&apos;m always humming, always singing. Even when I&apos;m not in a studio, my voice is in training.
             </p>
             <div className="space-y-4">
@@ -205,10 +205,10 @@ const MusicClient = () => {
         </div>
       </section>
 
-      <section className="bg-brand-black text-white py-24">
-        <div className="section-container text-center">
-          <h2 className="text-4xl font-black mb-8 uppercase tracking-tighter">Collaborate with the Voice</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto mb-12 text-lg">
+      <section className="bg-brand-black text-white py-16">
+        <div className="section-container !py-0 text-center">
+          <h2 className="text-3xl font-black mb-6 uppercase tracking-tighter">Collaborate with the Voice</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto mb-10 text-lg">
             Looking for a soulful cover, a live performance, or a vocal collaboration? Let&apos;s create something beautiful together.
           </p>
           <a href="/contact" className="inline-block bg-brand-orange hover:bg-orange-600 text-white font-black py-4 px-10 rounded-sm uppercase tracking-widest transition-colors">
