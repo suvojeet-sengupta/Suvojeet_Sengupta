@@ -554,7 +554,10 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <button 
+          onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+        >
           <div>
             <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
               <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
@@ -569,7 +572,7 @@ export default function AdminDashboardPage() {
           <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform">
             <MessageSquare size={20} className="md:w-6 md:h-6" />
           </div>
-        </div>
+        </button>
 
         <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
@@ -591,7 +594,10 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <button 
+          onClick={() => document.getElementById('inbox-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+        >
           <div>
             <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
               <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Inbox</p>
@@ -606,7 +612,7 @@ export default function AdminDashboardPage() {
           <div className="p-3 md:p-4 bg-orange-500/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
             <Inbox size={20} className="md:w-6 md:h-6" />
           </div>
-        </div>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
@@ -929,7 +935,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
+      <div id="comments-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
             <MessageSquare className="text-brand-orange" />
@@ -1080,7 +1086,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mt-12">
+      <div id="inbox-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mt-12">
         <div className="flex items-center gap-3 mb-8">
           <Mail className="text-brand-orange" />
           <h2 className="text-xl md:text-2xl font-black">Inquiries Inbox</h2>
