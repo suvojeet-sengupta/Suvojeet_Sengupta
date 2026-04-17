@@ -36,15 +36,17 @@ const useContactForm = () => {
         dispatch({ type: 'SUBMIT' });
 
         try {
-            const response = await fetch(config.formSubmitUrl, {
+            const response = await fetch('/api/public/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    ...data,
-                    _captcha: 'false'
+                    name: data.name,
+                    email: data.email,
+                    subject: data._subject,
+                    type: data.inquiryType,
+                    message: data.message
                 })
             });
 
@@ -53,10 +55,7 @@ const useContactForm = () => {
                 return true;
             } else {
                 const responseData = await response.json();
-                const errorMessage = responseData.errors
-                    ? responseData.errors.map((error: any) => error.message).join(", ")
-                    : 'Oops! There was a problem submitting your form';
-                dispatch({ type: 'ERROR', payload: errorMessage });
+                dispatch({ type: 'ERROR', payload: responseData.error || 'Oops! There was a problem submitting your form' });
                 return false;
             }
         } catch (error) {

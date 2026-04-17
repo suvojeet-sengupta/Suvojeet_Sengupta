@@ -8,7 +8,7 @@ import {
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
   LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play, ChevronDown, Filter
+  Play, ChevronDown, Filter, Mail, Inbox
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
@@ -23,11 +23,24 @@ interface DashboardStats {
   totalPageViews: number;
   totalSubscribers: number;
   totalVideos: number;
+  totalMessages: number;
+  unreadMessages: number;
 }
 
 interface SystemStatus {
   isOnline: boolean;
   databaseSizeKb: number;
+}
+
+interface AdminMessage {
+  id: number;
+  name: string;
+  email: string;
+  subject: string | null;
+  type: string | null;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
 }
 
 interface AdminComment {
@@ -48,6 +61,7 @@ interface DashboardOverview {
   posts: BlogSummary[];
   comments: AdminComment[];
   videos: MusicVideo[];
+  messages: AdminMessage[];
 }
 
 interface PostFormState {
@@ -377,6 +391,46 @@ export default function AdminDashboardPage() {
     await loadOverview();
   };
 
+  const toggleMessageRead = async (message: AdminMessage) => {
+    const response = await fetch(`/api/admin/messages/${message.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        isRead: !message.isRead,
+      }),
+    });
+
+    if (!response.ok) {
+      const payload = await response.json() as { error?: string };
+      setActionMessage(payload.error || 'Unable to update message.');
+      return;
+    }
+
+    await loadOverview();
+  };
+
+  const deleteMessage = async (messageId: number) => {
+    const shouldDelete = window.confirm('Delete this message?');
+    if (!shouldDelete) {
+      return;
+    }
+
+    const response = await fetch(`/api/admin/messages/${messageId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const payload = await response.json() as { error?: string };
+      setActionMessage(payload.error || 'Unable to delete message.');
+      return;
+    }
+
+    setActionMessage('Message deleted.');
+    await loadOverview();
+  };
+
   const submitOwnerReply = async (commentId: number) => {
     const draft = (replyDrafts[commentId] || '').trim();
     if (!draft || replyingToCommentId) {
@@ -534,6 +588,23 @@ export default function AdminDashboardPage() {
           </div>
           <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
             <Icons.YouTube className="w-5 h-5 md:w-6 md:h-6" />
+          </div>
+        </div>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+          <div>
+            <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
+              <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Inbox</p>
+              {overview.stats.unreadMessages > 0 && (
+                <span className="text-[9px] md:text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
+                  {overview.stats.unreadMessages} NEW
+                </span>
+              )}
+            </div>
+            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalMessages}</p>
+          </div>
+          <div className="p-3 md:p-4 bg-orange-500/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
+            <Inbox size={20} className="md:w-6 md:h-6" />
           </div>
         </div>
       </div>
@@ -1004,6 +1075,94 @@ export default function AdminDashboardPage() {
               >
                 Show all comments
               </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mt-12">
+        <div className="flex items-center gap-3 mb-8">
+          <Mail className="text-brand-orange" />
+          <h2 className="text-xl md:text-2xl font-black">Inquiries Inbox</h2>
+        </div>
+
+        <div className="space-y-4">
+          {overview.messages.map((msg) => (
+            <div 
+              key={msg.id} 
+              className={`border rounded-sm p-4 md:p-6 transition-all ${
+                msg.isRead 
+                ? 'bg-background border-light opacity-80' 
+                : 'bg-white border-brand-orange shadow-md border-l-4'
+              }`}
+            >
+              <div className="flex flex-col md:flex-row justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
+                      msg.type === 'SONG' ? 'bg-pink-100 text-pink-700' :
+                      msg.type === 'PROJECT' ? 'bg-blue-100 text-blue-700' :
+                      msg.type === 'ROM' ? 'bg-purple-100 text-purple-700' :
+                      'bg-zinc-100 text-zinc-700'
+                    }`}>
+                      {msg.type || 'General'}
+                    </span>
+                    {!msg.isRead && (
+                      <span className="text-[9px] font-black bg-brand-orange text-white px-2 py-0.5 rounded-full uppercase">New</span>
+                    )}
+                    <span className="text-[10px] text-muted font-bold">
+                      <FormattedDate date={msg.createdAt} options={{ day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }} />
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-lg">{msg.subject || 'No Subject'}</h3>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                    <p className="text-xs font-bold text-brand-orange">{msg.name}</p>
+                    <p className="text-xs text-secondary">{msg.email}</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-2 w-full md:w-auto">
+                  <button
+                    onClick={() => toggleMessageRead(msg)}
+                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest border transition-colors ${
+                      msg.isRead 
+                      ? 'border-light hover:border-brand-orange text-secondary' 
+                      : 'bg-brand-orange border-brand-orange text-white'
+                    }`}
+                  >
+                    {msg.isRead ? 'Mark Unread' : 'Mark Read'}
+                  </button>
+                  <button
+                    onClick={() => deleteMessage(msg.id)}
+                    className="flex-1 md:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-zinc-50 rounded-sm border border-light/40">
+                <p className="text-sm md:text-base whitespace-pre-wrap leading-relaxed italic text-secondary">
+                  &quot;{msg.message}&quot;
+                </p>
+              </div>
+              
+              <div className="mt-4">
+                <a 
+                  href={`mailto:${msg.email}?subject=Re: ${msg.subject || 'Your inquiry'}`}
+                  className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-orange hover:underline"
+                >
+                  <Reply size={14} />
+                  Reply via Email
+                </a>
+              </div>
+            </div>
+          ))}
+          
+          {overview.messages.length === 0 && (
+            <div className="text-center py-12 border border-dashed border-light rounded-sm">
+              <Mail className="mx-auto text-muted mb-3" size={32} />
+              <p className="text-muted font-medium italic">Your inbox is empty.</p>
             </div>
           )}
         </div>

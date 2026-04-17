@@ -48,6 +48,30 @@ export async function GET(request: Request) {
           published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
           plays INTEGER DEFAULT 0
         )
+      `),
+      db.prepare(`
+        CREATE TABLE IF NOT EXISTS messages (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          email TEXT NOT NULL,
+          subject TEXT,
+          type TEXT,
+          message TEXT NOT NULL,
+          is_read INTEGER DEFAULT 0,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `),
+      db.prepare(`
+        CREATE TABLE IF NOT EXISTS messages (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          email TEXT NOT NULL,
+          subject TEXT,
+          type TEXT,
+          message TEXT NOT NULL,
+          is_read INTEGER DEFAULT 0,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
       `)
     ]);
     
@@ -83,7 +107,9 @@ export async function GET(request: Request) {
         (SELECT COALESCE(SUM(views), 0) FROM blogs) AS total_blog_views,
         (SELECT COUNT(*) FROM page_views) AS total_page_views,
         (SELECT COUNT(*) FROM push_subscriptions) AS total_subscribers,
-        (SELECT COUNT(*) FROM music_videos) AS total_videos
+        (SELECT COUNT(*) FROM music_videos) AS total_videos,
+        (SELECT COUNT(*) FROM messages) AS total_messages,
+        (SELECT COUNT(*) FROM messages WHERE is_read = 0) AS unread_messages
     `)
     .first<Record<string, unknown>>();
 
@@ -180,6 +206,21 @@ export async function GET(request: Request) {
     }
   }
 
+  const messagesResult = await db
+    .prepare('SELECT * FROM messages ORDER BY datetime(created_at) DESC LIMIT 50')
+    .all<Record<string, unknown>>();
+
+  const messages = messagesResult.results.map(row => ({
+    id: Number(row.id || 0),
+    name: String(row.name || ''),
+    email: String(row.email || ''),
+    subject: typeof row.subject === 'string' ? row.subject : null,
+    type: typeof row.type === 'string' ? row.type : null,
+    message: String(row.message || ''),
+    isRead: toBoolean(row.is_read),
+    createdAt: String(row.created_at || '')
+  }));
+
   const comments: AdminCommentRow[] = commentsResult.results.map((row) => {
     const commentId = Number(row.id || 0);
     return {
@@ -207,6 +248,8 @@ export async function GET(request: Request) {
       totalPageViews: Number(statsRow?.total_page_views || 0),
       totalSubscribers: Number(statsRow?.total_subscribers || 0),
       totalVideos: Number(statsRow?.total_videos || 0),
+      totalMessages: Number(statsRow?.total_messages || 0),
+      unreadMessages: Number(statsRow?.unread_messages || 0),
     },
     system: {
       isOnline: true,
@@ -215,5 +258,6 @@ export async function GET(request: Request) {
     posts,
     comments,
     videos,
+    messages,
   });
 }
