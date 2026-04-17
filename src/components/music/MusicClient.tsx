@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Music, Play, ExternalLink, Calendar } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
+import { FormattedDate } from '@/components/common/FormattedDate';
 
 const MusicClient = () => {
   const [videos, setVideos] = useState<MusicVideo[]>([]);
@@ -31,13 +32,6 @@ const MusicClient = () => {
 
     fetchVideos();
   }, []);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      month: 'long',
-      year: 'numeric'
-    });
-  };
 
   return (
     <div className="pt-32 pb-20">
@@ -128,7 +122,7 @@ const MusicClient = () => {
                     <div className="flex items-center gap-4 text-muted text-sm font-bold uppercase tracking-wider mb-4">
                       <span className="flex items-center gap-1.5">
                         <Calendar size={14} />
-                        {formatDate(activeVideo.publishedAt)}
+                        <FormattedDate date={activeVideo.publishedAt} options={{ month: 'long', year: 'numeric' }} />
                       </span>
                       <span className="flex items-center gap-1.5">
                         <Icons.YouTube className="w-4 h-4" />
@@ -170,7 +164,7 @@ const MusicClient = () => {
                     <div className="flex-1 min-w-0">
                       <h5 className="font-bold text-sm line-clamp-2 leading-tight">{video.title}</h5>
                       <p className="text-[10px] text-muted mt-2 font-bold uppercase tracking-wider">
-                        {formatDate(video.publishedAt)}
+                        <FormattedDate date={video.publishedAt} options={{ month: 'long', year: 'numeric' }} />
                       </p>
                     </div>
                   </button>

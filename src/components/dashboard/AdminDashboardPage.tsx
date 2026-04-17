@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
+import { FormattedDate } from '@/components/common/FormattedDate';
 
 interface DashboardStats {
   totalPosts: number;
@@ -83,20 +84,6 @@ const initialVideoForm: VideoFormState = {
   videoUrl: '',
   description: '',
 };
-
-function formatDate(value: string): string {
-  if (!value) {
-    return '—';
-  }
-
-  return new Date(value).toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -836,7 +823,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold">{video.title}</h3>
-                    <p className="text-xs text-muted font-medium mt-0.5">ID: {video.youtubeId} • Added {formatDate(video.publishedAt)}</p>
+                    <p className="text-xs text-muted font-medium mt-0.5">ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -881,7 +868,7 @@ export default function AdminDashboardPage() {
                   {comment.email && (
                     <p className="text-sm text-secondary">{comment.email}</p>
                   )}
-                  <p className="text-sm text-muted mt-1">{formatDate(comment.createdAt)}</p>
+                  <p className="text-sm text-muted mt-1"><FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
@@ -920,7 +907,7 @@ export default function AdminDashboardPage() {
                           )}
                         </p>
                         <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
-                        <p className="text-xs text-muted mt-2">{formatDate(reply.createdAt)}</p>
+                        <p className="text-xs text-muted mt-2"><FormattedDate date={reply.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
                       </div>
 
                       <button
