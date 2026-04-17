@@ -448,32 +448,32 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <section className="section-container pt-32 pb-24">
-      <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
+    <section className="section-container pt-24 md:pt-32 pb-24">
+      <div className="flex flex-col md:flex-row items-start justify-between gap-6 mb-10">
         <div className="flex items-center gap-4">
           <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-full">
-            <LayoutDashboard size={32} />
+            <LayoutDashboard size={28} className="md:w-8 md:h-8" />
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted mb-1">Admin Control Center</p>
-            <h1 className="text-4xl font-black">Dashboard</h1>
+            <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-muted mb-1">Admin Control Center</p>
+            <h1 className="text-3xl md:text-4xl font-black">Dashboard</h1>
           </div>
         </div>
 
-        <div className="flex gap-3 items-center">
+        <div className="flex flex-row w-full md:w-auto gap-2 md:gap-3 items-center">
           <Link
             href="/blog"
-            className="flex items-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
           >
-            <Globe size={16} />
+            <Globe size={14} className="md:w-4 md:h-4" />
             View Live
           </Link>
           <button
             type="button"
             onClick={logout}
-            className="flex items-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
           >
-            <PowerOff size={16} />
+            <PowerOff size={14} className="md:w-4 md:h-4" />
             Logout
           </button>
         </div>
@@ -489,76 +489,75 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
+        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted font-bold">Total Posts</p>
-            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalPosts}</p>
+            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Posts</p>
+            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalPosts}</p>
           </div>
-          <div className="p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
-            <Edit3 size={24} />
+          <div className="p-3 md:p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
+            <Edit3 size={20} className="md:w-6 md:h-6" />
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
-            <div className="flex items-center gap-2">
-              <p className="text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
+            <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
+              <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
               {overview.stats.pendingComments > 0 && (
-                <span className="text-[10px] bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">
-                  {overview.stats.pendingComments} pending
+                <span className="text-[9px] md:text-[10px] bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">
+                  {overview.stats.pendingComments}
                 </span>
               )}
             </div>
-            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalComments}</p>
+            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalComments}</p>
           </div>
-          <div className="p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform">
-            <MessageSquare size={24} />
-          </div>
-        </div>
-
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted font-bold">Post Views</p>
-            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalBlogViews}</p>
-          </div>
-          <div className="p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform">
-            <Eye size={24} />
+          <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform">
+            <MessageSquare size={20} className="md:w-6 md:h-6" />
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary flex items-center justify-between group hover:border-brand-orange/40 transition-colors">
+        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted font-bold">Music Videos</p>
-            <p className="text-4xl font-black mt-2 text-primary">{overview.stats.totalVideos}</p>
+            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Views</p>
+            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalBlogViews}</p>
           </div>
-          <div className="p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
-            <Icons.YouTube className="w-6 h-6" />
+          <div className="p-3 md:p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform">
+            <Eye size={20} className="md:w-6 md:h-6" />
+          </div>
+        </div>
+
+        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+          <div>
+            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Videos</p>
+            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalVideos}</p>
+          </div>
+          <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
+            <Icons.YouTube className="w-5 h-5 md:w-6 md:h-6" />
           </div>
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
+        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-6 bg-tertiary">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+            <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
               <ShieldCheck size={16} className="text-brand-orange" />
-              System Status
+              System
             </h3>
             {overview.system.isOnline ? (
-              <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2.5 py-1 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2 py-0.5 md:py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                 Online
               </span>
             ) : (
-              <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 px-2.5 py-1 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50 px-2 py-0.5 md:py-1 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
                 Offline
               </span>
             )}
           </div>
-          <p className="text-2xl font-black">{overview.system.databaseSizeKb} KB <span className="text-sm text-secondary font-medium">Used Space (D1)</span></p>
-          <p className="text-sm text-secondary mt-2">Maximum allowed capacity: 500 MB</p>
+          <p className="text-xl md:text-2xl font-black">{overview.system.databaseSizeKb} KB <span className="text-xs md:text-sm text-secondary font-medium">Used Space</span></p>
           <div className="w-full bg-light h-1.5 rounded-full mt-4 overflow-hidden">
             <div 
               className="bg-brand-orange h-full rounded-full transition-all" 
@@ -567,38 +566,38 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-6 bg-tertiary">
+        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-6 bg-tertiary">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
+            <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
               <Globe size={16} className="text-blue-500" />
               Audience
             </h3>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-6 md:gap-8">
             <div>
-              <p className="text-4xl font-black">{overview.stats.totalSubscribers}</p>
-              <p className="text-sm text-secondary font-medium mt-1">Push Subscribers</p>
+              <p className="text-2xl md:text-4xl font-black">{overview.stats.totalSubscribers}</p>
+              <p className="text-[10px] md:text-sm text-secondary font-medium mt-1 uppercase tracking-tighter md:tracking-normal">Push Subs</p>
             </div>
             <div>
-              <p className="text-4xl font-black">{overview.stats.totalPageViews}</p>
-              <p className="text-sm text-secondary font-medium mt-1">Unique Tracked IPs</p>
+              <p className="text-2xl md:text-4xl font-black">{overview.stats.totalPageViews}</p>
+              <p className="text-[10px] md:text-sm text-secondary font-medium mt-1 uppercase tracking-tighter md:tracking-normal">Visitors</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
-        <div className="flex items-center justify-between mb-6">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <PlusCircle className="text-brand-orange" />
-            <h2 className="text-2xl font-black">{isEditing ? 'Edit Post' : 'Publish New Post'}</h2>
+            <h2 className="text-xl md:text-2xl font-black">{isEditing ? 'Edit Post' : 'New Post'}</h2>
           </div>
           <div className="flex gap-2">
               {isEditing && (
                   <button
                   type="button"
                   onClick={cancelEdit}
-                  className="bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+                  className="flex-1 sm:flex-none bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
                 >
                   Cancel
                 </button>
@@ -606,9 +605,9 @@ export default function AdminDashboardPage() {
               <button
                 type="button"
                 onClick={() => setIsFormOpen(!isFormOpen)}
-                className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+                className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
               >
-                {isFormOpen ? 'Hide' : (isEditing ? 'Open Editor' : 'Create Post')}
+                {isFormOpen ? 'Hide' : (isEditing ? 'Editor' : 'Create')}
               </button>
           </div>
         </div>
@@ -702,43 +701,43 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center gap-3 mb-6">
           <FileText className="text-brand-orange" />
-          <h2 className="text-2xl font-black">Manage Posts</h2>
+          <h2 className="text-xl md:text-2xl font-black">Manage Posts</h2>
         </div>
         <div className="mt-6 space-y-4">
           {overview.posts.map((post) => (
             <div key={post.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div className="flex-1 min-w-[200px]">
-                  <h3 className="text-xl font-black">{post.title}</h3>
-                  <p className="text-sm text-secondary mt-1">
+              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h3 className="text-lg md:text-xl font-black">{post.title}</h3>
+                  <p className="text-xs md:text-sm text-secondary mt-1">
                     /blog/{post.slug} • {post.views} views • {post.commentsCount} comments
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap w-full md:w-auto gap-2">
                   <button
                     type="button"
                     onClick={() => startEditPost(post.id)}
-                    className="flex items-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <Edit3 size={14} />
+                    <Edit3 size={12} className="md:w-3.5 md:h-3.5" />
                     Edit
                   </button>
                   <button
                     type="button"
                     onClick={() => toggleCommentsStatus(post)}
-                    className="border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 md:flex-none border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    {post.commentsEnabled ? 'Disable Comments' : 'Enable Comments'}
+                    {post.commentsEnabled ? 'Disable' : 'Enable'}
                   </button>
                   <button
                     type="button"
                     onClick={() => deletePost(post.id)}
-                    className="flex items-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
                     Delete
                   </button>
                 </div>
@@ -751,16 +750,16 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
-        <div className="flex items-center justify-between mb-6">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <Icons.YouTube className="text-red-500 w-6 h-6" />
-            <h2 className="text-2xl font-black">Add Music Video</h2>
+            <h2 className="text-xl md:text-2xl font-black">Add Music Video</h2>
           </div>
           <button
             type="button"
             onClick={() => setIsVideoFormOpen(!isVideoFormOpen)}
-            className="border border-light hover:border-brand-orange hover:text-brand-orange px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider transition-colors"
+            className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
           >
             {isVideoFormOpen ? 'Hide' : 'Add Video'}
           </button>
@@ -795,7 +794,7 @@ export default function AdminDashboardPage() {
           <button
             type="submit"
             disabled={submittingVideo}
-            className="bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm flex items-center gap-2"
+            className="w-full sm:w-auto bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-xs md:text-sm flex items-center justify-center gap-2"
           >
             <PlusCircle size={18} />
             {submittingVideo ? 'Adding...' : 'Add Video'}
@@ -804,48 +803,48 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center gap-3 mb-6">
           <Play className="text-brand-orange" size={24} />
-          <h2 className="text-2xl font-black">Manage Music Videos</h2>
+          <h2 className="text-xl md:text-2xl font-black">Manage Music Videos</h2>
         </div>
         <div className="mt-6 space-y-4">
           {overview.videos.map((video) => (
             <div key={video.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-4 flex-1 min-w-[200px]">
-                  <div className="w-24 aspect-video bg-zinc-100 rounded-sm overflow-hidden flex-shrink-0 relative group">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
+                  <div className="w-20 md:w-24 aspect-video bg-zinc-100 rounded-sm overflow-hidden flex-shrink-0 relative group">
                     <img 
                       src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
                       alt={video.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Icons.YouTube className="text-white w-5 h-5" />
+                      <Icons.YouTube className="text-white w-4 h-4 md:w-5 md:h-5" />
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold">{video.title}</h3>
-                    <p className="text-xs text-muted font-medium mt-0.5">
-                      ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm md:text-lg font-bold truncate">{video.title}</h3>
+                    <p className="text-[10px] md:text-xs text-muted font-medium mt-0.5 truncate">
+                      ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric' }} />
                     </p>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-brand-orange mt-1 bg-brand-orange/5 inline-block px-2 py-0.5 rounded-full">
-                      {video.plays || 0} plays recorded
+                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-orange mt-1 bg-brand-orange/5 inline-block px-2 py-0.5 rounded-full">
+                      {video.plays || 0} plays
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full sm:w-auto justify-end">
                   <a 
                     href={`https://youtube.com/watch?v=${video.youtubeId}`} 
                     target="_blank" 
-                    className="p-2 border border-light hover:border-brand-orange hover:text-brand-orange rounded-sm transition-colors"
+                    className="flex-1 sm:flex-none flex items-center justify-center p-2 border border-light hover:border-brand-orange hover:text-brand-orange rounded-sm transition-colors"
                   >
                     <Globe size={18} />
                   </a>
                   <button
                     type="button"
                     onClick={() => deleteVideo(video.id)}
-                    className="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
+                    className="flex-1 sm:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -859,20 +858,20 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-6 md:p-8 bg-tertiary">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
             <MessageSquare className="text-brand-orange" />
-            <h2 className="text-2xl font-black">Comments Moderation</h2>
+            <h2 className="text-xl md:text-2xl font-black">Comments Moderation</h2>
           </div>
           
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-1.5">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
               <Filter size={14} className="text-muted" />
               <select 
                 value={selectedPostForComments} 
                 onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                className="bg-transparent text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
+                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
               >
                 <option value="all">All Posts</option>
                 {overview.posts.map(post => (
@@ -881,11 +880,11 @@ export default function AdminDashboardPage() {
               </select>
             </div>
 
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-1.5">
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
               <select 
                 value={commentSortOrder} 
                 onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
-                className="bg-transparent text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
+                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -903,40 +902,40 @@ export default function AdminDashboardPage() {
               return commentSortOrder === 'newest' ? timeB - timeA : timeA - timeB;
             })
             .map((comment) => (
-            <div key={comment.id} className="border border-light rounded-sm p-5 bg-background shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-muted font-bold">
+            <div key={comment.id} className="border border-light rounded-sm p-4 md:p-5 bg-background shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                <div className="flex-1">
+                  <p className="text-[10px] uppercase tracking-wider text-muted font-bold">
                     {comment.blogTitle}
                   </p>
-                  <h3 className="text-lg font-bold mt-1">{comment.name}</h3>
+                  <h3 className="text-base md:text-lg font-bold mt-1">{comment.name}</h3>
                   {comment.email && (
-                    <p className="text-sm text-secondary">{comment.email}</p>
+                    <p className="text-xs md:text-sm text-secondary truncate max-w-[250px]">{comment.email}</p>
                   )}
-                  <p className="text-sm text-muted mt-1"><FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
+                  <p className="text-xs text-muted mt-1"><FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-row md:flex-wrap w-full md:w-auto gap-2">
                   <button
                     type="button"
                     onClick={() => toggleCommentApproval(comment)}
-                    className="flex items-center gap-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <ShieldCheck size={14} />
+                    <ShieldCheck size={12} className="md:w-3.5 md:h-3.5" />
                     {comment.isApproved ? 'Unapprove' : 'Approve'}
                   </button>
                   <button
                     type="button"
                     onClick={() => deleteComment(comment.id)}
-                    className="flex items-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
                     Delete
                   </button>
                 </div>
               </div>
 
-              <p className="mt-4 whitespace-pre-wrap">{comment.content}</p>
+              <p className="mt-4 whitespace-pre-wrap text-sm md:text-base leading-relaxed">{comment.content}</p>
 
               {comment.replies.length > 0 && (
                 <div className="mt-4 space-y-3">
