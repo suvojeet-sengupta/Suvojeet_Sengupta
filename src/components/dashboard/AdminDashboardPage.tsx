@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -1002,10 +1003,11 @@ export default function AdminDashboardPage() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
                   <div className="w-20 md:w-24 aspect-video bg-zinc-100 rounded-sm overflow-hidden flex-shrink-0 relative group">
-                    <img 
+                    <Image 
                       src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
                       alt={video.title}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <Icons.YouTube className="text-white w-4 h-4 md:w-5 md:h-5" />

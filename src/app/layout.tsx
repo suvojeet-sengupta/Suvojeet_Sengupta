@@ -22,6 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preload" href="/suvojeet.jpg" as="image" />
+      </head>
       <body className={`${inter.variable} antialiased selection:bg-brand-orange selection:text-white`}>
         <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
           <ClientLayout>{children}</ClientLayout>
