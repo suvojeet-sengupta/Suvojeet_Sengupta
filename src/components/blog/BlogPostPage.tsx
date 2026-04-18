@@ -132,7 +132,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                 target="_blank"
                 className="w-10 h-10 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
               >
-                <Icons.LinkedIn className="w-4 h-4" />
+                <Icons.Linkedin className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -176,7 +176,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                     target="_blank"
                     className="w-8 h-8 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
                   >
-                    <Icons.LinkedIn className="w-3.5 h-3.5" />
+                    <Icons.Linkedin className="w-3.5 h-3.5" />
                   </a>
                 </div>
               </div>
