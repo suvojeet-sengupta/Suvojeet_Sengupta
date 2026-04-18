@@ -238,7 +238,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
         {/* Comments Section */}
         <section className="mt-20 pt-16 border-t border-light">
-          <CommentList postSlug={post.slug} initialCommentsCount={post.commentsCount || 0} />
+          <CommentList 
+            initialComments={post.comments} 
+            initialCount={post.commentsCount || 0} 
+            postId={post.id} 
+            commentsEnabled={post.commentsEnabled} 
+          />
         </section>
       </article>
     </div>
