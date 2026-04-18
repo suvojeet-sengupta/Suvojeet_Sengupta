@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401, headers: NO_STORE_HEADERS });
     }
 
-    const token = await createAdminSessionToken();
+    const token = await createAdminSessionToken(email);
     const response = NextResponse.json({ authenticated: true }, { headers: NO_STORE_HEADERS });
     return attachAdminCookie(response, token);
   } catch (error) {

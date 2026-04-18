@@ -135,6 +135,12 @@ function getSessionMaxAgeSeconds(): number {
   return Math.floor(configured * 60 * 60);
 }
 
+export function isSuperAdmin(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const expectedEmail = (getRuntimeString('ADMIN_EMAIL') || DEFAULT_ADMIN_EMAIL).trim().toLowerCase();
+  return email.trim().toLowerCase() === expectedEmail;
+}
+
 export async function generatePasswordHash(password: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const hash = await derivePasswordHash(password, salt, DEFAULT_HASH_ITERATIONS);
@@ -159,8 +165,7 @@ export async function validateAdminCredentials(email: string, password: string):
   }
 
   // Fallback to environment variables for the initial admin
-  const expectedEmail = (getRuntimeString('ADMIN_EMAIL') || DEFAULT_ADMIN_EMAIL).trim().toLowerCase();
-  if (normalizedEmail === expectedEmail) {
+  if (isSuperAdmin(normalizedEmail)) {
     const expectedPasswordHash = getRuntimeString('ADMIN_PASSWORD_HASH')?.trim();
     if (expectedPasswordHash) {
       return verifyPassword(password, expectedPasswordHash);
@@ -180,13 +185,13 @@ export async function createOrUpdateUser(user: AdminUser): Promise<void> {
   }));
 }
 
-export async function createAdminSessionToken(): Promise<string> {
+export async function createAdminSessionToken(email: string): Promise<string> {
   const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
   const tokenHash = await sha256Hex(token);
   const ttl = getSessionMaxAgeSeconds();
   
   const kv = getKv();
-  await kv.put(`session:${tokenHash}`, 'valid', { expirationTtl: ttl });
+  await kv.put(`session:${tokenHash}`, email.trim().toLowerCase(), { expirationTtl: ttl });
 
   return token;
 }
@@ -201,21 +206,27 @@ export function getAdminTokenFromRequest(request: Request): string | null {
   return parseCookieValue(request.headers.get('cookie'), SESSION_COOKIE_NAME);
 }
 
-export async function isAdminSessionValid(token: string | null): Promise<boolean> {
-  if (!token) {
-    return false;
-  }
-
+export async function getAuthenticatedUserEmail(token: string | null): Promise<string | null> {
+  if (!token) return null;
   const tokenHash = await sha256Hex(token);
   const kv = getKv();
-  const isValid = await kv.get(`session:${tokenHash}`);
+  return await kv.get(`session:${tokenHash}`);
+}
 
-  return isValid === 'valid';
+export async function isAdminSessionValid(token: string | null): Promise<boolean> {
+  const email = await getAuthenticatedUserEmail(token);
+  return email !== null;
 }
 
 export async function isAdminRequestAuthenticated(request: Request): Promise<boolean> {
   const token = getAdminTokenFromRequest(request);
   return isAdminSessionValid(token);
+}
+
+export async function isSuperAdminRequest(request: Request): Promise<boolean> {
+  const token = getAdminTokenFromRequest(request);
+  const email = await getAuthenticatedUserEmail(token);
+  return isSuperAdmin(email);
 }
 
 export function attachAdminCookie(response: NextResponse, token: string): NextResponse {

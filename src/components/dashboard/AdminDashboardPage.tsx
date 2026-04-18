@@ -120,6 +120,7 @@ const initialUserForm: UserFormState = {
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
+  const [session, setSession] = useState<{ email: string; isSuperAdmin: boolean } | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [unauthorized, setUnauthorized] = useState(false);
@@ -159,6 +160,10 @@ export default function AdminDashboardPage() {
   const loadOverview = useCallback(async () => {
     setError('');
     try {
+      const sessionRes = await fetch('/api/admin/session');
+      const sessionData = await sessionRes.json();
+      setSession(sessionData.authenticated ? { email: sessionData.email, isSuperAdmin: sessionData.isSuperAdmin } : null);
+
       const response = await fetch('/api/admin/overview', { cache: 'no-store' });
       const payload = await response.json() as DashboardOverview & { error?: string };
 
@@ -1041,6 +1046,7 @@ export default function AdminDashboardPage() {
         </div>
         </div>
 
+      {session?.isSuperAdmin && (
       <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -1139,6 +1145,7 @@ export default function AdminDashboardPage() {
           )}
         </div>
         </div>
+      )}
 
         <div id="comments-section"
  className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
