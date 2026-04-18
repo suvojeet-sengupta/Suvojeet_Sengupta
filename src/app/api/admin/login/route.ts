@@ -7,6 +7,7 @@ import {
 import { normalizeText } from '@/lib/blog-utils';
 import { NO_STORE_HEADERS } from '@/lib/http-cache';
 import { enforceRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit';
+import { sendTelegramNotification } from '@/lib/telegram';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -36,6 +37,10 @@ export async function POST(request: Request) {
     }
 
     const token = await createAdminSessionToken(email);
+    
+    // Notify on successful login
+    await sendTelegramNotification(`<b>🔐 Admin Login Detected</b>\n<b>User:</b> ${email}\n<b>Time:</b> ${new Date().toLocaleString()}`);
+
     const response = NextResponse.json({ authenticated: true }, { headers: NO_STORE_HEADERS });
     return attachAdminCookie(response, token);
   } catch (error) {

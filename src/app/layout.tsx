@@ -20,10 +20,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Suvojeet Sengupta',
+    url: 'https://suvojeetsengupta.in',
+    jobTitle: ['Android Developer', 'Singer'],
+    sameAs: [
+      'https://github.com/suvojeet-sengupta',
+      'https://linkedin.com/in/suvojeet-sengupta',
+      'https://instagram.com/suvojeet_sengupta',
+      'https://youtube.com/@suvojeetsengupta'
+    ],
+    description: 'Suvojeet Sengupta is a professional Android Developer and a soulful Singer based in India.'
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preload" href="/suvojeet.jpg" as="image" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className={`${inter.variable} antialiased selection:bg-brand-orange selection:text-white`}>
         <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
