@@ -7,3 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "suvojeet-db"
 database_id = "59bccc80-bb22-46ff-9f54-6bf4be593af4"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "e96c47e4b89c4fa18e7377ea4f7401c2"

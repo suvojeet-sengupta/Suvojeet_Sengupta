@@ -14,8 +14,16 @@ export interface D1Database {
   ): Promise<Array<{ success: boolean; results?: T[]; meta?: Record<string, unknown> }>>;
 }
 
+export interface KVNamespace {
+  get(key: string, options?: { type?: 'text' | 'json' | 'arrayBuffer' | 'stream'; cacheTtl?: number }): Promise<any>;
+  put(key: string, value: string | ArrayBuffer | ReadableStream, options?: { expiration?: number; expirationTtl?: number; metadata?: any }): Promise<void>;
+  delete(key: string): Promise<void>;
+  list(options?: { prefix?: string; limit?: number; cursor?: string }): Promise<{ keys: { name: string; expiration?: number; metadata?: any }[]; list_complete: boolean; cursor?: string }>;
+}
+
 interface CloudflareEnv {
   DB?: D1Database;
+  KV?: KVNamespace;
   [key: string]: unknown;
 }
 
@@ -100,6 +108,22 @@ export function getDb(): D1Database {
   }
 
   throw new Error('D1 binding "DB" not found. Bind your database with binding name DB in Cloudflare Pages.');
+}
+
+export function getKv(): KVNamespace {
+  const env = getCloudflareEnv();
+  const directKv = env.KV;
+  if (directKv && typeof (directKv as KVNamespace).put === 'function') {
+    return directKv as KVNamespace;
+  }
+
+  const globalStore = globalThis as unknown as Record<string | symbol, unknown>;
+  const fallbackKv = globalStore.KV;
+  if (fallbackKv && typeof (fallbackKv as KVNamespace).put === 'function') {
+    return fallbackKv as KVNamespace;
+  }
+
+  throw new Error('KV binding "KV" not found. Bind your KV namespace with binding name KV in Cloudflare Pages.');
 }
 
 export function getRuntimeString(name: string): string | undefined {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { getDb, getRuntimeString, requireRuntimeString } from '@/lib/cloudflare';
+import { getKv, getRuntimeString, requireRuntimeString } from '@/lib/cloudflare';
 import { sha256Hex } from '@/lib/blog-utils';
 
 const SESSION_COOKIE_NAME = 'admin_session';
@@ -9,6 +9,13 @@ const DEFAULT_HASH_ITERATIONS = MAX_PBKDF2_ITERATIONS;
 const DEFAULT_SESSION_HOURS = 168; // 7 days
 const DEFAULT_ADMIN_EMAIL = 'suvojeet@suvojeetsengupta.in';
 const encoder = new TextEncoder();
+
+export interface AdminUser {
+  email: string;
+  passwordHash: string;
+  name?: string;
+  createdAt: string;
+}
 
 function isProductionRuntime(): boolean {
   if (typeof process !== 'undefined' && typeof process.env !== 'undefined') {
@@ -141,35 +148,53 @@ export async function verifyPassword(password: string, storedHash: string): Prom
 }
 
 export async function validateAdminCredentials(email: string, password: string): Promise<boolean> {
-  const expectedEmail = (getRuntimeString('ADMIN_EMAIL') || DEFAULT_ADMIN_EMAIL).trim().toLowerCase();
-  const expectedPasswordHash = requireRuntimeString('ADMIN_PASSWORD_HASH').trim();
-
-  if (email.trim().toLowerCase() !== expectedEmail) {
-    return false;
+  const kv = getKv();
+  const normalizedEmail = email.trim().toLowerCase();
+  
+  // Try to find user in KV
+  const userJson = await kv.get(`user:${normalizedEmail}`);
+  if (userJson) {
+    const user = JSON.parse(userJson) as AdminUser;
+    return verifyPassword(password, user.passwordHash);
   }
 
-  return verifyPassword(password, expectedPasswordHash);
+  // Fallback to environment variables for the initial admin
+  const expectedEmail = (getRuntimeString('ADMIN_EMAIL') || DEFAULT_ADMIN_EMAIL).trim().toLowerCase();
+  if (normalizedEmail === expectedEmail) {
+    const expectedPasswordHash = getRuntimeString('ADMIN_PASSWORD_HASH')?.trim();
+    if (expectedPasswordHash) {
+      return verifyPassword(password, expectedPasswordHash);
+    }
+  }
+
+  return false;
+}
+
+export async function createOrUpdateUser(user: AdminUser): Promise<void> {
+  const kv = getKv();
+  const normalizedEmail = user.email.trim().toLowerCase();
+  await kv.put(`user:${normalizedEmail}`, JSON.stringify({
+    ...user,
+    email: normalizedEmail,
+    createdAt: user.createdAt || new Date().toISOString()
+  }));
 }
 
 export async function createAdminSessionToken(): Promise<string> {
   const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
   const tokenHash = await sha256Hex(token);
-  const expiresAt = new Date(Date.now() + (getSessionMaxAgeSeconds() * 1000)).toISOString();
-
-  const db = getDb();
-  await db.prepare('DELETE FROM admin_sessions WHERE expires_at <= CURRENT_TIMESTAMP').run();
-  await db
-    .prepare('INSERT INTO admin_sessions (id, expires_at) VALUES (?, ?)')
-    .bind(tokenHash, expiresAt)
-    .run();
+  const ttl = getSessionMaxAgeSeconds();
+  
+  const kv = getKv();
+  await kv.put(`session:${tokenHash}`, 'valid', { expirationTtl: ttl });
 
   return token;
 }
 
 export async function revokeAdminSession(token: string): Promise<void> {
-  const db = getDb();
+  const kv = getKv();
   const tokenHash = await sha256Hex(token);
-  await db.prepare('DELETE FROM admin_sessions WHERE id = ?').bind(tokenHash).run();
+  await kv.delete(`session:${tokenHash}`);
 }
 
 export function getAdminTokenFromRequest(request: Request): string | null {
@@ -182,13 +207,10 @@ export async function isAdminSessionValid(token: string | null): Promise<boolean
   }
 
   const tokenHash = await sha256Hex(token);
-  const db = getDb();
-  const session = await db
-    .prepare('SELECT id FROM admin_sessions WHERE id = ? AND expires_at > CURRENT_TIMESTAMP')
-    .bind(tokenHash)
-    .first<{ id: string }>();
+  const kv = getKv();
+  const isValid = await kv.get(`session:${tokenHash}`);
 
-  return Boolean(session?.id);
+  return isValid === 'valid';
 }
 
 export async function isAdminRequestAuthenticated(request: Request): Promise<boolean> {

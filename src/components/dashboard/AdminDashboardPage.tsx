@@ -8,7 +8,7 @@ import {
   LayoutDashboard, FileText, MessageSquare, 
   Eye, CheckCircle, Trash2, Edit3, Globe, 
   LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play, ChevronDown, Filter, Mail, Inbox
+  Play, ChevronDown, Filter, Mail, Inbox, Users
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
@@ -64,6 +64,12 @@ interface DashboardOverview {
   messages: AdminMessage[];
 }
 
+interface AdminUser {
+  email: string;
+  name?: string;
+  createdAt: string;
+}
+
 interface PostFormState {
   id?: number;
   title: string;
@@ -99,9 +105,22 @@ const initialVideoForm: VideoFormState = {
   description: '',
 };
 
+interface UserFormState {
+  email: string;
+  password: string;
+  name: string;
+}
+
+const initialUserForm: UserFormState = {
+  email: '',
+  password: '',
+  name: '',
+};
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
+  const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [unauthorized, setUnauthorized] = useState(false);
   const [error, setError] = useState('');
@@ -119,6 +138,22 @@ export default function AdminDashboardPage() {
   const [videoForm, setVideoForm] = useState<VideoFormState>(initialVideoForm);
   const [submittingVideo, setSubmittingVideo] = useState(false);
   const [isVideoFormOpen, setIsVideoFormOpen] = useState(false);
+
+  const [userForm, setUserForm] = useState<UserFormState>(initialUserForm);
+  const [submittingUser, setSubmittingUser] = useState(false);
+  const [isUserFormOpen, setIsUserFormOpen] = useState(false);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/users');
+      const data = await response.json();
+      if (response.ok) {
+        setUsers(data.users || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch users:', err);
+    }
+  }, []);
 
   const loadOverview = useCallback(async () => {
     setError('');
@@ -141,12 +176,13 @@ export default function AdminDashboardPage() {
       setOverview(payload);
       setUnauthorized(false);
       setLoading(false);
+      await fetchUsers();
     } catch (overviewError) {
       console.error(overviewError);
       setError('Unable to load dashboard data.');
       setLoading(false);
     }
-  }, []);
+  }, [fetchUsers]);
 
   useEffect(() => {
     loadOverview();
@@ -229,6 +265,55 @@ export default function AdminDashboardPage() {
       console.error(err);
       setActionMessage('Unable to add video.');
       setSubmittingVideo(false);
+    }
+  };
+
+  const handleUserSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (submittingUser) return;
+
+    setSubmittingUser(true);
+    setActionMessage('');
+
+    try {
+      const response = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userForm),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setActionMessage(data.error || 'Failed to create user');
+      } else {
+        setActionMessage('User created successfully');
+        setUserForm(initialUserForm);
+        setIsUserFormOpen(false);
+        await fetchUsers();
+      }
+    } catch (err) {
+      setActionMessage('Failed to create user');
+    } finally {
+      setSubmittingUser(false);
+    }
+  };
+
+  const deleteUser = async (email: string) => {
+    if (!window.confirm(`Delete user ${email}?`)) return;
+
+    try {
+      const response = await fetch(`/api/admin/users?email=${encodeURIComponent(email)}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setActionMessage('User deleted');
+        await fetchUsers();
+      } else {
+        const data = await response.json();
+        setActionMessage(data.error || 'Failed to delete user');
+      }
+    } catch (err) {
+      setActionMessage('Failed to delete user');
     }
   };
 
@@ -933,9 +1018,90 @@ export default function AdminDashboardPage() {
             <p className="text-muted">No music videos added yet.</p>
           )}
         </div>
-      </div>
+        </div>
 
-      <div id="comments-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
+        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3">
+            <Users className="text-brand-orange" />
+            <h2 className="text-xl md:text-2xl font-black">User Management</h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsUserFormOpen(!isUserFormOpen)}
+            className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
+          >
+            {isUserFormOpen ? 'Hide' : 'Add User'}
+          </button>
+        </div>
+
+        {isUserFormOpen && (
+          <form onSubmit={handleUserSubmit} className="mt-6 space-y-4">
+            <div className="grid md:grid-cols-3 gap-4">
+              <input
+                type="text"
+                placeholder="Name"
+                value={userForm.name}
+                onChange={(e) => setUserForm(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={userForm.email}
+                onChange={(e) => setUserForm(prev => ({ ...prev, email: e.target.value }))}
+                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                value={userForm.password}
+                onChange={(e) => setUserForm(prev => ({ ...prev, password: e.target.value }))}
+                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={submittingUser}
+              className="w-full sm:w-auto bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-xs md:text-sm flex items-center justify-center gap-2"
+            >
+              <PlusCircle size={18} />
+              {submittingUser ? 'Adding...' : 'Create Admin'}
+            </button>
+          </form>
+        )}
+
+        <div className="mt-8 space-y-4">
+          {users.map((user) => (
+            <div key={user.email} className="border border-light rounded-sm p-4 bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-bold text-lg">{user.name || 'Admin'}</h3>
+                <p className="text-sm text-secondary">{user.email}</p>
+                <p className="text-[10px] text-muted font-medium mt-1 uppercase tracking-widest">
+                  Joined <FormattedDate date={user.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric' }} />
+                </p>
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => deleteUser(user.email)}
+                  className="flex-1 sm:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          ))}
+          {users.length === 0 && (
+            <p className="text-muted italic">Only environment-configured admin available.</p>
+          )}
+        </div>
+        </div>
+
+        <div id="comments-section"
+ className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
             <MessageSquare className="text-brand-orange" />
