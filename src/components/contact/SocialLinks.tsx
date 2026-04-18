@@ -53,10 +53,10 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className = "", size = "defau
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${buttonSize} rounded-sm bg-tertiary text-secondary flex items-center justify-center transition-all duration-300 border border-light hover:bg-brand-orange hover:text-white hover:border-brand-orange hover:shadow-lg`}
+            className={`${buttonSize} rounded-xl bg-tertiary/50 backdrop-blur-sm text-muted-foreground flex items-center justify-center transition-all duration-500 border border-light/50 hover:bg-brand-orange hover:text-white hover:border-brand-orange hover:shadow-xl hover:shadow-brand-orange/20`}
             variants={itemVariants}
-            whileHover={{ scale: 1.1, y: -3 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1, y: -5 }}
+            whileTap={{ scale: 0.9 }}
             aria-label={link.name}
           >
             {IconComponent && <IconComponent className={iconSize} />}

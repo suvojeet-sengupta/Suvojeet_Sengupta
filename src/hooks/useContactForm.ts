@@ -1,5 +1,4 @@
 import { useReducer } from 'react';
-import config from '../config';
 
 interface FormState {
     status: 'idle' | 'submitting' | 'success' | 'error';
@@ -9,7 +8,8 @@ interface FormState {
 type FormAction = 
     | { type: 'SUBMIT' }
     | { type: 'SUCCESS'; payload: string }
-    | { type: 'ERROR'; payload: string };
+    | { type: 'ERROR'; payload: string }
+    | { type: 'RESET' };
 
 const formInitialState: FormState = {
     status: 'idle',
@@ -24,6 +24,8 @@ function formReducer(state: FormState, action: FormAction): FormState {
             return { ...state, status: 'success', message: action.payload };
         case 'ERROR':
             return { ...state, status: 'error', message: action.payload };
+        case 'RESET':
+            return formInitialState;
         default:
             return state;
     }
@@ -31,6 +33,8 @@ function formReducer(state: FormState, action: FormAction): FormState {
 
 const useContactForm = () => {
     const [formState, dispatch] = useReducer(formReducer, formInitialState);
+
+    const resetForm = () => dispatch({ type: 'RESET' });
 
     const submitForm = async (data: Record<string, any>) => {
         dispatch({ type: 'SUBMIT' });
@@ -64,7 +68,7 @@ const useContactForm = () => {
         }
     };
 
-    return { formState, submitForm };
+    return { formState, submitForm, resetForm };
 };
 
 export default useContactForm;
