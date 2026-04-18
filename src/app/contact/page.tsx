@@ -2,6 +2,7 @@
 
 import { motion, Variants } from 'framer-motion';
 import ModularContactForm from "@/components/contact/ModularContactForm";
+import Navbar from "@/components/layout/Navbar";
 
 export default function ContactPage() {
     const containerVariants: Variants = {
@@ -25,7 +26,9 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="bg-background min-h-screen pt-32 pb-20 overflow-hidden">
+        <div className="bg-background min-h-screen pt-32 pb-20 overflow-hidden relative">
+            <Navbar />
+            
             {/* Background Decorative Elements */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] bg-brand-orange/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[500px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
@@ -126,4 +129,3 @@ export default function ContactPage() {
         </div>
     );
 }
-

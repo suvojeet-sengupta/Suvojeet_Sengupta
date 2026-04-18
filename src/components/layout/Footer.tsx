@@ -13,7 +13,7 @@ const Footer = () => {
               SUVOJEET<span className="text-accent">.</span>
             </Link>
             <p className="mt-4 text-secondary max-w-sm">
-              Built with precision and passion. High-performance software and soulful melodies.
+              Built with precision and passion. High-performance software and soulful melodies. I am the <span className="text-brand-orange font-bold">Vibe Coder</span>.
             </p>
           </div>
 
@@ -39,7 +39,6 @@ const Footer = () => {
           <p>© {currentYear} SUVOJEET SENGUPTA. ALL RIGHTS RESERVED.</p>
           <div className="flex gap-6">
             <span>DESIGNED BY SUVOJEET</span>
-            <span>POWERED BY NEXT.JS</span>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useContactForm from '@/hooks/useContactForm';
 
-export type InquiryType = 'GENERAL' | 'SONG' | 'PROJECT' | 'ROM';
+export type InquiryType = 'GENERAL' | 'SONG' | 'PROJECT';
 
 interface ModularContactFormProps {
     initialType?: InquiryType;
@@ -22,9 +22,8 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
         songName: '',
         artistName: '',
         dedication: '',
-        // Project/ROM specific
+        // Project specific
         interest: 'General',
-        deviceName: 'Redmi 12 5G / Poco M6 Pro 5G (sky)',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -41,7 +40,6 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
             artistName: '',
             dedication: '',
             interest: 'General',
-            deviceName: 'Redmi 12 5G / Poco M6 Pro 5G (sky)',
         });
         setType(initialType);
     };
@@ -52,7 +50,6 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
         let subject = `[${type}] New Message from ${formData.name}`;
         if (type === 'SONG') subject = `🎵 Song Request: ${formData.songName} (${formData.name})`;
         if (type === 'PROJECT') subject = `🚀 Project Inquiry: ${projectName || 'General'} (${formData.name})`;
-        if (type === 'ROM') subject = `📱 ROM Feedback: sky (${formData.name})`;
 
         const success = await submitForm({
             ...formData,
@@ -77,11 +74,6 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
-        ),
-        ROM: (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
         )
     };
 
@@ -100,8 +92,8 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                         {!projectName && (
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Choose Inquiry Type</label>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                    {(['GENERAL', 'SONG', 'PROJECT', 'ROM'] as InquiryType[]).map((t) => (
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                    {(['GENERAL', 'SONG', 'PROJECT'] as InquiryType[]).map((t) => (
                                         <button
                                             key={t}
                                             type="button"
@@ -184,18 +176,6 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                                             </div>
                                         </div>
                                     </div>
-                                </motion.div>
-                            )}
-
-                            {type === 'ROM' && (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 10 }} 
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="space-y-1.5"
-                                >
-                                    <label htmlFor="deviceName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Device / ROM</label>
-                                    <input type="text" id="deviceName" name="deviceName" value={formData.deviceName} readOnly className="w-full bg-background/40 border border-light/50 p-3.5 opacity-60 rounded-lg text-sm cursor-not-allowed" />
                                 </motion.div>
                             )}
                         </AnimatePresence>
