@@ -65,9 +65,46 @@ export async function POST(request: Request) {
     console.error('Failed to create user:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+  }
 
-export async function DELETE(request: Request) {
+  export async function PUT(request: Request) {
+  if (!(await isAdminRequestAuthenticated(request))) {
+  return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+  const payload = await request.json();
+  const { email, name, password } = payload;
+
+  if (!email) {
+    return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
+  }
+
+  const kv = getKv();
+  const userJson = await kv.get(`user:${email.trim().toLowerCase()}`);
+  if (!userJson) {
+    return NextResponse.json({ error: 'User not found.' }, { status: 404 });
+  }
+
+  const user = JSON.parse(userJson) as AdminUser;
+
+  // Update fields
+  if (name !== undefined) user.name = name;
+  if (password) {
+    user.passwordHash = await generatePasswordHash(password);
+  }
+
+  await createOrUpdateUser(user);
+
+  return NextResponse.json({ success: true }, { headers: NO_STORE_HEADERS });
+  } catch (error) {
+  console.error('Failed to update user:', error);
+  return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+  }
+
+  export async function DELETE(request: Request) {
+
     if (!(await isAdminRequestAuthenticated(request))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

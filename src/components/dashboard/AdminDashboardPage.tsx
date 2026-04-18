@@ -142,6 +142,7 @@ export default function AdminDashboardPage() {
   const [userForm, setUserForm] = useState<UserFormState>(initialUserForm);
   const [submittingUser, setSubmittingUser] = useState(false);
   const [isUserFormOpen, setIsUserFormOpen] = useState(false);
+  const [editingUserEmail, setEditingUserEmail] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -275,27 +276,47 @@ export default function AdminDashboardPage() {
     setSubmittingUser(true);
     setActionMessage('');
 
+    const method = editingUserEmail ? 'PUT' : 'POST';
+
     try {
       const response = await fetch('/api/admin/users', {
-        method: 'POST',
+        method: method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userForm),
       });
       const data = await response.json();
 
       if (!response.ok) {
-        setActionMessage(data.error || 'Failed to create user');
+        setActionMessage(data.error || `Failed to ${editingUserEmail ? 'update' : 'create'} user`);
       } else {
-        setActionMessage('User created successfully');
+        setActionMessage(`User ${editingUserEmail ? 'updated' : 'created'} successfully`);
         setUserForm(initialUserForm);
         setIsUserFormOpen(false);
+        setEditingUserEmail(null);
         await fetchUsers();
       }
     } catch (err) {
-      setActionMessage('Failed to create user');
+      setActionMessage(`Failed to ${editingUserEmail ? 'update' : 'create'} user`);
     } finally {
       setSubmittingUser(false);
     }
+  };
+
+  const startEditUser = (user: AdminUser) => {
+    setUserForm({
+      email: user.email,
+      password: '', // Keep empty unless changing
+      name: user.name || '',
+    });
+    setEditingUserEmail(user.email);
+    setIsUserFormOpen(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const cancelUserEdit = () => {
+    setUserForm(initialUserForm);
+    setEditingUserEmail(null);
+    setIsUserFormOpen(false);
   };
 
   const deleteUser = async (email: string) => {
@@ -1020,19 +1041,30 @@ export default function AdminDashboardPage() {
         </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <Users className="text-brand-orange" />
-            <h2 className="text-xl md:text-2xl font-black">User Management</h2>
+            <h2 className="text-xl md:text-2xl font-black">{editingUserEmail ? 'Edit User' : 'User Management'}</h2>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsUserFormOpen(!isUserFormOpen)}
-            className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-          >
-            {isUserFormOpen ? 'Hide' : 'Add User'}
-          </button>
+          <div className="flex gap-2">
+            {editingUserEmail && (
+              <button
+                type="button"
+                onClick={cancelUserEdit}
+                className="flex-1 sm:flex-none bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
+              >
+                Cancel
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsUserFormOpen(!isUserFormOpen)}
+              className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
+            >
+              {isUserFormOpen ? 'Hide' : (editingUserEmail ? 'Editor' : 'Add User')}
+            </button>
+          </div>
         </div>
 
         {isUserFormOpen && (
@@ -1049,14 +1081,15 @@ export default function AdminDashboardPage() {
                 type="email"
                 placeholder="Email"
                 required
+                disabled={!!editingUserEmail}
                 value={userForm.email}
                 onChange={(e) => setUserForm(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
+                className="w-full border border-light rounded-sm px-4 py-3 bg-background disabled:opacity-60"
               />
               <input
                 type="password"
-                placeholder="Password"
-                required
+                placeholder={editingUserEmail ? "New Password (optional)" : "Password"}
+                required={!editingUserEmail}
                 value={userForm.password}
                 onChange={(e) => setUserForm(prev => ({ ...prev, password: e.target.value }))}
                 className="w-full border border-light rounded-sm px-4 py-3 bg-background"
@@ -1068,7 +1101,7 @@ export default function AdminDashboardPage() {
               className="w-full sm:w-auto bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-xs md:text-sm flex items-center justify-center gap-2"
             >
               <PlusCircle size={18} />
-              {submittingUser ? 'Adding...' : 'Create Admin'}
+              {submittingUser ? 'Saving...' : (editingUserEmail ? 'Update Admin' : 'Create Admin')}
             </button>
           </form>
         )}
@@ -1084,6 +1117,13 @@ export default function AdminDashboardPage() {
                 </p>
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => startEditUser(user)}
+                  className="flex-1 sm:flex-none flex items-center justify-center p-2 border border-light hover:border-blue-500 hover:text-blue-500 rounded-sm transition-colors"
+                >
+                  <Edit3 size={18} />
+                </button>
                 <button
                   type="button"
                   onClick={() => deleteUser(user.email)}
