@@ -1,7 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const STORAGE_KEYS = {
+    NAME: 'comment_author_name',
+    EMAIL: 'comment_author_email'
+};
 
 interface CommentFormProps {
     onSubmit: (name: string, email: string, content: string) => Promise<boolean>;
@@ -23,12 +28,23 @@ export const CommentForm: React.FC<CommentFormProps> = ({
     const [email, setEmail] = useState('');
     const [content, setContent] = useState('');
 
+    // Load from localStorage on mount
+    useEffect(() => {
+        const savedName = localStorage.getItem(STORAGE_KEYS.NAME);
+        const savedEmail = localStorage.getItem(STORAGE_KEYS.EMAIL);
+        if (savedName) setName(savedName);
+        if (savedEmail) setEmail(savedEmail);
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const success = await onSubmit(name, email, content);
         if (success) {
-            setName('');
-            setEmail('');
+            // Save to localStorage for future use
+            localStorage.setItem(STORAGE_KEYS.NAME, name);
+            localStorage.setItem(STORAGE_KEYS.EMAIL, email);
+            
+            // Clear only the content, keep name and email
             setContent('');
         }
     };
