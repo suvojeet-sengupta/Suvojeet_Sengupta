@@ -26,7 +26,8 @@ export const CommentList: React.FC<CommentListProps> = ({
         count, 
         isPosting, 
         error, 
-        postComment 
+        postComment,
+        postReply
     } = useCommentsApi(slug, { comments: initialComments, count: initialCount });
 
     const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
@@ -90,8 +91,14 @@ export const CommentList: React.FC<CommentListProps> = ({
                     <CommentItem 
                         key={comment.id} 
                         comment={comment} 
-                        // Note: Reply logic can be added to useCommentsApi if needed
-                        onReply={async () => false} 
+                        onReply={async (commentId, name, content) => {
+                            try {
+                                await postReply({ commentId, author: name, content });
+                                return true;
+                            } catch (e) {
+                                return false;
+                            }
+                        }} 
                     />
                 ))}
                 

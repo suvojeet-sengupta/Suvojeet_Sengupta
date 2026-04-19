@@ -66,12 +66,57 @@ export function useCommentsApi(slug: string, initialData?: { comments: BlogComme
     },
   });
 
+  const replyMutation = useMutation({
+    mutationFn: async ({ commentId, author, content }: { commentId: number, author: string, content: string }) => {
+      const response = await fetch(`/api/public/comments/${commentId}/replies`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: author, content }),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to post reply');
+      }
+      return response.json();
+    },
+    onMutate: async ({ commentId, author, content }) => {
+      await queryClient.cancelQueries({ queryKey: [COMMENTS_QUERY_KEY, slug] });
+      const previousData = queryClient.getQueryData<any>([COMMENTS_QUERY_KEY, slug]);
+
+      if (previousData) {
+        queryClient.setQueryData([COMMENTS_QUERY_KEY, slug], (old: any) => ({
+          ...old,
+          comments: old.comments.map((c: any) => 
+            c.id === commentId 
+              ? { 
+                  ...c, 
+                  replies: [...c.replies, { id: Date.now(), name: author, content, createdAt: new Date().toISOString(), isPending: true }] 
+                }
+              : c
+          ),
+          count: old.count + 1,
+        }));
+      }
+
+      return { previousData };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData([COMMENTS_QUERY_KEY, slug], context.previousData);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [COMMENTS_QUERY_KEY, slug] });
+    },
+  });
+
   return {
     comments: data?.comments ?? [],
     count: data?.count ?? 0,
     isLoading,
     postComment: commentMutation.mutateAsync,
-    isPosting: commentMutation.isPending,
-    error: commentMutation.error,
+    postReply: replyMutation.mutateAsync,
+    isPosting: commentMutation.isPending || replyMutation.isPending,
+    error: commentMutation.error || replyMutation.error,
   };
 }
