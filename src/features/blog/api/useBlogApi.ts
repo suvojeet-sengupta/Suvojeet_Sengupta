@@ -25,27 +25,7 @@ export function useLikePost(slug: string) {
       if (!response.ok) throw new Error('Failed to like post');
       return response.json();
     },
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['post', slug] });
-      const previousPost = queryClient.getQueryData<BlogPost>(['post', slug]);
-
-      if (previousPost) {
-        queryClient.setQueryData(['post', slug], {
-          ...previousPost,
-          hasLiked: !previousPost.hasLiked,
-          likes: previousPost.hasLiked ? previousPost.likes - 1 : previousPost.likes + 1,
-        });
-      }
-
-      return { previousPost };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousPost) {
-        queryClient.setQueryData(['post', slug], context.previousPost);
-      }
-    },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', slug] });
       queryClient.invalidateQueries({ queryKey: ['blog-posts'] });
     },
   });

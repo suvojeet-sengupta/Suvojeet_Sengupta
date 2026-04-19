@@ -15,15 +15,26 @@ interface BlogPostPageProps {
 
 const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
   const [shareUrl, setShareUrl] = useState('');
-  const { mutate: likePost, isPending: isLiking } = useLikePost(post.slug);
+  const [localLikes, setLocalLikes] = useState(post.likes);
+  const [localHasLiked, setLocalHasLiked] = useState(post.hasLiked);
+  
+  const { mutate: likePost } = useLikePost(post.slug);
 
   useEffect(() => {
     setShareUrl(window.location.href);
   }, []);
 
   const handleLike = () => {
-    if (isLiking) return;
-    likePost();
+    const newHasLiked = !localHasLiked;
+    setLocalHasLiked(newHasLiked);
+    setLocalLikes(prev => newHasLiked ? prev + 1 : Math.max(0, prev - 1));
+
+    likePost(undefined, {
+      onError: () => {
+        setLocalHasLiked(!newHasLiked);
+        setLocalLikes(prev => !newHasLiked ? prev + 1 : Math.max(0, prev - 1));
+      }
+    });
   };
 
   const shareTitle = `Check out this post: ${post.title}`;
@@ -96,11 +107,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
               onClick={handleLike}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                post.hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-tertiary border-light hover:border-brand-orange"
+                localHasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-tertiary border-light hover:border-brand-orange"
               )}
             >
-              <Icons.Heart className={cn("w-4 h-4", post.hasLiked && "fill-current")} />
-              <span>{post.likes}</span>
+              <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
+              <span>{localLikes}</span>
             </button>
             <div className="flex gap-2">
               <a 
@@ -188,11 +199,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                     onClick={handleLike}
                     className={cn(
                       "w-full flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                      post.hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-background border-light hover:border-brand-orange"
+                      localHasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-background border-light hover:border-brand-orange"
                     )}
                   >
-                    <Icons.Heart className={cn("w-4 h-4", post.hasLiked && "fill-current")} />
-                    <span>{post.likes} Likes</span>
+                    <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
+                    <span>{localLikes} Likes</span>
                   </button>
                 </div>
               </div>
