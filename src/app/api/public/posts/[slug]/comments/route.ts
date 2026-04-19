@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/cloudflare';
+import { getDb, D1Database } from '@/lib/cloudflare';
 import { normalizeText, optionalText, toBoolean } from '@/lib/blog-utils';
 import { NO_STORE_HEADERS, PUBLIC_READ_HEADERS } from '@/lib/http-cache';
 import { enforceRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit';
@@ -12,7 +12,7 @@ interface RouteContext {
   params: Promise<{ slug: string }>;
 }
 
-async function getBlogInfo(db: any, slugOrId: string) {
+async function getBlogInfo(db: D1Database, slugOrId: string) {
   const id = Number(slugOrId);
   if (Number.isFinite(id) && id > 0) {
     const row = await db
