@@ -71,9 +71,9 @@ export const CommentList: React.FC<CommentListProps> = ({
             {commentsEnabled && (
                 <div className="mb-12">
                     <CommentForm 
-                        onSubmit={async (name, _, content) => {
+                        onSubmit={async (name, email, content) => {
                             try {
-                                await postComment({ author: name, content, postSlug: slug });
+                                await postComment({ author: name, email, content, postSlug: slug });
                                 return true;
                             } catch (e) {
                                 return false;
