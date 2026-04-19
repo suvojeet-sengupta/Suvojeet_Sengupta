@@ -1,4 +1,4 @@
-import BlogListPage from '@/components/blog/BlogListPage';
+import BlogListPage from '@/features/blog/components/BlogListPage';
 
 export const metadata = {
   title: 'Blog | Suvojeet Sengupta',

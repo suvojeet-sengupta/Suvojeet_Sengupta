@@ -5,7 +5,7 @@ import { getClientIp, mapBlogSummary, sha256Hex, toBoolean } from '@/lib/blog-ut
 import { isDashboardSessionActive } from '@/lib/admin-auth';
 import { getE2ePostFixture, isE2ePostFixtureSlug } from '@/lib/e2e-fixtures';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
-import BlogPostPage from '@/components/blog/BlogPostPage';
+import BlogPostPage from '@/features/blog/components/BlogPostPage';
 import { headers } from 'next/headers';
 
 export const runtime = 'edge';

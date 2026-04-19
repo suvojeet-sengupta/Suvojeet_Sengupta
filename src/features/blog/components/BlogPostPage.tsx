@@ -5,42 +5,25 @@ import Image from 'next/image';
 import type { BlogPost } from '@/types/blog';
 import { formatDate, cn } from '@/lib/utils';
 import { calculateReadingTime } from '@/lib/blog-utils';
-import { Icons } from '../common/Icons';
+import { Icons } from '@/components/common/Icons';
 import { CommentList } from './comments/CommentList';
+import { useLikePost } from '../api/useBlogApi';
 
 interface BlogPostPageProps {
   post: BlogPost;
 }
 
 const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
-  const [likes, setLikes] = useState(post.likes);
-  const [hasLiked, setHasLiked] = useState(post.hasLiked || false);
-  const [isLiking, setIsLiking] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
+  const { mutate: likePost, isPending: isLiking } = useLikePost(post.slug);
 
   useEffect(() => {
     setShareUrl(window.location.href);
   }, []);
 
-  const handleLike = async () => {
+  const handleLike = () => {
     if (isLiking) return;
-    setIsLiking(true);
-    
-    try {
-      const response = await fetch(`/api/public/posts/${post.slug}/like`, {
-        method: 'POST',
-      });
-      
-      const data = await response.json();
-      if (response.ok) {
-        setHasLiked(data.liked);
-        setLikes(prev => data.liked ? prev + 1 : Math.max(0, prev - 1));
-      }
-    } catch (error) {
-      console.error('Failed to like post:', error);
-    } finally {
-      setIsLiking(false);
-    }
+    likePost();
   };
 
   const shareTitle = `Check out this post: ${post.title}`;
@@ -113,11 +96,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
               onClick={handleLike}
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-tertiary border-light hover:border-brand-orange"
+                post.hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-tertiary border-light hover:border-brand-orange"
               )}
             >
-              <Icons.Heart className={cn("w-4 h-4", hasLiked && "fill-current")} />
-              <span>{likes}</span>
+              <Icons.Heart className={cn("w-4 h-4", post.hasLiked && "fill-current")} />
+              <span>{post.likes}</span>
             </button>
             <div className="flex gap-2">
               <a 
@@ -205,11 +188,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                     onClick={handleLike}
                     className={cn(
                       "w-full flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                      hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-background border-light hover:border-brand-orange"
+                      post.hasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-background border-light hover:border-brand-orange"
                     )}
                   >
-                    <Icons.Heart className={cn("w-4 h-4", hasLiked && "fill-current")} />
-                    <span>{likes} Likes</span>
+                    <Icons.Heart className={cn("w-4 h-4", post.hasLiked && "fill-current")} />
+                    <span>{post.likes} Likes</span>
                   </button>
                 </div>
               </div>
@@ -242,6 +225,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
             initialComments={post.comments} 
             initialCount={post.commentsCount || 0} 
             postId={post.id} 
+            slug={post.slug}
             commentsEnabled={post.commentsEnabled} 
           />
         </section>

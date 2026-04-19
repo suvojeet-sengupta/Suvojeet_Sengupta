@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
+import Providers from "@/components/common/Providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -45,9 +46,11 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} antialiased selection:bg-brand-orange selection:text-white`}>
-        <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
-          <ClientLayout>{children}</ClientLayout>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
+            <ClientLayout>{children}</ClientLayout>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

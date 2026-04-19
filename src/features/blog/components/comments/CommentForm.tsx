@@ -7,7 +7,7 @@ interface CommentFormProps {
     onSubmit: (name: string, email: string, content: string) => Promise<boolean>;
     status: 'idle' | 'submitting' | 'success' | 'error';
     message: string;
-    postId: number;
+    postId?: number;
     placeholder?: string;
     isReply?: boolean;
 }

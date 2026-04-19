@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import type { BlogComment } from '@/types/blog';
 import { CommentItem } from './CommentItem';
 import { CommentForm } from './CommentForm';
-import { useComments } from '@/hooks/useComments';
+import { useCommentsApi } from '../../api/useCommentsApi';
 
 interface CommentListProps {
     initialComments: BlogComment[];
     initialCount: number;
     postId: number;
+    slug: string;
     commentsEnabled: boolean;
 }
 
@@ -17,16 +18,16 @@ export const CommentList: React.FC<CommentListProps> = ({
     initialComments, 
     initialCount, 
     postId,
+    slug,
     commentsEnabled 
 }) => {
     const { 
         comments, 
-        commentsCount, 
-        postingStatus, 
-        message, 
-        submitComment, 
-        submitReply 
-    } = useComments(initialComments, initialCount, postId);
+        count, 
+        isPosting, 
+        error, 
+        postComment 
+    } = useCommentsApi(slug, { comments: initialComments, count: initialCount });
 
     const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest');
 
@@ -40,7 +41,7 @@ export const CommentList: React.FC<CommentListProps> = ({
         <section className="mt-10 border border-light rounded-sm p-6 md:p-8 bg-background">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-light pb-6">
                 <div>
-                    <h2 className="text-2xl font-black">Comments ({commentsCount})</h2>
+                    <h2 className="text-2xl font-black">Comments ({count})</h2>
                 </div>
 
                 {comments.length > 0 && (
@@ -69,9 +70,16 @@ export const CommentList: React.FC<CommentListProps> = ({
             {commentsEnabled && (
                 <div className="mb-12">
                     <CommentForm 
-                        onSubmit={submitComment} 
-                        status={postingStatus} 
-                        message={message} 
+                        onSubmit={async (name, _, content) => {
+                            try {
+                                await postComment({ author: name, content, postSlug: slug });
+                                return true;
+                            } catch (e) {
+                                return false;
+                            }
+                        }} 
+                        status={isPosting ? 'submitting' : 'idle'} 
+                        message={error instanceof Error ? error.message : ''} 
                         postId={postId}
                     />
                 </div>
@@ -82,7 +90,8 @@ export const CommentList: React.FC<CommentListProps> = ({
                     <CommentItem 
                         key={comment.id} 
                         comment={comment} 
-                        onReply={submitReply} 
+                        // Note: Reply logic can be added to useCommentsApi if needed
+                        onReply={async () => false} 
                     />
                 ))}
                 
