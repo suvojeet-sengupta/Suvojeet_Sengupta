@@ -17,15 +17,26 @@ const HomePage = () => {
 
   useEffect(() => {
     const loadRepoData = async () => {
-      const data: Record<string, GithubRepo> = {};
-      for (const repoName of FEATURED_PROJECT_NAMES) {
-        const repoData = await fetchGithubRepo('suvojeet-sengupta', repoName);
-        if (repoData) {
-          data[repoName] = repoData;
-        }
+      try {
+        const repoPromises = FEATURED_PROJECT_NAMES.map(name => 
+          fetchGithubRepo('suvojeet-sengupta', name)
+        );
+        
+        const results = await Promise.all(repoPromises);
+        
+        const data: Record<string, GithubRepo> = {};
+        results.forEach((repoData, index) => {
+          if (repoData) {
+            data[FEATURED_PROJECT_NAMES[index]] = repoData;
+          }
+        });
+        
+        setRepos(data);
+      } catch (error) {
+        console.error('Failed to load repo data:', error);
+      } finally {
+        setLoading(false);
       }
-      setRepos(data);
-      setLoading(false);
     };
 
     loadRepoData();
@@ -37,8 +48,9 @@ const HomePage = () => {
       <section className="section-container pt-32 pb-20">
         <div className="flex flex-col md:flex-row items-center gap-12">
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 1, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex-1 space-y-6"
           >
             <h1 className="text-5xl md:text-7xl font-black leading-tight">
@@ -61,8 +73,9 @@ const HomePage = () => {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 1, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="md:w-1/3 flex justify-center"
           >
             <div className={uiStyles.profileFrame}>

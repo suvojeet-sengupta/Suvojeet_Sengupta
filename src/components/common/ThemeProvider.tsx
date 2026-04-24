@@ -39,23 +39,25 @@ export const ThemeProvider = ({
   attribute = 'data-theme',
   defaultTheme = 'light'
 }: ThemeProviderProps) => {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === 'undefined') {
-      return defaultTheme;
-    }
-
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      return savedTheme;
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    document.documentElement.setAttribute(attribute, theme);
-    localStorage.setItem('theme', theme);
-  }, [theme, attribute]);
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      setThemeState(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setThemeState('dark');
+    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      document.documentElement.setAttribute(attribute, theme);
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme, attribute, mounted]);
 
   const toggleTheme = () => {
     setThemeState(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
@@ -67,7 +69,9 @@ export const ThemeProvider = ({
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      {children}
+      <div className={mounted ? '' : 'is-hydrating'}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
