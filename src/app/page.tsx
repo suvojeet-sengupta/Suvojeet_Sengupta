@@ -1,27 +1,32 @@
 import HomePage from '@/components/home/HomePage';
+import { Metadata } from 'next';
+import { SEO_CONFIG } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Suvojeet Sengupta | Singer & Creative Developer',
-  description: 'Soulful Singer in Hindi & Bengali inspired by Arijit Singh & Kishore Kumar. Professional Android Developer building high-performance solutions.',
+export const metadata: Metadata = {
+  title: SEO_CONFIG.title,
+  description: SEO_CONFIG.description,
   openGraph: {
-    title: 'Suvojeet Sengupta | Singer & Developer',
-    description: 'Arijit Singh & Kishore Kumar inspired Singer • Android Dev • Bengali & Hindi Vocals',
-    url: 'https://suvojeetsengupta.in',
-    siteName: 'Suvojeet Sengupta',
+    title: SEO_CONFIG.title,
+    description: SEO_CONFIG.description,
+    url: SEO_CONFIG.url,
+    siteName: SEO_CONFIG.siteName,
     images: [
       {
         url: '/suvojeet.jpg',
         width: 1200,
         height: 630,
+        alt: SEO_CONFIG.siteName,
       },
     ],
-    locale: 'en_US',
+    locale: SEO_CONFIG.locale,
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Suvojeet Sengupta | Singer & Developer',
-    description: 'Singer • Bengali & Hindi Vocals • Android Developer',
+    title: SEO_CONFIG.title,
+    description: SEO_CONFIG.description,
+    images: ['/suvojeet.jpg'],
+    creator: SEO_CONFIG.twitterHandle,
   },
 };
 
