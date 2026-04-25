@@ -1,6 +1,8 @@
 import HomePage from '@/components/home/HomePage';
 import { Metadata } from 'next';
 import { SEO_CONFIG } from '@/lib/seo';
+import FeaturedProjects, { FeaturedProjectsSkeleton } from '@/components/home/FeaturedProjects';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.title,
@@ -31,5 +33,11 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <HomePage />;
+  return (
+    <HomePage>
+      <Suspense fallback={<FeaturedProjectsSkeleton />}>
+        <FeaturedProjects />
+      </Suspense>
+    </HomePage>
+  );
 }

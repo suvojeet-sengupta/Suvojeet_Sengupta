@@ -1,46 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { calculateAge } from '@/lib/utils';
-import { fetchGithubRepo, GithubRepo } from '@/lib/github';
 import uiStyles from '@/components/common/UI.module.css';
 
 const FEATURED_PROJECT_NAMES = ['SuvMusic', 'NoteNext'];
 
-const HomePage = () => {
+interface HomePageProps {
+  children?: React.ReactNode;
+}
+
+const HomePage = ({ children }: HomePageProps) => {
   const age = calculateAge('2005-08-01');
-  const [repos, setRepos] = useState<Record<string, GithubRepo>>({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadRepoData = async () => {
-      try {
-        const repoPromises = FEATURED_PROJECT_NAMES.map(name => 
-          fetchGithubRepo('suvojeet-sengupta', name)
-        );
-        
-        const results = await Promise.all(repoPromises);
-        
-        const data: Record<string, GithubRepo> = {};
-        results.forEach((repoData, index) => {
-          if (repoData) {
-            data[FEATURED_PROJECT_NAMES[index]] = repoData;
-          }
-        });
-        
-        setRepos(data);
-      } catch (error) {
-        console.error('Failed to load repo data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRepoData();
-  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,53 +79,7 @@ const HomePage = () => {
             </Link>
           </div>
 
-          <div className={uiStyles.projectGrid}>
-            {FEATURED_PROJECT_NAMES.map((name) => {
-              const repo = repos[name];
-              if (loading) return (
-                <div key={name} className={uiStyles.professionalCard + " animate-pulse"}>
-                  <div className="h-4 bg-background/50 rounded w-1/4 mb-4"></div>
-                  <div className="h-8 bg-background/50 rounded w-3/4 mb-4"></div>
-                  <div className="h-20 bg-background/50 rounded w-full mb-6"></div>
-                  <div className="h-4 bg-background/50 rounded w-1/2"></div>
-                </div>
-              );
-              
-              if (!repo) return null;
-
-              return (
-                <div key={name} className={uiStyles.professionalCard + " group"}>
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="text-xs font-bold uppercase tracking-widest text-muted">{repo.language || 'Kotlin'}</span>
-                    <div className="flex items-center gap-1 text-brand-orange font-bold">
-                      <span>★</span>
-                      <span>{repo.stargazers_count}</span>
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{name}</h3>
-                  <p className="text-secondary mb-6 line-clamp-3 font-medium">
-                    {name === 'SuvMusic' 
-                      ? 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.'
-                      : repo.description}
-                  </p>
-                  <Link 
-                    href={name.toLowerCase()} 
-                    className="inline-flex items-center gap-2 font-bold text-sm bg-brand-orange text-white px-4 py-2 rounded-sm hover:bg-orange-600 transition-colors mb-4"
-                  >
-                    VIEW DETAILS
-                  </Link>
-                  <br />
-                  <Link 
-                    href={repo.html_url} 
-                    target="_blank"
-                    className="inline-flex items-center gap-2 font-bold text-xs border-b border-muted text-muted hover:text-brand-orange hover:border-brand-orange transition-colors"
-                  >
-                    GITHUB SOURCE →
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
+          {children}
         </div>
       </section>
 
