@@ -1,9 +1,26 @@
 import React from 'react';
 import Link from 'next/link';
-import { fetchGithubRepo } from '@/lib/github';
+import { fetchGithubRepo, GithubRepo } from '@/lib/github';
 import uiStyles from '@/components/common/UI.module.css';
 
 const FEATURED_PROJECT_NAMES = ['SuvMusic', 'NoteNext'];
+
+const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
+  'SuvMusic': {
+    name: 'SuvMusic',
+    description: 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.',
+    stargazers_count: 10,
+    language: 'Kotlin',
+    html_url: 'https://github.com/suvojeet-sengupta/SuvMusic'
+  },
+  'NoteNext': {
+    name: 'NoteNext',
+    description: 'A professional note-taking application for Android with cloud sync and markdown support.',
+    stargazers_count: 5,
+    language: 'Kotlin',
+    html_url: 'https://github.com/suvojeet-sengupta/NoteNext'
+  }
+};
 
 export default async function FeaturedProjects() {
   const repoPromises = FEATURED_PROJECT_NAMES.map(name => 
@@ -12,18 +29,20 @@ export default async function FeaturedProjects() {
   
   const results = await Promise.all(repoPromises);
   
-  const repos = {};
+  const repos: Record<string, any> = {};
   results.forEach((repoData, index) => {
+    const name = FEATURED_PROJECT_NAMES[index];
     if (repoData) {
-      // @ts-ignore
-      repos[FEATURED_PROJECT_NAMES[index]] = repoData;
+      repos[name] = repoData;
+    } else {
+      // Use fallback if API fails
+      repos[name] = FALLBACK_DATA[name];
     }
   });
 
   return (
     <div className={uiStyles.projectGrid}>
       {FEATURED_PROJECT_NAMES.map((name) => {
-        // @ts-ignore
         const repo = repos[name];
         
         if (!repo) return null;
@@ -39,9 +58,9 @@ export default async function FeaturedProjects() {
             </div>
             <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{name}</h3>
             <p className="text-secondary mb-6 line-clamp-3 font-medium">
-              {name === 'SuvMusic' 
+              {repo.description || (name === 'SuvMusic' 
                 ? 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.'
-                : repo.description}
+                : 'Signature Android application built with performance and user experience in mind.')}
             </p>
             <Link 
               href={name.toLowerCase()} 
