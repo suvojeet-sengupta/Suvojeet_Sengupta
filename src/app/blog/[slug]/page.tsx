@@ -11,6 +11,8 @@ import { headers } from 'next/headers';
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
+const SUPABASE_FUNCTIONS_URL = process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const db = getDb();
   const post = await db
-    .prepare('SELECT title, excerpt FROM blogs WHERE slug = ? LIMIT 1')
+    .prepare('SELECT title, excerpt, category FROM blogs WHERE slug = ? LIMIT 1')
     .bind(slug)
     .first<Record<string, string>>();
 
@@ -39,7 +41,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `${post.title} | Suvojeet Sengupta`;
   const description = post.excerpt || `Read "${post.title}" on Suvojeet Sengupta's blog.`;
-  const ogImage = `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`;
+
+  const ogParams = new URLSearchParams({ title: post.title });
+  if (post.category) ogParams.set('category', post.category);
+  const ogImage = SUPABASE_FUNCTIONS_URL
+    ? `${SUPABASE_FUNCTIONS_URL}/og-image?${ogParams}`
+    : `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`;
 
   return {
     title,
@@ -207,7 +214,9 @@ export default async function Page({ params }: PageProps) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`,
+    image: SUPABASE_FUNCTIONS_URL
+      ? `${SUPABASE_FUNCTIONS_URL}/og-image?title=${encodeURIComponent(post.title)}`
+      : `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     author: {

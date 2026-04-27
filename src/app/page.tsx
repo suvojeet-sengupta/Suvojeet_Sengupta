@@ -1,8 +1,10 @@
 import HomePage from '@/components/home/HomePage';
 import { Metadata } from 'next';
-import { SEO_CONFIG } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
 import FeaturedProjects, { FeaturedProjectsSkeleton } from '@/components/home/FeaturedProjects';
 import { Suspense } from 'react';
+
+const ogImage = getOgImageUrl('Suvojeet Sengupta', { subtitle: 'Singer & Creative Developer' });
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.title,
@@ -12,14 +14,7 @@ export const metadata: Metadata = {
     description: SEO_CONFIG.description,
     url: SEO_CONFIG.url,
     siteName: SEO_CONFIG.siteName,
-    images: [
-      {
-        url: '/suvojeet.jpg',
-        width: 1200,
-        height: 630,
-        alt: SEO_CONFIG.siteName,
-      },
-    ],
+    images: [{ url: ogImage, width: 1200, height: 630, alt: SEO_CONFIG.siteName }],
     locale: SEO_CONFIG.locale,
     type: 'website',
   },
@@ -27,7 +22,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: SEO_CONFIG.title,
     description: SEO_CONFIG.description,
-    images: ['/suvojeet.jpg'],
+    images: [ogImage],
     creator: SEO_CONFIG.twitterHandle,
   },
 };
