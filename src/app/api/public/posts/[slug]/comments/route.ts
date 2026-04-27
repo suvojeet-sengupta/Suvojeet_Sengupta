@@ -113,20 +113,20 @@ export async function GET(request: Request, context: RouteContext) {
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  const rateLimitResult = await enforceRateLimit(request, {
-    endpointKey: 'public-comment-create',
-    limit: 10,
-    windowMs: 10 * 60 * 1000,
-  });
-  if (!rateLimitResult.allowed) {
-    return rateLimitExceededResponse(rateLimitResult, 'Too many comments from this IP. Try again in a few minutes.');
-  }
-
   const { slug: rawSlugOrId } = await context.params;
   const slugOrId = decodeURIComponent(rawSlugOrId || '').trim();
 
   if (!slugOrId) {
     return NextResponse.json({ error: 'Invalid post identifier.' }, { status: 400, headers: NO_STORE_HEADERS });
+  }
+
+  const rateLimitResult = await enforceRateLimit(request, {
+    endpointKey: `public-comment-create:${slugOrId}`,
+    limit: 10,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!rateLimitResult.allowed) {
+    return rateLimitExceededResponse(rateLimitResult, 'Too many comments from this IP. Try again in a few minutes.');
   }
 
   const db = getDb();
@@ -150,7 +150,7 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const insertResult = await db
-    .prepare('INSERT INTO comments (blog_id, name, email, content, is_approved) VALUES (?, ?, ?, ?, 1)')
+    .prepare('INSERT INTO comments (blog_id, name, email, content, is_approved) VALUES (?, ?, ?, ?, 0)')
     .bind(blog.id, name, email, content)
     .run();
 

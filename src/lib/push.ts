@@ -38,41 +38,47 @@ export async function sendNotificationToAll(title: string, body: string, url: st
     let sentCount = 0;
     let failCount = 0;
 
-    for (const sub of subscriptions.results) {
-      const subscription = {
-        endpoint: String(sub.endpoint),
-        keys: {
-          p256dh: String(sub.p256dh),
-          auth: String(sub.auth),
-        },
-      };
+    const BATCH_SIZE = 50;
+    for (let i = 0; i < subscriptions.results.length; i += BATCH_SIZE) {
+      const batch = subscriptions.results.slice(i, i + BATCH_SIZE);
+      const results = await Promise.all(
+        batch.map(async (sub) => {
+          const subscription = {
+            endpoint: String(sub.endpoint),
+            keys: {
+              p256dh: String(sub.p256dh),
+              auth: String(sub.auth),
+            },
+          };
 
-      try {
-        const req = await buildPushHTTPRequest({
-          privateJWK,
-          message: {
-            adminContact: SUBJECT,
-            payload
-          },
-          subscription
-        });
+          try {
+            const req = await buildPushHTTPRequest({
+              privateJWK,
+              message: { adminContact: SUBJECT, payload },
+              subscription,
+            });
 
-        const response = await fetch(req.endpoint, {
-          method: 'POST',
-          headers: req.headers,
-          body: req.body
-        });
+            const response = await fetch(req.endpoint, {
+              method: 'POST',
+              headers: req.headers,
+              body: req.body,
+              signal: AbortSignal.timeout(10000),
+            });
 
-        if (response.status === 410 || response.status === 404) {
-          await db.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').bind(subscription.endpoint).run();
-          failCount++;
-        } else if (!response.ok) {
-          failCount++;
-        } else {
-          sentCount++;
-        }
-      } catch (error: any) {
-        failCount++;
+            if (response.status === 410 || response.status === 404) {
+              await db.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').bind(subscription.endpoint).run();
+              return 'fail' as const;
+            }
+            return response.ok ? ('sent' as const) : ('fail' as const);
+          } catch {
+            return 'fail' as const;
+          }
+        })
+      );
+
+      for (const r of results) {
+        if (r === 'sent') sentCount++;
+        else failCount++;
       }
     }
 

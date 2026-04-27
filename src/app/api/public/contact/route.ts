@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/cloudflare';
 import { normalizeText, optionalText } from '@/lib/blog-utils';
-import { sendTelegramNotification } from '@/lib/telegram';
+import { sendTelegramNotification, escapeTelegramHtml } from '@/lib/telegram';
 import { enforceRateLimit, rateLimitExceededResponse } from '@/lib/rate-limit';
 
 export const runtime = 'edge';
@@ -29,22 +29,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Name, email and message are required.' }, { status: 400 });
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'A valid email address is required.' }, { status: 400 });
+    }
+
     const db = getDb();
     await db.prepare(`
       INSERT INTO messages (name, email, subject, type, message)
       VALUES (?, ?, ?, ?, ?)
     `).bind(name, email, subject, type, message).run();
 
-    // Send Telegram Notification
     const telegramText = `
 <b>📩 New Contact Message</b>
-<b>From:</b> ${name}
-<b>Email:</b> ${email}
-<b>Type:</b> ${type || 'General'}
-<b>Subject:</b> ${subject || 'N/A'}
+<b>From:</b> ${escapeTelegramHtml(name)}
+<b>Email:</b> ${escapeTelegramHtml(email)}
+<b>Type:</b> ${escapeTelegramHtml(type || 'General')}
+<b>Subject:</b> ${escapeTelegramHtml(subject || 'N/A')}
 
 <b>Message:</b>
-${message}
+${escapeTelegramHtml(message)}
     `.trim();
 
     await sendTelegramNotification(telegramText);

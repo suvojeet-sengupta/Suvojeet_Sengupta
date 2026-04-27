@@ -56,9 +56,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code", // TODO: User should replace this
-  },
   alternates: {
     canonical: SEO_CONFIG.url,
   },

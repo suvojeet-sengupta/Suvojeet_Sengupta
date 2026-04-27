@@ -5,11 +5,11 @@ import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { BlogReply, BlogSummary } from '@/types/blog';
-import { 
-  LayoutDashboard, FileText, MessageSquare, 
-  Eye, CheckCircle, Trash2, Edit3, Globe, 
+import {
+  LayoutDashboard, FileText, MessageSquare,
+  Eye, CheckCircle, Trash2, Edit3, Globe,
   LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play, ChevronDown, Filter, Mail, Inbox, Users
+  Play, ChevronDown, Filter, Mail, Inbox, Users, Clock, CheckCheck
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
@@ -136,6 +136,8 @@ export default function AdminDashboardPage() {
 
   const [selectedPostForComments, setSelectedPostForComments] = useState<number | 'all'>('all');
   const [commentSortOrder, setCommentSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [commentFilter, setCommentFilter] = useState<'all' | 'pending' | 'approved'>('pending');
+  const [bulkActioning, setBulkActioning] = useState(false);
 
   const [videoForm, setVideoForm] = useState<VideoFormState>(initialVideoForm);
   const [submittingVideo, setSubmittingVideo] = useState(false);
@@ -443,63 +445,118 @@ export default function AdminDashboardPage() {
   };
 
   const toggleCommentApproval = async (comment: AdminComment) => {
+    const newApproved = !comment.isApproved;
+    setOverview(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        comments: prev.comments.map(c => c.id === comment.id ? { ...c, isApproved: newApproved } : c),
+        stats: { ...prev.stats, pendingComments: prev.stats.pendingComments + (newApproved ? -1 : 1) },
+      };
+    });
+
     const response = await fetch(`/api/admin/comments/${comment.id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        isApproved: !comment.isApproved,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isApproved: newApproved }),
     });
 
     if (!response.ok) {
+      setOverview(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          comments: prev.comments.map(c => c.id === comment.id ? { ...c, isApproved: comment.isApproved } : c),
+          stats: { ...prev.stats, pendingComments: prev.stats.pendingComments + (newApproved ? 1 : -1) },
+        };
+      });
       const payload = await response.json() as { error?: string };
       setActionMessage(payload.error || 'Unable to update comment.');
       return;
     }
 
-    setActionMessage('Comment updated.');
-    await loadOverview();
+    setActionMessage(newApproved ? 'Comment approved.' : 'Comment unapproved.');
   };
 
   const deleteComment = async (commentId: number) => {
     const shouldDelete = window.confirm('Delete this comment and all its replies?');
-    if (!shouldDelete) {
-      return;
-    }
+    if (!shouldDelete) return;
 
-    const response = await fetch(`/api/admin/comments/${commentId}`, {
-      method: 'DELETE',
+    const target = overview?.comments.find(c => c.id === commentId);
+    const wasPending = target ? !target.isApproved : false;
+
+    setOverview(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        comments: prev.comments.filter(c => c.id !== commentId),
+        stats: {
+          ...prev.stats,
+          totalComments: prev.stats.totalComments - 1,
+          pendingComments: prev.stats.pendingComments - (wasPending ? 1 : 0),
+        },
+      };
     });
+
+    const response = await fetch(`/api/admin/comments/${commentId}`, { method: 'DELETE' });
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
       setActionMessage(payload.error || 'Unable to delete comment.');
+      await loadOverview();
       return;
     }
 
     setActionMessage('Comment deleted.');
-    await loadOverview();
   };
 
   const deleteReply = async (replyId: number) => {
     const shouldDelete = window.confirm('Delete this reply?');
-    if (!shouldDelete) {
-      return;
-    }
+    if (!shouldDelete) return;
 
-    const response = await fetch(`/api/admin/replies/${replyId}`, {
-      method: 'DELETE',
+    setOverview(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        comments: prev.comments.map(c => ({ ...c, replies: c.replies.filter(r => r.id !== replyId) })),
+        stats: { ...prev.stats, totalReplies: prev.stats.totalReplies - 1 },
+      };
     });
+
+    const response = await fetch(`/api/admin/replies/${replyId}`, { method: 'DELETE' });
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
       setActionMessage(payload.error || 'Unable to delete reply.');
+      await loadOverview();
       return;
     }
 
     setActionMessage('Reply deleted.');
+  };
+
+  const bulkAction = async (action: 'approve_all_pending' | 'delete_all_pending') => {
+    const label = action === 'approve_all_pending'
+      ? 'Approve all pending comments?'
+      : 'Delete all pending comments and their replies?';
+    if (!window.confirm(label)) return;
+
+    setBulkActioning(true);
+    const response = await fetch('/api/admin/comments/bulk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action }),
+    });
+    setBulkActioning(false);
+
+    if (!response.ok) {
+      const payload = await response.json() as { error?: string };
+      setActionMessage(payload.error || 'Bulk action failed.');
+      return;
+    }
+
+    const payload = await response.json() as { affected: number };
+    setActionMessage(`${payload.affected} comment${payload.affected !== 1 ? 's' : ''} ${action === 'approve_all_pending' ? 'approved' : 'deleted'}.`);
     await loadOverview();
   };
 
@@ -545,16 +602,24 @@ export default function AdminDashboardPage() {
 
   const submitOwnerReply = async (commentId: number) => {
     const draft = (replyDrafts[commentId] || '').trim();
-    if (!draft || replyingToCommentId) {
-      return;
-    }
+    if (!draft || replyingToCommentId) return;
+
+    const target = overview?.comments.find(c => c.id === commentId);
+    const autoApprove = target ? !target.isApproved : false;
 
     setReplyingToCommentId(commentId);
+
+    if (autoApprove) {
+      await fetch(`/api/admin/comments/${commentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isApproved: true }),
+      });
+    }
+
     const response = await fetch(`/api/admin/comments/${commentId}/replies`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: draft }),
     });
 
@@ -565,11 +630,8 @@ export default function AdminDashboardPage() {
       return;
     }
 
-    setReplyDrafts((prev) => ({
-      ...prev,
-      [commentId]: '',
-    }));
-    setActionMessage('Reply sent.');
+    setReplyDrafts(prev => ({ ...prev, [commentId]: '' }));
+    setActionMessage(autoApprove ? 'Comment approved and reply sent.' : 'Reply sent.');
     setReplyingToCommentId(null);
     await loadOverview();
   };
@@ -1149,155 +1211,282 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-        <div id="comments-section"
- className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
+      <div id="comments-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+
+        {/* Section header */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <MessageSquare className="text-brand-orange" />
-            <h2 className="text-xl md:text-2xl font-black">Comments Moderation</h2>
+            <h2 className="text-xl md:text-2xl font-black">Comments</h2>
+            {overview.stats.pendingComments > 0 && (
+              <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full animate-pulse">
+                <Clock size={10} />
+                {overview.stats.pendingComments} Pending
+              </span>
+            )}
           </div>
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
-              <Filter size={14} className="text-muted" />
-              <select 
-                value={selectedPostForComments} 
-                onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
-              >
-                <option value="all">All Posts</option>
-                {overview.posts.map(post => (
-                  <option key={post.id} value={post.id}>{post.title}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
-              <select 
-                value={commentSortOrder} 
-                onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
-                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-              </select>
-            </div>
+          <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
+            <Filter size={14} className="text-muted flex-shrink-0" />
+            <select
+              value={selectedPostForComments}
+              onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+              className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
+            >
+              <option value="all">All Posts</option>
+              {overview.posts.map(post => (
+                <option key={post.id} value={post.id}>{post.title}</option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <div className="mt-6 space-y-5">
-          {overview.comments
-            .filter(c => selectedPostForComments === 'all' || c.blogId === selectedPostForComments)
-            .sort((a, b) => {
-              const timeA = new Date(a.createdAt).getTime();
-              const timeB = new Date(b.createdAt).getTime();
-              return commentSortOrder === 'newest' ? timeB - timeA : timeA - timeB;
-            })
-            .map((comment) => (
-            <div key={comment.id} className="border border-light rounded-sm p-4 md:p-5 bg-background shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-                <div className="flex-1">
-                  <p className="text-[10px] uppercase tracking-wider text-muted font-bold">
-                    {comment.blogTitle}
-                  </p>
-                  <h3 className="text-base md:text-lg font-bold mt-1">{comment.name}</h3>
-                  {comment.email && (
-                    <p className="text-xs md:text-sm text-secondary truncate max-w-[250px]">{comment.email}</p>
-                  )}
-                  <p className="text-xs text-muted mt-1"><FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
-                </div>
-
-                <div className="flex flex-row md:flex-wrap w-full md:w-auto gap-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleCommentApproval(comment)}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    <ShieldCheck size={12} className="md:w-3.5 md:h-3.5" />
-                    {comment.isApproved ? 'Unapprove' : 'Approve'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => deleteComment(comment.id)}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
-                    Delete
-                  </button>
-                </div>
-              </div>
-
-              <p className="mt-4 whitespace-pre-wrap text-sm md:text-base leading-relaxed">{comment.content}</p>
-
-              {comment.replies.length > 0 && (
-                <div className="mt-4 space-y-3">
-                  {comment.replies.map((reply) => (
-                    <div key={reply.id} className="ml-4 border-l-2 border-light pl-4 flex items-start justify-between gap-4 group">
-                      <div>
-                        <p className="font-bold text-sm">
-                          {reply.name}{' '}
-                          {reply.isOwner && (
-                            <span className="text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-1 rounded-sm">
-                              ✔ Verified
-                            </span>
-                          )}
-                        </p>
-                        <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
-                        <p className="text-xs text-muted mt-2"><FormattedDate date={reply.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} /></p>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => deleteReply(reply.id)}
-                        className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                        title="Delete Reply"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="mt-4 space-y-3">
-                <textarea
-                  rows={3}
-                  placeholder="Reply as owner (will show verified tick)"
-                  value={replyDrafts[comment.id] || ''}
-                  onChange={(event) => setReplyDrafts((prev) => ({
-                    ...prev,
-                    [comment.id]: event.target.value,
-                  }))}
-                  className="w-full border border-light rounded-sm px-3 py-2 bg-background"
-                />
-                <button
-                  type="button"
-                  onClick={() => submitOwnerReply(comment.id)}
-                  disabled={replyingToCommentId === comment.id}
-                  className="bg-brand-black hover:bg-zinc-800 disabled:opacity-60 text-white px-4 py-2 rounded-sm text-sm font-bold uppercase tracking-wider"
-                >
-                  {replyingToCommentId === comment.id ? 'Replying...' : 'Reply as Verified Owner'}
-                </button>
-              </div>
+        {/* Pending alert banner with bulk actions */}
+        {overview.stats.pendingComments > 0 && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Clock size={18} className="text-amber-600 flex-shrink-0" />
+              <p className="text-sm font-bold text-amber-800">
+                {overview.stats.pendingComments} comment{overview.stats.pendingComments !== 1 ? 's' : ''} awaiting your approval
+              </p>
             </div>
-          ))}
-          {overview.comments.length === 0 && (
-            <p className="text-muted">No comments yet.</p>
-          )}
-
-          {overview.comments.length > 0 && overview.comments.filter(c => selectedPostForComments === 'all' || c.blogId === selectedPostForComments).length === 0 && (
-            <div className="text-center py-10 bg-background rounded-sm border border-dashed border-light">
-              <p className="text-muted font-medium italic">No comments found for this specific post.</p>
-              <button 
-                onClick={() => setSelectedPostForComments('all')}
-                className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
+            <div className="flex gap-2 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => bulkAction('approve_all_pending')}
+                disabled={bulkActioning}
+                className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider transition-colors"
               >
-                Show all comments
+                <CheckCheck size={12} />
+                Approve All
+              </button>
+              <button
+                type="button"
+                onClick={() => bulkAction('delete_all_pending')}
+                disabled={bulkActioning}
+                className="flex items-center gap-1.5 bg-white hover:bg-red-600 disabled:opacity-60 text-red-600 hover:text-white px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider border border-red-200 hover:border-red-600 transition-colors"
+              >
+                <Trash2 size={12} />
+                Delete All
               </button>
             </div>
-          )}
+          </div>
+        )}
+
+        {/* Filter tabs + sort */}
+        <div className="flex items-center gap-0 border-b border-light mb-6">
+          {(['all', 'pending', 'approved'] as const).map((tab) => {
+            const count = tab === 'all'
+              ? overview.comments.length
+              : tab === 'pending'
+              ? overview.comments.filter(c => !c.isApproved).length
+              : overview.comments.filter(c => c.isApproved).length;
+            return (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setCommentFilter(tab)}
+                className={`flex items-center gap-2 px-4 py-2.5 text-[10px] md:text-xs font-black uppercase tracking-wider border-b-2 -mb-px transition-colors ${
+                  commentFilter === tab
+                    ? 'border-brand-orange text-brand-orange'
+                    : 'border-transparent text-muted hover:text-primary'
+                }`}
+              >
+                {tab}
+                <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
+                  tab === 'pending' && count > 0
+                    ? 'bg-amber-100 text-amber-800'
+                    : 'bg-light/80 text-secondary'
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+          <div className="ml-auto pr-1">
+            <select
+              value={commentSortOrder}
+              onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
+              className="bg-transparent text-[10px] font-bold uppercase tracking-wider outline-none cursor-pointer text-muted"
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Comments list */}
+        <div className="space-y-5">
+          {(() => {
+            const filtered = overview.comments
+              .filter(c => {
+                const matchPost = selectedPostForComments === 'all' || c.blogId === selectedPostForComments;
+                const matchFilter =
+                  commentFilter === 'all' ||
+                  (commentFilter === 'pending' && !c.isApproved) ||
+                  (commentFilter === 'approved' && c.isApproved);
+                return matchPost && matchFilter;
+              })
+              .sort((a, b) => {
+                const ta = new Date(a.createdAt).getTime();
+                const tb = new Date(b.createdAt).getTime();
+                return commentSortOrder === 'newest' ? tb - ta : ta - tb;
+              });
+
+            if (filtered.length === 0) {
+              return (
+                <div className="text-center py-14 bg-background rounded-sm border border-dashed border-light">
+                  {commentFilter === 'pending' ? (
+                    <>
+                      <CheckCircle className="mx-auto text-green-500 mb-3" size={32} />
+                      <p className="font-bold text-green-700">All caught up!</p>
+                      <p className="text-sm text-muted mt-1">No comments pending review.</p>
+                    </>
+                  ) : (
+                    <>
+                      <MessageSquare className="mx-auto text-muted mb-3" size={32} />
+                      <p className="text-muted font-medium italic">
+                        {overview.comments.length === 0 ? 'No comments yet.' : 'No comments match this filter.'}
+                      </p>
+                      {overview.comments.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => { setCommentFilter('all'); setSelectedPostForComments('all'); }}
+                          className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
+                        >
+                          Show all comments
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            }
+
+            return filtered.map((comment) => (
+              <div
+                key={comment.id}
+                className={`rounded-sm p-4 md:p-5 bg-background shadow-sm hover:shadow-md transition-all border ${
+                  !comment.isApproved
+                    ? 'border-l-4 border-amber-300'
+                    : 'border-light'
+                }`}
+              >
+                {/* Comment header */}
+                <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <p className="text-[10px] uppercase tracking-wider text-muted font-bold truncate">{comment.blogTitle}</p>
+                      {!comment.isApproved ? (
+                        <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full flex-shrink-0">
+                          <Clock size={9} />
+                          Awaiting Review
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex-shrink-0">
+                          <CheckCircle size={9} />
+                          Approved
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base md:text-lg font-bold">{comment.name}</h3>
+                    {comment.email && (
+                      <p className="text-xs text-secondary truncate max-w-[260px]">{comment.email}</p>
+                    )}
+                    <p className="text-xs text-muted mt-1">
+                      <FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                    </p>
+                  </div>
+
+                  <div className="flex flex-row md:flex-wrap w-full md:w-auto gap-2 flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => toggleCommentApproval(comment)}
+                      className={`flex-1 md:flex-none flex items-center justify-center gap-1 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors border ${
+                        !comment.isApproved
+                          ? 'bg-green-600 hover:bg-green-700 text-white border-green-600'
+                          : 'border-light hover:border-amber-400 hover:text-amber-600'
+                      }`}
+                    >
+                      <ShieldCheck size={12} className="md:w-3.5 md:h-3.5" />
+                      {comment.isApproved ? 'Unapprove' : 'Approve'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deleteComment(comment.id)}
+                      className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
+                    >
+                      <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                {/* Comment body */}
+                <p className="mt-4 whitespace-pre-wrap text-sm md:text-base leading-relaxed">{comment.content}</p>
+
+                {/* Replies */}
+                {comment.replies.length > 0 && (
+                  <div className="mt-4 space-y-3">
+                    {comment.replies.map((reply) => (
+                      <div key={reply.id} className="ml-4 border-l-2 border-light pl-4 flex items-start justify-between gap-4 group">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm">
+                            {reply.name}{' '}
+                            {reply.isOwner && (
+                              <span className="text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-sm ml-1">
+                                ✔ Verified
+                              </span>
+                            )}
+                          </p>
+                          <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
+                          <p className="text-xs text-muted mt-2">
+                            <FormattedDate date={reply.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => deleteReply(reply.id)}
+                          className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 flex-shrink-0"
+                          title="Delete Reply"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Reply box */}
+                <div className="mt-5 space-y-2">
+                  {!comment.isApproved && (
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1.5 rounded-sm border border-amber-200 inline-block">
+                      Replying will also approve this comment.
+                    </p>
+                  )}
+                  <textarea
+                    rows={3}
+                    placeholder="Reply as owner (will show verified tick)"
+                    value={replyDrafts[comment.id] || ''}
+                    onChange={(event) => setReplyDrafts((prev) => ({ ...prev, [comment.id]: event.target.value }))}
+                    className="w-full border border-light rounded-sm px-3 py-2 bg-background text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => submitOwnerReply(comment.id)}
+                    disabled={replyingToCommentId === comment.id || !(replyDrafts[comment.id] || '').trim()}
+                    className="flex items-center gap-2 bg-brand-black hover:bg-zinc-800 disabled:opacity-50 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                  >
+                    <Reply size={14} />
+                    {replyingToCommentId === comment.id
+                      ? 'Sending...'
+                      : !comment.isApproved
+                      ? 'Approve & Reply'
+                      : 'Reply as Verified Owner'}
+                  </button>
+                </div>
+              </div>
+            ));
+          })()}
         </div>
       </div>
 

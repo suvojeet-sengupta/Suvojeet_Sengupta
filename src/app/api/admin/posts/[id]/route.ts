@@ -52,9 +52,9 @@ export async function GET(request: Request, context: RouteContext) {
         imageUrl: post.image_url
       } 
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('API Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
 
@@ -102,9 +102,9 @@ export async function PUT(request: Request, context: RouteContext) {
     ).run();
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('API Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
 
@@ -145,8 +145,9 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
 
     return NextResponse.json({ post: mapBlogSummary(postRow) });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }
 
@@ -166,7 +167,8 @@ export async function DELETE(request: Request, context: RouteContext) {
     await db.prepare('DELETE FROM blogs WHERE id = ?').bind(postId).run();
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
   }
 }

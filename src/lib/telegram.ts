@@ -1,9 +1,12 @@
 import { getRuntimeString } from "./cloudflare";
 
-/**
- * Sends a notification to Suvojeet via Telegram Bot
- * Uses secrets stored in Cloudflare Environment Variables
- */
+export function escapeTelegramHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 export async function sendTelegramNotification(text: string) {
   const token = getRuntimeString('TELEGRAM_BOT_TOKEN');
   const chatId = getRuntimeString('TELEGRAM_CHAT_ID');
@@ -22,6 +25,7 @@ export async function sendTelegramNotification(text: string) {
         text: text,
         parse_mode: 'HTML'
       }),
+      signal: AbortSignal.timeout(5000),
     });
 
     return response.ok;
