@@ -7,11 +7,10 @@ import { getE2ePostFixture, isE2ePostFixtureSlug } from '@/lib/e2e-fixtures';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
 import BlogPostPage from '@/features/blog/components/BlogPostPage';
 import { headers } from 'next/headers';
+import { getOgImageUrl } from '@/lib/seo';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
-
-const SUPABASE_FUNCTIONS_URL = process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -41,12 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `${post.title} | Suvojeet Sengupta`;
   const description = post.excerpt || `Read "${post.title}" on Suvojeet Sengupta's blog.`;
-
-  const ogParams = new URLSearchParams({ title: post.title });
-  if (post.category) ogParams.set('category', post.category);
-  const ogImage = SUPABASE_FUNCTIONS_URL
-    ? `${SUPABASE_FUNCTIONS_URL}/og-image?${ogParams}`
-    : `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`;
+  const ogImage = getOgImageUrl(post.title, { category: post.category });
 
   return {
     title,
@@ -214,9 +208,7 @@ export default async function Page({ params }: PageProps) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: SUPABASE_FUNCTIONS_URL
-      ? `${SUPABASE_FUNCTIONS_URL}/og-image?title=${encodeURIComponent(post.title)}`
-      : `https://suvojeetsengupta.in/api/og?title=${encodeURIComponent(post.title)}`,
+    image: getOgImageUrl(post.title),
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     author: {
