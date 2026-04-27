@@ -30,8 +30,8 @@ Deno.serve(async (req: Request) => {
     const subtitle = url.searchParams.get("subtitle") || "";
 
     const [fontRegular, fontBold] = await Promise.all([
-      fetch("https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2").then((r) => r.arrayBuffer()),
-      fetch("https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFufAZ9hiJ-Ek-_EeA.woff2").then((r) => r.arrayBuffer()),
+      fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-400-normal.woff").then((r) => r.arrayBuffer()),
+      fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-800-normal.woff").then((r) => r.arrayBuffer()),
     ]);
 
     const fontSize = title.length > 70 ? 48 : title.length > 40 ? 58 : 68;
