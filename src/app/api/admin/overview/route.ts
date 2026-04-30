@@ -72,8 +72,17 @@ export async function GET(request: Request) {
           is_read INTEGER DEFAULT 0,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
+      `),
+      db.prepare(`
+        CREATE TABLE IF NOT EXISTS site_settings (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL
+        )
       `)
     ]);
+
+    // Initialize default settings if they don't exist
+    await db.prepare('INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)').bind('require_comment_approval', '1').run();
     
     // Attempt to add column separately to avoid breaking batch if it exists
     try {
@@ -234,11 +243,17 @@ export async function GET(request: Request) {
       createdAt: String(row.created_at || ''),
       replies: repliesByComment.get(commentId) || [],
     };
-  });
+    });
 
-  const posts = postsResult.results.map((row) => mapBlogSummary(row));
+    const settingsResult = await db.prepare('SELECT key, value FROM site_settings').all<Record<string, unknown>>();
+    const settings: Record<string, string> = {};
+    for (const row of settingsResult.results) {
+    settings[String(row.key)] = String(row.value);
+    }
 
-  return NextResponse.json({
+    const posts = postsResult.results.map((row) => mapBlogSummary(row));
+
+    return NextResponse.json({
     stats: {
       totalPosts: Number(statsRow?.total_posts || 0),
       totalComments: Number(statsRow?.total_comments || 0),
@@ -259,5 +274,6 @@ export async function GET(request: Request) {
     comments,
     videos,
     messages,
-  });
+    settings,
+    });
 }

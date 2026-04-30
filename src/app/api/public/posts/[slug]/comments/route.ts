@@ -149,9 +149,18 @@ export async function POST(request: Request, context: RouteContext) {
     return NextResponse.json({ error: 'Name and comment are required.' }, { status: 400, headers: NO_STORE_HEADERS });
   }
 
+  // Check global moderation setting
+  const moderationSetting = await db
+    .prepare('SELECT value FROM site_settings WHERE key = ? LIMIT 1')
+    .bind('require_comment_approval')
+    .first<{ value: string }>();
+  
+  const requireApproval = moderationSetting ? toBoolean(moderationSetting.value) : true;
+  const isApproved = requireApproval ? 0 : 1;
+
   const insertResult = await db
-    .prepare('INSERT INTO comments (blog_id, name, email, content, is_approved) VALUES (?, ?, ?, ?, 0)')
-    .bind(blog.id, name, email, content)
+    .prepare('INSERT INTO comments (blog_id, name, email, content, is_approved) VALUES (?, ?, ?, ?, ?)')
+    .bind(blog.id, name, email, content, isApproved)
     .run();
 
   const insertedId = Number((insertResult.meta || {}).last_row_id || 0);

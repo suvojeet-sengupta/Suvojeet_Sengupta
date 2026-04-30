@@ -63,6 +63,7 @@ interface DashboardOverview {
   comments: AdminComment[];
   videos: MusicVideo[];
   messages: AdminMessage[];
+  settings?: Record<string, string>;
 }
 
 interface AdminUser {
@@ -142,6 +143,8 @@ export default function AdminDashboardPage() {
   const [videoForm, setVideoForm] = useState<VideoFormState>(initialVideoForm);
   const [submittingVideo, setSubmittingVideo] = useState(false);
   const [isVideoFormOpen, setIsVideoFormOpen] = useState(false);
+
+  const [updatingSettings, setUpdatingSettings] = useState(false);
 
   const [userForm, setUserForm] = useState<UserFormState>(initialUserForm);
   const [submittingUser, setSubmittingUser] = useState(false);
@@ -533,6 +536,51 @@ export default function AdminDashboardPage() {
     }
 
     setActionMessage('Reply deleted.');
+  };
+
+  const updateSetting = async (key: string, value: string) => {
+    if (updatingSettings) return;
+
+    const previousSettings = { ...overview?.settings };
+    setOverview(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        settings: {
+          ...prev.settings,
+          [key]: value
+        }
+      };
+    });
+
+    setUpdatingSettings(true);
+    try {
+      const response = await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, value }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json();
+        throw new Error(payload.error || 'Failed to update setting');
+      }
+      
+      setActionMessage('Settings updated successfully.');
+    } catch (err: any) {
+      console.error(err);
+      setActionMessage(err.message || 'Unable to update setting.');
+      // Rollback
+      setOverview(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          settings: previousSettings as Record<string, string>
+        };
+      });
+    } finally {
+      setUpdatingSettings(false);
+    }
   };
 
   const bulkAction = async (action: 'approve_all_pending' | 'delete_all_pending') => {
@@ -1225,18 +1273,35 @@ export default function AdminDashboardPage() {
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
-            <Filter size={14} className="text-muted flex-shrink-0" />
-            <select
-              value={selectedPostForComments}
-              onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-              className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
-            >
-              <option value="all">All Posts</option>
-              {overview.posts.map(post => (
-                <option key={post.id} value={post.id}>{post.title}</option>
-              ))}
-            </select>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
+              <ShieldCheck size={14} className="text-brand-orange flex-shrink-0" />
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  disabled={updatingSettings}
+                  checked={(overview.settings?.require_comment_approval ?? '1') === '1'}
+                  onChange={(e) => updateSetting('require_comment_approval', e.target.checked ? '1' : '0')}
+                  className="w-3.5 h-3.5 accent-brand-orange"
+                />
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider select-none">
+                  Review first
+                </span>
+              </label>
+            </div>
+            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
+              <Filter size={14} className="text-muted flex-shrink-0" />
+              <select
+                value={selectedPostForComments}
+                onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
+              >
+                <option value="all">All Posts</option>
+                {overview.posts.map(post => (
+                  <option key={post.id} value={post.id}>{post.title}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
