@@ -14,7 +14,7 @@ function walk(dir, fileList = []) {
   return fileList;
 }
 
-const apiDir = path.join(process.cwd(), 'src/app/api');
+const apiDir = path.join(process.cwd(), 'src/api-handlers');
 const routes = walk(apiDir);
 
 let imports = '';
@@ -23,9 +23,7 @@ let routeDefs = '';
 let counter = 0;
 for (const file of routes) {
   const relativePath = path.relative(apiDir, file);
-  // Skip if it's the catch-all route itself
-  if (relativePath.includes('[[...route]]')) continue;
-
+  
   const apiPath = '/api/' + relativePath.replace(/\/route\.ts$/, '');
   const importPath = '@/api-handlers/' + relativePath.replace(/\/route\.ts$/, '');
   
