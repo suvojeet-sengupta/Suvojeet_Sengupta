@@ -25,7 +25,7 @@ for (const file of routes) {
   const relativePath = path.relative(apiDir, file);
   
   const apiPath = '/api/' + relativePath.replace(/\/route\.ts$/, '');
-  const importPath = '../../../api-handlers/' + relativePath.replace(/\/route\.ts$/, '');
+  const importPath = '@/api-handlers/' + relativePath.replace(/\.ts$/, '');
   
   const varName = 'route' + counter++;
   imports += `import * as ${varName} from '${importPath}';\n`;
