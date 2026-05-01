@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { getKv, getRuntimeString, requireRuntimeString } from '@/lib/cloudflare';
 import { sha256Hex } from '@/lib/blog-utils';
+import { SignJWT, jwtVerify } from 'jose';
 
 const SESSION_COOKIE_NAME = 'admin_session';
+const REFRESH_TOKEN_COOKIE_NAME = 'admin_refresh_token';
+const ACCESS_TOKEN_EXPIRY = '15m';
+const REFRESH_TOKEN_EXPIRY_DAYS = 7;
 const MAX_PBKDF2_ITERATIONS = 100000;
 const DEFAULT_HASH_ITERATIONS = MAX_PBKDF2_ITERATIONS;
 const DEFAULT_SESSION_HOURS = 168; // 7 days
@@ -17,12 +21,75 @@ export interface AdminUser {
   createdAt: string;
 }
 
+export interface JWTPayload {
+  email: string;
+  type?: 'refresh' | 'access';
+  [key: string]: unknown;
+}
+
 function isProductionRuntime(): boolean {
   if (typeof process !== 'undefined' && typeof process.env !== 'undefined') {
     return process.env.NODE_ENV === 'production';
   }
 
   return false;
+}
+
+async function getJwtSecretKey(): Promise<Uint8Array> {
+  const secret = requireRuntimeString('JWT_SECRET');
+  return encoder.encode(secret);
+}
+
+export async function createAccessToken(email: string): Promise<string> {
+  const secret = await getJwtSecretKey();
+  return await new SignJWT({ email, type: 'access' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime(ACCESS_TOKEN_EXPIRY)
+    .sign(secret);
+}
+
+export async function createRefreshToken(email: string): Promise<string> {
+  const secret = await getJwtSecretKey();
+  const token = await new SignJWT({ email, type: 'refresh' })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime(`${REFRESH_TOKEN_EXPIRY_DAYS}d`)
+    .sign(secret);
+
+  // Store refresh token hash in KV for revocation support
+  const tokenHash = await sha256Hex(token);
+  const kv = getKv();
+  const ttl = REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60;
+  await kv.put(`refresh_token:${tokenHash}`, email.trim().toLowerCase(), { expirationTtl: ttl });
+
+  return token;
+}
+
+export async function verifyToken(token: string): Promise<JWTPayload | null> {
+  try {
+    const secret = await getJwtSecretKey();
+    const { payload } = await jwtVerify(token, secret);
+    return payload as unknown as JWTPayload;
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function verifyRefreshToken(token: string): Promise<JWTPayload | null> {
+  const payload = await verifyToken(token);
+  if (!payload || payload.type !== 'refresh') return null;
+
+  // Check if refresh token is revoked
+  const tokenHash = await sha256Hex(token);
+  const kv = getKv();
+  const emailInKv = await kv.get(`refresh_token:${tokenHash}`);
+  
+  if (!emailInKv || emailInKv !== payload.email) {
+    return null;
+  }
+
+  return payload;
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
@@ -185,6 +252,9 @@ export async function createOrUpdateUser(user: AdminUser): Promise<void> {
   }));
 }
 
+/**
+ * @deprecated Use createAccessToken and createRefreshToken for stateless auth
+ */
 export async function createAdminSessionToken(email: string): Promise<string> {
   const token = `${crypto.randomUUID()}${crypto.randomUUID()}`;
   const tokenHash = await sha256Hex(token);
@@ -197,17 +267,39 @@ export async function createAdminSessionToken(email: string): Promise<string> {
 }
 
 export async function revokeAdminSession(token: string): Promise<void> {
-  const kv = getKv();
+  // Revoke classic session
   const tokenHash = await sha256Hex(token);
+  const kv = getKv();
   await kv.delete(`session:${tokenHash}`);
+  
+  // Revoke refresh token if it is one
+  const payload = await verifyToken(token);
+  if (payload && payload.type === 'refresh') {
+    await kv.delete(`refresh_token:${tokenHash}`);
+  }
 }
 
 export function getAdminTokenFromRequest(request: Request): string | null {
+  // Check Authorization header first
+  const authHeader = request.headers.get('Authorization');
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.substring(7);
+  }
+  
+  // Fallback to cookie
   return parseCookieValue(request.headers.get('cookie'), SESSION_COOKIE_NAME);
 }
 
 export async function getAuthenticatedUserEmail(token: string | null): Promise<string | null> {
   if (!token) return null;
+
+  // Try JWT verification first
+  const payload = await verifyToken(token);
+  if (payload && payload.email) {
+    return payload.email;
+  }
+
+  // Fallback to classic session check
   const tokenHash = await sha256Hex(token);
   const kv = getKv();
   return await kv.get(`session:${tokenHash}`);
@@ -242,7 +334,20 @@ export function attachAdminCookie(response: NextResponse, token: string): NextRe
   return response;
 }
 
-export function clearAdminCookie(response: NextResponse): NextResponse {
+export function attachRefreshTokenCookie(response: NextResponse, token: string): NextResponse {
+  response.cookies.set({
+    name: REFRESH_TOKEN_COOKIE_NAME,
+    value: token,
+    httpOnly: true,
+    secure: isProductionRuntime(),
+    sameSite: 'strict',
+    path: '/',
+    maxAge: REFRESH_TOKEN_EXPIRY_DAYS * 24 * 60 * 60,
+  });
+  return response;
+}
+
+export function clearAdminCookies(response: NextResponse): NextResponse {
   response.cookies.set({
     name: SESSION_COOKIE_NAME,
     value: '',
@@ -252,7 +357,23 @@ export function clearAdminCookie(response: NextResponse): NextResponse {
     path: '/',
     maxAge: 0,
   });
+  response.cookies.set({
+    name: REFRESH_TOKEN_COOKIE_NAME,
+    value: '',
+    httpOnly: true,
+    secure: isProductionRuntime(),
+    sameSite: 'strict',
+    path: '/',
+    maxAge: 0,
+  });
   return response;
+}
+
+/**
+ * @deprecated Use clearAdminCookies
+ */
+export function clearAdminCookie(response: NextResponse): NextResponse {
+  return clearAdminCookies(response);
 }
 
 export async function isDashboardSessionActive(): Promise<boolean> {
@@ -263,4 +384,8 @@ export async function isDashboardSessionActive(): Promise<boolean> {
 
 export function adminCookieName(): string {
   return SESSION_COOKIE_NAME;
+}
+
+export function refreshCookieName(): string {
+  return REFRESH_TOKEN_COOKIE_NAME;
 }

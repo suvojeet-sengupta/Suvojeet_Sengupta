@@ -11,19 +11,20 @@ import * as route7 from '@/api-handlers/admin/music-videos/route';
 import * as route8 from '@/api-handlers/admin/overview/route';
 import * as route9 from '@/api-handlers/admin/posts/[id]/route';
 import * as route10 from '@/api-handlers/admin/posts/route';
-import * as route11 from '@/api-handlers/admin/replies/[id]/route';
-import * as route12 from '@/api-handlers/admin/session/route';
-import * as route13 from '@/api-handlers/admin/settings/route';
-import * as route14 from '@/api-handlers/admin/users/route';
-import * as route15 from '@/api-handlers/public/comments/[commentId]/replies/route';
-import * as route16 from '@/api-handlers/public/contact/route';
-import * as route17 from '@/api-handlers/public/music-videos/[id]/play/route';
-import * as route18 from '@/api-handlers/public/music-videos/route';
-import * as route19 from '@/api-handlers/public/posts/[slug]/comments/route';
-import * as route20 from '@/api-handlers/public/posts/[slug]/like/route';
-import * as route21 from '@/api-handlers/public/posts/[slug]/route';
-import * as route22 from '@/api-handlers/public/posts/route';
-import * as route23 from '@/api-handlers/public/subscribe/route';
+import * as route11 from '@/api-handlers/admin/refresh/route';
+import * as route12 from '@/api-handlers/admin/replies/[id]/route';
+import * as route13 from '@/api-handlers/admin/session/route';
+import * as route14 from '@/api-handlers/admin/settings/route';
+import * as route15 from '@/api-handlers/admin/users/route';
+import * as route16 from '@/api-handlers/public/comments/[commentId]/replies/route';
+import * as route17 from '@/api-handlers/public/contact/route';
+import * as route18 from '@/api-handlers/public/music-videos/[id]/play/route';
+import * as route19 from '@/api-handlers/public/music-videos/route';
+import * as route20 from '@/api-handlers/public/posts/[slug]/comments/route';
+import * as route21 from '@/api-handlers/public/posts/[slug]/like/route';
+import * as route22 from '@/api-handlers/public/posts/[slug]/route';
+import * as route23 from '@/api-handlers/public/posts/route';
+import * as route24 from '@/api-handlers/public/subscribe/route';
 
 
 export const runtime = 'edge';
@@ -57,19 +58,20 @@ const routes = [
   { pattern: '/api/admin/overview', handlers: route8 as any },
   { pattern: '/api/admin/posts/[id]', handlers: route9 as any },
   { pattern: '/api/admin/posts', handlers: route10 as any },
-  { pattern: '/api/admin/replies/[id]', handlers: route11 as any },
-  { pattern: '/api/admin/session', handlers: route12 as any },
-  { pattern: '/api/admin/settings', handlers: route13 as any },
-  { pattern: '/api/admin/users', handlers: route14 as any },
-  { pattern: '/api/public/comments/[commentId]/replies', handlers: route15 as any },
-  { pattern: '/api/public/contact', handlers: route16 as any },
-  { pattern: '/api/public/music-videos/[id]/play', handlers: route17 as any },
-  { pattern: '/api/public/music-videos', handlers: route18 as any },
-  { pattern: '/api/public/posts/[slug]/comments', handlers: route19 as any },
-  { pattern: '/api/public/posts/[slug]/like', handlers: route20 as any },
-  { pattern: '/api/public/posts/[slug]', handlers: route21 as any },
-  { pattern: '/api/public/posts', handlers: route22 as any },
-  { pattern: '/api/public/subscribe', handlers: route23 as any },
+  { pattern: '/api/admin/refresh', handlers: route11 as any },
+  { pattern: '/api/admin/replies/[id]', handlers: route12 as any },
+  { pattern: '/api/admin/session', handlers: route13 as any },
+  { pattern: '/api/admin/settings', handlers: route14 as any },
+  { pattern: '/api/admin/users', handlers: route15 as any },
+  { pattern: '/api/public/comments/[commentId]/replies', handlers: route16 as any },
+  { pattern: '/api/public/contact', handlers: route17 as any },
+  { pattern: '/api/public/music-videos/[id]/play', handlers: route18 as any },
+  { pattern: '/api/public/music-videos', handlers: route19 as any },
+  { pattern: '/api/public/posts/[slug]/comments', handlers: route20 as any },
+  { pattern: '/api/public/posts/[slug]/like', handlers: route21 as any },
+  { pattern: '/api/public/posts/[slug]', handlers: route22 as any },
+  { pattern: '/api/public/posts', handlers: route23 as any },
+  { pattern: '/api/public/subscribe', handlers: route24 as any },
 
 ];
 

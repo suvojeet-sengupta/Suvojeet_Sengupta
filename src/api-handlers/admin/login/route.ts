@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import {
   attachAdminCookie,
-  createAdminSessionToken,
+  attachRefreshTokenCookie,
+  createAccessToken,
+  createRefreshToken,
   validateAdminCredentials,
 } from '@/lib/admin-auth';
 import { normalizeText } from '@/lib/blog-utils';
@@ -36,13 +38,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401, headers: NO_STORE_HEADERS });
     }
 
-    const token = await createAdminSessionToken(email);
+    const accessToken = await createAccessToken(email);
+    const refreshToken = await createRefreshToken(email);
     
     // Notify on successful login
     await sendTelegramNotification(`<b>🔐 Admin Login Detected</b>\n<b>User:</b> ${email}\n<b>Time:</b> ${new Date().toLocaleString()}`);
 
-    const response = NextResponse.json({ authenticated: true }, { headers: NO_STORE_HEADERS });
-    return attachAdminCookie(response, token);
+    const response = NextResponse.json({ 
+      authenticated: true,
+      accessToken: accessToken 
+    }, { headers: NO_STORE_HEADERS });
+
+    attachAdminCookie(response, accessToken); // Also set access token as cookie for dashboard compatibility
+    return attachRefreshTokenCookie(response, refreshToken);
   } catch (error) {
     console.error('Admin login failure:', error);
     const message = error instanceof Error
