@@ -53,7 +53,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className = "", size = "defau
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${buttonSize} rounded-xl bg-tertiary/50 backdrop-blur-sm text-muted-foreground flex items-center justify-center transition-all duration-500 border border-light/50 hover:bg-brand-orange hover:text-white hover:border-brand-orange hover:shadow-xl hover:shadow-brand-orange/20`}
+            className={`${buttonSize} text-[color:var(--text-secondary)] flex items-center justify-center transition-colors border border-[color:var(--line-strong)] hover:bg-[color:var(--neon)] hover:text-[color:var(--ink)] hover:border-[color:var(--neon)]`}
             variants={itemVariants}
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.9 }}

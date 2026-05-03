@@ -245,21 +245,30 @@ const ResumeHub = () => {
     };
 
     return (
-        <section className="py-24 bg-tertiary">
+        <section className="bg-[color:var(--bg-secondary)]">
             <div className="section-container">
                 {/* Section Header */}
-                <div className="text-center mb-16">
+                <div className="text-center mb-14 sm:mb-16">
+                    <motion.div
+                        className="v-section-num"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        03 / Résumé
+                    </motion.div>
                     <motion.h2
-                        className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tighter"
+                        className="v-section-title"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        Professional <span className="text-brand-orange">Journey</span>
+                        Professional <em>Journey</em>
                     </motion.h2>
                     <motion.p
-                        className="text-secondary font-medium text-lg leading-relaxed max-w-2xl mx-auto"
+                        className="mt-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-[color:var(--text-secondary)] opacity-80"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -276,31 +285,31 @@ const ResumeHub = () => {
                         return (
                             <motion.div
                                 key={exp.id}
-                                className="professional-card border overflow-hidden"
+                                className="professional-card !p-0 overflow-hidden"
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                transition={{ duration: 0.5, delay: index * 0.08 }}
                             >
                                 {/* Header - Always Visible */}
                                 <button
                                     onClick={() => toggleExpand(exp.id)}
-                                    className="w-full p-6 flex items-center justify-between text-left hover:bg-tertiary/50 transition-colors"
+                                    className="w-full p-5 sm:p-6 flex items-center justify-between gap-4 text-left hover:bg-[color:var(--bg-tertiary)]/40 transition-colors"
                                 >
-                                    <div className="flex items-center gap-4 flex-shrink-0">
-                                        <span className="text-3xl">{exp.icon}</span>
-                                        <div>
-                                            <h3 className="text-xl font-bold">{exp.role}</h3>
-                                            <p className="text-sm text-brand-orange font-medium">{exp.company} | {exp.period}</p>
+                                    <div className="flex items-center gap-4 flex-shrink min-w-0">
+                                        <span className="text-2xl sm:text-3xl flex-shrink-0">{exp.icon}</span>
+                                        <div className="min-w-0">
+                                            <h3 className="font-serif text-base sm:text-xl font-semibold truncate">{exp.role}</h3>
+                                            <p className="text-xs sm:text-sm font-mono uppercase tracking-[0.15em] text-[color:var(--neon)] mt-1 truncate">{exp.company} · {exp.period}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3 flex-shrink-0 ml-4">
+                                    <div className="flex items-center gap-3 flex-shrink-0">
                                         {exp.link && (
                                             <a
                                                 href={exp.link}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-xs text-muted hover:text-brand-orange transition-colors"
+                                                className="hidden sm:inline-block text-[10px] uppercase tracking-[0.2em] font-mono text-[color:var(--text-muted)] hover:text-[color:var(--neon)] transition-colors"
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 {exp.linkLabel || 'Visit'}
@@ -320,21 +329,21 @@ const ResumeHub = () => {
                                             transition={{ duration: 0.3 }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="px-6 pb-6 pt-2 border-t border-light/50">
+                                            <div className="px-5 sm:px-6 pb-6 pt-3 border-t border-[color:var(--line)]">
                                                 {/* Description */}
-                                                <p className="text-secondary mb-6 leading-relaxed">
+                                                <p className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-85 mb-6 leading-relaxed">
                                                     {exp.description}
                                                 </p>
 
                                                 {/* Key Contributions */}
                                                 <div className="mb-6">
-                                                    <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted mb-3">
+                                                    <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] mb-3">
                                                         Key Contributions
                                                     </h4>
                                                     <ul className="space-y-2">
                                                         {exp.details.map((detail, i) => (
-                                                            <li key={i} className="flex items-start gap-3 text-sm text-secondary">
-                                                                <span className="w-1.5 h-1.5 bg-brand-orange mt-2 flex-shrink-0" />
+                                                            <li key={i} className="flex items-start gap-3 text-sm text-[color:var(--text-secondary)] opacity-85">
+                                                                <span className="w-1 h-1 bg-[color:var(--neon)] mt-2.5 flex-shrink-0" />
                                                                 {detail}
                                                             </li>
                                                         ))}
@@ -343,15 +352,12 @@ const ResumeHub = () => {
 
                                                 {/* Skills */}
                                                 <div>
-                                                    <h4 className="text-xs font-black uppercase tracking-[0.2em] text-muted mb-3">
+                                                    <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] mb-3">
                                                         Skills
                                                     </h4>
                                                     <div className="flex flex-wrap gap-2">
                                                         {exp.skills.map((skill, i) => (
-                                                            <span
-                                                                key={i}
-                                                                className="px-3 py-1 bg-background border border-light/50 text-xs font-bold rounded-sm"
-                                                            >
+                                                            <span key={i} className="v-pill">
                                                                 {skill}
                                                             </span>
                                                         ))}
@@ -375,17 +381,17 @@ const ResumeHub = () => {
                     transition={{ duration: 0.5 }}
                 >
                     <motion.button
-                        className="btn-solid inline-flex items-center gap-3 px-12 py-4 text-sm font-black uppercase tracking-widest disabled:opacity-50"
-                        whileHover={{ scale: 1.02 }}
+                        className="btn-solid disabled:opacity-50"
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={handleDownload}
                         disabled={downloading}
                     >
                         <DownloadIcon />
-                        <span>{downloading ? 'Generating...' : 'Download Resume PDF'}</span>
+                        <span>{downloading ? 'Pressing...' : 'Download Resume PDF'}</span>
                     </motion.button>
-                    <p className="text-[10px] text-center text-muted font-black uppercase tracking-widest mt-4">
-                        Last Updated: April 2026
+                    <p className="font-mono text-[10px] text-center text-[color:var(--text-muted)] uppercase tracking-[0.25em] mt-4">
+                        Last Updated · {new Date().toISOString().slice(0,7).replace('-', '.')}
                     </p>
                 </motion.div>
             </div>

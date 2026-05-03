@@ -117,20 +117,48 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .track {
-    grid-template-columns: 40px 1fr auto;
-    gap: 16px;
+    grid-template-columns: 40px 1fr auto auto;
+    gap: 14px 18px;
+    padding: 22px 0;
   }
-  .trackLang,
   .trackDesc {
     display: none;
   }
   .trackTitle {
     font-size: 22px;
   }
+  .trackTitle em {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 640px) {
+  .track {
+    grid-template-columns: 32px 1fr auto;
+    gap: 12px 14px;
+    padding: 20px 0;
+  }
+  .track:hover {
+    padding-left: 14px;
+  }
   .trackStars {
     display: none;
+  }
+  .trackLang {
+    font-size: 9px;
+  }
+  .trackTitle {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  .trackTitle em {
+    display: block;
+    font-size: 12px;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+  .trackDuration,
+  .trackNum {
+    font-size: 11px;
   }
 }

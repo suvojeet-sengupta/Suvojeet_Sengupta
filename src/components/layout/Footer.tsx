@@ -9,8 +9,8 @@ const Footer = () => {
       className="border-t border-[color:var(--line)]"
       style={{ fontFamily: 'var(--font-mono)' }}
     >
-      <div className="max-w-[1400px] mx-auto px-8 py-12">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 py-10 sm:py-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-10">
           <div>
             <Link
               href="/"
@@ -29,7 +29,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="flex gap-12 text-[11px] uppercase tracking-[0.2em]">
+          <div className="flex gap-8 sm:gap-12 text-[11px] uppercase tracking-[0.2em]">
             <div className="flex flex-col gap-3">
               <span className="text-[color:var(--text-muted)] opacity-60">Navigation</span>
               <Link href="/" className="text-[color:var(--text-secondary)] hover:text-[color:var(--neon)]">Home</Link>
@@ -48,8 +48,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-[color:var(--line)] flex flex-col md:flex-row justify-between items-center gap-4 text-[11px] uppercase tracking-[0.2em] text-[color:var(--text-secondary)] opacity-60">
-          <p>© {currentYear} Suvojeet Sengupta · Pressed in Asansol</p>
+        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-[color:var(--line)] flex flex-col md:flex-row justify-between items-center md:items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[color:var(--text-secondary)] opacity-60 text-center md:text-left">
+          <p>© {currentYear} Suvojeet Sengupta · Born Asansol · Pressed in Dhanbad</p>
           <p>Designed &amp; engineered by Suvojeet</p>
         </div>
       </div>

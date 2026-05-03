@@ -91,7 +91,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
                 <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className={`${isReply ? 'bg-brand-black hover:bg-zinc-800' : 'bg-brand-orange hover:bg-orange-700'} disabled:opacity-60 text-white px-5 py-3 rounded-sm font-bold uppercase tracking-wider text-xs transition-colors`}
+                    className={`${isReply ? 'bg-brand-black hover:bg-[color:var(--bg-tertiary)]' : 'bg-brand-orange hover:bg-orange-700'} disabled:opacity-60 text-white px-5 py-3 rounded-sm font-bold uppercase tracking-wider text-xs transition-colors`}
                 >
                     {status === 'submitting' ? 'Posting...' : isReply ? 'Post Reply' : 'Post Comment'}
                 </button>

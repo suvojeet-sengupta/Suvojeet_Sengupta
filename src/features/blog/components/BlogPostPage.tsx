@@ -41,30 +41,30 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
   const readingTime = calculateReadingTime(post.content);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 md:py-20">
+    <div className="max-w-4xl mx-auto px-5 sm:px-6 pt-28 sm:pt-32 pb-16">
       <article>
         {/* Category & Breadcrumb */}
-        <div className="flex items-center gap-3 mb-8 overflow-hidden">
-          <span className="bg-brand-orange text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-sm">
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          <span className="v-pill v-pill-neon">
             {post.category || 'General'}
           </span>
-          <div className="h-px w-8 bg-light" />
-          <span className="text-muted text-[10px] font-black uppercase tracking-widest whitespace-nowrap" suppressHydrationWarning>
+          <div className="h-px w-6 bg-[color:var(--line-strong)]" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] whitespace-nowrap" suppressHydrationWarning>
             {formatDate(post.publishedAt)}
           </span>
-          <div className="h-px w-4 bg-light hidden md:block" />
-          <span className="text-muted text-[10px] font-black uppercase tracking-widest hidden md:block">
+          <div className="h-px w-4 bg-[color:var(--line-strong)] hidden md:block" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] hidden md:block">
             {readingTime}
           </span>
         </div>
 
         {/* Title Section */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-7xl font-black mb-6 uppercase tracking-tighter leading-[0.9] text-primary break-words">
+        <div className="mb-10 sm:mb-12">
+          <h1 className="font-serif font-light leading-[0.95] tracking-tight mb-6 text-[clamp(36px,7vw,84px)] break-words text-[color:var(--text-primary)]">
             {post.title}
           </h1>
           {post.excerpt && (
-            <p className="text-xl md:text-2xl text-secondary font-medium tracking-tight leading-snug">
+            <p className="font-serif text-lg sm:text-xl md:text-2xl text-[color:var(--text-secondary)] opacity-85 leading-snug max-w-3xl">
               {post.excerpt}
             </p>
           )}
@@ -76,7 +76,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           !post.imageUrl.includes('null') &&
           !post.imageUrl.includes('undefined') &&
           post.imageUrl.startsWith('http') && (
-           <div className="mb-16 rounded-sm overflow-hidden border border-light relative group aspect-[16/9] md:aspect-[21/9]">
+           <div className="mb-12 sm:mb-16 overflow-hidden border border-[color:var(--line-strong)] relative group aspect-[16/9] md:aspect-[21/9]">
              <Image
                src={post.imageUrl}
                alt={post.title}
@@ -84,47 +84,45 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                className="object-cover transition-transform duration-700 group-hover:scale-105"
                priority
              />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
            </div>
         )}
 
-        {/* Post Meta & Actions (Mobile) - Compact */}
-        <div className="flex md:hidden flex-col gap-6 py-8 border-y border-light mb-12">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center font-black text-brand-orange">
-                {post.author.charAt(0)}
-              </div>
-              <div>
-                <p className="text-xs font-black uppercase tracking-widest">{post.author}</p>
-                <p className="text-[10px] text-muted font-bold uppercase tracking-wider">Writer & Editor</p>
-              </div>
+        {/* Post Meta & Actions (Mobile) */}
+        <div className="flex md:hidden flex-col gap-5 py-6 border-y border-[color:var(--line-strong)] mb-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[color:var(--accent-subtle)] border border-[color:var(--neon)]/30 flex items-center justify-center font-serif font-black text-[color:var(--neon)]">
+              {post.author.charAt(0)}
+            </div>
+            <div>
+              <p className="font-serif text-sm font-semibold">{post.author}</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)] mt-1">Writer & Editor</p>
             </div>
           </div>
-          
-          <div className="flex items-center gap-4">
-            <button 
+
+          <div className="flex items-center gap-3">
+            <button
               onClick={handleLike}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                localHasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-tertiary border-light hover:border-brand-orange"
+                "flex-1 flex items-center justify-center gap-2 py-2.5 border font-mono text-[11px] uppercase tracking-[0.2em] font-bold transition-all",
+                localHasLiked ? "bg-[color:var(--neon)]/10 border-[color:var(--neon)] text-[color:var(--neon)]" : "border-[color:var(--line-strong)] hover:border-[color:var(--neon)]"
               )}
             >
               <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
               <span>{localLikes}</span>
             </button>
             <div className="flex gap-2">
-              <a 
+              <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
-                className="w-10 h-10 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
               >
                 <Icons.Twitter className="w-4 h-4" />
               </a>
-              <a 
+              <a
                 href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
-                className="w-10 h-10 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
+                className="w-10 h-10 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
               >
                 <Icons.Linkedin className="w-4 h-4" />
               </a>
@@ -132,43 +130,42 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-12 lg:gap-20">
+        <div className="flex flex-col md:flex-row gap-12 lg:gap-16">
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            <div 
-              className="prose prose-lg prose-invert max-w-none 
-              prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-primary
-              prose-p:text-secondary prose-p:leading-relaxed prose-p:font-medium
-              prose-a:text-brand-orange prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-primary prose-strong:font-black
-              prose-img:rounded-sm prose-img:border prose-img:border-light
-              prose-code:text-brand-orange prose-code:bg-tertiary prose-code:px-1 prose-code:py-0.5 prose-code:rounded-sm prose-code:before:content-none prose-code:after:content-none"
+            <div
+              className="prose prose-lg max-w-none
+              prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-[color:var(--text-primary)]
+              prose-p:text-[color:var(--text-secondary)] prose-p:leading-relaxed
+              prose-a:text-[color:var(--neon)] prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-[color:var(--text-primary)] prose-strong:font-semibold
+              prose-img:border prose-img:border-[color:var(--line-strong)]
+              prose-blockquote:border-l-2 prose-blockquote:border-[color:var(--neon)] prose-blockquote:not-italic prose-blockquote:font-serif
+              prose-code:text-[color:var(--neon)] prose-code:bg-[color:var(--bg-secondary)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-none prose-code:font-mono prose-code:before:content-none prose-code:after:content-none"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
-            
-            <div className="mt-16 pt-8 border-t border-light flex flex-col md:flex-row md:items-center justify-between gap-6">
+
+            <div className="mt-14 pt-7 border-t border-[color:var(--line-strong)] flex flex-col md:flex-row md:items-center justify-between gap-5">
               <div className="flex flex-wrap gap-2">
                 {post.tags && post.tags.map(tag => (
-                  <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-muted bg-tertiary px-2 py-1 border border-light rounded-sm">
-                    #{tag}
-                  </span>
+                  <span key={tag} className="v-pill">#{tag}</span>
                 ))}
               </div>
-              
-              <div className="hidden md:flex items-center gap-4">
-                <span className="text-[10px] font-black uppercase tracking-widest text-muted">Share Post</span>
+
+              <div className="hidden md:flex items-center gap-3">
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)]">Share</span>
                 <div className="flex gap-2">
-                  <a 
+                  <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`}
                     target="_blank"
-                    className="w-8 h-8 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
+                    className="w-8 h-8 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
                   >
                     <Icons.Twitter className="w-3.5 h-3.5" />
                   </a>
-                  <a 
+                  <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                     target="_blank"
-                    className="w-8 h-8 flex items-center justify-center bg-tertiary border border-light rounded-sm hover:border-brand-orange transition-colors"
+                    className="w-8 h-8 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
                   >
                     <Icons.Linkedin className="w-3.5 h-3.5" />
                   </a>
@@ -178,28 +175,28 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           </div>
 
           {/* Sidebar (Desktop) */}
-          <aside className="hidden md:block w-72 flex-shrink-0 space-y-12">
-            <div className="sticky top-32 space-y-12">
+          <aside className="hidden md:block w-72 flex-shrink-0 space-y-10">
+            <div className="sticky top-32 space-y-10">
               {/* Author Card */}
-              <div className="professional-card !p-6 bg-tertiary">
+              <div className="professional-card">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center font-black text-brand-orange">
+                  <div className="w-12 h-12 rounded-full bg-[color:var(--accent-subtle)] border border-[color:var(--neon)]/30 flex items-center justify-center font-serif font-black text-[color:var(--neon)] text-lg">
                     {post.author.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="font-black uppercase tracking-widest text-sm">{post.author}</h4>
-                    <p className="text-[10px] text-muted font-bold uppercase tracking-widest">Lead Writer</p>
+                    <h4 className="font-serif font-semibold text-base">{post.author}</h4>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)] mt-1">Lead Writer</p>
                   </div>
                 </div>
-                <p className="text-xs text-secondary leading-relaxed mb-6 font-medium">
+                <p className="text-sm text-[color:var(--text-secondary)] opacity-80 leading-relaxed mb-5">
                   Sharing insights on technology, music, and the creative intersection of both.
                 </p>
-                <div className="pt-6 border-t border-light/50">
-                   <button 
+                <div className="pt-5 border-t border-[color:var(--line)]">
+                  <button
                     onClick={handleLike}
                     className={cn(
-                      "w-full flex items-center justify-center gap-2 py-3 border rounded-sm transition-all font-bold text-xs uppercase tracking-widest",
-                      localHasLiked ? "bg-red-50 border-red-200 text-red-500" : "bg-background border-light hover:border-brand-orange"
+                      "w-full flex items-center justify-center gap-2 py-2.5 border font-mono text-[11px] uppercase tracking-[0.2em] font-bold transition-all",
+                      localHasLiked ? "bg-[color:var(--neon)]/10 border-[color:var(--neon)] text-[color:var(--neon)]" : "border-[color:var(--line-strong)] hover:border-[color:var(--neon)]"
                     )}
                   >
                     <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
@@ -209,21 +206,19 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
               </div>
 
               {/* Reading Stats */}
-              <div className="space-y-4">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted">Post Info</h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 border-b border-light/30">
-                    <span className="text-[10px] font-bold text-secondary uppercase tracking-wider">Views</span>
-                    <span className="text-xs font-black">{post.views || 0}</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-light/30">
-                    <span className="text-[10px] font-bold text-secondary uppercase tracking-wider">Reading Time</span>
-                    <span className="text-xs font-black">{readingTime}</span>
-                  </div>
-                  <div className="flex justify-between items-center py-2 border-b border-light/30">
-                    <span className="text-[10px] font-bold text-secondary uppercase tracking-wider">Comments</span>
-                    <span className="text-xs font-black">{post.commentsCount || 0}</span>
-                  </div>
+              <div>
+                <h4 className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-4">Post Info</h4>
+                <div className="space-y-1">
+                  {[
+                    { label: 'Views', value: post.views || 0 },
+                    { label: 'Reading Time', value: readingTime },
+                    { label: 'Comments', value: post.commentsCount || 0 },
+                  ].map((row) => (
+                    <div key={row.label} className="flex justify-between items-center py-2.5 border-b border-[color:var(--line)]">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)]">{row.label}</span>
+                      <span className="font-mono text-xs font-bold tabular-nums">{row.value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -231,7 +226,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         </div>
 
         {/* Comments Section */}
-        <section className="mt-20 pt-16 border-t border-light">
+        <section className="mt-16 pt-14 border-t border-[color:var(--line-strong)]">
           <CommentList 
             initialComments={post.comments} 
             initialCount={post.commentsCount || 0} 

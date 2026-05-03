@@ -25,7 +25,7 @@ const HomePage = ({ children }: HomePageProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <div className={styles.heroTag}>Side A · Asansol → World</div>
+          <div className={styles.heroTag}>Side A · Burnpur → Dhanbad → World</div>
           <h1 className={styles.heroTitle}>
             Singer<br />
             <span className={styles.strike}>just</span>{' '}
@@ -144,7 +144,7 @@ const HomePage = ({ children }: HomePageProps) => {
           &ldquo;I build things <em>I want to use</em>. If it isn&apos;t fast,
           clean, and intuitive — it isn&apos;t finished.&rdquo;
         </blockquote>
-        <div className={styles.quoteAuthor}>— Suvojeet Sengupta · Asansol, WB</div>
+        <div className={styles.quoteAuthor}>— Suvojeet Sengupta · Born Asansol · Living Dhanbad</div>
       </section>
 
       {/* ========= CTA ========= */}

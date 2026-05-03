@@ -92,9 +92,8 @@ const AboutClient = () => {
     return (
         <div className="min-h-screen pt-20">
             {/* Hero Section */}
-            <section className="relative overflow-hidden py-20 sm:py-28">
-                {/* Background Effects - Kept for compatibility but styled minimally */}
-                <div className="hero-gradient opacity-20" />
+            <section className="relative overflow-hidden">
+                <div className="hero-gradient opacity-30" />
 
                 <motion.div
                     className="relative z-10 section-container"
@@ -102,7 +101,7 @@ const AboutClient = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-center">
                         {/* Profile Image */}
                         <motion.div
                             variants={itemVariants}
@@ -110,7 +109,7 @@ const AboutClient = () => {
                         >
                             <div className="profile-frame">
                                 <motion.div
-                                    className="relative w-64 h-64 sm:w-80 sm:h-80 overflow-hidden grayscale hover:grayscale-0 transition-all duration-500"
+                                    className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 overflow-hidden grayscale hover:grayscale-0 transition-all duration-500"
                                     whileHover={{ scale: 1.02 }}
                                     transition={{ duration: 0.3 }}
                                 >
@@ -128,25 +127,18 @@ const AboutClient = () => {
 
                         {/* Intro Text */}
                         <motion.div variants={itemVariants} className="text-center lg:text-left">
-                            <motion.div
-                                className="inline-block px-3 py-1 bg-accent-subtle border border-brand-orange text-brand-orange text-sm font-medium rounded-sm mb-6"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.2 }}
-                            >
-                                Singer & Creative Developer
-                            </motion.div>
+                            <div className="v-tag mb-7 justify-center lg:justify-start">Side B · Liner Notes</div>
 
-                            <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-                                About <span className="text-accent">Suvojeet</span>
+                            <h1 className="font-serif font-light leading-[0.92] tracking-tight mb-8 text-[clamp(48px,9vw,120px)]">
+                                About <em className="not-italic font-black text-[color:var(--neon)]">Suvojeet</em>
                             </h1>
 
-                            <p className="text-xl text-secondary mb-6 leading-relaxed">
-                                Born in Asansol, West Bengal, currently based in Dhanbad, Jharkhand. I find balance between the precision of code and the raw emotion of music.
+                            <p className="text-lg sm:text-xl mb-5 leading-relaxed text-[color:var(--text-secondary)] opacity-85 max-w-xl mx-auto lg:mx-0">
+                                Born in <strong className="text-[color:var(--neon)] italic font-semibold">Asansol (Burnpur), West Bengal</strong>; currently based in <strong className="text-[color:var(--neon)] italic font-semibold">Dhanbad, Jharkhand</strong>. I find balance between the precision of code and the raw emotion of music.
                             </p>
 
-                            <p className="text-lg text-secondary mb-8 leading-relaxed">
-                                Inspired by legendary artists like <strong className="text-brand-orange">Arijit Singh</strong>, I strive to bring the same level of depth and authenticity to everything I build and sing.
+                            <p className="text-base sm:text-lg mb-9 leading-relaxed text-[color:var(--text-secondary)] opacity-80 max-w-xl mx-auto lg:mx-0">
+                                Inspired by legendary artists like <strong className="text-[color:var(--neon)] italic font-semibold">Arijit Singh</strong>, I strive to bring the same depth and authenticity to everything I build and sing.
                             </p>
 
                             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
@@ -160,7 +152,7 @@ const AboutClient = () => {
             <ResumeHub />
 
             {/* Timeline Section */}
-            <section className="py-24 bg-tertiary">
+            <section className="bg-[color:var(--bg-secondary)]">
                 <motion.div
                     className="section-container"
                     variants={containerVariants}
@@ -169,35 +161,36 @@ const AboutClient = () => {
                     viewport={{ once: true, amount: 0.1 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tighter">My <span className="text-brand-orange">Journey</span></h2>
-                        <p className="text-secondary max-w-2xl mx-auto font-medium">
+                        <div className="v-section-num">04 / Timeline</div>
+                        <h2 className="v-section-title">My <em>Journey</em></h2>
+                        <p className="mt-6 max-w-2xl mx-auto text-[color:var(--text-secondary)] opacity-80">
                             A timeline of growth, from the first note sung to the latest line of code.
                         </p>
                     </motion.div>
 
                     <div className="max-w-4xl mx-auto relative px-4">
                         {/* Vertical line for desktop */}
-                        <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-0.5 h-full bg-brand-orange/20" />
-                        
-                        <div className="space-y-12">
+                        <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-px h-full bg-[color:var(--line-strong)]" />
+
+                        <div className="space-y-10 md:space-y-14">
                             {timeline.map((event, index) => (
-                                <motion.div 
+                                <motion.div
                                     key={index}
                                     variants={itemVariants}
-                                    className={`relative flex flex-col md:flex-row items-start md:items-center justify-between gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+                                    className={`relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
                                 >
                                     {/* Content */}
-                                    <div className="w-full md:w-[45%] professional-card ml-8 md:ml-0">
-                                        <span className="text-brand-orange font-black text-sm mb-2 block">{event.year}</span>
-                                        <h3 className="text-xl font-bold mb-3">{event.title}</h3>
-                                        <p className="text-secondary text-sm leading-relaxed">{event.description}</p>
+                                    <div className="w-full md:w-[46%] professional-card ml-10 md:ml-0">
+                                        <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] block mb-2">{event.year}</span>
+                                        <h3 className="font-serif text-xl md:text-2xl font-semibold mb-3">{event.title}</h3>
+                                        <p className="text-[color:var(--text-secondary)] opacity-80 text-sm leading-relaxed">{event.description}</p>
                                     </div>
 
                                     {/* Dot */}
-                                    <div className="absolute left-[1.1rem] md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-brand-orange border-4 border-background z-10" />
+                                    <div className="absolute left-[1rem] md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[color:var(--neon)] ring-4 ring-[color:var(--bg-secondary)] z-10" />
 
                                     {/* Spacer for desktop */}
-                                    <div className="hidden md:block w-[45%]" />
+                                    <div className="hidden md:block w-[46%]" />
                                 </motion.div>
                             ))}
                         </div>
@@ -206,7 +199,7 @@ const AboutClient = () => {
             </section>
 
             {/* Skills Section */}
-            <section className="py-24">
+            <section>
                 <motion.div
                     className="section-container"
                     variants={containerVariants}
@@ -215,36 +208,37 @@ const AboutClient = () => {
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4">Core Expertise</h2>
-                        <p className="text-secondary max-w-2xl mx-auto font-medium">
+                        <div className="v-section-num">05 / Expertise</div>
+                        <h2 className="v-section-title">Core <em>Expertise</em></h2>
+                        <p className="mt-6 max-w-2xl mx-auto text-[color:var(--text-secondary)] opacity-80">
                             Synthesizing creative vision with technical execution.
                         </p>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
                         {skills.map((skill, index) => (
                             <motion.div
                                 key={skill.name}
                                 variants={itemVariants}
                                 className="professional-card"
-                                whileHover={{ y: -4, borderColor: 'var(--accent-primary)' }}
+                                whileHover={{ y: -4 }}
                             >
-                                <div className="flex items-center gap-4 mb-4">
+                                <div className="flex items-center gap-4 mb-5">
                                     <SkillIcon name={skill.icon} />
-                                    <h3 className="text-lg font-bold">{skill.name}</h3>
+                                    <h3 className="font-serif text-lg sm:text-xl font-semibold">{skill.name}</h3>
                                 </div>
                                 <div className="space-y-2">
-                                    <div className="flex justify-between text-xs font-black uppercase tracking-widest text-muted">
+                                    <div className="flex justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)]">
                                         <span>Proficiency</span>
                                         <span>{skill.level}%</span>
                                     </div>
-                                    <div className="h-1.5 w-full bg-background border border-light/50 rounded-full overflow-hidden">
-                                        <motion.div 
-                                            className="h-full bg-brand-orange"
+                                    <div className="h-1 w-full bg-[color:var(--bg-tertiary)] overflow-hidden">
+                                        <motion.div
+                                            className="h-full bg-[color:var(--neon)]"
                                             initial={{ width: 0 }}
                                             whileInView={{ width: `${skill.level}%` }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 1, delay: 0.5 + (index * 0.1) }}
+                                            transition={{ duration: 1, delay: 0.4 + (index * 0.08) }}
                                         />
                                     </div>
                                 </div>
@@ -255,7 +249,7 @@ const AboutClient = () => {
             </section>
 
             {/* Philosophy & Goals Section */}
-            <section className="py-24 bg-brand-black text-white">
+            <section className="bg-[color:var(--ink)] text-[color:var(--paper)]">
                 <motion.div
                     className="section-container"
                     variants={containerVariants}
@@ -263,22 +257,20 @@ const AboutClient = () => {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                         <motion.div
                             variants={itemVariants}
-                            className="p-8 border border-gray-800 rounded-sm"
+                            className="p-8 sm:p-10 border border-[color:var(--line-strong)]"
                         >
-                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                <span className="w-8 h-8 bg-brand-orange flex items-center justify-center text-white text-sm">01</span>
-                                Philosophy
-                            </h3>
-                            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
-                                I believe music and code are two sides of the same coin: <strong className="text-white">Expression through Structure</strong>. Both require relentless practice and an obsession with detail.
+                            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-3">01 / Side A</div>
+                            <h3 className="font-serif text-2xl sm:text-3xl font-semibold mb-6">Philosophy</h3>
+                            <p className="text-[color:var(--bone)] opacity-80 mb-8 text-base sm:text-lg leading-relaxed">
+                                I believe music and code are two sides of the same record: <em className="text-[color:var(--neon)] not-italic font-semibold italic">Expression through Structure</em>. Both require relentless practice and an obsession with detail.
                             </p>
-                            <ul className="space-y-4">
+                            <ul className="space-y-3">
                                 {philosophy.map((item, i) => (
-                                    <li key={i} className="flex items-start gap-4 text-gray-400">
-                                        <span className="text-brand-orange font-bold">/</span>
+                                    <li key={i} className="flex items-start gap-3 text-[color:var(--bone)] opacity-80 text-sm sm:text-base">
+                                        <span className="text-[color:var(--neon)] font-mono mt-1">/</span>
                                         {item}
                                     </li>
                                 ))}
@@ -287,24 +279,22 @@ const AboutClient = () => {
 
                         <motion.div
                             variants={itemVariants}
-                            className="p-8 border border-gray-800 rounded-sm"
+                            className="p-8 sm:p-10 border border-[color:var(--line-strong)]"
                         >
-                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                <span className="w-8 h-8 bg-brand-orange flex items-center justify-center text-white text-sm">02</span>
-                                Vision
-                            </h3>
-                            <p className="text-gray-400 mb-8 text-lg leading-relaxed">
+                            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-3">02 / Side B</div>
+                            <h3 className="font-serif text-2xl sm:text-3xl font-semibold mb-6">Vision</h3>
+                            <p className="text-[color:var(--bone)] opacity-80 mb-8 text-base sm:text-lg leading-relaxed">
                                 My mission is to push the boundaries of creative technology while maintaining a soul-deep connection to my music.
                             </p>
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 {futureGoals.map((goal, i) => (
-                                    <div key={i} className="flex items-start gap-4 p-4 bg-gray-900 border border-gray-800">
+                                    <div key={i} className="flex items-start gap-4 p-4 bg-[color:var(--ink-2)] border border-[color:var(--line)]">
                                         <div className="mt-1 flex-shrink-0">
                                             <VisionIcon name={goal.icon} />
                                         </div>
                                         <div>
-                                            <span className="text-xs font-black uppercase tracking-widest text-brand-orange block mb-1">{goal.label}</span>
-                                            <p className="text-sm text-gray-400 leading-relaxed">{goal.description}</p>
+                                            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] block mb-1">{goal.label}</span>
+                                            <p className="text-sm text-[color:var(--bone)] opacity-75 leading-relaxed">{goal.description}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -315,7 +305,7 @@ const AboutClient = () => {
             </section>
 
             {/* Contact Section */}
-            <section className="py-24">
+            <section>
                 <motion.div
                     className="section-container max-w-3xl"
                     variants={containerVariants}
@@ -324,21 +314,22 @@ const AboutClient = () => {
                     viewport={{ once: true, amount: 0.2 }}
                 >
                     <motion.div variants={itemVariants} className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4">Direct Message</h2>
-                        <p className="text-secondary font-medium">
+                        <div className="v-section-num">07 / Direct Line</div>
+                        <h2 className="v-section-title">Direct <em>Message</em></h2>
+                        <p className="mt-6 max-w-xl mx-auto text-[color:var(--text-secondary)] opacity-80">
                             Let&apos;s discuss collaborations, projects, or just talk music.
                         </p>
                     </motion.div>
 
-                    <motion.div variants={itemVariants} className="professional-card">
+                    <motion.div variants={itemVariants} className="professional-card p-6 sm:p-8">
                         <ModularContactForm initialType="GENERAL" />
                     </motion.div>
                 </motion.div>
             </section>
 
             {/* Social Links Footer */}
-            <section className="pb-24">
-                <div className="section-container text-center">
+            <section className="pb-20">
+                <div className="section-container !pt-0 text-center">
                     <SocialLinks size="large" />
                 </div>
             </section>

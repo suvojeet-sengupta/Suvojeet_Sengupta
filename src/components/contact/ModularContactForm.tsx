@@ -91,17 +91,17 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                         {/* Type Selector */}
                         {!projectName && (
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Choose Inquiry Type</label>
+                                <label className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)]">Choose Inquiry Type</label>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     {(['GENERAL', 'SONG', 'PROJECT'] as InquiryType[]).map((t) => (
                                         <button
                                             key={t}
                                             type="button"
                                             onClick={() => setType(t)}
-                                            className={`flex items-center justify-center gap-2 px-3 py-3 text-[10px] font-bold uppercase tracking-widest border transition-all duration-300 rounded-md ${
+                                            className={`flex items-center justify-center gap-2 px-3 py-3 font-mono text-[10px] uppercase tracking-[0.2em] font-bold border transition-colors ${
                                                 type === t 
-                                                ? 'bg-brand-orange border-brand-orange text-white shadow-lg shadow-brand-orange/20 scale-[1.02]' 
-                                                : 'bg-tertiary/40 border-light hover:border-brand-orange/50 hover:bg-tertiary/60'
+                                                ? 'bg-[color:var(--neon)] border-[color:var(--neon)] text-[color:var(--ink)]' 
+                                                : 'border-[color:var(--line-strong)] hover:border-[color:var(--neon)]/50'
                                             }`}
                                         >
                                             {typeIcons[t]}
@@ -114,18 +114,18 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
 
                         <div className="grid md:grid-cols-2 gap-5">
                             <div className="group space-y-1.5">
-                                <label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">Name</label>
+                                <label htmlFor="name" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">Name</label>
                                 <input 
                                     type="text" id="name" name="name" required value={formData.name} onChange={handleChange}
-                                    className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none transition-all rounded-lg text-sm placeholder:text-muted-foreground/30"
+                                    className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none transition-colors text-sm font-serif placeholder:text-[color:var(--text-muted)]/60"
                                     placeholder="Suvojeet"
                                 />
                             </div>
                             <div className="group space-y-1.5">
-                                <label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">Email</label>
+                                <label htmlFor="email" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">Email</label>
                                 <input 
                                     type="email" id="email" name="email" required value={formData.email} onChange={handleChange}
-                                    className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none transition-all rounded-lg text-sm placeholder:text-muted-foreground/30"
+                                    className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none transition-colors text-sm font-serif placeholder:text-[color:var(--text-muted)]/60"
                                     placeholder="suvojeet@example.com"
                                 />
                             </div>
@@ -141,12 +141,12 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                                     className="grid md:grid-cols-2 gap-5"
                                 >
                                     <div className="group space-y-1.5">
-                                        <label htmlFor="songName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">Song Name</label>
-                                        <input type="text" id="songName" name="songName" required value={formData.songName} onChange={handleChange} className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none rounded-lg text-sm placeholder:text-muted-foreground/30" placeholder="e.g., Tum Hi Ho" />
+                                        <label htmlFor="songName" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">Song Name</label>
+                                        <input type="text" id="songName" name="songName" required value={formData.songName} onChange={handleChange} className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none transition-colors text-sm font-serif placeholder:text-[color:var(--text-muted)]/60" placeholder="e.g., Tum Hi Ho" />
                                     </div>
                                     <div className="group space-y-1.5">
-                                        <label htmlFor="artistName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">Original Artist</label>
-                                        <input type="text" id="artistName" name="artistName" required value={formData.artistName} onChange={handleChange} className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none rounded-lg text-sm placeholder:text-muted-foreground/30" placeholder="e.g., Arijit Singh" />
+                                        <label htmlFor="artistName" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">Original Artist</label>
+                                        <input type="text" id="artistName" name="artistName" required value={formData.artistName} onChange={handleChange} className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none transition-colors text-sm font-serif placeholder:text-[color:var(--text-muted)]/60" placeholder="e.g., Arijit Singh" />
                                     </div>
                                 </motion.div>
                             )}
@@ -159,13 +159,13 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                                     className="grid md:grid-cols-2 gap-5"
                                 >
                                     <div className="space-y-1.5">
-                                        <label htmlFor="projectName" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">Project</label>
-                                        <input type="text" value={projectName || 'New Collaboration'} readOnly className="w-full bg-background/40 border border-light/50 p-3.5 opacity-60 rounded-lg text-sm outline-none cursor-not-allowed" />
+                                        <label htmlFor="projectName" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)]">Project</label>
+                                        <input type="text" value={projectName || 'New Collaboration'} readOnly className="w-full bg-[color:var(--bg-tertiary)] border border-[color:var(--line)] px-4 py-3.5 opacity-60 text-sm font-serif outline-none cursor-not-allowed" />
                                     </div>
                                     <div className="group space-y-1.5">
-                                        <label htmlFor="interest" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">Interest</label>
+                                        <label htmlFor="interest" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">Interest</label>
                                         <div className="relative">
-                                            <select name="interest" value={formData.interest} onChange={handleChange} className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none rounded-lg text-sm appearance-none cursor-pointer">
+                                            <select name="interest" value={formData.interest} onChange={handleChange} className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none text-sm font-serif appearance-none cursor-pointer">
                                                 <option value="General">General Inquiry</option>
                                                 <option value="Bug Report">Bug Report</option>
                                                 <option value="Feature Request">Feature Request</option>
@@ -181,19 +181,19 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                         </AnimatePresence>
 
                         <div className="group space-y-1.5">
-                            <label htmlFor="message" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 group-focus-within:text-brand-orange transition-colors">
+                            <label htmlFor="message" className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)] group-focus-within:text-[color:var(--neon)] transition-colors">
                                 {type === 'SONG' ? 'Dedication or Memory' : 'Message'}
                             </label>
                             <textarea 
                                 id="message" name="message" rows={4} required value={formData.message} onChange={handleChange}
-                                className="w-full bg-tertiary/50 border border-light p-3.5 focus:border-brand-orange focus:bg-tertiary outline-none transition-all rounded-lg text-sm resize-none placeholder:text-muted-foreground/30"
+                                className="w-full bg-transparent border border-[color:var(--line-strong)] px-4 py-3.5 focus:border-[color:var(--neon)] outline-none transition-colors text-sm font-serif resize-none placeholder:text-[color:var(--text-muted)]/60"
                                 placeholder={type === 'SONG' ? "Why this song? Who is it for?" : "How can I help you?"}
                             ></textarea>
                         </div>
                         
                         <button 
                             type="submit" 
-                            className={`group relative overflow-hidden btn-solid w-full text-sm font-black tracking-[0.2em] py-5 rounded-lg transition-all active:scale-[0.98] ${formState.status === 'submitting' ? 'opacity-80 cursor-wait' : ''}`}
+                            className={`group relative overflow-hidden btn-solid w-full !py-4 active:scale-[0.99] ${formState.status === 'submitting' ? 'opacity-80 cursor-wait' : ''}`}
                             disabled={formState.status === 'submitting'}
                         >
                             <span className="relative z-10 flex items-center justify-center gap-2">
@@ -220,7 +220,7 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                             <motion.div 
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="flex items-center justify-center gap-2 text-red-500 font-bold uppercase tracking-widest text-[10px] mt-4"
+                                className="flex items-center justify-center gap-2 text-red-500 font-mono uppercase tracking-[0.2em] text-[10px] mt-4 p-3 border border-red-500/30"
                             >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -232,7 +232,7 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                 ) : (
                     <motion.div 
                         key="success" 
-                        className="flex flex-col items-center justify-center text-center py-12 px-4 bg-tertiary/20 border border-brand-orange/20 rounded-2xl" 
+                        className="flex flex-col items-center justify-center text-center py-12 px-4 border border-[color:var(--neon)]/30 bg-[color:var(--accent-subtle)]" 
                         initial={{ opacity: 0, scale: 0.95 }} 
                         animate={{ opacity: 1, scale: 1 }}
                     >
@@ -241,7 +241,7 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.2 }}
-                                className="w-20 h-20 rounded-full bg-brand-orange flex items-center justify-center text-white shadow-xl shadow-brand-orange/30"
+                                className="w-20 h-20 rounded-full bg-[color:var(--neon)] flex items-center justify-center text-[color:var(--ink)]"
                             >
                                 <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <motion.path 
@@ -261,18 +261,18 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                                     opacity: [0.5, 0, 0]
                                 }}
                                 transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
-                                className="absolute inset-0 rounded-full bg-brand-orange/50 -z-10"
+                                className="absolute inset-0 rounded-full bg-[color:var(--neon)]/40 -z-10"
                             />
                         </div>
                         
-                        <h3 className="text-3xl font-black mb-3 uppercase tracking-tighter">Sent Successfully!</h3>
-                        <p className="text-muted-foreground font-medium max-w-sm mx-auto leading-relaxed">
+                        <h3 className="font-serif text-3xl font-semibold mb-3 tracking-tight">Sent Successfully!</h3>
+                        <p className="text-[color:var(--text-secondary)] opacity-80 max-w-sm mx-auto leading-relaxed">
                             {formState.message}
                         </p>
                         
                         <button 
                             onClick={handleReset} 
-                            className="mt-10 flex items-center gap-2 px-6 py-3 bg-tertiary border border-light hover:border-brand-orange/50 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all hover:shadow-lg active:scale-95"
+                            className="mt-10 inline-flex items-center gap-2 px-6 py-3 border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] font-mono text-[10px] uppercase tracking-[0.2em] font-bold transition-colors"
                         >
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />

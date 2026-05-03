@@ -31,9 +31,9 @@ const Navbar = () => {
     <nav
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        'flex justify-between items-center px-8 py-[18px]',
+        'flex justify-between items-center px-5 sm:px-8 py-3.5 sm:py-[18px]',
         isScrolled
-          ? 'bg-[color:var(--ink)]/85 backdrop-blur-md border-b border-[color:var(--line)]'
+          ? 'bg-[color:var(--bg-primary)]/85 backdrop-blur-md border-b border-[color:var(--line)]'
           : 'bg-gradient-to-b from-[color:var(--bg-primary)]/85 to-transparent backdrop-blur-sm'
       )}
       style={{ fontFamily: 'var(--font-mono)' }}
@@ -41,7 +41,7 @@ const Navbar = () => {
       {/* Brand */}
       <Link
         href="/"
-        className="flex items-baseline gap-1.5 text-[22px] font-black tracking-tight serif text-[color:var(--text-primary)] hover:opacity-90"
+        className="flex items-baseline gap-1.5 text-[18px] sm:text-[22px] font-black tracking-tight serif text-[color:var(--text-primary)] hover:opacity-90"
         style={{ fontFamily: 'var(--font-serif)', letterSpacing: '-0.02em' }}
       >
         SUVOJEET

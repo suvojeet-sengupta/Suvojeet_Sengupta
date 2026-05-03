@@ -85,7 +85,7 @@ export default function PushPrompt() {
   if (!showPrompt || subscribed) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-background border border-brand-orange/30 shadow-2xl rounded-xl p-5 max-w-sm w-[calc(100vw-3rem)] flex items-start gap-4 animate-in slide-in-from-bottom-5 fade-in duration-500">
+    <div className="fixed bottom-6 right-6 z-50 bg-background border border-brand-orange/30 shadow-2xl p-5 max-w-sm w-[calc(100vw-3rem)] flex items-start gap-4 animate-in slide-in-from-bottom-5 fade-in duration-500">
       <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-full flex-shrink-0 animate-pulse">
         <Bell size={24} />
       </div>

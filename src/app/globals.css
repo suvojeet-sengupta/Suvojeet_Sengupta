@@ -70,10 +70,17 @@
 
 /* ============================================
    TAILWIND THEME INTEGRATION
+   These names become Tailwind utility classes:
+   bg-tertiary, text-muted, text-secondary, border-light, etc.
    ============================================ */
 @theme inline {
   --color-background: var(--bg-primary);
   --color-foreground: var(--text-primary);
+  --color-tertiary: var(--bg-tertiary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-light: var(--border-light);
+  --color-accent-subtle: var(--accent-subtle);
   --color-brand-orange: var(--accent-primary);
   --color-brand-black: var(--ink);
   --color-paper: var(--paper);
@@ -104,7 +111,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Film grain overlay — pure CSS, no JS */
+/* Film grain overlay — pure CSS */
 body::before {
   content: '';
   position: fixed;
@@ -119,14 +126,14 @@ body::before {
 .mono { font-family: var(--font-mono); }
 .serif { font-family: var(--font-serif); }
 
-/* Headings inherit Fraunces */
+/* Headings */
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg-secondary); }
 ::-webkit-scrollbar-thumb {
@@ -143,12 +150,16 @@ h1, h2, h3, h4 {
 .section-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 7rem 2rem;
+  padding: 6rem 1.5rem;
   position: relative;
 }
 
-@media (max-width: 768px) {
-  .section-container { padding: 4rem 1.25rem; }
+@media (min-width: 768px) {
+  .section-container { padding: 7rem 2rem; }
+}
+
+@media (max-width: 480px) {
+  .section-container { padding: 4rem 1rem; }
 }
 
 /* Accent Utilities */
@@ -161,10 +172,8 @@ h1, h2, h3, h4 {
 p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 
 /* ============================================
-   VINYL — keyframes shared across components
+   VINYL — shared keyframes
    ============================================ */
-@keyframes vinyl-spin { to { transform: rotate(360deg); } }
-@keyframes vinyl-spin-center { to { transform: translate(-50%, -50%) rotate(360deg); } }
 @keyframes vinyl-pulse {
   0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 94, 31, 0.6); }
   50% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(255, 94, 31, 0); }
@@ -174,7 +183,6 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
   50% { transform: scaleY(1); }
 }
 
-/* Brand pulse dot */
 .brand-dot {
   display: inline-block;
   width: 8px; height: 8px;
@@ -183,7 +191,6 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
   animation: vinyl-pulse 2s infinite;
 }
 
-/* Equalizer — used in nav "now playing" */
 .equalizer { display: inline-flex; gap: 2px; align-items: end; height: 14px; }
 .equalizer span {
   width: 2px; background: var(--neon);
@@ -193,3 +200,248 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 .equalizer span:nth-child(2) { animation-delay: 0.2s; height: 100%; }
 .equalizer span:nth-child(3) { animation-delay: 0.4s; height: 40%; }
 .equalizer span:nth-child(4) { animation-delay: 0.6s; height: 80%; }
+
+/* ============================================
+   GLOBAL VINYL COMPONENT CLASSES
+   Used by every screen — keeps the look coherent
+   ============================================ */
+
+/* The "track" / professional card — used in many screens */
+.professional-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line-strong);
+  padding: 1.75rem;
+  border-radius: 4px;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+.professional-card:hover {
+  border-color: var(--neon);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .professional-card {
+  background: var(--bg-secondary);
+}
+
+/* Solid button — neon CTA */
+.btn-solid {
+  background: var(--neon);
+  color: var(--ink);
+  padding: 14px 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+.btn-solid:hover {
+  background: var(--ember);
+  transform: translateY(-2px);
+}
+
+/* Outlined ghost button */
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--line-strong);
+  padding: 14px 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  cursor: pointer;
+}
+.btn-outline:hover {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+/* Profile frame — bordered photo */
+.profile-frame {
+  position: relative;
+  display: inline-block;
+  border: 8px solid var(--bg-tertiary);
+  border-radius: 4px;
+}
+.profile-frame::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: -12px;
+  bottom: -12px;
+  border: 2px solid var(--neon);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Hero gradient (kept for compatibility) */
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 20%, rgba(255, 94, 31, 0.18) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Custom scrollbar utility */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 3px;
+}
+
+/* ============================================
+   VINYL PRIMITIVES — for any page hero/section
+   Reusable building blocks
+   ============================================ */
+
+/* Section number eyebrow: "01 / Tracklist" */
+.v-section-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  margin-bottom: 16px;
+  display: inline-block;
+}
+
+/* Section title with em accent */
+.v-section-title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(36px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+.v-section-title em {
+  font-weight: 900;
+  color: var(--neon);
+  font-style: italic;
+}
+
+/* Eyebrow tag with leading line: "Side A · Topic" */
+.v-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.v-tag::before {
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: var(--neon);
+}
+
+/* Mono label — small uppercase metadata */
+.v-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* Section head row: title + meta on the right */
+.v-section-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 64px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line-strong);
+}
+@media (max-width: 768px) {
+  .v-section-head {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+  }
+}
+
+/* Form input — vinyl style */
+.v-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  transition: border-color var(--transition-fast);
+}
+.v-input:focus {
+  outline: none;
+  border-color: var(--neon);
+}
+.v-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.v-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Tag pill — small categorical badge */
+.v-pill {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-secondary);
+}
+.v-pill-neon {
+  background: var(--neon);
+  border-color: var(--neon);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Responsive overrides */
+@media (max-width: 480px) {
+  .btn-solid, .btn-outline {
+    padding: 12px 20px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+  }
+  .professional-card {
+    padding: 1.25rem;
+  }
+}

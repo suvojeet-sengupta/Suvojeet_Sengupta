@@ -20,8 +20,7 @@ interface ProjectClientProps {
     stats?: { label: string; value: string }[];
 }
 
-// Inline SVGs to replace lucide-react dependencies
-const ExternalLinkIcon = ({ size = 20 }: { size?: number }) => (
+const ExternalLinkIcon = ({ size = 16 }: { size?: number }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
         <polyline points="15 3 21 3 21 9" />
@@ -29,7 +28,7 @@ const ExternalLinkIcon = ({ size = 20 }: { size?: number }) => (
     </svg>
 );
 
-const DownloadIcon = ({ size = 20 }: { size?: number }) => (
+const DownloadIcon = ({ size = 16 }: { size?: number }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
         <polyline points="7 10 12 15 17 10" />
@@ -37,7 +36,7 @@ const DownloadIcon = ({ size = 20 }: { size?: number }) => (
     </svg>
 );
 
-const ArrowLeftIcon = ({ size = 20 }: { size?: number }) => (
+const ArrowLeftIcon = ({ size = 16 }: { size?: number }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="19" y1="12" x2="5" y2="12" />
         <polyline points="12 19 5 12 12 5" />
@@ -74,14 +73,14 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
     }, [repo]);
 
     return (
-        <div className="min-h-screen pt-24 pb-12">
-            <div className="section-container">
-                <Link 
-                    href="/#projects" 
-                    className="inline-flex items-center gap-2 text-secondary hover:text-brand-orange transition-colors mb-8 group"
+        <div className="min-h-screen pt-24 sm:pt-28 pb-16">
+            <div className="section-container !pt-0">
+                <Link
+                    href="/#tracks"
+                    className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--text-secondary)] opacity-70 hover:text-[color:var(--neon)] hover:opacity-100 transition-colors mb-10 group"
                 >
-                    <ArrowLeftIcon size={20} />
-                    <span className="group-hover:-translate-x-1 transition-transform">Back to Projects</span>
+                    <ArrowLeftIcon size={14} />
+                    <span className="group-hover:-translate-x-1 transition-transform">Back to Tracklist</span>
                 </Link>
 
                 <motion.div
@@ -89,115 +88,109 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-                        <div>
-                            <h1 className="text-5xl md:text-7xl font-black mb-4 uppercase tracking-tighter">
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+                        <div className="flex-1 min-w-0">
+                            <div className="v-tag mb-6">Track · {name}</div>
+                            <h1 className="font-serif font-light leading-[0.92] tracking-tight mb-5 text-[clamp(48px,9vw,128px)] break-words">
                                 {name}
                             </h1>
-                            <p className="text-xl text-secondary max-w-2xl">
+                            <p className="text-base sm:text-lg lg:text-xl text-[color:var(--text-secondary)] opacity-85 max-w-2xl leading-relaxed">
                                 {description}
                             </p>
                         </div>
-                        <div className="flex flex-wrap gap-4">
-                            <a 
-                                href={githubUrl} 
-                                target="_blank" 
+                        <div className="flex flex-wrap gap-3">
+                            <a
+                                href={githubUrl}
+                                target="_blank"
                                 rel="noopener noreferrer"
-                                className="btn-outline flex items-center gap-2"
+                                className="btn-outline"
                             >
-                                <Icons.GitHub className="w-5 h-5" /> GitHub
+                                <Icons.GitHub className="w-4 h-4" /> GitHub
                             </a>
                             {dynamicDownloadUrl && (
-                                <a 
-                                    href={dynamicDownloadUrl} 
-                                    target="_blank" 
+                                <a
+                                    href={dynamicDownloadUrl}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn-solid flex items-center gap-2 bg-brand-orange text-white"
+                                    className="btn-solid"
                                 >
-                                    <DownloadIcon size={20} /> Download APK
+                                    <DownloadIcon size={16} /> Download APK
                                 </a>
                             )}
                             {liveUrl && (
-                                <a 
-                                    href={liveUrl} 
-                                    target="_blank" 
+                                <a
+                                    href={liveUrl}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn-solid flex items-center gap-2"
+                                    className="btn-solid"
                                 >
-                                    <ExternalLinkIcon size={20} /> View Live
+                                    <ExternalLinkIcon size={16} /> View Live
                                 </a>
                             )}
                         </div>
                     </div>
 
                     {stats && (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-14 sm:mb-16 pb-12 border-b border-[color:var(--line-strong)]">
                             {stats.map((stat, i) => (
-                                <div key={i} className="professional-card p-4 text-center">
-                                    <p className="text-xs font-black uppercase tracking-widest text-muted mb-1">{stat.label}</p>
-                                    <p className="text-2xl font-bold text-brand-orange">{stat.value}</p>
+                                <div key={i} className="text-center sm:text-left">
+                                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-[color:var(--text-muted)] mb-2">{stat.label}</p>
+                                    <p className="font-serif text-2xl sm:text-3xl font-semibold text-[color:var(--neon)]">{stat.value}</p>
                                 </div>
                             ))}
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        <div className="lg:col-span-2 space-y-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
+                        <div className="lg:col-span-2 space-y-12 sm:space-y-14">
                             <section>
-                                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                    <span className="w-2 h-8 bg-brand-orange" />
-                                    Project Overview
-                                </h2>
-                                <p className="text-lg text-secondary leading-relaxed mb-6">
+                                <div className="v-section-num">A1 / Overview</div>
+                                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-5 tracking-tight">Project Overview</h2>
+                                <p className="text-base sm:text-lg text-[color:var(--text-secondary)] opacity-85 leading-relaxed">
                                     {longDescription || description}
                                 </p>
                             </section>
 
                             {story && (
                                 <section>
-                                    <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                        <span className="w-2 h-8 bg-brand-orange" />
-                                        The Story
-                                    </h2>
-                                    <p className="text-lg text-secondary leading-relaxed mb-6 italic border-l-2 border-brand-orange/30 pl-6">
+                                    <div className="v-section-num">A2 / The Story</div>
+                                    <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-5 tracking-tight">The Story</h2>
+                                    <p className="text-base sm:text-lg text-[color:var(--text-secondary)] opacity-85 leading-relaxed italic font-serif border-l-2 border-[color:var(--neon)] pl-5 sm:pl-6">
                                         {story}
                                     </p>
                                 </section>
                             )}
 
                             <section>
-                                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                                    <span className="w-2 h-8 bg-brand-orange" />
-                                    Key Features
-                                </h2>
-                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="v-section-num">A3 / Features</div>
+                                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-6 tracking-tight">Key Features</h2>
+                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     {features.map((feature, i) => (
-                                        <li key={i} className="flex items-start gap-3 p-4 bg-tertiary rounded-sm">
-                                            <span className="text-brand-orange font-bold">✓</span>
-                                            <span className="text-secondary">{feature}</span>
+                                        <li key={i} className="flex items-start gap-3 p-4 border border-[color:var(--line)] hover:border-[color:var(--neon)]/50 transition-colors">
+                                            <span className="text-[color:var(--neon)] font-mono mt-0.5 flex-shrink-0">/</span>
+                                            <span className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-85">{feature}</span>
                                         </li>
                                     ))}
                                 </ul>
                             </section>
                         </div>
 
-                        <div className="space-y-12">
+                        <div className="space-y-8 sm:space-y-10 lg:sticky lg:top-28 lg:self-start">
                             <section className="professional-card">
-                                <h3 className="text-xl font-bold mb-6">Tech Stack</h3>
+                                <div className="v-section-num !mb-3">B1 / Stack</div>
+                                <h3 className="font-serif text-xl font-semibold mb-5 tracking-tight">Tech Stack</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {techStack.map((tech, i) => (
-                                        <span 
-                                            key={i} 
-                                            className="px-3 py-1 bg-brand-black text-white text-xs font-bold uppercase tracking-widest"
-                                        >
+                                        <span key={i} className="v-pill">
                                             {tech}
                                         </span>
                                     ))}
                                 </div>
                             </section>
 
-                            <section className="professional-card border-brand-orange">
-                                <h3 className="text-xl font-bold mb-6">Project Inquiry</h3>
+                            <section className="professional-card border-[color:var(--neon)]/40">
+                                <div className="v-section-num !mb-3">B2 / Inquiry</div>
+                                <h3 className="font-serif text-xl font-semibold mb-5 tracking-tight">Project Inquiry</h3>
                                 <ModularContactForm initialType="PROJECT" projectName={name} />
                             </section>
                         </div>

@@ -381,7 +381,7 @@
 @media (max-width: 1024px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: 80px;
+    gap: 64px;
     padding-top: 120px;
   }
   .approachGrid {
@@ -406,23 +406,114 @@
   }
   .hero {
     padding: 110px 20px 60px;
+    gap: 56px;
+  }
+  .heroSub {
+    font-size: 16px;
+    margin-bottom: 36px;
+  }
+  .heroCta {
+    margin-bottom: 44px;
+  }
+  .btn {
+    padding: 14px 22px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
   }
   .heroStats {
-    gap: 24px;
+    gap: 20px 32px;
     flex-wrap: wrap;
+    padding-top: 24px;
   }
   .statNum {
     font-size: 32px;
   }
+  .statLabel {
+    font-size: 9px;
+  }
   .sectionHead {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
+    margin-bottom: 48px;
   }
   .sectionMeta {
     text-align: left;
   }
   .quote::before {
-    font-size: 180px;
+    font-size: 160px;
     top: 80px;
+  }
+  .quote {
+    padding: 90px 20px;
+  }
+  .approachInner {
+    padding: 0 20px;
+  }
+  .approachCard {
+    padding: 32px 24px;
+  }
+  .approachCardNum {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+  .approachCard h3 {
+    font-size: 22px;
+  }
+  .ctaInner {
+    padding: 0;
+  }
+  .ctaSub {
+    font-size: 16px;
+    margin-bottom: 36px;
+  }
+  .btnCta {
+    padding: 18px 28px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+  }
+  .cta::before {
+    font-size: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 100px 16px 48px;
+    gap: 48px;
+  }
+  .heroTag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    margin-bottom: 20px;
+  }
+  .heroTag::before {
+    width: 24px;
+  }
+  .heroStats {
+    gap: 16px 28px;
+  }
+  .statNum {
+    font-size: 28px;
+  }
+  .heroCta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .approachCard {
+    padding: 28px 20px;
+  }
+  .quote {
+    padding: 70px 16px;
+  }
+  .quote::before {
+    font-size: 120px;
+    top: 60px;
+  }
+  .cta {
+    padding: 70px 16px;
   }
 }

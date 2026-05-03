@@ -161,7 +161,21 @@
 
 @media (max-width: 1024px) {
   .vinylWrap {
-    max-width: 380px;
+    max-width: 360px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .vinylWrap {
+    max-width: 280px;
+  }
+  .vinylWrap::before {
+    inset: -20px;
+  }
+  .trackMeta {
+    bottom: -44px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
   }
 }

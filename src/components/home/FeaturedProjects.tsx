@@ -9,7 +9,7 @@ const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
   SuvMusic: {
     name: 'SuvMusic',
     description:
-      'A high-performance YouTube Music client built native for Android. Seamless streaming, advanced media handling, zero compromises.',
+      'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.',
     stargazers_count: 10,
     language: 'Kotlin',
     html_url: 'https://github.com/suvojeet-sengupta/SuvMusic',
@@ -17,7 +17,7 @@ const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
   NoteNext: {
     name: 'NoteNext',
     description:
-      'A productivity-focused notes app with cloud sync and markdown. Designed to feel as quick as a thought.',
+      'A professional note-taking application for Android with cloud sync and markdown support.',
     stargazers_count: 5,
     language: 'Kotlin',
     html_url: 'https://github.com/suvojeet-sengupta/NoteNext',

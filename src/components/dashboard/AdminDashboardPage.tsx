@@ -766,7 +766,7 @@ export default function AdminDashboardPage() {
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Posts</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalPosts}</p>
@@ -778,7 +778,7 @@ export default function AdminDashboardPage() {
 
         <button 
           onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
         >
           <div>
             <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
@@ -796,7 +796,7 @@ export default function AdminDashboardPage() {
           </div>
         </button>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Views</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalBlogViews}</p>
@@ -806,7 +806,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Videos</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalVideos}</p>
@@ -818,7 +818,7 @@ export default function AdminDashboardPage() {
 
         <button 
           onClick={() => document.getElementById('inbox-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm rounded-xl p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
         >
           <div>
             <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
@@ -838,7 +838,7 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-6 bg-tertiary">
+        <div className="border border-light/60 shadow-sm p-5 md:p-6 bg-tertiary">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
               <ShieldCheck size={16} className="text-brand-orange" />
@@ -865,7 +865,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-6 bg-tertiary">
+        <div className="border border-light/60 shadow-sm p-5 md:p-6 bg-tertiary">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
               <Globe size={16} className="text-blue-500" />
@@ -885,7 +885,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <PlusCircle className="text-brand-orange" />
@@ -896,7 +896,7 @@ export default function AdminDashboardPage() {
                   <button
                   type="button"
                   onClick={cancelEdit}
-                  className="flex-1 sm:flex-none bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
+                  className="flex-1 sm:flex-none bg-[color:var(--bg-tertiary)] hover:bg-[color:var(--bg-secondary)] text-[color:var(--text-primary)] px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
                 >
                   Cancel
                 </button>
@@ -990,7 +990,7 @@ export default function AdminDashboardPage() {
                 <button
                     type="button"
                     onClick={cancelEdit}
-                    className="border border-light hover:bg-zinc-100 px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm"
+                    className="border border-light hover:bg-[color:var(--bg-tertiary)] px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm"
                 >
                     Cancel Edit
                 </button>
@@ -1000,7 +1000,7 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center gap-3 mb-6">
           <FileText className="text-brand-orange" />
           <h2 className="text-xl md:text-2xl font-black">Manage Posts</h2>
@@ -1049,7 +1049,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <Icons.YouTube className="text-red-500 w-6 h-6" />
@@ -1102,7 +1102,7 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex items-center gap-3 mb-6">
           <Play className="text-brand-orange" size={24} />
           <h2 className="text-xl md:text-2xl font-black">Manage Music Videos</h2>
@@ -1112,7 +1112,7 @@ export default function AdminDashboardPage() {
             <div key={video.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
-                  <div className="w-20 md:w-24 aspect-video bg-zinc-100 rounded-sm overflow-hidden flex-shrink-0 relative group">
+                  <div className="w-20 md:w-24 aspect-video bg-[color:var(--bg-tertiary)] rounded-sm overflow-hidden flex-shrink-0 relative group">
                     <Image 
                       src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
                       alt={video.title}
@@ -1159,7 +1159,7 @@ export default function AdminDashboardPage() {
         </div>
 
       {session?.isSuperAdmin && (
-      <div className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <Users className="text-brand-orange" />
@@ -1170,7 +1170,7 @@ export default function AdminDashboardPage() {
               <button
                 type="button"
                 onClick={cancelUserEdit}
-                className="flex-1 sm:flex-none bg-zinc-100 hover:bg-zinc-200 text-zinc-800 px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
+                className="flex-1 sm:flex-none bg-[color:var(--bg-tertiary)] hover:bg-[color:var(--bg-secondary)] text-[color:var(--text-primary)] px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
               >
                 Cancel
               </button>
@@ -1259,7 +1259,7 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div id="comments-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mb-12">
+      <div id="comments-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
 
         {/* Section header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
@@ -1539,7 +1539,7 @@ export default function AdminDashboardPage() {
                     type="button"
                     onClick={() => submitOwnerReply(comment.id)}
                     disabled={replyingToCommentId === comment.id || !(replyDrafts[comment.id] || '').trim()}
-                    className="flex items-center gap-2 bg-brand-black hover:bg-zinc-800 disabled:opacity-50 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
+                    className="flex items-center gap-2 bg-brand-black hover:bg-[color:var(--bg-tertiary)] disabled:opacity-50 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
                   >
                     <Reply size={14} />
                     {replyingToCommentId === comment.id
@@ -1555,7 +1555,7 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      <div id="inbox-section" className="border border-light/60 shadow-sm rounded-xl p-5 md:p-8 bg-tertiary mt-12">
+      <div id="inbox-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mt-12">
         <div className="flex items-center gap-3 mb-8">
           <Mail className="text-brand-orange" />
           <h2 className="text-xl md:text-2xl font-black">Inquiries Inbox</h2>
@@ -1578,7 +1578,7 @@ export default function AdminDashboardPage() {
                       msg.type === 'SONG' ? 'bg-pink-100 text-pink-700' :
                       msg.type === 'PROJECT' ? 'bg-blue-100 text-blue-700' :
                       msg.type === 'ROM' ? 'bg-purple-100 text-purple-700' :
-                      'bg-zinc-100 text-zinc-700'
+                      'bg-[color:var(--bg-tertiary)] text-zinc-700'
                     }`}>
                       {msg.type || 'General'}
                     </span>
@@ -1616,7 +1616,7 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
               
-              <div className="mt-6 p-4 bg-zinc-50 rounded-sm border border-light/40">
+              <div className="mt-6 p-4 bg-[color:var(--bg-secondary)] rounded-sm border border-light/40">
                 <p className="text-sm md:text-base whitespace-pre-wrap leading-relaxed italic text-secondary">
                   &quot;{msg.message}&quot;
                 </p>

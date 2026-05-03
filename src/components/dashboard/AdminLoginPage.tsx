@@ -1,37 +1,35 @@
 'use client';
 
-  import { FormEvent, useState, useEffect } from 'react';
-  import Link from 'next/link';
-  import { useRouter } from 'next/navigation';
+import { FormEvent, useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-  export default function AdminLoginPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+export default function AdminLoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-      const checkSession = async () => {
-        try {
-          const res = await fetch('/api/admin/overview', { cache: 'no-store' });
-          if (res.ok) {
-            router.push('/dashboard');
-          } else {
-            setLoading(false);
-          }
-        } catch {
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const res = await fetch('/api/admin/overview', { cache: 'no-store' });
+        if (res.ok) {
+          router.push('/dashboard');
+        } else {
           setLoading(false);
         }
-      };
-      checkSession();
-    }, [router]);
+      } catch {
+        setLoading(false);
+      }
+    };
+    checkSession();
+  }, [router]);
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (loading) {
-      return;
-    }
+    if (loading) return;
 
     setError('');
     setLoading(true);
@@ -39,9 +37,7 @@
     try {
       const response = await fetch('/api/admin/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
       let payload: { error?: string } = {};
@@ -70,55 +66,62 @@
   };
 
   return (
-    <section className="section-container pt-32 pb-24">
-      <div className="max-w-lg mx-auto border border-light rounded-sm p-8 bg-tertiary">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted mb-3">Admin</p>
-        <h1 className="text-3xl font-black">Dashboard Login</h1>
-        <p className="mt-3">
+    <section className="section-container">
+      <div className="max-w-md mx-auto professional-card p-7 sm:p-9">
+        <div className="v-section-num">Studio · Admin</div>
+        <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+          Dashboard <em className="text-[color:var(--neon)] not-italic font-black italic">Login</em>
+        </h1>
+        <p className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-80 leading-relaxed">
           Use your secure admin credentials to manage blog posts, comments, and activity stats.
         </p>
 
-        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="admin-email" className="text-sm font-bold uppercase tracking-wider">
-              Email
-            </label>
+            <label htmlFor="admin-email" className="v-label">Email</label>
             <input
               id="admin-email"
               type="email"
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-2 w-full border border-light rounded-sm px-4 py-3 bg-background"
+              className="v-input"
+              placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label htmlFor="admin-password" className="text-sm font-bold uppercase tracking-wider">
-              Password
-            </label>
+            <label htmlFor="admin-password" className="v-label">Password</label>
             <input
               id="admin-password"
               type="password"
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="mt-2 w-full border border-light rounded-sm px-4 py-3 bg-background"
+              className="v-input"
+              placeholder="••••••••"
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
+          {error && (
+            <p className="font-mono text-xs uppercase tracking-[0.15em] text-red-500 p-3 border border-red-500/30">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white font-bold uppercase tracking-wider py-3 rounded-sm"
+            className="btn-solid w-full disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
-        <Link href="/blog" className="inline-block mt-5 text-sm text-brand-orange font-bold uppercase tracking-wider">
+        <Link
+          href="/blog"
+          className="inline-block mt-7 font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-[color:var(--neon)] hover:text-[color:var(--ember)] transition-colors"
+        >
           ← Back to Blog
         </Link>
       </div>
