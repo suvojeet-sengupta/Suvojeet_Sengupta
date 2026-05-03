@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.github.com)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(supabase functions *)",
+      "Bash(xargs wc *)",
+      "Bash(grep -v \":0$\")",
+      "Bash(npm run *)"
+    ]
+  }
+}

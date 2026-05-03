@@ -10,7 +10,7 @@ const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
     name: 'SuvMusic',
     description:
       'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.',
-    stargazers_count: 10,
+    stargazers_count: 201,
     language: 'Kotlin',
     html_url: 'https://github.com/suvojeet-sengupta/SuvMusic',
   },
@@ -18,34 +18,11 @@ const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
     name: 'NoteNext',
     description:
       'A professional note-taking application for Android with cloud sync and markdown support.',
-    stargazers_count: 5,
+    stargazers_count: 10,
     language: 'Kotlin',
     html_url: 'https://github.com/suvojeet-sengupta/NoteNext',
   },
 };
-
-const VOCAL_TRACKS = [
-  {
-    lang: 'Vocal',
-    title: 'Tum Hi Ho',
-    em: '(Cover)',
-    desc:
-      'Arijit Singh classic, reimagined with stripped acoustic phrasing and a longer outro. Recorded one mic, one take.',
-    stars: '★ Live',
-    duration: '04:21',
-    href: '/music',
-  },
-  {
-    lang: 'Bengali',
-    title: 'Coffee Houser Sei Adda',
-    em: '(Folk)',
-    desc:
-      'A tribute to Manna Dey. Bengali soul, dragged into the present with warm room reverb and a slower BPM.',
-    stars: '★ Live',
-    duration: '05:12',
-    href: '/music',
-  },
-];
 
 const SITE_TRACK = {
   lang: 'Next.js',
@@ -70,7 +47,6 @@ export default async function FeaturedProjects() {
     repos[name] = repoData ?? FALLBACK_DATA[name];
   });
 
-  // Build the unified tracklist: code projects (live data) + vocal tracks + portfolio.
   const tracks = [
     ...FEATURED_PROJECT_NAMES.map((name) => {
       const repo = repos[name];
@@ -88,7 +64,6 @@ export default async function FeaturedProjects() {
         githubUrl: repo?.html_url,
       };
     }),
-    ...VOCAL_TRACKS.map((t) => ({ ...t, external: false, githubUrl: undefined })),
     { ...SITE_TRACK, external: true, githubUrl: undefined },
   ];
 
@@ -125,7 +100,7 @@ export default async function FeaturedProjects() {
 export function FeaturedProjectsSkeleton() {
   return (
     <div className={styles.tracks}>
-      {[1, 2, 3, 4, 5].map((i) => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className={`${styles.track} ${styles.skeletonTrack}`}>
           <div className={styles.trackNum}>0{i}</div>
           <div className={styles.skeletonBlock} style={{ width: '60%', height: 24 }} />

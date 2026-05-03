@@ -13,13 +13,13 @@ export interface GithubRepo {
 export async function fetchGithubRepo(owner: string, repo: string): Promise<GithubRepo | null> {
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+      headers: { 'Accept': 'application/vnd.github.v3+json' },
     });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch repo: ${repo}`);
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error(`Error fetching GitHub data for ${repo}:`, error);
