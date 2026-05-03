@@ -13,9 +13,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -30,64 +28,92 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-background/80 backdrop-blur-md border-b border-light py-3" : "bg-transparent py-6"
-    )}>
-      <div className="section-container !py-0 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-black tracking-tighter hover:text-accent transition-colors">
-          SUVOJEET<span className="text-accent">.</span>
-        </Link>
+    <nav
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'flex justify-between items-center px-8 py-[18px]',
+        isScrolled
+          ? 'bg-[color:var(--ink)]/85 backdrop-blur-md border-b border-[color:var(--line)]'
+          : 'bg-gradient-to-b from-[color:var(--bg-primary)]/85 to-transparent backdrop-blur-sm'
+      )}
+      style={{ fontFamily: 'var(--font-mono)' }}
+    >
+      {/* Brand */}
+      <Link
+        href="/"
+        className="flex items-baseline gap-1.5 text-[22px] font-black tracking-tight serif text-[color:var(--text-primary)] hover:opacity-90"
+        style={{ fontFamily: 'var(--font-serif)', letterSpacing: '-0.02em' }}
+      >
+        SUVOJEET
+        <span className="brand-dot" aria-hidden="true" />
+      </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.path} 
-              href={link.path}
-              className={cn(
-                "text-sm font-bold uppercase tracking-widest transition-colors hover:text-accent",
-                pathname === link.path ? "text-accent" : "text-secondary"
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <ThemeToggle />
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle />
-          <button 
-            className="p-2 text-primary"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <div className="w-6 h-0.5 bg-current mb-1.5"></div>
-            <div className="w-6 h-0.5 bg-current mb-1.5"></div>
-            <div className="w-6 h-0.5 bg-current"></div>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-background border-b border-light p-6 md:hidden flex flex-col gap-4"
-          >
-            {navLinks.map((link) => (
-              <Link 
-                key={link.path} 
+      {/* Desktop nav */}
+      <ul className="hidden md:flex items-center gap-7 list-none text-[11px] uppercase tracking-[0.15em]">
+        {navLinks.map((link) => {
+          const active = pathname === link.path;
+          return (
+            <li key={link.path}>
+              <Link
                 href={link.path}
                 className={cn(
-                  "text-lg font-bold uppercase tracking-widest",
-                  pathname === link.path ? "text-accent" : "text-secondary"
+                  'transition-opacity transition-colors hover:opacity-100 hover:text-[color:var(--neon)]',
+                  active
+                    ? 'text-[color:var(--neon)] opacity-100 before:content-["◆_"]'
+                    : 'text-[color:var(--text-secondary)] opacity-70'
                 )}
+              >
+                {link.name}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Now playing + theme toggle */}
+      <div className="hidden md:flex items-center gap-4">
+        <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.15em] text-[color:var(--text-secondary)] opacity-65">
+          <div className="equalizer" aria-hidden="true">
+            <span /><span /><span /><span />
+          </div>
+          <span>Live Set · {new Date().getFullYear()}</span>
+        </div>
+        <ThemeToggle />
+      </div>
+
+      {/* Mobile toggle */}
+      <div className="flex items-center gap-3 md:hidden">
+        <ThemeToggle />
+        <button
+          aria-label="Toggle menu"
+          className="p-2 text-[color:var(--text-primary)]"
+          onClick={() => setMobileMenuOpen((v) => !v)}
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile menu — React state, no vanilla DOM */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 right-0 bg-[color:var(--bg-secondary)] border-b border-[color:var(--line-strong)] flex flex-col gap-5 p-6 md:hidden"
+          >
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                href={link.path}
                 onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  'text-sm uppercase tracking-[0.2em]',
+                  pathname === link.path ? 'text-[color:var(--neon)]' : 'text-[color:var(--text-primary)]'
+                )}
               >
                 {link.name}
               </Link>

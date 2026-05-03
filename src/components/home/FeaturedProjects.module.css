@@ -1,0 +1,136 @@
+.tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.track {
+  display: grid;
+  grid-template-columns: 60px 1fr 2fr auto auto;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.3s ease;
+  position: relative;
+}
+.track:hover {
+  padding-left: 24px;
+}
+.track:hover .trackTitle {
+  color: var(--neon);
+}
+.track:hover::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--neon);
+  font-size: 12px;
+}
+
+.trackNum {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  opacity: 0.4;
+  font-feature-settings: 'tnum';
+}
+
+.trackTitleWrap {
+  min-width: 0;
+}
+
+.trackLang {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.trackTitle {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+.trackTitle em {
+  font-style: italic;
+  font-weight: 400;
+  opacity: 0.6;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+.trackDesc {
+  color: var(--text-secondary);
+  opacity: 0.75;
+  font-size: 14px;
+  max-width: 420px;
+  line-height: 1.5;
+}
+
+.trackStars {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ember);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trackDuration {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  font-feature-settings: 'tnum';
+}
+
+/* Skeleton */
+.skeletonTrack {
+  cursor: default;
+}
+.skeletonTrack:hover {
+  padding-left: 0;
+}
+.skeletonTrack:hover::before {
+  content: none;
+}
+.skeletonBlock {
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  animation: pulse-skel 1.4s ease-in-out infinite;
+}
+@keyframes pulse-skel {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .track {
+    grid-template-columns: 40px 1fr auto;
+    gap: 16px;
+  }
+  .trackLang,
+  .trackDesc {
+    display: none;
+  }
+  .trackTitle {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .trackStars {
+    display: none;
+  }
+}

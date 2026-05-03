@@ -1,82 +1,121 @@
 import React from 'react';
 import Link from 'next/link';
 import { fetchGithubRepo, GithubRepo } from '@/lib/github';
-import uiStyles from '@/components/common/UI.module.css';
+import styles from './FeaturedProjects.module.css';
 
 const FEATURED_PROJECT_NAMES = ['SuvMusic', 'NoteNext'];
 
 const FALLBACK_DATA: Record<string, Partial<GithubRepo>> = {
-  'SuvMusic': {
+  SuvMusic: {
     name: 'SuvMusic',
-    description: 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.',
+    description:
+      'A high-performance YouTube Music client built native for Android. Seamless streaming, advanced media handling, zero compromises.',
     stargazers_count: 10,
     language: 'Kotlin',
-    html_url: 'https://github.com/suvojeet-sengupta/SuvMusic'
+    html_url: 'https://github.com/suvojeet-sengupta/SuvMusic',
   },
-  'NoteNext': {
+  NoteNext: {
     name: 'NoteNext',
-    description: 'A professional note-taking application for Android with cloud sync and markdown support.',
+    description:
+      'A productivity-focused notes app with cloud sync and markdown. Designed to feel as quick as a thought.',
     stargazers_count: 5,
     language: 'Kotlin',
-    html_url: 'https://github.com/suvojeet-sengupta/NoteNext'
-  }
+    html_url: 'https://github.com/suvojeet-sengupta/NoteNext',
+  },
+};
+
+const VOCAL_TRACKS = [
+  {
+    lang: 'Vocal',
+    title: 'Tum Hi Ho',
+    em: '(Cover)',
+    desc:
+      'Arijit Singh classic, reimagined with stripped acoustic phrasing and a longer outro. Recorded one mic, one take.',
+    stars: '★ Live',
+    duration: '04:21',
+    href: '/music',
+  },
+  {
+    lang: 'Bengali',
+    title: 'Coffee Houser Sei Adda',
+    em: '(Folk)',
+    desc:
+      'A tribute to Manna Dey. Bengali soul, dragged into the present with warm room reverb and a slower BPM.',
+    stars: '★ Live',
+    duration: '05:12',
+    href: '/music',
+  },
+];
+
+const SITE_TRACK = {
+  lang: 'Next.js',
+  title: 'This Portfolio',
+  em: '(B-Side)',
+  desc:
+    'React 19, Tailwind v4, Cloudflare D1. Shipped, opinionated, fast — built in the same booth where the vocals get cut.',
+  stars: '★ Open',
+  duration: new Date().getFullYear().toString(),
+  href: 'https://github.com/suvojeet-sengupta',
 };
 
 export default async function FeaturedProjects() {
-  const repoPromises = FEATURED_PROJECT_NAMES.map(name => 
+  const repoPromises = FEATURED_PROJECT_NAMES.map((name) =>
     fetchGithubRepo('suvojeet-sengupta', name)
   );
-  
   const results = await Promise.all(repoPromises);
-  
-  const repos: Record<string, any> = {};
+
+  const repos: Record<string, Partial<GithubRepo>> = {};
   results.forEach((repoData, index) => {
     const name = FEATURED_PROJECT_NAMES[index];
-    if (repoData) {
-      repos[name] = repoData;
-    } else {
-      // Use fallback if API fails
-      repos[name] = FALLBACK_DATA[name];
-    }
+    repos[name] = repoData ?? FALLBACK_DATA[name];
   });
 
-  return (
-    <div className={uiStyles.projectGrid}>
-      {FEATURED_PROJECT_NAMES.map((name) => {
-        const repo = repos[name];
-        
-        if (!repo) return null;
+  // Build the unified tracklist: code projects (live data) + vocal tracks + portfolio.
+  const tracks = [
+    ...FEATURED_PROJECT_NAMES.map((name) => {
+      const repo = repos[name];
+      return {
+        lang: repo?.language || 'Kotlin',
+        title: name,
+        em: name === 'SuvMusic' ? '(Studio LP)' : '(EP)',
+        desc:
+          repo?.description ||
+          'Signature Android application built with performance and user experience in mind.',
+        stars: `★ ${repo?.stargazers_count ?? 0}`,
+        duration: `v${repo?.stargazers_count ? '2.4.1' : '1.0'}`,
+        href: `/${name.toLowerCase()}`,
+        external: false,
+        githubUrl: repo?.html_url,
+      };
+    }),
+    ...VOCAL_TRACKS.map((t) => ({ ...t, external: false, githubUrl: undefined })),
+    { ...SITE_TRACK, external: true, githubUrl: undefined },
+  ];
 
+  return (
+    <div className={styles.tracks}>
+      {tracks.map((track, i) => {
+        const num = String(i + 1).padStart(2, '0');
         return (
-          <div key={name} className={uiStyles.professionalCard + " group"}>
-            <div className="flex justify-between items-start mb-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-muted">{repo.language || 'Kotlin'}</span>
-              <div className="flex items-center gap-1 text-brand-orange font-bold">
-                <span>★</span>
-                <span>{repo.stargazers_count}</span>
+          <Link
+            key={`${track.title}-${i}`}
+            href={track.href}
+            target={track.external ? '_blank' : undefined}
+            rel={track.external ? 'noopener noreferrer' : undefined}
+            className={styles.track}
+          >
+            <div className={styles.trackNum}>{num}</div>
+            <div className={styles.trackTitleWrap}>
+              <div className={styles.trackLang}>{track.lang}</div>
+              <div className={styles.trackTitle}>
+                {track.title}
+                <em>{track.em}</em>
               </div>
             </div>
-            <h3 className="text-2xl font-black mb-3 group-hover:text-accent transition-colors">{name}</h3>
-            <p className="text-secondary mb-6 line-clamp-3 font-medium">
-              {repo.description || (name === 'SuvMusic' 
-                ? 'A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.'
-                : 'Signature Android application built with performance and user experience in mind.')}
-            </p>
-            <Link 
-              href={name.toLowerCase()} 
-              className="inline-flex items-center gap-2 font-bold text-sm bg-brand-orange text-white px-4 py-2 rounded-sm hover:bg-orange-600 transition-colors mb-4"
-            >
-              VIEW DETAILS
-            </Link>
-            <br />
-            <Link 
-              href={repo.html_url} 
-              target="_blank"
-              className="inline-flex items-center gap-2 font-bold text-xs border-b border-muted text-muted hover:text-brand-orange hover:border-brand-orange transition-colors"
-            >
-              GITHUB SOURCE →
-            </Link>
-          </div>
+            <div className={styles.trackDesc}>{track.desc}</div>
+            <div className={styles.trackStars}>{track.stars}</div>
+            <div className={styles.trackDuration}>{track.duration}</div>
+          </Link>
         );
       })}
     </div>
@@ -84,16 +123,17 @@ export default async function FeaturedProjects() {
 }
 
 export function FeaturedProjectsSkeleton() {
-    return (
-      <div className={uiStyles.projectGrid}>
-        {[1, 2].map((i) => (
-          <div key={i} className={uiStyles.professionalCard + " animate-pulse"}>
-            <div className="h-4 bg-background/50 rounded w-1/4 mb-4"></div>
-            <div className="h-8 bg-background/50 rounded w-3/4 mb-4"></div>
-            <div className="h-20 bg-background/50 rounded w-full mb-6"></div>
-            <div className="h-4 bg-background/50 rounded w-1/2"></div>
-          </div>
-        ))}
-      </div>
-    );
+  return (
+    <div className={styles.tracks}>
+      {[1, 2, 3, 4, 5].map((i) => (
+        <div key={i} className={`${styles.track} ${styles.skeletonTrack}`}>
+          <div className={styles.trackNum}>0{i}</div>
+          <div className={styles.skeletonBlock} style={{ width: '60%', height: 24 }} />
+          <div className={styles.skeletonBlock} style={{ width: '90%', height: 14 }} />
+          <div className={styles.skeletonBlock} style={{ width: 40, height: 14 }} />
+          <div className={styles.skeletonBlock} style={{ width: 50, height: 14 }} />
+        </div>
+      ))}
+    </div>
+  );
 }

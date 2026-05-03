@@ -1,60 +1,71 @@
 @import "tailwindcss";
 
 /* ============================================
-   DESIGN TOKENS - Professional & Organic
+   DESIGN TOKENS — VINYL SESSIONS
+   Dark = ink/neon (the "studio at night" mode)
+   Light = paper/neon (a "liner-notes" daytime variant)
    ============================================ */
 :root {
-  /* Background Colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #fcfcfc;
-  --bg-tertiary: #f5f5f5;
+  /* Light theme — "Paper" */
+  --ink: #0a0908;
+  --ink-2: #131110;
+  --ink-3: #1c1917;
+  --paper: #f5f1e8;
+  --bone: #e8e1d0;
+  --neon: #ea580c;
+  --neon-soft: #ff8c5a;
+  --ember: #d97706;
+
+  --bg-primary: var(--paper);
+  --bg-secondary: #efe9d9;
+  --bg-tertiary: #e8e1d0;
   --bg-elevated: #ffffff;
 
-  /* Text Colors */
-  --text-primary: #121212;
-  --text-secondary: #4a4a4a;
-  --text-tertiary: #71717a;
-  --text-muted: #a1a1aa;
+  --text-primary: var(--ink);
+  --text-secondary: #2a2522;
+  --text-tertiary: #57534e;
+  --text-muted: #78716c;
 
-  /* Accent Colors - Professional Orange & Black */
-  --accent-primary: #ea580c; /* Orange 600 */
-  --accent-hover: #c2410c; /* Orange 700 */
-  --accent-subtle: #fff7ed; /* Orange 50 */
+  --accent-primary: var(--neon);
+  --accent-hover: #c2410c;
+  --accent-subtle: #fff7ed;
 
-  /* Border Colors */
-  --border-light: #e4e4e7;
-  --border-medium: #d4d4d8;
-  --border-accent: #ea580c;
+  --border-light: rgba(10, 9, 8, 0.08);
+  --border-medium: rgba(10, 9, 8, 0.18);
+  --border-accent: var(--neon);
 
-  /* Shadows - Minimal and Real-world */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --line: rgba(10, 9, 8, 0.08);
+  --line-strong: rgba(10, 9, 8, 0.18);
 
-  /* Transition */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark Theme */
+/* Dark theme — "Studio at night" — full vinyl identity */
 [data-theme="dark"] {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --bg-elevated: #1e1e1e;
+  --bg-primary: var(--ink);
+  --bg-secondary: var(--ink-2);
+  --bg-tertiary: var(--ink-3);
+  --bg-elevated: #1e1c1a;
 
-  --text-primary: #f8f8f8;
-  --text-secondary: #d4d4d8;
-  --text-tertiary: #a1a1aa;
-  --text-muted: #52525b;
+  --text-primary: var(--paper);
+  --text-secondary: var(--bone);
+  --text-tertiary: #a8a29e;
+  --text-muted: #78716c;
 
-  --accent-primary: #fb923c; /* Orange 400 */
-  --accent-hover: #fdba74; /* Orange 300 */
-  --accent-subtle: #27160c;
+  --accent-primary: #ff5e1f;
+  --accent-hover: #fbbf24;
+  --accent-subtle: rgba(255, 94, 31, 0.08);
 
-  --border-light: #27272a;
-  --border-medium: #3f3f46;
-  --border-accent: #fb923c;
+  --border-light: rgba(245, 241, 232, 0.08);
+  --border-medium: rgba(245, 241, 232, 0.18);
+  --border-accent: #ff5e1f;
+
+  --line: rgba(245, 241, 232, 0.08);
+  --line-strong: rgba(245, 241, 232, 0.18);
+
+  --neon: #ff5e1f;
+  --ember: #fbbf24;
 }
 
 /* ============================================
@@ -64,13 +75,20 @@
   --color-background: var(--bg-primary);
   --color-foreground: var(--text-primary);
   --color-brand-orange: var(--accent-primary);
-  --color-brand-black: #121212;
-  
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-brand-black: var(--ink);
+  --color-paper: var(--paper);
+  --color-bone: var(--bone);
+  --color-ink: var(--ink);
+  --color-neon: var(--neon);
+  --color-ember: var(--ember);
+
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-sans: var(--font-fraunces), Georgia, serif;
 }
 
 /* ============================================
-   BASE STYLES
+   BASE
    ============================================ */
 html {
   scroll-behavior: smooth;
@@ -79,77 +97,99 @@ html {
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
+  font-weight: 400;
   line-height: 1.5;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Base transitions for specific properties only where needed */
-.theme-transition {
-  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+/* Film grain overlay — pure CSS, no JS */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
 }
 
-/* Exclude certain elements from smooth transitions to prevent "laggy" feel on hover or interaction */
-button, a, input, select, textarea, .no-transition {
-  transition: none !important;
-}
+.mono { font-family: var(--font-mono); }
+.serif { font-family: var(--font-serif); }
 
-/* Custom transitions for specific hover effects */
-button:hover, a:hover {
-  transition: all var(--transition-fast) !important;
+/* Headings inherit Fraunces */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
 ::-webkit-scrollbar-thumb {
   background: var(--border-medium);
   border: 2px solid var(--bg-secondary);
   border-radius: 5px;
 }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-tertiary);
-}
-
-/* Heading Typography */
-h1, h2, h3, h4 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
+/* Selection */
+::selection { background: var(--neon); color: var(--ink); }
 
 /* Section Wrapper */
 .section-container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 7rem 2rem;
+  position: relative;
 }
 
-/* Accent Highlight Utilities */
-.text-accent {
-  color: var(--accent-primary);
-}
-
-.bg-accent {
-  background-color: var(--accent-primary);
-}
-
-/* Typography Overrides */
-p {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-}
-
-/* Responsive Overrides */
 @media (max-width: 768px) {
-  .section-container {
-    padding: 3rem 1rem;
-  }
+  .section-container { padding: 4rem 1.25rem; }
 }
+
+/* Accent Utilities */
+.text-accent { color: var(--accent-primary); }
+.bg-accent { background-color: var(--accent-primary); }
+.text-neon { color: var(--neon); }
+.text-bone { color: var(--bone); }
+.text-paper { color: var(--paper); }
+
+p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
+
+/* ============================================
+   VINYL — keyframes shared across components
+   ============================================ */
+@keyframes vinyl-spin { to { transform: rotate(360deg); } }
+@keyframes vinyl-spin-center { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes vinyl-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 94, 31, 0.6); }
+  50% { opacity: 0.5; box-shadow: 0 0 0 10px rgba(255, 94, 31, 0); }
+}
+@keyframes vinyl-eq {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+/* Brand pulse dot */
+.brand-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--neon);
+  border-radius: 50%;
+  animation: vinyl-pulse 2s infinite;
+}
+
+/* Equalizer — used in nav "now playing" */
+.equalizer { display: inline-flex; gap: 2px; align-items: end; height: 14px; }
+.equalizer span {
+  width: 2px; background: var(--neon);
+  animation: vinyl-eq 1.2s infinite ease-in-out;
+}
+.equalizer span:nth-child(1) { animation-delay: 0s;   height: 60%; }
+.equalizer span:nth-child(2) { animation-delay: 0.2s; height: 100%; }
+.equalizer span:nth-child(3) { animation-delay: 0.4s; height: 40%; }
+.equalizer span:nth-child(4) { animation-delay: 0.6s; height: 80%; }

@@ -1,13 +1,11 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { calculateAge } from '@/lib/utils';
-import uiStyles from '@/components/common/UI.module.css';
-
-const FEATURED_PROJECT_NAMES = ['SuvMusic', 'NoteNext'];
+import Vinyl from './Vinyl';
+import styles from './HomePage.module.css';
 
 interface HomePageProps {
   children?: React.ReactNode;
@@ -17,120 +15,155 @@ const HomePage = ({ children }: HomePageProps) => {
   const age = calculateAge('2005-08-01');
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="section-container pt-32 pb-20">
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          <motion.div 
-            initial={{ opacity: 1, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="flex-1 space-y-6"
-          >
-            <h1 className="text-5xl md:text-7xl font-black leading-tight">
-              Suvojeet <span className="text-accent">Sengupta</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-secondary max-w-2xl font-medium">
-              A {age}-year-old <span className="text-brand-orange font-bold">Singer</span> & Creative Developer. Soulful voice in Hindi & Bengali, building high-performance Android solutions.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Link href="/about" className={uiStyles.btnSolid + " text-lg px-8"}>
-                About Me
-              </Link>
-              <Link href="/blog" className={uiStyles.btnSolid + " text-lg px-8"}>
-                Blog
-              </Link>
-              <Link href="/music" className={uiStyles.btnOutline + " text-lg px-8"}>
-                Music Portfolio
-              </Link>
-            </div>
-          </motion.div>
+    <div className="min-h-screen">
+      {/* ========= HERO ========= */}
+      <section className={styles.hero}>
+        <div className={styles.heroBg} aria-hidden="true" />
 
-          <motion.div 
-            initial={{ opacity: 1, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="md:w-1/3 flex justify-center"
-          >
-            <div className={uiStyles.profileFrame}>
-              <Image 
-                src="/suvojeet.jpg" 
-                alt="Suvojeet Sengupta" 
-                width={350} 
-                height={350} 
-                className="grayscale hover:grayscale-0 transition-all duration-500 object-cover"
-                priority
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Projects */}
-      <section className="bg-tertiary py-24">
-        <div className="section-container">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-4xl font-bold mb-4">Core Projects</h2>
-              <p className="text-secondary font-medium">Signature Android applications built with performance and user experience in mind.</p>
-            </div>
-            <Link href="https://github.com/suvojeet-sengupta" target="_blank" className="text-brand-orange font-bold hover:underline mb-2">
-              View All Github →
-            </Link>
-          </div>
-
-          {children}
-        </div>
-      </section>
-
-      {/* Approach Section */}
-      <section className="section-container py-24">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 className="text-4xl font-bold mb-8">My Approach</h2>
-            <div className="space-y-8">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 flex-shrink-0 bg-brand-black text-white flex items-center justify-center font-bold text-xl rounded-sm">01</div>
-                <div>
-                  <h4 className="text-xl font-bold mb-2">Technical Excellence</h4>
-                  <p>I focus on clean architecture and performance. SuvMusic and NoteNext are built with native Android best practices, ensuring a smooth, real-world user experience.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 flex-shrink-0 bg-brand-orange text-white flex items-center justify-center font-bold text-xl rounded-sm">02</div>
-                <div>
-                  <h4 className="text-xl font-bold mb-2">Creative Thinking</h4>
-                  <p>Good code is just one part. I bring creativity from my music background into my UI/UX design, making applications that feel &quot;organic&quot; and human-centric.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-12 h-12 flex-shrink-0 bg-brand-black text-white flex items-center justify-center font-bold text-xl rounded-sm">03</div>
-                <div>
-                  <h4 className="text-xl font-bold mb-2">Constant Evolution</h4>
-                  <p>I believe in logic and creative problem solving over boilerplate knowledge. Every project is a step forward in mastering both arts.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-tertiary p-8 rounded-sm border-l-4 border-brand-orange">
-            <h3 className="text-2xl font-bold mb-4 italic">&quot;I build things that I want to use. If it&apos;s not fast, clean, and intuitive, it&apos;s not finished.&quot;</h3>
-            <p className="text-right font-bold">— Suvojeet Sengupta</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="bg-brand-black text-white py-20">
-        <div className="section-container text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter">Let&apos;s build something real together.</h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
-            Whether you need a high-performance Android app, a modern web experience, or a musical collaboration, I&apos;m ready to bring my creativity to your project.
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <div className={styles.heroTag}>Side A · Asansol → World</div>
+          <h1 className={styles.heroTitle}>
+            Singer<br />
+            <span className={styles.strike}>just</span>{' '}
+            <span className={styles.accent}>&amp; Coder</span>
+          </h1>
+          <p className={styles.heroSub}>
+            Suvojeet Sengupta — a {age}-year-old vocalist trained in{' '}
+            <strong>Hindi &amp; Bengali</strong> traditions, building{' '}
+            <strong>high-performance Android apps</strong> when the studio lights are off.
+            Two crafts. One pulse.
           </p>
-          <div className="flex justify-center gap-4">
-            <Link href="/contact" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-10 transition-colors rounded-sm uppercase tracking-widest">
-              Contact Me
+
+          <div className={styles.heroCta}>
+            <Link href="#tracks" className={`${styles.btn} ${styles.btnPrimary}`}>
+              Listen to the Set
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </Link>
+            <Link href="/about" className={`${styles.btn} ${styles.btnGhost}`}>
+              Read Liner Notes →
             </Link>
           </div>
+
+          <div className={styles.heroStats}>
+            <div>
+              <div className={styles.statNum}>{age}</div>
+              <div className={styles.statLabel}>Years on this Earth</div>
+            </div>
+            <div>
+              <div className={styles.statNum}>02</div>
+              <div className={styles.statLabel}>Languages Sung</div>
+            </div>
+            <div>
+              <div className={styles.statNum}>15+</div>
+              <div className={styles.statLabel}>Stars on GitHub</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
+          <Vinyl nowPlaying="Tum Hi Ho (Cover)" />
+        </motion.div>
+      </section>
+
+      {/* ========= TRACKS (FeaturedProjects rendered as tracklist) ========= */}
+      <section id="tracks" className={styles.section}>
+        <div className={styles.sectionHead}>
+          <div>
+            <div className={styles.sectionNum}>02 / Tracklist</div>
+            <h2 className={styles.sectionTitle}>
+              Selected <em>Works</em>
+            </h2>
+          </div>
+          <div className={styles.sectionMeta}>
+            Last updated · {new Date().toISOString().slice(0, 7).replace('-', '.')}
+            <br />
+            Side A — Code · Side B — Voice
+          </div>
+        </div>
+
+        {children}
+      </section>
+
+      {/* ========= APPROACH ========= */}
+      <section className={styles.approach} id="approach">
+        <div className={styles.approachInner}>
+          <div className={styles.sectionHead}>
+            <div>
+              <div className={styles.sectionNum}>03 / Method</div>
+              <h2 className={styles.sectionTitle}>
+                Three <em>Beats</em>
+              </h2>
+            </div>
+            <div className={styles.sectionMeta}>How the<br />record gets cut</div>
+          </div>
+
+          <div className={styles.approachGrid}>
+            <div className={styles.approachCard}>
+              <div className={styles.approachCardNum}>01</div>
+              <h3>Technical Excellence</h3>
+              <p>
+                Clean architecture, native patterns, real benchmarks. SuvMusic and
+                NoteNext aren&apos;t side projects — they&apos;re release-grade software
+                meant to be lived in.
+              </p>
+            </div>
+            <div className={styles.approachCard}>
+              <div className={styles.approachCardNum}>02</div>
+              <h3>Creative Phrasing</h3>
+              <p>
+                A song is timing and a UI is timing. Every animation, every hover,
+                every transition is composed the same way I&apos;d phrase a vocal —
+                with feel.
+              </p>
+            </div>
+            <div className={styles.approachCard}>
+              <div className={styles.approachCardNum}>03</div>
+              <h3>Constant Practice</h3>
+              <p>
+                Logic over memorisation. Voice over volume. Every project, every
+                cover, every commit is a rehearsal for the next one being better.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========= QUOTE ========= */}
+      <section className={styles.quote}>
+        <blockquote>
+          &ldquo;I build things <em>I want to use</em>. If it isn&apos;t fast,
+          clean, and intuitive — it isn&apos;t finished.&rdquo;
+        </blockquote>
+        <div className={styles.quoteAuthor}>— Suvojeet Sengupta · Asansol, WB</div>
+      </section>
+
+      {/* ========= CTA ========= */}
+      <section className={styles.cta} id="contact">
+        <div className={styles.ctaInner}>
+          <div className={styles.ctaTag}>Side B · Booking Open</div>
+          <h2 className={styles.ctaTitle}>
+            Let&apos;s cut <em>something</em> real.
+          </h2>
+          <p className={styles.ctaSub}>
+            Need an Android engineer who phrases code like a melody — or a voice
+            for your next session? Studio is open.
+          </p>
+          <Link href="/contact" className={styles.btnCta}>
+            Open the Booth
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M13 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </section>
     </div>

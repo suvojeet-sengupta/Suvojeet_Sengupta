@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Fraunces, JetBrains_Mono } from "next/font/google";
 // @ts-ignore
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
@@ -7,9 +7,19 @@ import Providers from "@/components/common/Providers";
 import { SEO_CONFIG } from "@/lib/seo";
 import { Metadata } from "next";
 
-const inter = Inter({
-  variable: "--font-inter",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  weight: ["300", "400", "600", "900"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -90,7 +100,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.variable} antialiased selection:bg-brand-orange selection:text-white`}>
+      <body className={`${fraunces.variable} ${jetbrainsMono.variable} antialiased selection:bg-brand-orange selection:text-white`}>
         <Providers>
           <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
             <ClientLayout>{children}</ClientLayout>
