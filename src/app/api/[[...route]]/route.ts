@@ -84,31 +84,36 @@ async function handleRequest(req: Request) {
     'http://localhost:4321'
   ];
 
-  const isAllowed = origin && (allowedOrigins.includes(origin) || origin.endsWith('.suvojeetsengupta.in'));
+  const isAllowed = origin && (
+    allowedOrigins.includes(origin) || 
+    origin.endsWith('.suvojeetsengupta.in') || 
+    origin.startsWith('http://localhost:')
+  );
 
   const corsHeaders: Record<string, string> = {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
     'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
   };
 
   if (isAllowed) {
     corsHeaders['Access-Control-Allow-Origin'] = origin!;
+    corsHeaders['Access-Control-Allow-Credentials'] = 'true';
   }
 
   if (req.method === 'OPTIONS') {
-    return new NextResponse(null, { headers: corsHeaders });
+    return new NextResponse(null, { status: 204, headers: corsHeaders });
   }
 
   try {
     const url = new URL(req.url);
-    // Remove trailing slash for exact matching if it exists and path != /
     let pathname = url.pathname;
     if (pathname.endsWith('/') && pathname !== '/') {
       pathname = pathname.slice(0, -1);
     }
 
-    let response: NextResponse | Response | null = null;
+    let response: Response | null = null;
 
     for (const route of routes) {
       const paramsObj = matchPath(route.pattern, pathname);
@@ -117,7 +122,9 @@ async function handleRequest(req: Request) {
         const handler = route.handlers[method];
         if (handler) {
           const params = Promise.resolve(paramsObj);
-          response = await handler(req, { params });
+          const result = await handler(req, { params });
+          // Ensure we have a Response object we can modify
+          response = result instanceof Response ? result : NextResponse.json(result);
           break;
         }
         response = NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
@@ -130,11 +137,12 @@ async function handleRequest(req: Request) {
     }
 
     // Add CORS headers to the response
+    const finalResponse = new NextResponse(response.body, response);
     Object.entries(corsHeaders).forEach(([key, value]) => {
-      response!.headers.set(key, value);
+      finalResponse.headers.set(key, value);
     });
 
-    return response;
+    return finalResponse;
   } catch (error: any) {
     console.error('API Error:', error);
     const errorResponse = NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
