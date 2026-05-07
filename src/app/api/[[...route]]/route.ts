@@ -76,6 +76,29 @@ const routes = [
 ];
 
 async function handleRequest(req: Request) {
+  const origin = req.headers.get('origin');
+  const allowedOrigins = [
+    'https://notenext.suvojeetsengupta.in',
+    'https://suvojeetsengupta.in',
+    'http://localhost:3000'
+  ];
+
+  const isAllowed = origin && (allowedOrigins.includes(origin) || origin.endsWith('.suvojeetsengupta.in'));
+
+  const corsHeaders: Record<string, string> = {
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Max-Age': '86400',
+  };
+
+  if (isAllowed) {
+    corsHeaders['Access-Control-Allow-Origin'] = origin!;
+  }
+
+  if (req.method === 'OPTIONS') {
+    return new NextResponse(null, { headers: corsHeaders });
+  }
+
   try {
     const url = new URL(req.url);
     // Remove trailing slash for exact matching if it exists and path != /
@@ -84,6 +107,8 @@ async function handleRequest(req: Request) {
       pathname = pathname.slice(0, -1);
     }
 
+    let response: NextResponse | Response | null = null;
+
     for (const route of routes) {
       const paramsObj = matchPath(route.pattern, pathname);
       if (paramsObj) {
@@ -91,15 +116,31 @@ async function handleRequest(req: Request) {
         const handler = route.handlers[method];
         if (handler) {
           const params = Promise.resolve(paramsObj);
-          return await handler(req, { params });
+          response = await handler(req, { params });
+          break;
         }
-        return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+        response = NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
+        break;
       }
     }
-    return NextResponse.json({ error: 'Not Found: ' + pathname }, { status: 404 });
+
+    if (!response) {
+      response = NextResponse.json({ error: 'Not Found: ' + pathname }, { status: 404 });
+    }
+
+    // Add CORS headers to the response
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      response!.headers.set(key, value);
+    });
+
+    return response;
   } catch (error: any) {
     console.error('API Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    const errorResponse = NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      errorResponse.headers.set(key, value);
+    });
+    return errorResponse;
   }
 }
 
@@ -108,3 +149,4 @@ export const POST = handleRequest;
 export const PUT = handleRequest;
 export const PATCH = handleRequest;
 export const DELETE = handleRequest;
+export const OPTIONS = handleRequest;
