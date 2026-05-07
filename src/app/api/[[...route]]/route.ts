@@ -80,7 +80,8 @@ async function handleRequest(req: Request) {
   const allowedOrigins = [
     'https://notenext.suvojeetsengupta.in',
     'https://suvojeetsengupta.in',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost:4321'
   ];
 
   const isAllowed = origin && (allowedOrigins.includes(origin) || origin.endsWith('.suvojeetsengupta.in'));
