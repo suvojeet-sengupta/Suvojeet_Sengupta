@@ -765,23 +765,23 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 mb-12">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Posts</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalPosts}</p>
           </div>
-          <div className="p-3 md:p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
+          <div className="p-3 md:p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform lg:mt-4">
             <Edit3 size={20} className="md:w-6 md:h-6" />
           </div>
         </div>
 
         <button 
           onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
         >
           <div>
-            <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
+            <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
               <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
               {overview.stats.pendingComments > 0 && (
                 <span className="text-[9px] md:text-[10px] bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">
@@ -791,37 +791,37 @@ export default function AdminDashboardPage() {
             </div>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalComments}</p>
           </div>
-          <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform">
+          <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform lg:mt-4">
             <MessageSquare size={20} className="md:w-6 md:h-6" />
           </div>
         </button>
 
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Views</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalBlogViews}</p>
           </div>
-          <div className="p-3 md:p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform">
+          <div className="p-3 md:p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform lg:mt-4">
             <Eye size={20} className="md:w-6 md:h-6" />
           </div>
         </div>
 
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left">
+        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Videos</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalVideos}</p>
           </div>
-          <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform">
+          <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform lg:mt-4">
             <Icons.YouTube className="w-5 h-5 md:w-6 md:h-6" />
           </div>
         </div>
 
         <button 
           onClick={() => document.getElementById('inbox-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0 group hover:border-brand-orange/40 transition-colors text-center md:text-left cursor-pointer"
+          className="col-span-2 lg:col-span-1 border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col lg:flex-row items-center lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
         >
           <div>
-            <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
+            <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
               <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Inbox</p>
               {overview.stats.unreadMessages > 0 && (
                 <span className="text-[9px] md:text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
@@ -1007,36 +1007,39 @@ export default function AdminDashboardPage() {
         </div>
         <div className="mt-6 space-y-4">
           {overview.posts.map((post) => (
-            <div key={post.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
-              <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h3 className="text-lg md:text-xl font-black">{post.title}</h3>
-                  <p className="text-xs md:text-sm text-secondary mt-1">
-                    /blog/{post.slug} • {post.views} views • {post.commentsCount} comments
+            <div key={post.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
+              <div className="flex flex-col gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-base md:text-xl font-black truncate">{post.title}</h3>
+                  <p className="text-[10px] md:text-sm text-secondary mt-1 truncate">
+                    /blog/{post.slug}
+                  </p>
+                  <p className="text-[10px] md:text-xs text-muted mt-1 font-medium">
+                    {post.views} views • {post.commentsCount} comments
                   </p>
                 </div>
-                <div className="flex flex-wrap w-full md:w-auto gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => startEditPost(post.id)}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <Edit3 size={12} className="md:w-3.5 md:h-3.5" />
+                    <Edit3 size={12} />
                     Edit
                   </button>
                   <button
                     type="button"
                     onClick={() => toggleCommentsStatus(post)}
-                    className="flex-1 md:flex-none border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
                     {post.commentsEnabled ? 'Disable' : 'Enable'}
                   </button>
                   <button
                     type="button"
                     onClick={() => deletePost(post.id)}
-                    className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
                   >
-                    <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
+                    <Trash2 size={12} />
                     Delete
                   </button>
                 </div>
@@ -1109,10 +1112,10 @@ export default function AdminDashboardPage() {
         </div>
         <div className="mt-6 space-y-4">
           {overview.videos.map((video) => (
-            <div key={video.id} className="border border-light rounded-sm p-4 bg-background hover:border-brand-orange/30 transition-colors">
+            <div key={video.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
-                  <div className="w-20 md:w-24 aspect-video bg-[color:var(--bg-tertiary)] rounded-sm overflow-hidden flex-shrink-0 relative group">
+                <div className="flex items-center gap-4 flex-1 w-full min-w-0">
+                  <div className="w-16 md:w-24 aspect-video bg-[color:var(--bg-tertiary)] rounded-sm overflow-hidden flex-shrink-0 relative group">
                     <Image 
                       src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
                       alt={video.title}
@@ -1125,15 +1128,15 @@ export default function AdminDashboardPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-sm md:text-lg font-bold truncate">{video.title}</h3>
-                    <p className="text-[10px] md:text-xs text-muted font-medium mt-0.5 truncate">
-                      ID: {video.youtubeId} • Added <FormattedDate date={video.publishedAt} options={{ day: '2-digit', month: 'short', year: 'numeric' }} />
+                    <p className="text-[9px] md:text-xs text-muted font-medium mt-0.5 truncate">
+                      ID: {video.youtubeId}
                     </p>
                     <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-orange mt-1 bg-brand-orange/5 inline-block px-2 py-0.5 rounded-full">
                       {video.plays || 0} plays
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <div className="flex gap-2 w-full sm:w-auto">
                   <a 
                     href={`https://youtube.com/watch?v=${video.youtubeId}`} 
                     target="_blank" 
@@ -1565,15 +1568,15 @@ export default function AdminDashboardPage() {
           {overview.messages.map((msg) => (
             <div 
               key={msg.id} 
-              className={`border rounded-sm p-4 md:p-6 transition-all ${
+              className={`border rounded-sm p-4 md:p-6 transition-all overflow-hidden ${
                 msg.isRead 
                 ? 'bg-background border-light opacity-80' 
                 : 'bg-white border-brand-orange shadow-md border-l-4'
               }`}
             >
-              <div className="flex flex-col md:flex-row justify-between gap-4">
+              <div className="flex flex-col lg:flex-row justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
                     <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
                       msg.type === 'SONG' ? 'bg-pink-100 text-pink-700' :
                       msg.type === 'PROJECT' ? 'bg-blue-100 text-blue-700' :
@@ -1589,17 +1592,17 @@ export default function AdminDashboardPage() {
                       <FormattedDate date={msg.createdAt} options={{ day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }} />
                     </span>
                   </div>
-                  <h3 className="font-bold text-lg">{msg.subject || 'No Subject'}</h3>
+                  <h3 className="font-bold text-base md:text-lg break-words">{msg.subject || 'No Subject'}</h3>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
-                    <p className="text-xs font-bold text-brand-orange">{msg.name}</p>
-                    <p className="text-xs text-secondary">{msg.email}</p>
+                    <p className="text-xs font-bold text-brand-orange truncate">{msg.name}</p>
+                    <p className="text-xs text-secondary truncate">{msg.email}</p>
                   </div>
                 </div>
                 
-                <div className="flex gap-2 w-full md:w-auto">
+                <div className="flex flex-wrap lg:flex-nowrap gap-2 w-full lg:w-auto">
                   <button
                     onClick={() => toggleMessageRead(msg)}
-                    className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest border transition-colors ${
+                    className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest border transition-colors ${
                       msg.isRead 
                       ? 'border-light hover:border-brand-orange text-secondary' 
                       : 'bg-brand-orange border-brand-orange text-white'
@@ -1609,7 +1612,7 @@ export default function AdminDashboardPage() {
                   </button>
                   <button
                     onClick={() => deleteMessage(msg.id)}
-                    className="flex-1 md:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
+                    className="flex-1 lg:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
                   >
                     <Trash2 size={16} />
                   </button>
