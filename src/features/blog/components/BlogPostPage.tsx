@@ -1,43 +1,17 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import type { BlogPost } from '@/types/blog';
-import { formatDate, cn } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 import { calculateReadingTime } from '@/lib/blog-utils';
-import { Icons } from '@/components/common/Icons';
 import { CommentList } from './comments/CommentList';
-import { useLikePost } from '../api/useBlogApi';
+import { LikeButton } from './LikeButton';
+import { ShareButtons } from './ShareButtons';
 
 interface BlogPostPageProps {
   post: BlogPost;
 }
 
 const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
-  const [shareUrl, setShareUrl] = useState('');
-  const [localLikes, setLocalLikes] = useState(post.likes);
-  const [localHasLiked, setLocalHasLiked] = useState(post.hasLiked);
-  
-  const { mutate: likePost } = useLikePost(post.slug);
-
-  useEffect(() => {
-    setShareUrl(window.location.href);
-  }, []);
-
-  const handleLike = () => {
-    const newHasLiked = !localHasLiked;
-    setLocalHasLiked(newHasLiked);
-    setLocalLikes(prev => newHasLiked ? prev + 1 : Math.max(0, prev - 1));
-
-    likePost(undefined, {
-      onError: () => {
-        setLocalHasLiked(!newHasLiked);
-        setLocalLikes(prev => !newHasLiked ? prev + 1 : Math.max(0, prev - 1));
-      }
-    });
-  };
-
-  const shareTitle = `Check out this post: ${post.title}`;
   const readingTime = calculateReadingTime(post.content);
 
   return (
@@ -101,32 +75,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={handleLike}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-2.5 border font-mono text-[11px] uppercase tracking-[0.2em] font-bold transition-all",
-                localHasLiked ? "bg-[color:var(--neon)]/10 border-[color:var(--neon)] text-[color:var(--neon)]" : "border-[color:var(--line-strong)] hover:border-[color:var(--neon)]"
-              )}
-            >
-              <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
-              <span>{localLikes}</span>
-            </button>
-            <div className="flex gap-2">
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-                className="w-10 h-10 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
-              >
-                <Icons.Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-                className="w-10 h-10 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
-              >
-                <Icons.Linkedin className="w-4 h-4" />
-              </a>
-            </div>
+            <LikeButton 
+              slug={post.slug} 
+              initialLikes={post.likes} 
+              initialHasLiked={post.hasLiked ?? false} 
+            />
+            <ShareButtons title={post.title} />
           </div>
         </div>
 
@@ -154,22 +108,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
               <div className="hidden md:flex items-center gap-3">
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--text-muted)]">Share</span>
-                <div className="flex gap-2">
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`}
-                    target="_blank"
-                    className="w-8 h-8 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
-                  >
-                    <Icons.Twitter className="w-3.5 h-3.5" />
-                  </a>
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-                    target="_blank"
-                    className="w-8 h-8 flex items-center justify-center border border-[color:var(--line-strong)] hover:border-[color:var(--neon)] transition-colors"
-                  >
-                    <Icons.Linkedin className="w-3.5 h-3.5" />
-                  </a>
-                </div>
+                <ShareButtons title={post.title} isSidebar={true} />
               </div>
             </div>
           </div>
@@ -192,16 +131,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
                   Sharing insights on technology, music, and the creative intersection of both.
                 </p>
                 <div className="pt-5 border-t border-[color:var(--line)]">
-                  <button
-                    onClick={handleLike}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-2 py-2.5 border font-mono text-[11px] uppercase tracking-[0.2em] font-bold transition-all",
-                      localHasLiked ? "bg-[color:var(--neon)]/10 border-[color:var(--neon)] text-[color:var(--neon)]" : "border-[color:var(--line-strong)] hover:border-[color:var(--neon)]"
-                    )}
-                  >
-                    <Icons.Heart className={cn("w-4 h-4", localHasLiked && "fill-current")} />
-                    <span>{localLikes} Likes</span>
-                  </button>
+                  <LikeButton 
+                    slug={post.slug} 
+                    initialLikes={post.likes} 
+                    initialHasLiked={post.hasLiked ?? false} 
+                    isSidebar={true} 
+                  />
                 </div>
               </div>
 

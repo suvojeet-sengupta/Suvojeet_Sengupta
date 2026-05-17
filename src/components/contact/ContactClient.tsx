@@ -27,8 +27,6 @@ export default function ContactClient() {
 
     return (
         <div className="min-h-screen pt-24 sm:pt-32 pb-16 overflow-hidden relative">
-            <Navbar />
-
             {/* Background Decorative Elements */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] bg-[color:var(--neon)]/10 blur-[120px] rounded-full pointer-events-none" />
 

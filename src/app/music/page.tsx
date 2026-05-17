@@ -1,6 +1,9 @@
 import MusicClient from '@/components/music/MusicClient';
 import { Metadata } from 'next';
 import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
+import { getMusicVideos } from '@/lib/music-service';
+
+export const runtime = 'edge';
 
 const ogImage = getOgImageUrl('My Music', { subtitle: 'Bengali & Hindi Vocals • Soulful Artist' });
 
@@ -22,6 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <MusicClient />;
+export default async function Page() {
+  const videos = await getMusicVideos();
+  return <MusicClient initialVideos={videos} />;
 }

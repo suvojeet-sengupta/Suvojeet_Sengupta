@@ -4,6 +4,8 @@ import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import { ThemeProvider } from "@/components/common/ThemeProvider";
 import Providers from "@/components/common/Providers";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { SEO_CONFIG } from "@/lib/seo";
 import { Metadata } from "next";
 
@@ -102,7 +104,13 @@ export default function RootLayout({
       <body className={`${fraunces.variable} ${jetbrainsMono.variable} antialiased selection:bg-brand-orange selection:text-white`}>
         <Providers>
           <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
-            <ClientLayout>{children}</ClientLayout>
+            <Navbar />
+            <ClientLayout>
+              <main className="min-h-screen">
+                {children}
+              </main>
+            </ClientLayout>
+            <Footer />
           </ThemeProvider>
         </Providers>
       </body>

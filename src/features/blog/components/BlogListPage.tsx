@@ -6,8 +6,8 @@ import { FormattedDate } from '@/components/common/FormattedDate';
 import { useBlogPosts } from '../api/useBlogApi';
 import BlogCardSkeleton from './BlogCardSkeleton';
 
-export default function BlogListPage() {
-  const { data: posts, isLoading, error } = useBlogPosts();
+export default function BlogListPage({ initialPosts }: { initialPosts: BlogSummary[] }) {
+  const { data: posts, isLoading, error } = useBlogPosts(initialPosts);
 
   return (
     <section className="section-container">

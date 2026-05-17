@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { BlogSummary, BlogPost } from '@/types/blog';
 
-export function useBlogPosts() {
+export function useBlogPosts(initialData?: BlogSummary[]) {
   return useQuery({
     queryKey: ['blog-posts'],
     queryFn: async () => {
@@ -10,6 +10,7 @@ export function useBlogPosts() {
       const data = await response.json();
       return data.posts as BlogSummary[];
     },
+    initialData,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }

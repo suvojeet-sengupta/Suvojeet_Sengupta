@@ -143,6 +143,15 @@ export function mapBlogSummary(row: Record<string, unknown>): BlogSummary {
   };
 }
 
+export function mapBlogPost(row: Record<string, unknown>): any {
+  return {
+    ...mapBlogSummary(row),
+    content: String(row.content || ''),
+    updatedAt: typeof row.updated_at === 'string' ? row.updated_at : null,
+    hasLiked: toBoolean(row.has_liked),
+  };
+}
+
 export async function sha256Hex(value: string): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', encoder.encode(value));
   const bytes = new Uint8Array(digest);

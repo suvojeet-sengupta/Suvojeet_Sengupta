@@ -8,31 +8,40 @@ import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
 import { FormattedDate } from '@/components/common/FormattedDate';
 
-const MusicClient = () => {
-  const [videos, setVideos] = useState<MusicVideo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeVideo, setActiveVideo] = useState<MusicVideo | null>(null);
+interface MusicClientProps {
+  initialVideos: MusicVideo[];
+}
+
+const MusicClient = ({ initialVideos }: MusicClientProps) => {
+  const [videos, setVideos] = useState<MusicVideo[]>(initialVideos);
+  const [loading, setLoading] = useState(initialVideos.length === 0);
+  const [activeVideo, setActiveVideo] = useState<MusicVideo | null>(
+    initialVideos.length > 0 ? initialVideos[0] : null
+  );
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const response = await fetch('/api/public/music-videos');
-        const data = await response.json();
-        if (data.videos) {
-          setVideos(data.videos);
-          if (data.videos.length > 0) {
-            setActiveVideo(data.videos[0]);
+    // Only fetch if initialVideos is empty (e.g. error on server or empty DB)
+    if (initialVideos.length === 0) {
+      const fetchVideos = async () => {
+        try {
+          const response = await fetch('/api/public/music-videos');
+          const data = await response.json();
+          if (data.videos) {
+            setVideos(data.videos);
+            if (data.videos.length > 0) {
+              setActiveVideo(data.videos[0]);
+            }
           }
+        } catch (error) {
+          console.error('Failed to fetch videos:', error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Failed to fetch videos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchVideos();
-  }, []);
+      fetchVideos();
+    }
+  }, [initialVideos]);
 
   const handleVideoPlay = async (video: MusicVideo) => {
     setActiveVideo(video);
