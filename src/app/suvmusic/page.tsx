@@ -1,5 +1,5 @@
 import ProjectClient from '@/components/common/ProjectClient';
-import { getBreadcrumbJsonLd } from '@/lib/seo';
+import { getBreadcrumbJsonLd, getProjectSchema } from '@/lib/seo';
 
 export const metadata = {
     title: 'SuvMusic | Suvojeet Sengupta',
@@ -12,11 +12,21 @@ export default function SuvMusicPage() {
         { name: 'SuvMusic', item: '/suvmusic' },
     ]);
 
+    const projectSchema = getProjectSchema(
+        "SuvMusic",
+        "A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling.",
+        "https://suvojeetsengupta.in/suvmusic"
+    );
+
     return (
         <>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
             />
             <ProjectClient 
                 name="SuvMusic"

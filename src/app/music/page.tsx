@@ -1,6 +1,6 @@
 import MusicClient from '@/components/music/MusicClient';
 import { Metadata } from 'next';
-import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getMusicSchema } from '@/lib/seo';
 import { getMusicVideos } from '@/lib/music-service';
 
 export const runtime = 'edge';
@@ -31,12 +31,17 @@ export default async function Page() {
     { name: 'Home', item: '/' },
     { name: 'Music', item: '/music' },
   ]);
+  const musicSchema = getMusicSchema();
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(musicSchema) }}
       />
       <MusicClient initialVideos={videos} />
     </>

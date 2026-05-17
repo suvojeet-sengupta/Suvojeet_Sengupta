@@ -1,6 +1,6 @@
 import AboutClient from '@/components/about/AboutClient';
 import { Metadata } from 'next';
-import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getFAQSchema } from '@/lib/seo';
 
 const ogImage = getOgImageUrl('About Me', { subtitle: 'Vibe Architect • Logic Implementer • Soulful Singer' });
 
@@ -28,11 +28,30 @@ export default function Page() {
     { name: 'About', item: '/about' },
   ]);
 
+  const faqSchema = getFAQSchema([
+    {
+      question: "Who is Suvojeet Sengupta?",
+      answer: "Suvojeet Sengupta is a Vibe Architect and soulful Singer based in India. He specializes in building logic-driven digital experiences using AI and performing in Hindi and Bengali."
+    },
+    {
+      question: "What is a Vibe Architect?",
+      answer: "A Vibe Architect is a creative technologist who focuses on the 'vibe' and logic of an application, using AI to implement high-performance solutions rather than traditional coding."
+    },
+    {
+      question: "What are Suvojeet's musical influences?",
+      answer: "Suvojeet is inspired by legendary Indian artists like Kishore Kumar and Lata Mangeshkar, with modern influences from Arijit Singh."
+    }
+  ]);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <AboutClient />
     </>

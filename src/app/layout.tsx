@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/common/ThemeProvider";
 import Providers from "@/components/common/Providers";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { SEO_CONFIG } from "@/lib/seo";
+import { SEO_CONFIG, getEnhancedPersonSchema } from "@/lib/seo";
 import { Metadata } from "next";
 
 const fraunces = Fraunces({
@@ -78,35 +78,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Suvojeet Sengupta',
-    url: SEO_CONFIG.url,
-    image: `${SEO_CONFIG.url}/suvojeet.jpg`,
-    jobTitle: ['Vibe Architect', 'Singer', 'Logic & AI Implementer'],
-    knowsAbout: [
-      'Logic Implementation',
-      'AI-Assisted Development',
-      'Prompt Engineering',
-      'Android Architectures',
-      'Music Production',
-      'Vocal Performance',
-      'UI/UX Aesthetics'
-    ],
-    alumniOf: {
-      '@type': 'EducationalOrganization',
-      name: 'Asansol Engineering College'
-    },
-    sameAs: Object.values(SEO_CONFIG.socials),
-    description: SEO_CONFIG.description,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Dhanbad',
-      addressRegion: 'Jharkhand',
-      addressCountry: 'India'
-    }
-  };
+  const jsonLd = getEnhancedPersonSchema();
 
   const navSchema = {
     '@context': 'https://schema.org',

@@ -1,5 +1,5 @@
 import ProjectClient from '@/components/common/ProjectClient';
-import { getBreadcrumbJsonLd } from '@/lib/seo';
+import { getBreadcrumbJsonLd, getProjectSchema } from '@/lib/seo';
 
 export const metadata = {
     title: 'NoteNext | Suvojeet Sengupta',
@@ -12,11 +12,21 @@ export default function NoteNextPage() {
         { name: 'NoteNext', item: '/notenext' },
     ]);
 
+    const projectSchema = getProjectSchema(
+        "NoteNext",
+        "A modern, intuitive note-taking application built with native Android best practices and offline-first architecture.",
+        "https://suvojeetsengupta.in/notenext"
+    );
+
     return (
         <>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(projectSchema) }}
             />
             <ProjectClient 
                 name="NoteNext"
