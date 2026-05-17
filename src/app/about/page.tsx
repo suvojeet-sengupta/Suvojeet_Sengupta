@@ -1,6 +1,6 @@
 import AboutClient from '@/components/about/AboutClient';
 import { Metadata } from 'next';
-import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
 
 const ogImage = getOgImageUrl('About Me', { subtitle: 'Singer • Creative Developer • Bengali & Hindi Vocals' });
 
@@ -23,5 +23,18 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <AboutClient />;
+  const breadcrumb = getBreadcrumbJsonLd([
+    { name: 'Home', item: '/' },
+    { name: 'About', item: '/about' },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <AboutClient />
+    </>
+  );
 }

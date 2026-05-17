@@ -82,15 +82,43 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Suvojeet Sengupta',
-    url: 'https://suvojeetsengupta.in',
-    jobTitle: ['Android Developer', 'Singer'],
-    sameAs: [
-      'https://github.com/suvojeet-sengupta',
-      'https://linkedin.com/in/suvojeet-sengupta',
-      'https://instagram.com/suvojeet_sengupta',
-      'https://youtube.com/@suvojeetsengupta'
+    url: SEO_CONFIG.url,
+    image: `${SEO_CONFIG.url}/suvojeet.jpg`,
+    jobTitle: ['Android Developer', 'Singer', 'Creative Developer'],
+    knowsAbout: [
+      'Android Development',
+      'Kotlin',
+      'React',
+      'Next.js',
+      'Music Production',
+      'Vocal Performance',
+      'UI/UX Design'
     ],
-    description: 'Suvojeet Sengupta is a professional Android Developer and a soulful Singer based in India.'
+    alumniOf: {
+      '@type': 'EducationalOrganization',
+      name: 'Asansol Engineering College'
+    },
+    sameAs: Object.values(SEO_CONFIG.socials),
+    description: SEO_CONFIG.description,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Dhanbad',
+      addressRegion: 'Jharkhand',
+      addressCountry: 'India'
+    }
+  };
+
+  const navSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SiteNavigationElement',
+    name: ['Home', 'About', 'Music', 'Blog', 'Contact'],
+    url: [
+      `${SEO_CONFIG.url}/`,
+      `${SEO_CONFIG.url}/about`,
+      `${SEO_CONFIG.url}/music`,
+      `${SEO_CONFIG.url}/blog`,
+      `${SEO_CONFIG.url}/contact`
+    ]
   };
 
   return (
@@ -99,6 +127,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }}
         />
       </head>
       <body className={`${fraunces.variable} ${jetbrainsMono.variable} antialiased selection:bg-brand-orange selection:text-white`}>

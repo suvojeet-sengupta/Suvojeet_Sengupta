@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ContactClient from '@/components/contact/ContactClient';
-import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
 
 const ogImage = getOgImageUrl('Get In Touch', { subtitle: 'Projects • Song Requests • Collaborations' });
 
@@ -23,5 +23,18 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ContactClient />;
+  const breadcrumb = getBreadcrumbJsonLd([
+    { name: 'Home', item: '/' },
+    { name: 'Contact', item: '/contact' },
+  ]);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <ContactClient />
+    </>
+  );
 }

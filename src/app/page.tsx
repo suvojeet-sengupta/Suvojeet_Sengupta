@@ -28,11 +28,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SEO_CONFIG.siteName,
+    url: SEO_CONFIG.url,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${SEO_CONFIG.url}/blog?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
   return (
-    <HomePage>
-      <Suspense fallback={<FeaturedProjectsSkeleton />}>
-        <FeaturedProjects />
-      </Suspense>
-    </HomePage>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <HomePage>
+        <Suspense fallback={<FeaturedProjectsSkeleton />}>
+          <FeaturedProjects />
+        </Suspense>
+      </HomePage>
+    </>
   );
 }

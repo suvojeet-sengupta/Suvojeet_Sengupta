@@ -1,4 +1,5 @@
 import ProjectClient from '@/components/common/ProjectClient';
+import { getBreadcrumbJsonLd } from '@/lib/seo';
 
 export const metadata = {
     title: 'SuvMusic | Suvojeet Sengupta',
@@ -6,9 +7,19 @@ export const metadata = {
 };
 
 export default function SuvMusicPage() {
+    const breadcrumb = getBreadcrumbJsonLd([
+        { name: 'Home', item: '/' },
+        { name: 'SuvMusic', item: '/suvmusic' },
+    ]);
+
     return (
-        <ProjectClient 
-            name="SuvMusic"
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+            />
+            <ProjectClient 
+                name="SuvMusic"
             description="A high-performance YouTube Music client built with Kotlin, featuring seamless streaming and advanced media handling."
             longDescription="SuvMusic is a native Android application designed for a premium music streaming experience. It focuses on performance, minimalist design, and deep integration with Android's media capabilities. Built entirely in Kotlin, it demonstrates advanced use of modern Android libraries to deliver a smooth, high-fidelity audio experience."
             features={[

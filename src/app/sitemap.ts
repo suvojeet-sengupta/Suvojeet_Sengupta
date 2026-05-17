@@ -14,6 +14,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/music',
     '/blog',
     '/contact',
+    '/suvmusic',
+    '/notenext',
   ].map((route) => ({
     url: `${SEO_CONFIG.url}${route}`,
     lastModified: new Date(),
