@@ -25,7 +25,7 @@ const Footer = () => {
               style={{ fontFamily: 'var(--font-serif)' }}
             >
               Built with precision and passion. High-performance software and soulful melodies.
-              I am the <span className="text-[color:var(--neon)] italic font-bold">Vibe Coder</span>.
+              I am the <span className="text-[color:var(--neon)] italic font-bold">Vibe Architect</span>.
             </p>
           </div>
 

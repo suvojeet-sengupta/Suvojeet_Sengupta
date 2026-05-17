@@ -84,15 +84,15 @@ export default function RootLayout({
     name: 'Suvojeet Sengupta',
     url: SEO_CONFIG.url,
     image: `${SEO_CONFIG.url}/suvojeet.jpg`,
-    jobTitle: ['Android Developer', 'Singer', 'Creative Developer'],
+    jobTitle: ['Vibe Architect', 'Singer', 'Logic & AI Implementer'],
     knowsAbout: [
-      'Android Development',
-      'Kotlin',
-      'React',
-      'Next.js',
+      'Logic Implementation',
+      'AI-Assisted Development',
+      'Prompt Engineering',
+      'Android Architectures',
       'Music Production',
       'Vocal Performance',
-      'UI/UX Design'
+      'UI/UX Aesthetics'
     ],
     alumniOf: {
       '@type': 'EducationalOrganization',

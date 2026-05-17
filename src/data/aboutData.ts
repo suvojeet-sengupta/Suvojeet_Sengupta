@@ -11,27 +11,27 @@ export const timeline = [
     },
     {
         year: "2020",
-        title: "Music Meets Tech",
-        description: "Began combining high-performance Android solutions with a soulful voice, creating apps that reflect my rhythm."
+        title: "Logic Meets Melody",
+        description: "Began mastering logic and architecting digital vibes. I realized that with AI, I can implement high-performance solutions that resonate with my musical rhythm."
     },
     {
         year: "2023",
-        title: "Custom ROM Maintenance",
-        description: "Official maintainer for Redmi 12 5G / Poco M6 Pro 5G (sky), delivering optimized Android experiences to the community."
+        title: "Architecture & Community",
+        description: "Official maintainer for Redmi 12 5G / Poco M6 Pro 5G (sky), architecting optimized Android experiences for the community."
     },
     {
         year: "Present",
-        title: "AI Expertise & Innovation",
-        description: "Mastering AI technologies to build intelligent systems while continuing my journey in Hindi and Bengali melodies."
+        title: "AI Implementation & Vibes",
+        description: "Mastering the art of AI-assisted logic implementation to build intelligent systems while continuing my journey in Hindi and Bengali melodies."
     }
 ];
 
 export const skills = [
     { name: "Hindi & Bengali Singing", level: 95, icon: "music" },
-    { name: "AI Technologies", level: 92, icon: "ai" },
+    { name: "AI Logic Implementation", level: 98, icon: "ai" },
+    { name: "Android Architecture", level: 95, icon: "android" },
     { name: "Custom ROM Maintenance", level: 90, icon: "rom" },
-    { name: "Android (Kotlin/Java)", level: 95, icon: "android" },
-    { name: "Web Development", level: 85, icon: "web" },
+    { name: "Creative Vibe Design", level: 85, icon: "web" },
 ];
 
 export const philosophy = [

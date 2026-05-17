@@ -1,4 +1,4 @@
-# Suvojeet Sengupta | Singer and Creative Developer
+# Suvojeet Sengupta | Vibe Architect & Soulful Singer
 
 Official portfolio of Suvojeet Sengupta, showcasing a unique integration of high-performance software engineering and professional vocal artistry.
 
@@ -6,8 +6,8 @@ Official portfolio of Suvojeet Sengupta, showcasing a unique integration of high
 
 Based in Asansol, West Bengal, Suvojeet Sengupta is a dual-identity professional specializing in Android development and Indian vocal music. This platform serves as a central hub for technical projects and musical performances, reflecting a commitment to precision in code and emotion in sound.
 
-### Creative Developer Role
-Focused on building high-performance Android and Web solutions. Core projects include:
+### Vibe Architect Role
+Not a traditional coder, but a logic-driven architect building high-performance Android and Web solutions with the power of AI. Core projects include:
 - **SuvMusic**: A specialized music application designed for seamless user experiences.
 - **NoteNext**: A productivity-focused application for efficient information management.
 

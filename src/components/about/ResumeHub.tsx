@@ -94,7 +94,7 @@ const ResumeHub = () => {
         // ===== HEADER =====
         addSectionDivider(2.5);
         addLine('SUVOJEET SENGUPTA', 24, 'bold', 'center');
-        addLine('Singer | Creative Developer | AI Enthusiast', 11, 'normal', 'center');
+        addLine('Vibe Architect | Logic Implementer | Soulful Singer', 11, 'normal', 'center');
         addLine('Born in Asansol, West Bengal  |  Based in Dhanbad, Jharkhand', 10, 'normal', 'center');
         addLine('Born: 1st August 2005', 10, 'normal', 'center');
         addLine('suvojeetsengupta.in  |  github.com/suvojeet-sengupta', 9, 'normal', 'center');

@@ -157,4 +157,4 @@ export const education = {
     details: "Balancing academics with professional development in technology and music."
 };
 
-export const summary = "Singer, Creative Developer & AI Enthusiast. Born in Asansol, West Bengal, currently based in Dhanbad, Jharkhand. Born on 1st August 2005, I find balance between the precision of code and the raw emotion of music. Currently interning at Gogig while maintaining the 'sky' custom ROM ecosystem. Passionate about leveraging AI technologies to enhance productivity and drive innovation across all domains.";
+export const summary = "Vibe Architect & Soulful Singer. Born in Asansol, West Bengal, currently based in Dhanbad, Jharkhand. Born on 1st August 2005, I find balance between the raw emotion of music and the architecture of digital vibes. I am not a traditional coder, but a logic-driven architect who masters complex systems and implements them using the power of AI. Currently interning at Gogig while maintaining the 'sky' custom ROM ecosystem.";

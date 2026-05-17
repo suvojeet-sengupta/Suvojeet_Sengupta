@@ -51,5 +51,6 @@ export default function NoteNextPage() {
                 { label: "UI", value: "Compose" }
             ]}
         />
+        </>
     );
 }

@@ -34,7 +34,7 @@ export const socialLinks = [
 ];
 
 export const siteConfig = {
-    title: "Suvojeet Sengupta | Singer & Creative Developer",
-    description: "Official portfolio of Suvojeet Sengupta. Soulful Singer in Hindi & Bengali and Professional Android Developer.",
+    title: "Suvojeet Sengupta | Vibe Architect & Soulful Singer",
+    description: "Official portfolio of Suvojeet Sengupta. Soulful Singer and Vibe Architect building high-performance logic-driven systems with AI.",
     formSubmitUrl: config.formSubmitUrl,
 };

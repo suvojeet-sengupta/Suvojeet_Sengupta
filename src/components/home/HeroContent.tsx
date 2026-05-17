@@ -20,12 +20,12 @@ const HeroContent = ({ age }: HeroContentProps) => {
       <h1 className={styles.heroTitle}>
         Singer<br />
         <span className={styles.strike}>just</span>{' '}
-        <span className={styles.accent}>&amp; Coder</span>
+        <span className={styles.accent}>&amp; Vibe Architect</span>
       </h1>
       <p className={styles.heroSub}>
         Suvojeet Sengupta — a {age}-year-old vocalist trained in{' '}
-        <strong>Hindi &amp; Bengali</strong> traditions, building{' '}
-        <strong>high-performance Android apps</strong> when the studio lights are off.
+        <strong>Hindi &amp; Bengali</strong> traditions, architecting{' '}
+        <strong>high-performance logic &amp; vibes</strong> with the power of AI.
         Two crafts. One pulse.
       </p>
 

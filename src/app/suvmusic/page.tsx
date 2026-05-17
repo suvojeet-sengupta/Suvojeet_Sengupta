@@ -51,5 +51,6 @@ export default function SuvMusicPage() {
                 { label: "Status", value: "Active" }
             ]}
         />
+        </>
     );
 }
