@@ -4,10 +4,10 @@ import { getKv, getRuntimeString, requireRuntimeString } from '@/lib/cloudflare'
 import { sha256Hex } from '@/lib/blog-utils';
 import { SignJWT, jwtVerify } from 'jose';
 
-const SESSION_COOKIE_NAME = 'admin_session';
-const REFRESH_TOKEN_COOKIE_NAME = 'admin_refresh_token';
-const ACCESS_TOKEN_EXPIRY = '15m';
-const REFRESH_TOKEN_EXPIRY_DAYS = 7;
+const SESSION_COOKIE_NAME = 'admin_token';
+const REFRESH_TOKEN_COOKIE_NAME = 'refresh_token';
+const ACCESS_TOKEN_EXPIRY = '1h';
+const REFRESH_TOKEN_EXPIRY_DAYS = 30;
 const MAX_PBKDF2_ITERATIONS = 100000;
 const DEFAULT_HASH_ITERATIONS = MAX_PBKDF2_ITERATIONS;
 const DEFAULT_SESSION_HOURS = 168; // 7 days
@@ -327,9 +327,9 @@ export function attachAdminCookie(response: NextResponse, token: string): NextRe
     value: token,
     httpOnly: true,
     secure: isProductionRuntime(),
-    sameSite: 'lax',
+    sameSite: 'strict',
     path: '/',
-    maxAge: getSessionMaxAgeSeconds(),
+    maxAge: 60 * 60, // 1 hour to match ACCESS_TOKEN_EXPIRY
   });
   return response;
 }

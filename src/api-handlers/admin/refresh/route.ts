@@ -42,7 +42,8 @@ export async function POST(request: Request) {
     const newRefreshToken = await createRefreshToken(payload.email);
 
     const response = NextResponse.json({ 
-      accessToken: newAccessToken 
+      success: true,
+      message: "Token refreshed successfully"
     }, { headers: NO_STORE_HEADERS });
 
     attachAdminCookie(response, newAccessToken);

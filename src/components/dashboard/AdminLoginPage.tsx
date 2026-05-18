@@ -14,7 +14,10 @@ export default function AdminLoginPage() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch('/api/admin/overview', { cache: 'no-store' });
+        const res = await fetch('/api/admin/overview', { 
+          cache: 'no-store',
+          credentials: 'include'
+        });
         if (res.ok) {
           router.push('/dashboard');
         } else {
@@ -39,6 +42,7 @@ export default function AdminLoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include',
       });
       let payload: { error?: string } = {};
       const contentType = response.headers.get('content-type') || '';

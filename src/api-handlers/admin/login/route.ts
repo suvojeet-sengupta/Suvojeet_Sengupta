@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({ 
       authenticated: true,
-      accessToken: accessToken 
+      message: "Login successful"
     }, { headers: NO_STORE_HEADERS });
 
     attachAdminCookie(response, accessToken); // Also set access token as cookie for dashboard compatibility

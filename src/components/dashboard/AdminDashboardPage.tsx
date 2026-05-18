@@ -153,7 +153,7 @@ export default function AdminDashboardPage() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch('/api/admin/users');
+      const response = await fetch('/api/admin/users', { credentials: 'include' });
       const data = await response.json();
       if (response.ok) {
         setUsers(data.users || []);
@@ -166,11 +166,11 @@ export default function AdminDashboardPage() {
   const loadOverview = useCallback(async () => {
     setError('');
     try {
-      const sessionRes = await fetch('/api/admin/session');
+      const sessionRes = await fetch('/api/admin/session', { credentials: 'include' });
       const sessionData = await sessionRes.json();
       setSession(sessionData.authenticated ? { email: sessionData.email, isSuperAdmin: sessionData.isSuperAdmin } : null);
 
-      const response = await fetch('/api/admin/overview', { cache: 'no-store' });
+      const response = await fetch('/api/admin/overview', { cache: 'no-store', credentials: 'include' });
       const payload = await response.json() as DashboardOverview & { error?: string };
 
       if (response.status === 401) {
@@ -221,6 +221,7 @@ export default function AdminDashboardPage() {
         body: JSON.stringify({
           ...postForm,
         }),
+        credentials: 'include',
       });
       const payload = await response.json() as { error?: string };
 
@@ -259,6 +260,7 @@ export default function AdminDashboardPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(videoForm),
+        credentials: 'include',
       });
       const payload = await response.json() as { error?: string };
 
@@ -294,6 +296,7 @@ export default function AdminDashboardPage() {
         method: method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userForm),
+        credentials: 'include',
       });
       const data = await response.json();
 
@@ -336,6 +339,7 @@ export default function AdminDashboardPage() {
     try {
       const response = await fetch(`/api/admin/users?email=${encodeURIComponent(email)}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
       if (response.ok) {
         setActionMessage('User deleted');
@@ -357,6 +361,7 @@ export default function AdminDashboardPage() {
 
     const response = await fetch(`/api/admin/music-videos/${videoId}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -374,7 +379,7 @@ export default function AdminDashboardPage() {
       try {
           // We need full content, which might not be in the summary.
           // In this project structure, GET /api/admin/posts/[id] usually exists.
-          const response = await fetch(`/api/admin/posts/${postId}`);
+          const response = await fetch(`/api/admin/posts/${postId}`, { credentials: 'include' });
           const payload = await response.json() as any;
           
           if (!response.ok) throw new Error(payload.error || 'Failed to fetch post');
@@ -415,6 +420,7 @@ export default function AdminDashboardPage() {
       body: JSON.stringify({
         commentsEnabled: !post.commentsEnabled,
       }),
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -435,6 +441,7 @@ export default function AdminDashboardPage() {
 
     const response = await fetch(`/api/admin/posts/${postId}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -462,6 +469,7 @@ export default function AdminDashboardPage() {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isApproved: newApproved }),
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -501,7 +509,10 @@ export default function AdminDashboardPage() {
       };
     });
 
-    const response = await fetch(`/api/admin/comments/${commentId}`, { method: 'DELETE' });
+    const response = await fetch(`/api/admin/comments/${commentId}`, { 
+      method: 'DELETE',
+      credentials: 'include',
+    });
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
@@ -526,7 +537,10 @@ export default function AdminDashboardPage() {
       };
     });
 
-    const response = await fetch(`/api/admin/replies/${replyId}`, { method: 'DELETE' });
+    const response = await fetch(`/api/admin/replies/${replyId}`, { 
+      method: 'DELETE',
+      credentials: 'include',
+    });
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
@@ -559,6 +573,7 @@ export default function AdminDashboardPage() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, value }),
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -594,6 +609,7 @@ export default function AdminDashboardPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action }),
+      credentials: 'include',
     });
     setBulkActioning(false);
 
@@ -617,6 +633,7 @@ export default function AdminDashboardPage() {
       body: JSON.stringify({
         isRead: !message.isRead,
       }),
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -636,6 +653,7 @@ export default function AdminDashboardPage() {
 
     const response = await fetch(`/api/admin/messages/${messageId}`, {
       method: 'DELETE',
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -662,6 +680,7 @@ export default function AdminDashboardPage() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isApproved: true }),
+        credentials: 'include',
       });
     }
 
@@ -669,6 +688,7 @@ export default function AdminDashboardPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: draft }),
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -685,7 +705,10 @@ export default function AdminDashboardPage() {
   };
 
   const logout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST' });
+    await fetch('/api/admin/logout', { 
+      method: 'POST',
+      credentials: 'include',
+    });
     router.push('/dashboard/login');
     router.refresh();
   };
