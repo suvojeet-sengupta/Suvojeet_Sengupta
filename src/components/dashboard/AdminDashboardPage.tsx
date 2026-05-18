@@ -1,15 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { BlogReply, BlogSummary } from '@/types/blog';
 import {
   LayoutDashboard, FileText, MessageSquare,
   Eye, CheckCircle, Trash2, Edit3, Globe,
-  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play, ChevronDown, Filter, Mail, Inbox, Users, Clock, CheckCheck
+  PlusCircle, Reply, PowerOff, ShieldCheck, X,
+  Play, Filter, Mail, Inbox, Users, Clock, CheckCheck, Search, TrendingUp, Settings
 } from 'lucide-react';
 import { Icons } from '@/components/common/Icons';
 import type { MusicVideo } from '@/types/music';
@@ -119,21 +119,32 @@ const initialUserForm: UserFormState = {
   name: '',
 };
 
+type DashboardTab = 'overview' | 'posts' | 'comments' | 'inbox' | 'videos' | 'users';
+
+interface ToastItem {
+  id: number;
+  type: 'success' | 'error' | 'info';
+  message: string;
+}
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
   const [session, setSession] = useState<{ email: string; isSuperAdmin: boolean } | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [unauthorized, setUnauthorized] = useState(false);
   const [error, setError] = useState('');
   const [postForm, setPostForm] = useState<PostFormState>(initialPostForm);
   const [isEditing, setIsEditing] = useState(false);
   const [submittingPost, setSubmittingPost] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [actionMessage, setActionMessage] = useState('');
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [replyDrafts, setReplyDrafts] = useState<Record<number, string>>({});
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<DashboardTab>('overview');
+  const [globalSearch, setGlobalSearch] = useState('');
 
   const [selectedPostForComments, setSelectedPostForComments] = useState<number | 'all'>('all');
   const [commentSortOrder, setCommentSortOrder] = useState<'newest' | 'oldest'>('newest');
@@ -165,6 +176,7 @@ export default function AdminDashboardPage() {
 
   const loadOverview = useCallback(async () => {
     setError('');
+    setIsRefreshing(true);
     try {
       const sessionRes = await fetch('/api/admin/session');
       const sessionData = await sessionRes.json();
@@ -176,12 +188,14 @@ export default function AdminDashboardPage() {
       if (response.status === 401) {
         setUnauthorized(true);
         setLoading(false);
+        setIsRefreshing(false);
         return;
       }
 
       if (!response.ok) {
         setError(payload.error || 'Unable to load dashboard data.');
         setLoading(false);
+        setIsRefreshing(false);
         return;
       }
 
@@ -193,8 +207,22 @@ export default function AdminDashboardPage() {
       console.error(overviewError);
       setError('Unable to load dashboard data.');
       setLoading(false);
+    } finally {
+      setIsRefreshing(false);
     }
   }, [fetchUsers]);
+
+  const notify = useCallback((message: string, type: ToastItem['type'] = 'success') => {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    setToasts((prev) => [...prev, { id, type, message }]);
+    window.setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 4200);
+  }, []);
+
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
 
   useEffect(() => {
     loadOverview();
@@ -207,7 +235,6 @@ export default function AdminDashboardPage() {
     }
 
     setSubmittingPost(true);
-    setActionMessage('');
 
     const url = isEditing ? `/api/admin/posts/${postForm.id}` : '/api/admin/posts';
     const method = isEditing ? 'PUT' : 'POST';
@@ -225,7 +252,7 @@ export default function AdminDashboardPage() {
       const payload = await response.json() as { error?: string };
 
       if (!response.ok) {
-        setActionMessage(payload.error || `Unable to ${isEditing ? 'update' : 'create'} post.`);
+        notify(payload.error || `Unable to ${isEditing ? 'update' : 'create'} post.`, 'error');
         setSubmittingPost(false);
         return;
       }
@@ -233,12 +260,12 @@ export default function AdminDashboardPage() {
       setPostForm(initialPostForm);
       setIsEditing(false);
       setIsFormOpen(false);
-      setActionMessage(`Post ${isEditing ? 'updated' : 'created'} successfully.`);
+      notify(`Post ${isEditing ? 'updated' : 'created'} successfully.`);
       setSubmittingPost(false);
       await loadOverview();
     } catch (submitError) {
       console.error(submitError);
-      setActionMessage(`Unable to ${isEditing ? 'update' : 'create'} post.`);
+      notify(`Unable to ${isEditing ? 'update' : 'create'} post.`, 'error');
       setSubmittingPost(false);
     }
   };
@@ -250,7 +277,6 @@ export default function AdminDashboardPage() {
     }
 
     setSubmittingVideo(true);
-    setActionMessage('');
 
     try {
       const response = await fetch('/api/admin/music-videos', {
@@ -263,19 +289,19 @@ export default function AdminDashboardPage() {
       const payload = await response.json() as { error?: string };
 
       if (!response.ok) {
-        setActionMessage(payload.error || 'Unable to add video.');
+        notify(payload.error || 'Unable to add video.', 'error');
         setSubmittingVideo(false);
         return;
       }
 
       setVideoForm(initialVideoForm);
       setIsVideoFormOpen(false);
-      setActionMessage('Video added successfully.');
+      notify('Video added successfully.');
       setSubmittingVideo(false);
       await loadOverview();
     } catch (err) {
       console.error(err);
-      setActionMessage('Unable to add video.');
+      notify('Unable to add video.', 'error');
       setSubmittingVideo(false);
     }
   };
@@ -285,7 +311,6 @@ export default function AdminDashboardPage() {
     if (submittingUser) return;
 
     setSubmittingUser(true);
-    setActionMessage('');
 
     const method = editingUserEmail ? 'PUT' : 'POST';
 
@@ -298,16 +323,16 @@ export default function AdminDashboardPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setActionMessage(data.error || `Failed to ${editingUserEmail ? 'update' : 'create'} user`);
+        notify(data.error || `Failed to ${editingUserEmail ? 'update' : 'create'} user`, 'error');
       } else {
-        setActionMessage(`User ${editingUserEmail ? 'updated' : 'created'} successfully`);
+        notify(`User ${editingUserEmail ? 'updated' : 'created'} successfully`);
         setUserForm(initialUserForm);
         setIsUserFormOpen(false);
         setEditingUserEmail(null);
         await fetchUsers();
       }
     } catch (err) {
-      setActionMessage(`Failed to ${editingUserEmail ? 'update' : 'create'} user`);
+      notify(`Failed to ${editingUserEmail ? 'update' : 'create'} user`, 'error');
     } finally {
       setSubmittingUser(false);
     }
@@ -338,14 +363,14 @@ export default function AdminDashboardPage() {
         method: 'DELETE',
       });
       if (response.ok) {
-        setActionMessage('User deleted');
+        notify('User deleted');
         await fetchUsers();
       } else {
         const data = await response.json();
-        setActionMessage(data.error || 'Failed to delete user');
+        notify(data.error || 'Failed to delete user', 'error');
       }
     } catch (err) {
-      setActionMessage('Failed to delete user');
+      notify('Failed to delete user', 'error');
     }
   };
 
@@ -361,16 +386,16 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to delete video.');
+      notify(payload.error || 'Unable to delete video.', 'error');
       return;
     }
 
-    setActionMessage('Video deleted.');
+    notify('Video deleted.');
     await loadOverview();
   };
 
   const startEditPost = async (postId: number) => {
-      setActionMessage('Fetching post data...');
+      notify('Fetching post data...', 'info');
       try {
           // We need full content, which might not be in the summary.
           // In this project structure, GET /api/admin/posts/[id] usually exists.
@@ -393,10 +418,9 @@ export default function AdminDashboardPage() {
           });
           setIsEditing(true);
           setIsFormOpen(true);
-          setActionMessage('');
           window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err: any) {
-          setActionMessage(err.message);
+          notify(err.message, 'error');
       }
   };
 
@@ -419,11 +443,11 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to update post settings.');
+      notify(payload.error || 'Unable to update post settings.', 'error');
       return;
     }
 
-    setActionMessage('Post updated.');
+    notify('Post updated.');
     await loadOverview();
   };
 
@@ -439,11 +463,11 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to delete post.');
+      notify(payload.error || 'Unable to delete post.', 'error');
       return;
     }
 
-    setActionMessage('Post deleted.');
+    notify('Post deleted.');
     await loadOverview();
   };
 
@@ -474,11 +498,11 @@ export default function AdminDashboardPage() {
         };
       });
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to update comment.');
+      notify(payload.error || 'Unable to update comment.', 'error');
       return;
     }
 
-    setActionMessage(newApproved ? 'Comment approved.' : 'Comment unapproved.');
+    notify(newApproved ? 'Comment approved.' : 'Comment unapproved.');
   };
 
   const deleteComment = async (commentId: number) => {
@@ -505,12 +529,12 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to delete comment.');
+      notify(payload.error || 'Unable to delete comment.', 'error');
       await loadOverview();
       return;
     }
 
-    setActionMessage('Comment deleted.');
+    notify('Comment deleted.');
   };
 
   const deleteReply = async (replyId: number) => {
@@ -530,12 +554,12 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to delete reply.');
+      notify(payload.error || 'Unable to delete reply.', 'error');
       await loadOverview();
       return;
     }
 
-    setActionMessage('Reply deleted.');
+    notify('Reply deleted.');
   };
 
   const updateSetting = async (key: string, value: string) => {
@@ -566,10 +590,10 @@ export default function AdminDashboardPage() {
         throw new Error(payload.error || 'Failed to update setting');
       }
       
-      setActionMessage('Settings updated successfully.');
+      notify('Settings updated successfully.');
     } catch (err: any) {
       console.error(err);
-      setActionMessage(err.message || 'Unable to update setting.');
+      notify(err.message || 'Unable to update setting.', 'error');
       // Rollback
       setOverview(prev => {
         if (!prev) return prev;
@@ -599,12 +623,12 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Bulk action failed.');
+      notify(payload.error || 'Bulk action failed.', 'error');
       return;
     }
 
     const payload = await response.json() as { affected: number };
-    setActionMessage(`${payload.affected} comment${payload.affected !== 1 ? 's' : ''} ${action === 'approve_all_pending' ? 'approved' : 'deleted'}.`);
+    notify(`${payload.affected} comment${payload.affected !== 1 ? 's' : ''} ${action === 'approve_all_pending' ? 'approved' : 'deleted'}.`);
     await loadOverview();
   };
 
@@ -621,7 +645,7 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to update message.');
+      notify(payload.error || 'Unable to update message.', 'error');
       return;
     }
 
@@ -640,11 +664,11 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to delete message.');
+      notify(payload.error || 'Unable to delete message.', 'error');
       return;
     }
 
-    setActionMessage('Message deleted.');
+    notify('Message deleted.');
     await loadOverview();
   };
 
@@ -673,13 +697,13 @@ export default function AdminDashboardPage() {
 
     if (!response.ok) {
       const payload = await response.json() as { error?: string };
-      setActionMessage(payload.error || 'Unable to send reply.');
+      notify(payload.error || 'Unable to send reply.', 'error');
       setReplyingToCommentId(null);
       return;
     }
 
     setReplyDrafts(prev => ({ ...prev, [commentId]: '' }));
-    setActionMessage(autoApprove ? 'Comment approved and reply sent.' : 'Reply sent.');
+    notify(autoApprove ? 'Comment approved and reply sent.' : 'Reply sent.');
     setReplyingToCommentId(null);
     await loadOverview();
   };
@@ -690,10 +714,94 @@ export default function AdminDashboardPage() {
     router.refresh();
   };
 
+  const searchTerm = globalSearch.trim().toLowerCase();
+
+  const filteredPosts = useMemo(() => {
+    if (!overview) return [];
+    if (!searchTerm) return overview.posts;
+    return overview.posts.filter((post) =>
+      [post.title, post.slug, post.category, ...(post.tags || [])]
+        .join(' ')
+        .toLowerCase()
+        .includes(searchTerm)
+    );
+  }, [overview, searchTerm]);
+
+  const filteredVideos = useMemo(() => {
+    if (!overview) return [];
+    if (!searchTerm) return overview.videos;
+    return overview.videos.filter((video) =>
+      `${video.title} ${video.youtubeId} ${video.description || ''}`.toLowerCase().includes(searchTerm)
+    );
+  }, [overview, searchTerm]);
+
+  const filteredMessages = useMemo(() => {
+    if (!overview) return [];
+    if (!searchTerm) return overview.messages;
+    return overview.messages.filter((msg) =>
+      `${msg.name} ${msg.email} ${msg.subject || ''} ${msg.message} ${msg.type || ''}`
+        .toLowerCase()
+        .includes(searchTerm)
+    );
+  }, [overview, searchTerm]);
+
+  const filteredUsers = useMemo(() => {
+    if (!searchTerm) return users;
+    return users.filter((user) =>
+      `${user.name || ''} ${user.email}`.toLowerCase().includes(searchTerm)
+    );
+  }, [users, searchTerm]);
+
+  const filteredComments = useMemo(() => {
+    if (!overview) return [];
+
+    return overview.comments
+      .filter((comment) => {
+        const matchPost = selectedPostForComments === 'all' || comment.blogId === selectedPostForComments;
+        const matchFilter =
+          commentFilter === 'all' ||
+          (commentFilter === 'pending' && !comment.isApproved) ||
+          (commentFilter === 'approved' && comment.isApproved);
+        const matchSearch =
+          !searchTerm ||
+          `${comment.blogTitle} ${comment.name} ${comment.email || ''} ${comment.content} ${comment.replies.map((reply) => reply.content).join(' ')}`
+            .toLowerCase()
+            .includes(searchTerm);
+
+        return matchPost && matchFilter && matchSearch;
+      })
+      .sort((a, b) => {
+        const ta = new Date(a.createdAt).getTime();
+        const tb = new Date(b.createdAt).getTime();
+        return commentSortOrder === 'newest' ? tb - ta : ta - tb;
+      });
+  }, [overview, selectedPostForComments, commentFilter, commentSortOrder, searchTerm]);
+
+  const commentCounts = useMemo(() => {
+    if (!overview) {
+      return { all: 0, pending: 0, approved: 0 };
+    }
+
+    return {
+      all: overview.comments.length,
+      pending: overview.comments.filter((comment) => !comment.isApproved).length,
+      approved: overview.comments.filter((comment) => comment.isApproved).length,
+    };
+  }, [overview]);
+
   if (loading) {
     return (
       <section className="section-container pt-32 pb-24">
-        <p>Loading dashboard...</p>
+        <div className="space-y-6 animate-pulse">
+          <div className="h-10 w-60 bg-[color:var(--bg-tertiary)] rounded-sm" />
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="h-32 bg-[color:var(--bg-tertiary)] rounded-sm border border-light/60" />
+            ))}
+          </div>
+          <div className="h-48 bg-[color:var(--bg-tertiary)] rounded-sm border border-light/60" />
+          <div className="h-80 bg-[color:var(--bg-tertiary)] rounded-sm border border-light/60" />
+        </div>
       </section>
     );
   }
@@ -723,6 +831,15 @@ export default function AdminDashboardPage() {
     );
   }
 
+  const dashboardTabs: Array<{ id: DashboardTab; label: string; icon: typeof LayoutDashboard; count?: number }> = [
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'posts', label: 'Posts', icon: FileText, count: filteredPosts.length },
+    { id: 'comments', label: 'Comments', icon: MessageSquare, count: filteredComments.length },
+    { id: 'inbox', label: 'Inbox', icon: Inbox, count: filteredMessages.length },
+    { id: 'videos', label: 'Videos', icon: Play, count: filteredVideos.length },
+    { id: 'users', label: 'Users/Settings', icon: Settings, count: session?.isSuperAdmin ? filteredUsers.length : undefined },
+  ];
+
   return (
     <section className="section-container pt-24 md:pt-32 pb-24">
       <div className="flex flex-col md:flex-row items-start justify-between gap-6 mb-10">
@@ -739,7 +856,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-row w-full md:w-auto gap-2 md:gap-3 items-center">
           <Link
             href="/blog"
-            className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/70"
           >
             <Globe size={14} className="md:w-4 md:h-4" />
             View Live
@@ -747,7 +864,7 @@ export default function AdminDashboardPage() {
           <button
             type="button"
             onClick={logout}
-            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/70"
           >
             <PowerOff size={14} className="md:w-4 md:h-4" />
             Logout
@@ -755,21 +872,78 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
-      {actionMessage && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-sm flex items-center justify-between gap-3 text-green-700">
-          <div className="flex items-center gap-3">
-              <CheckCircle size={20} />
-              <p className="text-sm font-bold">{actionMessage}</p>
+      <div className="fixed right-4 top-24 z-50 space-y-3 max-w-sm w-[calc(100vw-2rem)] pointer-events-none">
+        {toasts.map((toast) => (
+          <div
+            key={toast.id}
+            className={`pointer-events-auto p-4 border rounded-sm shadow-lg backdrop-blur-sm flex items-start gap-3 ${
+              toast.type === 'error'
+                ? 'bg-red-50/95 border-red-200 text-red-700'
+                : toast.type === 'info'
+                ? 'bg-blue-50/95 border-blue-200 text-blue-700'
+                : 'bg-green-50/95 border-green-200 text-green-700'
+            }`}
+          >
+            <CheckCircle size={18} className="mt-0.5 shrink-0" />
+            <p className="text-sm font-bold flex-1">{toast.message}</p>
+            <button
+              type="button"
+              onClick={() => removeToast(toast.id)}
+              className="text-current/70 hover:text-current focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/40 rounded-sm"
+              aria-label="Dismiss notification"
+            >
+              <X size={14} />
+            </button>
           </div>
-          <button onClick={() => setActionMessage('')}><X size={16}/></button>
-        </div>
-      )}
+        ))}
+      </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 mb-12">
+      <div className="mb-8 border border-light/60 bg-tertiary rounded-sm p-3 md:p-4">
+        <div className="overflow-x-auto pb-2">
+          <div className="inline-flex min-w-full sm:min-w-0 items-center gap-2">
+            {dashboardTabs.map((tab) => {
+              const TabIcon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`whitespace-nowrap inline-flex items-center gap-2 px-3 py-2 rounded-sm text-[11px] md:text-xs font-black uppercase tracking-wider border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/70 ${
+                    activeTab === tab.id
+                      ? 'bg-brand-orange text-white border-brand-orange'
+                      : 'bg-background border-light hover:border-brand-orange hover:text-brand-orange'
+                  }`}
+                >
+                  <TabIcon size={14} />
+                  {tab.label}
+                  {typeof tab.count === 'number' && (
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${activeTab === tab.id ? 'bg-white/20' : 'bg-light text-secondary'}`}>
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="mt-3 relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input
+            type="search"
+            value={globalSearch}
+            onChange={(event) => setGlobalSearch(event.target.value)}
+            placeholder="Search posts, comments, inbox, videos, users..."
+            className="w-full bg-background border border-light rounded-sm pl-10 pr-3 py-2.5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/70"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 md:gap-6 mb-12">
         <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Posts</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalPosts}</p>
+            <p className="text-[10px] text-muted mt-1 inline-flex items-center gap-1"><TrendingUp size={11} /> {filteredPosts.length} visible</p>
           </div>
           <div className="p-3 md:p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform lg:mt-4">
             <Edit3 size={20} className="md:w-6 md:h-6" />
@@ -777,8 +951,8 @@ export default function AdminDashboardPage() {
         </div>
 
         <button 
-          onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
+          onClick={() => setActiveTab('comments')}
+          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/70"
         >
           <div>
             <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
@@ -790,6 +964,7 @@ export default function AdminDashboardPage() {
               )}
             </div>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalComments}</p>
+            <p className="text-[10px] text-muted mt-1 inline-flex items-center gap-1"><TrendingUp size={11} /> {commentCounts.pending} pending</p>
           </div>
           <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform lg:mt-4">
             <MessageSquare size={20} className="md:w-6 md:h-6" />
@@ -800,6 +975,7 @@ export default function AdminDashboardPage() {
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Views</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalBlogViews}</p>
+            <p className="text-[10px] text-muted mt-1 inline-flex items-center gap-1"><TrendingUp size={11} /> {overview.stats.totalPageViews} total visits</p>
           </div>
           <div className="p-3 md:p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform lg:mt-4">
             <Eye size={20} className="md:w-6 md:h-6" />
@@ -810,6 +986,7 @@ export default function AdminDashboardPage() {
           <div>
             <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Videos</p>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalVideos}</p>
+            <p className="text-[10px] text-muted mt-1 inline-flex items-center gap-1"><TrendingUp size={11} /> {filteredVideos.length} visible</p>
           </div>
           <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform lg:mt-4">
             <Icons.YouTube className="w-5 h-5 md:w-6 md:h-6" />
@@ -817,8 +994,8 @@ export default function AdminDashboardPage() {
         </div>
 
         <button 
-          onClick={() => document.getElementById('inbox-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="col-span-2 lg:col-span-1 border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col lg:flex-row items-center lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
+          onClick={() => setActiveTab('inbox')}
+          className="col-span-2 lg:col-span-1 border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col lg:flex-row items-center lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/70"
         >
           <div>
             <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
@@ -830,6 +1007,7 @@ export default function AdminDashboardPage() {
               )}
             </div>
             <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalMessages}</p>
+            <p className="text-[10px] text-muted mt-1 inline-flex items-center gap-1"><TrendingUp size={11} /> {overview.stats.unreadMessages} unread</p>
           </div>
           <div className="p-3 md:p-4 bg-orange-500/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
             <Inbox size={20} className="md:w-6 md:h-6" />
@@ -837,6 +1015,7 @@ export default function AdminDashboardPage() {
         </button>
       </div>
 
+      {activeTab === 'overview' && (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
         <div className="border border-light/60 shadow-sm p-5 md:p-6 bg-tertiary">
           <div className="flex items-center justify-between mb-4">
@@ -884,7 +1063,10 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
+      )}
 
+      {activeTab === 'posts' && (
+      <>
       <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -1006,7 +1188,14 @@ export default function AdminDashboardPage() {
           <h2 className="text-xl md:text-2xl font-black">Manage Posts</h2>
         </div>
         <div className="mt-6 space-y-4">
-          {overview.posts.map((post) => (
+          {isRefreshing && (
+            <div className="animate-pulse grid sm:grid-cols-2 gap-4">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="h-24 bg-[color:var(--bg-secondary)] rounded-sm border border-light" />
+              ))}
+            </div>
+          )}
+          {filteredPosts.map((post) => (
             <div key={post.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
               <div className="flex flex-col gap-4">
                 <div className="min-w-0">
@@ -1046,12 +1235,16 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           ))}
-          {overview.posts.length === 0 && (
-            <p className="text-muted">No posts available.</p>
+          {filteredPosts.length === 0 && (
+            <p className="text-muted">{searchTerm ? 'No posts match your search.' : 'No posts available.'}</p>
           )}
         </div>
       </div>
+      </>
+      )}
 
+      {activeTab === 'videos' && (
+      <>
       <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -1111,7 +1304,14 @@ export default function AdminDashboardPage() {
           <h2 className="text-xl md:text-2xl font-black">Manage Music Videos</h2>
         </div>
         <div className="mt-6 space-y-4">
-          {overview.videos.map((video) => (
+          {isRefreshing && (
+            <div className="animate-pulse grid sm:grid-cols-2 gap-4">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="h-20 bg-[color:var(--bg-secondary)] rounded-sm border border-light" />
+              ))}
+            </div>
+          )}
+          {filteredVideos.map((video) => (
             <div key={video.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4 flex-1 w-full min-w-0">
@@ -1155,13 +1355,15 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           ))}
-          {overview.videos.length === 0 && (
-            <p className="text-muted">No music videos added yet.</p>
+          {filteredVideos.length === 0 && (
+            <p className="text-muted">{searchTerm ? 'No videos match your search.' : 'No music videos added yet.'}</p>
           )}
         </div>
-        </div>
+      </div>
+      </>
+      )}
 
-      {session?.isSuperAdmin && (
+      {activeTab === 'users' && session?.isSuperAdmin && (
       <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
@@ -1228,7 +1430,14 @@ export default function AdminDashboardPage() {
         )}
 
         <div className="mt-8 space-y-4">
-          {users.map((user) => (
+          {isRefreshing && (
+            <div className="animate-pulse grid sm:grid-cols-2 gap-4">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="h-20 bg-[color:var(--bg-secondary)] rounded-sm border border-light" />
+              ))}
+            </div>
+          )}
+          {filteredUsers.map((user) => (
             <div key={user.email} className="border border-light rounded-sm p-4 bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="font-bold text-lg">{user.name || 'Admin'}</h3>
@@ -1255,13 +1464,33 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           ))}
-          {users.length === 0 && (
-            <p className="text-muted italic">Only environment-configured admin available.</p>
+          {filteredUsers.length === 0 && (
+            <p className="text-muted italic">{searchTerm ? 'No users match your search.' : 'Only environment-configured admin available.'}</p>
           )}
         </div>
         </div>
       )}
 
+      {activeTab === 'users' && (
+        <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <ShieldCheck className="text-brand-orange" />
+            <h2 className="text-xl md:text-2xl font-black">Settings</h2>
+          </div>
+          <label className="inline-flex items-center gap-3 bg-background border border-light rounded-sm px-4 py-3">
+            <input
+              type="checkbox"
+              disabled={updatingSettings}
+              checked={(overview.settings?.require_comment_approval ?? '1') === '1'}
+              onChange={(e) => updateSetting('require_comment_approval', e.target.checked ? '1' : '0')}
+              className="w-4 h-4 accent-brand-orange"
+            />
+            <span className="text-xs font-bold uppercase tracking-wider">Require comment approval before publishing</span>
+          </label>
+        </div>
+      )}
+
+      {activeTab === 'comments' && (
       <div id="comments-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
 
         {/* Section header */}
@@ -1343,11 +1572,7 @@ export default function AdminDashboardPage() {
         {/* Filter tabs + sort */}
         <div className="flex items-center gap-0 border-b border-light mb-6">
           {(['all', 'pending', 'approved'] as const).map((tab) => {
-            const count = tab === 'all'
-              ? overview.comments.length
-              : tab === 'pending'
-              ? overview.comments.filter(c => !c.isApproved).length
-              : overview.comments.filter(c => c.isApproved).length;
+            const count = commentCounts[tab];
             return (
               <button
                 key={tab}
@@ -1384,53 +1609,41 @@ export default function AdminDashboardPage() {
 
         {/* Comments list */}
         <div className="space-y-5">
-          {(() => {
-            const filtered = overview.comments
-              .filter(c => {
-                const matchPost = selectedPostForComments === 'all' || c.blogId === selectedPostForComments;
-                const matchFilter =
-                  commentFilter === 'all' ||
-                  (commentFilter === 'pending' && !c.isApproved) ||
-                  (commentFilter === 'approved' && c.isApproved);
-                return matchPost && matchFilter;
-              })
-              .sort((a, b) => {
-                const ta = new Date(a.createdAt).getTime();
-                const tb = new Date(b.createdAt).getTime();
-                return commentSortOrder === 'newest' ? tb - ta : ta - tb;
-              });
-
-            if (filtered.length === 0) {
-              return (
-                <div className="text-center py-14 bg-background rounded-sm border border-dashed border-light">
-                  {commentFilter === 'pending' ? (
-                    <>
-                      <CheckCircle className="mx-auto text-green-500 mb-3" size={32} />
-                      <p className="font-bold text-green-700">All caught up!</p>
-                      <p className="text-sm text-muted mt-1">No comments pending review.</p>
-                    </>
-                  ) : (
-                    <>
-                      <MessageSquare className="mx-auto text-muted mb-3" size={32} />
-                      <p className="text-muted font-medium italic">
-                        {overview.comments.length === 0 ? 'No comments yet.' : 'No comments match this filter.'}
-                      </p>
-                      {overview.comments.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => { setCommentFilter('all'); setSelectedPostForComments('all'); }}
-                          className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
-                        >
-                          Show all comments
-                        </button>
-                      )}
-                    </>
+          {isRefreshing && (
+            <div className="animate-pulse grid sm:grid-cols-2 gap-4">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="h-24 bg-[color:var(--bg-secondary)] rounded-sm border border-light" />
+              ))}
+            </div>
+          )}
+          {filteredComments.length === 0 ? (
+            <div className="text-center py-14 bg-background rounded-sm border border-dashed border-light">
+              {commentFilter === 'pending' ? (
+                <>
+                  <CheckCircle className="mx-auto text-green-500 mb-3" size={32} />
+                  <p className="font-bold text-green-700">All caught up!</p>
+                  <p className="text-sm text-muted mt-1">No comments pending review.</p>
+                </>
+              ) : (
+                <>
+                  <MessageSquare className="mx-auto text-muted mb-3" size={32} />
+                  <p className="text-muted font-medium italic">
+                    {overview.comments.length === 0 ? 'No comments yet.' : 'No comments match this filter.'}
+                  </p>
+                  {overview.comments.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => { setCommentFilter('all'); setSelectedPostForComments('all'); }}
+                      className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
+                    >
+                      Show all comments
+                    </button>
                   )}
-                </div>
-              );
-            }
-
-            return filtered.map((comment) => (
+                </>
+              )}
+            </div>
+          ) : (
+            filteredComments.map((comment) => (
               <div
                 key={comment.id}
                 className={`rounded-sm p-4 md:p-5 bg-background shadow-sm hover:shadow-md transition-all border ${
@@ -1553,11 +1766,13 @@ export default function AdminDashboardPage() {
                   </button>
                 </div>
               </div>
-            ));
-          })()}
+            ))
+          )}
         </div>
       </div>
+      )}
 
+      {activeTab === 'inbox' && (
       <div id="inbox-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mt-12">
         <div className="flex items-center gap-3 mb-8">
           <Mail className="text-brand-orange" />
@@ -1565,7 +1780,14 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="space-y-4">
-          {overview.messages.map((msg) => (
+          {isRefreshing && (
+            <div className="animate-pulse grid sm:grid-cols-2 gap-4">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={index} className="h-24 bg-[color:var(--bg-secondary)] rounded-sm border border-light" />
+              ))}
+            </div>
+          )}
+          {filteredMessages.map((msg) => (
             <div 
               key={msg.id} 
               className={`border rounded-sm p-4 md:p-6 transition-all overflow-hidden ${
@@ -1637,14 +1859,15 @@ export default function AdminDashboardPage() {
             </div>
           ))}
           
-          {overview.messages.length === 0 && (
+          {filteredMessages.length === 0 && (
             <div className="text-center py-12 border border-dashed border-light rounded-sm">
               <Mail className="mx-auto text-muted mb-3" size={32} />
-              <p className="text-muted font-medium italic">Your inbox is empty.</p>
+              <p className="text-muted font-medium italic">{searchTerm ? 'No messages match your search.' : 'Your inbox is empty.'}</p>
             </div>
           )}
         </div>
       </div>
+      )}
     </section>
   );
 }
