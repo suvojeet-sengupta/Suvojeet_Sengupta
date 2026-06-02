@@ -134,11 +134,15 @@ const AboutClient = () => {
                             </h1>
 
                             <p className="text-lg sm:text-xl mb-5 leading-relaxed text-[color:var(--text-secondary)] opacity-85 max-w-xl mx-auto lg:mx-0">
-                                Born in <strong className="text-[color:var(--neon)] italic font-semibold">Asansol (Burnpur), West Bengal</strong>; currently based in <strong className="text-[color:var(--neon)] italic font-semibold">Dhanbad, Jharkhand</strong>. I find balance between the precision of code and the raw emotion of music.
+                                Born in <strong className="text-[color:var(--neon)] italic font-semibold">Asansol (Burnpur), West Bengal</strong>; based in <strong className="text-[color:var(--neon)] italic font-semibold">Dhanbad, Jharkhand</strong>. I understand architecture. I understand logic. And I solve real problems — just not by typing code manually.
+                            </p>
+
+                            <p className="text-base sm:text-lg mb-5 leading-relaxed text-[color:var(--text-secondary)] opacity-80 max-w-xl mx-auto lg:mx-0">
+                                I think in systems. I design the solution completely — data flow, failure modes, edge cases, performance — before a single line runs. Then AI implements it. That&apos;s not a shortcut. That&apos;s production thinking without the bottleneck of syntax.
                             </p>
 
                             <p className="text-base sm:text-lg mb-9 leading-relaxed text-[color:var(--text-secondary)] opacity-80 max-w-xl mx-auto lg:mx-0">
-                                Inspired by legendary artists like <strong className="text-[color:var(--neon)] italic font-semibold">Arijit Singh</strong>, I strive to bring the same depth and authenticity to everything I build and sing.
+                                The same mental discipline applies when I sing. Inspired by <strong className="text-[color:var(--neon)] italic font-semibold">Kishore Kumar, Lata Mangeshkar, and Arijit Singh</strong> — every note I hit is considered, not accidental. Two crafts. One philosophy.
                             </p>
 
                             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
@@ -146,6 +150,77 @@ const AboutClient = () => {
                             </div>
                         </motion.div>
                     </div>
+                </motion.div>
+            </section>
+
+            {/* ── THE WAY I WORK ── */}
+            <section className="bg-[color:var(--ink)] text-[color:var(--paper)] overflow-hidden">
+                <motion.div
+                    className="section-container max-w-5xl"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.15 }}
+                >
+                    <motion.div variants={itemVariants} className="mb-14">
+                        <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-4">02 / The Method</div>
+                        <h2 className="font-serif font-light text-[clamp(36px,6vw,80px)] leading-[0.95] tracking-tight mb-0">
+                            The Way <em className="font-black not-italic text-[color:var(--neon)]">I Work</em>
+                        </h2>
+                    </motion.div>
+
+                    {/* The big honest statement */}
+                    <motion.div variants={itemVariants} className="mb-16">
+                        <p className="font-serif text-[clamp(20px,3vw,32px)] leading-[1.35] text-[color:var(--bone)] opacity-90 max-w-3xl">
+                            I&apos;m not a traditional developer. I don&apos;t memorise syntax. I don&apos;t write code line by line.{' '}
+                            <em className="not-italic text-[color:var(--neon)] font-semibold">What I do is think.</em>
+                        </p>
+                    </motion.div>
+
+                    {/* Three-pillar breakdown */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[color:var(--line)]">
+                        {[
+                            {
+                                num: '01',
+                                title: 'I Understand Architecture',
+                                body: 'Before anything is built, I map the entire system. How data moves, where it can break, what happens under load, what the user actually experiences. The mental model has to be complete — or the output will be broken by design.'
+                            },
+                            {
+                                num: '02',
+                                title: 'I Think in Production',
+                                body: 'Speed, memory, security, edge cases — these aren\'t afterthoughts. They\'re part of how I think about the problem from the first minute. SuvMusic streams without stutter. NoteNext protects data with biometrics. That\'s not luck — that\'s upfront thinking.'
+                            },
+                            {
+                                num: '03',
+                                title: 'AI Implements, I Direct',
+                                body: 'AI is my implementation engine. I give it a clear architectural brief — data models, component contracts, performance constraints — and it writes the code. The logic and the decisions are mine. The syntax is the machine\'s job.'
+                            }
+                        ].map((item) => (
+                            <motion.div
+                                key={item.num}
+                                variants={itemVariants}
+                                className="bg-[color:var(--ink)] p-8 sm:p-10 group hover:bg-[color:var(--ink-2)] transition-colors duration-300"
+                            >
+                                <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-5">{item.num}</div>
+                                <h3 className="font-serif text-xl sm:text-2xl font-semibold mb-4 text-[color:var(--paper)]">{item.title}</h3>
+                                <p className="text-sm sm:text-base text-[color:var(--bone)] opacity-75 leading-relaxed">{item.body}</p>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* The distinction — important clarification */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="mt-12 p-8 sm:p-10 border border-[color:var(--neon)]/30 bg-[color:var(--neon)]/5"
+                    >
+                        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--neon)] mb-4">The Distinction</p>
+                        <p className="font-serif text-lg sm:text-xl text-[color:var(--bone)] opacity-90 leading-relaxed">
+                            There&apos;s a difference between someone who <em className="text-[color:var(--neon)] not-italic font-semibold">prompts randomly and hopes</em> and someone who{' '}
+                            <em className="text-[color:var(--neon)] not-italic font-semibold">designs the system completely before asking AI to write it.</em>{' '}
+                            The first gets spaghetti that breaks in production. The second ships software with 200+ GitHub stars and real daily users.
+                            I&apos;m the second kind.
+                        </p>
+                    </motion.div>
                 </motion.div>
             </section>
 

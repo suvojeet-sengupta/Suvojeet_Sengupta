@@ -6,7 +6,7 @@ const ogImage = getOgImageUrl('About Me', { subtitle: 'Vibe Architect • Logic 
 
 export const metadata: Metadata = {
   title: 'About | Suvojeet Sengupta',
-  description: 'Learn about Suvojeet Sengupta, a soulful Singer and Vibe Architect. Not a traditional coder, but a logic-driven implementer using AI to build high-performance digital experiences.',
+  description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems — without writing code manually. AI is the implementation layer. Production thinking is the skill.',
   openGraph: {
     title: 'About | Suvojeet Sengupta',
     description: 'Vibe Architect • Logic Implementer • Soulful Singer',
@@ -31,15 +31,23 @@ export default function Page() {
   const faqSchema = getFAQSchema([
     {
       question: "Who is Suvojeet Sengupta?",
-      answer: "Suvojeet Sengupta is a Vibe Architect and soulful Singer based in India. He specializes in building logic-driven digital experiences using AI and performing in Hindi and Bengali."
+      answer: "Suvojeet Sengupta is a Vibe Architect, Logic Implementer, and soulful Singer based in Dhanbad, India. He builds production-grade software by thinking in complete systems and using AI as his implementation layer — without writing code manually."
+    },
+    {
+      question: "Does Suvojeet Sengupta write code?",
+      answer: "Not in the traditional sense. Suvojeet designs the full system architecture — data flow, performance constraints, failure modes, and component contracts — then directs AI to implement it. The logic, the decisions, and the production thinking are entirely his. The syntax is the machine's job."
     },
     {
       question: "What is a Vibe Architect?",
-      answer: "A Vibe Architect is a creative technologist who focuses on the 'vibe' and logic of an application, using AI to implement high-performance solutions rather than traditional coding."
+      answer: "A Vibe Architect is someone who understands systems deeply enough to design them completely before building. Suvojeet thinks in architecture, plans for production from day one, and uses AI as a precision implementation tool — not a replacement for thinking."
+    },
+    {
+      question: "What has Suvojeet Sengupta built?",
+      answer: "SuvMusic — a high-performance YouTube Music client for Android with 200+ GitHub stars; NoteNext — an offline-first note app with biometric privacy; and official Custom ROM builds for Redmi 12 5G / Poco M6 Pro 5G used by real communities."
     },
     {
       question: "What are Suvojeet's musical influences?",
-      answer: "Suvojeet is inspired by legendary Indian artists like Kishore Kumar and Lata Mangeshkar, with modern influences from Arijit Singh."
+      answer: "Suvojeet is inspired by Kishore Kumar, Lata Mangeshkar, and modern artists like Arijit Singh. He performs in Hindi and Bengali, approaching every song with the same precision and intentionality he brings to software design."
     }
   ]);
 
