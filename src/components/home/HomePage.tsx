@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { calculateAge } from '@/lib/utils';
 import HeroContent from './HeroContent';
 import VinylSection from './VinylSection';
+import StatsSection from './StatsSection';
 import styles from './HomePage.module.css';
 
 interface HomePageProps {
@@ -83,6 +84,9 @@ const HomePage = ({ children }: HomePageProps) => {
           </div>
         </div>
       </section>
+
+      {/* ========= STATS ========= */}
+      <StatsSection />
 
       {/* ========= QUOTE ========= */}
       <section className={styles.quote}>
