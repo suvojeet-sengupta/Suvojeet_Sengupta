@@ -546,16 +546,6 @@
   .cta {
     padding: 70px 16px;
   }
-  .statsSection {
-    padding: 60px 16px;
-  }
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .statCardNum {
-    font-size: 44px;
-  }
 }
 
 /* ========= STATS SECTION ========= */
@@ -621,4 +611,42 @@
   letter-spacing: 0.2em;
   color: var(--text-muted);
   opacity: 0.7;
+}
+
+/* ========= STATS RESPONSIVE =========
+   Declared after the base rules so the mobile overrides win
+   regardless of source order in the cascade. */
+@media (max-width: 900px) {
+  .statsSection {
+    padding: 64px 20px;
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statCard {
+    padding: 32px 20px;
+  }
+  .statCardNum {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsSection {
+    padding: 48px 14px;
+  }
+  .statCard {
+    padding: 26px 12px;
+  }
+  .statCardNum {
+    font-size: 40px;
+    margin-bottom: 8px;
+  }
+  .statCardLabel {
+    font-size: 14px;
+  }
+  .statCardSub {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
 }

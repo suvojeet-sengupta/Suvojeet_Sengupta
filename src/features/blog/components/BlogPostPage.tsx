@@ -6,7 +6,6 @@ import { calculateReadingTime } from '@/lib/blog-utils';
 import { CommentList } from './comments/CommentList';
 import { LikeButton } from './LikeButton';
 import { ShareButtons } from './ShareButtons';
-import ReadingProgress from './ReadingProgress';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -17,7 +16,6 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
   return (
     <div className="max-w-4xl mx-auto px-5 sm:px-6 pt-28 sm:pt-32 pb-16 relative">
-      <ReadingProgress />
       <article>
         {/* Category & Breadcrumb */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
