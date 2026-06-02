@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './HomePage.module.css';
 
+const AVAILABLE = true;
+
 interface HeroContentProps {
   age: number;
 }
@@ -40,6 +42,16 @@ const HeroContent = ({ age }: HeroContentProps) => {
           Read Liner Notes →
         </Link>
       </div>
+
+      {AVAILABLE && (
+        <div className={styles.availBadge}>
+          <span
+            className={styles.availDot}
+            style={{ animation: 'available-pulse 2s infinite' }}
+          />
+          Available for Projects · 2026
+        </div>
+      )}
 
       <div className={styles.heroStats}>
         <div>
