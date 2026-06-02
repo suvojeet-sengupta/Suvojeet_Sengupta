@@ -7,20 +7,22 @@ export const runtime = 'edge';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = getDb();
   
-  // Static routes
-  const routes = [
-    '',
-    '/about',
-    '/music',
-    '/blog',
-    '/contact',
-    '/suvmusic',
-    '/notenext',
-  ].map((route) => ({
-    url: `${SEO_CONFIG.url}${route}`,
+  // Static routes with individual priorities
+  const staticPages = [
+    { path: '',         priority: 1.0, freq: 'daily'   as const },
+    { path: '/about',   priority: 0.9, freq: 'weekly'  as const },
+    { path: '/music',   priority: 0.9, freq: 'weekly'  as const },
+    { path: '/blog',    priority: 0.9, freq: 'daily'   as const },
+    { path: '/contact', priority: 0.8, freq: 'monthly' as const },
+    { path: '/suvmusic',priority: 0.8, freq: 'monthly' as const },
+    { path: '/notenext',priority: 0.8, freq: 'monthly' as const },
+  ];
+
+  const routes = staticPages.map(({ path, priority, freq }) => ({
+    url: `${SEO_CONFIG.url}${path}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    changeFrequency: freq,
+    priority,
   }));
 
   // Dynamic blog routes

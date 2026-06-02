@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/common/ThemeProvider";
 import Providers from "@/components/common/Providers";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { SEO_CONFIG, getEnhancedPersonSchema } from "@/lib/seo";
+import { SEO_CONFIG, getEnhancedPersonSchema, getWebSiteSchema } from "@/lib/seo";
 import { Metadata } from "next";
 
 const fraunces = Fraunces({
@@ -26,6 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SEO_CONFIG.url),
+  applicationName: SEO_CONFIG.siteName,
   title: {
     default: SEO_CONFIG.title,
     template: `%s | ${SEO_CONFIG.siteName}`,
@@ -34,6 +35,8 @@ export const metadata: Metadata = {
   keywords: SEO_CONFIG.keywords,
   authors: [{ name: "Suvojeet Sengupta", url: SEO_CONFIG.url }],
   creator: "Suvojeet Sengupta",
+  publisher: "Suvojeet Sengupta",
+  category: "portfolio",
   openGraph: {
     type: "website",
     locale: SEO_CONFIG.locale,
@@ -46,7 +49,7 @@ export const metadata: Metadata = {
         url: "/suvojeet.jpg",
         width: 1200,
         height: 630,
-        alt: "Suvojeet Sengupta",
+        alt: "Suvojeet Sengupta — Vibe Architect & Soulful Singer",
       },
     ],
   },
@@ -56,10 +59,14 @@ export const metadata: Metadata = {
     description: SEO_CONFIG.description,
     images: ["/suvojeet.jpg"],
     creator: SEO_CONFIG.twitterHandle,
+    site: SEO_CONFIG.twitterSite,
   },
   robots: {
     index: true,
     follow: true,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+    "max-video-preview": -1,
     googleBot: {
       index: true,
       follow: true,
@@ -70,6 +77,19 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SEO_CONFIG.url,
+    types: {
+      "application/rss+xml": `${SEO_CONFIG.url}/rss.xml`,
+    },
+  },
+  verification: {
+    // Add your Google Search Console verification code here when you get it:
+    // google: "YOUR_GOOGLE_VERIFICATION_CODE",
+    // bing: "YOUR_BING_VERIFICATION_CODE",
+  },
+  other: {
+    "theme-color": "#ea580c",
+    "color-scheme": "light dark",
+    "format-detection": "telephone=no",
   },
 };
 
@@ -78,7 +98,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jsonLd = getEnhancedPersonSchema();
+  const personSchema = getEnhancedPersonSchema();
+  const websiteSchema = getWebSiteSchema();
 
   const navSchema = {
     '@context': 'https://schema.org',
@@ -96,9 +117,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="alternate" type="application/rss+xml" title={`${SEO_CONFIG.siteName} Blog`} href={`${SEO_CONFIG.url}/rss.xml`} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <script
           type="application/ld+json"

@@ -1,24 +1,35 @@
 import AboutClient from '@/components/about/AboutClient';
 import { Metadata } from 'next';
-import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getFAQSchema } from '@/lib/seo';
+import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getFAQSchema, getProfilePageSchema } from '@/lib/seo';
 
 const ogImage = getOgImageUrl('About Me', { subtitle: 'Vibe Architect • Logic Implementer • Soulful Singer' });
 
 export const metadata: Metadata = {
-  title: 'About | Suvojeet Sengupta',
+  title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
   description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems — without writing code manually. AI is the implementation layer. Production thinking is the skill.',
+  keywords: [
+    'Suvojeet Sengupta', 'about Suvojeet Sengupta', 'Vibe Architect',
+    'Logic Implementer', 'AI developer India', 'singer Dhanbad',
+    'systems thinker India', 'Android architect', 'Suvojeet biography'
+  ],
+  alternates: { canonical: `${SEO_CONFIG.url}/about` },
   openGraph: {
-    title: 'About | Suvojeet Sengupta',
-    description: 'Vibe Architect • Logic Implementer • Soulful Singer',
+    title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
+    description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems without writing code manually.',
     url: `${SEO_CONFIG.url}/about`,
     type: 'profile',
-    images: [{ url: ogImage, width: 1200, height: 630 }],
+    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta' }],
+    // @ts-ignore
+    'profile:first_name': 'Suvojeet',
+    'profile:last_name': 'Sengupta',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About | Suvojeet Sengupta',
-    description: 'Vibe Architect • Logic Implementer • Soulful Singer',
+    title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
+    description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems without writing code manually.',
     images: [ogImage],
+    creator: SEO_CONFIG.twitterHandle,
+    site: SEO_CONFIG.twitterSite,
   },
 };
 
@@ -51,16 +62,13 @@ export default function Page() {
     }
   ]);
 
+  const profilePageSchema = getProfilePageSchema();
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <AboutClient />
     </>
   );

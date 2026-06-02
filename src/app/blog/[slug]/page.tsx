@@ -7,7 +7,7 @@ import { getE2ePostFixture, isE2ePostFixtureSlug } from '@/lib/e2e-fixtures';
 import type { BlogComment, BlogPost, BlogReply } from '@/types/blog';
 import BlogPostPage from '@/features/blog/components/BlogPostPage';
 import { headers } from 'next/headers';
-import { getOgImageUrl } from '@/lib/seo';
+import { getOgImageUrl, getBreadcrumbJsonLd, getBlogPostSchema, SEO_CONFIG } from '@/lib/seo';
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -41,22 +41,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = `${post.title} | Suvojeet Sengupta`;
   const description = post.excerpt || `Read "${post.title}" on Suvojeet Sengupta's blog.`;
   const ogImage = getOgImageUrl(post.title, { category: post.category });
+  const postUrl = `${SEO_CONFIG.url}/blog/${slug}`;
 
   return {
     title,
     description,
+    alternates: { canonical: postUrl },
+    authors: [{ name: 'Suvojeet Sengupta', url: SEO_CONFIG.url }],
     openGraph: {
       title,
       description,
       type: 'article',
-      url: `https://suvojeetsengupta.in/blog/${slug}`,
-      images: [{ url: ogImage, width: 1200, height: 630 }],
+      url: postUrl,
+      siteName: SEO_CONFIG.siteName,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+      // @ts-ignore
+      'article:author': 'Suvojeet Sengupta',
+      'article:section': post.category || 'General',
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
       images: [ogImage],
+      creator: SEO_CONFIG.twitterHandle,
+      site: SEO_CONFIG.twitterSite,
     },
   };
 }
@@ -203,34 +212,23 @@ export default async function Page({ params }: PageProps) {
     hasLiked: toBoolean(postRow.has_liked),
   };
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    image: getOgImageUrl(post.title),
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt || post.publishedAt,
-    author: {
-      '@type': 'Person',
-      name: post.author,
-      url: 'https://suvojeetsengupta.in',
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://suvojeetsengupta.in/blog/${slug}`
-    }
-  };
+  const jsonLd = getBlogPostSchema({
+    title: post.title,
+    excerpt: post.excerpt,
+    slug,
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    author: post.author,
+    tags: post.tags ?? [],
+    category: post.category ?? undefined,
+    imageUrl: post.imageUrl,
+  });
 
-  const breadcrumb = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://suvojeetsengupta.in/' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://suvojeetsengupta.in/blog' },
-      { '@type': 'ListItem', position: 3, name: post.title, item: `https://suvojeetsengupta.in/blog/${slug}` },
-    ]
-  };
+  const breadcrumb = getBreadcrumbJsonLd([
+    { name: 'Home', item: '/' },
+    { name: 'Blog', item: '/blog' },
+    { name: post.title, item: `/blog/${slug}` },
+  ]);
 
   return (
     <>
