@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { 
   createAccessToken, 
-  verifyRefreshToken, 
+  verifyRefreshToken,
   refreshCookieName,
   attachAdminCookie,
   attachRefreshTokenCookie,
-  createRefreshToken
+  createRefreshToken,
+  revokeRefreshToken
 } from '@/lib/admin-auth';
 import { NO_STORE_HEADERS } from '@/lib/http-cache';
 
@@ -40,6 +41,12 @@ export async function POST(request: Request) {
 
     const newAccessToken = await createAccessToken(payload.email);
     const newRefreshToken = await createRefreshToken(payload.email);
+
+    // Rotate: invalidate the just-used refresh token so it can't be reused.
+    // Guard against the rare same-second case where the new token is byte-identical.
+    if (refreshToken !== newRefreshToken) {
+      await revokeRefreshToken(refreshToken);
+    }
 
     const response = NextResponse.json({ 
       success: true,

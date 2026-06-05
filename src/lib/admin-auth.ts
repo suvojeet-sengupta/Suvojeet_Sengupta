@@ -76,6 +76,12 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
+export async function revokeRefreshToken(token: string): Promise<void> {
+  const tokenHash = await sha256Hex(token);
+  const kv = getKv();
+  await kv.delete(`refresh_token:${tokenHash}`);
+}
+
 export async function verifyRefreshToken(token: string): Promise<JWTPayload | null> {
   const payload = await verifyToken(token);
   if (!payload || payload.type !== 'refresh') return null;
