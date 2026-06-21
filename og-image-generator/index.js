@@ -1,42 +1,78 @@
-import satori from "npm:satori@0.10.13";
-import React from "npm:react@18.2.0";
-import { initWasm, Resvg } from "npm:@resvg/resvg-wasm@2.4.0";
+import express from 'express';
+import satori from 'satori';
+import React from 'react';
+import { Resvg } from '@resvg/resvg-js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+const PORT = process.env.PORT || 5002;
 
 const el = React.createElement;
-let wasmReady = false;
 
-Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+// Cache for fonts in memory
+let fontRegular = null;
+let fontBold = null;
+
+// Download/load fonts
+async function loadFonts() {
+  const fontDir = path.join(__dirname, 'fonts');
+  if (!fs.existsSync(fontDir)) {
+    fs.mkdirSync(fontDir, { recursive: true });
   }
 
+  const regularPath = path.join(fontDir, 'inter-regular.woff');
+  const boldPath = path.join(fontDir, 'inter-bold.woff');
+
+  if (fs.existsSync(regularPath) && fs.existsSync(boldPath)) {
+    console.log('Loading fonts from local cache...');
+    fontRegular = fs.readFileSync(regularPath);
+    fontBold = fs.readFileSync(boldPath);
+  } else {
+    console.log('Fetching fonts from CDN...');
+    try {
+      const [regRes, boldRes] = await Promise.all([
+        fetch('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-400-normal.woff'),
+        fetch('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-800-normal.woff')
+      ]);
+
+      if (!regRes.ok || !boldRes.ok) {
+        throw new Error(`Failed to fetch fonts from CDN: ${regRes.status} / ${boldRes.status}`);
+      }
+
+      const regBuffer = Buffer.from(await regRes.arrayBuffer());
+      const boldBuffer = Buffer.from(await boldRes.arrayBuffer());
+
+      fs.writeFileSync(regularPath, regBuffer);
+      fs.writeFileSync(boldPath, boldBuffer);
+
+      fontRegular = regBuffer;
+      fontBold = boldBuffer;
+      console.log('Fonts saved locally and loaded.');
+    } catch (error) {
+      console.error('Error fetching fonts:', error);
+      throw error;
+    }
+  }
+}
+
+app.get('/og-image', async (req, res) => {
   try {
-    if (!wasmReady) {
-      const wasm = await fetch(
-        "https://unpkg.com/@resvg/resvg-wasm@2.4.0/index_bg.wasm"
-      ).then((r) => r.arrayBuffer());
-      await initWasm(wasm);
-      wasmReady = true;
+    if (!fontRegular || !fontBold) {
+      await loadFonts();
     }
 
-    const url = new URL(req.url);
-    const title = url.searchParams.get("title") || "Suvojeet Sengupta";
-    const category = url.searchParams.get("category") || "";
-    const subtitle = url.searchParams.get("subtitle") || "";
-
-    const [fontRegular, fontBold] = await Promise.all([
-      fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-400-normal.woff").then((r) => r.arrayBuffer()),
-      fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/files/inter-latin-800-normal.woff").then((r) => r.arrayBuffer()),
-    ]);
+    const title = req.query.title || 'Suvojeet Sengupta';
+    const category = req.query.category || '';
+    const subtitle = req.query.subtitle || '';
 
     const fontSize = title.length > 70 ? 48 : title.length > 40 ? 58 : 68;
     const titleFontSize = subtitle ? Math.min(fontSize, 62) : fontSize;
 
+    // React elements representing the layout
     const element = el("div", {
       style: {
         width: "1200px",
@@ -82,7 +118,7 @@ Deno.serve(async (req: Request) => {
           el("span", { style: { color: "#888", fontSize: "20px", fontWeight: 400, fontFamily: "Inter" } }, "suvojeetsengupta.in"),
         ),
         el("div", { style: { display: "flex", gap: "6px", alignItems: "flex-end" } },
-          ...[4, 6, 8, 10, 14].map((size, i) =>
+          [4, 6, 8, 10, 14].map((size, i) =>
             el("div", { key: i, style: { width: `${size}px`, height: `${size}px`, borderRadius: "50%", background: i === 4 ? "#f97316" : `rgba(249,115,22,${0.12 + i * 0.1})` } })
           ),
         ),
@@ -95,27 +131,30 @@ Deno.serve(async (req: Request) => {
       width: 1200,
       height: 630,
       fonts: [
-        { name: "Inter", data: fontRegular, weight: 400, style: "normal" },
-        { name: "Inter", data: fontBold, weight: 800, style: "normal" },
+        { name: 'Inter', data: fontRegular, weight: 400, style: 'normal' },
+        { name: 'Inter', data: fontBold, weight: 800, style: 'normal' },
       ],
     });
 
-    const resvg = new Resvg(svg, { fitTo: { mode: "width", value: 1200 } });
+    const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
     const rendered = resvg.render();
-    const png = rendered.asPng();
+    const pngBuffer = rendered.asPng();
 
-    return new Response(png, {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=86400, s-maxage=604800",
-      },
-    });
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=604800');
+    res.send(pngBuffer);
   } catch (error) {
-    console.error("OG image error:", error);
-    return new Response(JSON.stringify({ error: String(error) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error('OG Image Generation Error:', error);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
+});
+
+// Warm up fonts on start
+loadFonts().then(() => {
+  app.listen(PORT, () => {
+    console.log(`OG Image Generator listening on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('Failed to initialize fonts:', err);
+  process.exit(1);
 });

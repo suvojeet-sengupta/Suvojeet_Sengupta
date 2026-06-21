@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  og-image-generator:
+    build: .
+    container_name: og-image-generator
+    ports:
+      - "5002:5002"
+    restart: always
+    environment:
+      - PORT=5002
+      - NODE_ENV=production

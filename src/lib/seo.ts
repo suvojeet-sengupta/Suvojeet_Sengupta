@@ -6,7 +6,7 @@ export function getOgImageUrl(
   title: string,
   options: { subtitle?: string; category?: string } = {}
 ): string {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL;
+  const base = process.env.NEXT_PUBLIC_OG_IMAGE_URL;
   if (!base) return '/suvojeet.jpg';
   const params = new URLSearchParams({ title });
   if (options.subtitle) params.set('subtitle', options.subtitle);
