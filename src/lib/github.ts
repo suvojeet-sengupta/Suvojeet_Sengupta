@@ -11,8 +11,10 @@ export async function fetchGithubRepo(owner: string, repo: string): Promise<Gith
   const vpsUrl = process.env.GITHUB_STATS_API_URL || 'http://localhost:5003/api/github-stats';
   
   try {
-    // Try fetching from the self-hosted cache service first to bypass GitHub rate limits
-    const response = await fetch(`${vpsUrl}/${repo}`);
+    // Try fetching from the self-hosted cache service first to bypass GitHub rate limits (cached for 24 hours)
+    const response = await fetch(`${vpsUrl}/${repo}`, {
+      next: { revalidate: 86400 } // 24 hours in seconds
+    });
     
     if (response.ok) {
       const result = await response.json();
@@ -24,10 +26,11 @@ export async function fetchGithubRepo(owner: string, repo: string): Promise<Gith
     console.warn(`VPS GitHub cache fetch failed for ${repo}, falling back to direct API:`, error.message);
   }
 
-  // Fallback to direct GitHub API if VPS is unreachable
+  // Fallback to direct GitHub API if VPS is unreachable (cached for 24 hours)
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
       headers: { 'Accept': 'application/vnd.github.v3+json' },
+      next: { revalidate: 86400 } // 24 hours in seconds
     });
 
     if (!response.ok) {

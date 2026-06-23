@@ -58,6 +58,43 @@ const itemVariants: Variants = {
 export default function StatsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [stats, setStats] = useState<Stat[]>(STATS);
+
+  useEffect(() => {
+    async function getDynamicStats() {
+      try {
+        const response = await fetch('https://suvojeet-api.suvojeetsengupta.in/api/github-stats');
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data) {
+            const data = result.data;
+            
+            // Calculate total stars across all repositories
+            let totalStars = 0;
+            Object.values(data).forEach((repo: any) => {
+              totalStars += repo.stargazers_count || 0;
+            });
+            
+            // Calculate projects shipped (baseline of 4, or repository count if higher)
+            const projectsCount = Math.max(4, Object.keys(data).length);
+            
+            // Calculate years building dynamically starting from 2023
+            const yearsBuilding = Math.max(3, new Date().getFullYear() - 2023);
+
+            setStats([
+              { value: totalStars || 201, suffix: '+', label: 'GitHub Stars', sublabel: 'across all projects' },
+              { value: projectsCount,     suffix: '',  label: 'Projects Shipped', sublabel: 'release-grade software' },
+              { value: 20,                suffix: '+', label: 'Songs Recorded', sublabel: 'Hindi & Bengali' },
+              { value: yearsBuilding,     suffix: '+', label: 'Years Building', sublabel: 'AI-driven development' },
+            ]);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load dynamic stats from VPS:', error);
+      }
+    }
+    getDynamicStats();
+  }, []);
 
   return (
     <section className={styles.statsSection} ref={ref}>
@@ -68,7 +105,7 @@ export default function StatsSection() {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <motion.div key={stat.label} variants={itemVariants} className={styles.statCard}>
               <div className={styles.statCardNum}>
                 <Counter value={stat.value} suffix={stat.suffix} />
