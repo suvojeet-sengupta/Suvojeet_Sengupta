@@ -1,0 +1,15 @@
+{
+  "name": "github-fetch-service",
+  "version": "1.0.0",
+  "description": "Background fetching and caching of GitHub repository statistics for Suvojeet Sengupta Portfolio",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
