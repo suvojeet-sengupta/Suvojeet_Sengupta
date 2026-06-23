@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  suvojeet-api:
+    build: .
+    container_name: suvojeet-api
+    ports:
+      - "5000:5000"
+    restart: always
+    volumes:
+      - api-data:/app/data
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - REPOS=suvojeet-sengupta/SuvMusic,suvojeet-sengupta/NoteNext,suvojeet-sengupta/Suvojeet_Sengupta
+      - FETCH_INTERVAL_MINUTES=15
+      - GITHUB_TOKEN= # Optional: Add GitHub PAT to prevent rate limits
+
+volumes:
+  api-data:

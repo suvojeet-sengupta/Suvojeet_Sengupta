@@ -1,0 +1,18 @@
+{
+  "name": "suvojeet-api",
+  "version": "1.0.0",
+  "description": "Unified VPS API for Suvojeet Sengupta Portfolio - Caches GitHub stats and generates dynamic OG Images",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "react": "^18.3.1",
+    "satori": "^0.10.13"
+  }
+}
