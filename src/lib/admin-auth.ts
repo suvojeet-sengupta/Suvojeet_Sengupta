@@ -319,7 +319,7 @@ export async function isAdminSessionValid(token: string | null): Promise<boolean
 export async function isAdminRequestAuthenticated(request: Request): Promise<boolean> {
   const botToken = request.headers.get('X-Bot-Token');
   const configuredBotToken = getRuntimeString('BOT_API_KEY') || getRuntimeString('TELEGRAM_BOT_TOKEN');
-  if (botToken && (botToken === 'suvojeet-sengupta-vps-blog-uploader-token-2026' || (configuredBotToken && botToken === configuredBotToken))) {
+  if (configuredBotToken && botToken === configuredBotToken) {
     return true;
   }
 
