@@ -442,8 +442,10 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 .blog-download-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 2rem 0 0.5rem;
+  gap: 14px;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line-strong);
 }
 .blog-download-btn {
   display: inline-flex;

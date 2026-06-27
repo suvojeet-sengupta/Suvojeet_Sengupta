@@ -229,10 +229,79 @@ export function buildDownloadButtonsHtml(downloads: DownloadLink[]): string {
   return `<div class="blog-download-group">${buttons}</div>`;
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Removes references to the download links from the post body so the generated
+ * Download button is never duplicated by a raw URL or anchor the author also
+ * pasted into the content. A paragraph that becomes empty or is left as a
+ * dangling call-to-action (e.g. ending in a colon, or too short to stand alone)
+ * after the URL is removed is dropped entirely.
+ */
+export function removeDownloadReferences(content: string, links: DownloadLink[]): string {
+  if (!links.length || !content) {
+    return content;
+  }
+
+  const escapedUrls = links.map((link) => escapeRegExp(link.url));
+  const urlAlternation = escapedUrls.join('|');
+  const anchorRegex = new RegExp(
+    `<a\\b[^>]*href\\s*=\\s*["']?(?:${urlAlternation})["']?[^>]*>[\\s\\S]*?<\\/a>`,
+    'gi',
+  );
+  const bareUrlRegex = new RegExp(`(?:${urlAlternation})`, 'gi');
+
+  const stripFromText = (value: string): string =>
+    value.replace(anchorRegex, '').replace(bareUrlRegex, '');
+
+  // Handle whole <p> blocks: drop the block if it was only there to host the link.
+  const withParagraphsHandled = content.replace(
+    /<p\b[^>]*>([\s\S]*?)<\/p>/gi,
+    (full, inner: string) => {
+      if (!bareUrlRegex.test(inner)) {
+        bareUrlRegex.lastIndex = 0;
+        return full;
+      }
+      bareUrlRegex.lastIndex = 0;
+
+      const cleaned = stripFromText(inner);
+      const plain = cleaned
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;| /g, ' ')
+        .trim();
+
+      if (plain === '' || /[:：]$/.test(plain) || plain.length < 12) {
+        return '';
+      }
+      return `<p>${cleaned.trim()}</p>`;
+    },
+  );
+
+  const withoutBareUrls = stripFromText(withParagraphsHandled).replace(/<p>\s*<\/p>/gi, '');
+
+  // Drop a short leftover call-to-action paragraph (e.g. "Download it here:") that
+  // only existed to introduce the link we just turned into a button.
+  return withoutBareUrls.replace(/<p\b[^>]*>([\s\S]*?)<\/p>/gi, (full, inner: string) => {
+    const plain = inner
+      .replace(/<[^>]+>/g, '')
+      .replace(/&nbsp;| /g, ' ')
+      .trim();
+    const isShortCta =
+      plain.length < 90 &&
+      /[:：]$/.test(plain) &&
+      /\b(download|get it|grab|install|available|apk|link)\b/i.test(plain);
+    return isShortCta ? '' : full;
+  });
+}
+
 /**
  * Merges a body of HTML with an optional set of download links, returning the
  * combined HTML ready to be sanitized. Accepts both the structured `downloads`
  * field and the singular `downloadUrl` / `downloadLabel` convenience fields.
+ * Any copy of those links already present in the body is stripped first so the
+ * generated button is never duplicated.
  */
 export function appendDownloadButtons(
   content: string,
@@ -250,7 +319,8 @@ export function appendDownloadButtons(
     return content;
   }
 
-  return `${content}\n${buildDownloadButtonsHtml(links)}`;
+  const deduped = removeDownloadReferences(content, links);
+  return `${deduped}\n${buildDownloadButtonsHtml(links)}`;
 }
 
 export function mapBlogSummary(row: Record<string, unknown>): BlogSummary {
