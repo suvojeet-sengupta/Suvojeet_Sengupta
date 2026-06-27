@@ -438,6 +438,44 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
   font-weight: 700;
 }
 
+/* Blog download buttons (server-generated from a post's `downloads` field) */
+.blog-download-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 2rem 0 0.5rem;
+}
+.blog-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: var(--neon);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  border: 1px solid var(--neon);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.blog-download-btn:hover {
+  transform: translateY(-2px);
+  background: var(--neon-soft);
+  box-shadow: 0 8px 24px -8px var(--neon);
+  text-decoration: none;
+}
+.blog-download-btn__icon {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+.blog-download-btn__label {
+  line-height: 1;
+}
+
 /* Responsive overrides */
 @media (max-width: 480px) {
   .btn-solid, .btn-outline {
@@ -447,5 +485,9 @@ p { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
   }
   .professional-card {
     padding: 1.25rem;
+  }
+  .blog-download-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

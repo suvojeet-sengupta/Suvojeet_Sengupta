@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { isAdminRequestAuthenticated } from '@/lib/admin-auth';
 import { getDb, getRuntimeString } from '@/lib/cloudflare';
 import {
+  appendDownloadButtons,
   createSlug,
   extractPlainTextFromHtml,
   mapBlogSummary,
@@ -24,7 +25,14 @@ export async function POST(request: Request) {
 
   const payload = await request.json();
   const title = normalizeText(payload?.title, 180);
-  const content = normalizeHtmlContent(payload?.content, 40000);
+  const rawContent = typeof payload?.content === 'string' ? payload.content : '';
+  const contentWithDownloads = appendDownloadButtons(
+    rawContent,
+    payload?.downloads,
+    payload?.downloadUrl,
+    payload?.downloadLabel,
+  );
+  const content = normalizeHtmlContent(contentWithDownloads, 40000);
   const candidateSlug = normalizeText(payload?.slug, 180);
   const slug = createSlug(candidateSlug || title);
 

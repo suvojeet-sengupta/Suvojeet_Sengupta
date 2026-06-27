@@ -39,7 +39,7 @@ const ALLOWED_TAGS = [
 const ALLOWED_TAGS_SET = new Set<string>(ALLOWED_TAGS);
 
 const ALLOWED_ATTRIBUTES: Record<string, string[]> = {
-  a: ['href', 'name', 'target', 'rel', 'title'],
+  a: ['href', 'name', 'target', 'rel', 'title', 'download'],
   img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
   code: ['class'],
   pre: ['class'],
@@ -103,7 +103,8 @@ function sanitizeAttributes(tagName: string, rawAttributes: string): string {
     }
 
     const attributeValue = (match[2] ?? match[3] ?? match[4] ?? '').trim();
-    if (!attributeValue && attributeName !== 'target') {
+    // `target` and `download` are valid as bare (valueless) attributes.
+    if (!attributeValue && attributeName !== 'target' && attributeName !== 'download') {
       continue;
     }
 

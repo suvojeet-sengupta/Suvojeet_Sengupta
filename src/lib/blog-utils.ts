@@ -117,6 +117,142 @@ export function toBoolean(value: unknown): boolean {
   return value === true || value === 1 || value === '1';
 }
 
+export interface DownloadLink {
+  label: string;
+  url: string;
+}
+
+const MAX_DOWNLOAD_BUTTONS = 8;
+
+function escapeHtmlText(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function coerceDownloadItem(item: unknown): DownloadLink | null {
+  let url = '';
+  let label = '';
+
+  if (typeof item === 'string') {
+    url = item;
+  } else if (item && typeof item === 'object') {
+    const obj = item as Record<string, unknown>;
+    url = typeof obj.url === 'string' ? obj.url : typeof obj.href === 'string' ? obj.href : '';
+    label = typeof obj.label === 'string'
+      ? obj.label
+      : typeof obj.text === 'string'
+        ? obj.text
+        : typeof obj.title === 'string'
+          ? obj.title
+          : '';
+  }
+
+  url = url.trim();
+  // Only allow absolute, safe download links — anything else is dropped.
+  if (!/^https?:\/\//i.test(url)) {
+    return null;
+  }
+
+  label = normalizeText(label, 80) || 'Download';
+  return { label, url: url.slice(0, 500) };
+}
+
+/**
+ * Normalizes a loosely-typed `downloads` payload (array, JSON string, single URL
+ * string, or a single object) into a validated list of download links. Only
+ * http/https URLs survive, so an AI agent can pass a raw link without risk.
+ */
+export function normalizeDownloads(raw: unknown): DownloadLink[] {
+  let items: unknown[] = [];
+
+  if (Array.isArray(raw)) {
+    items = raw;
+  } else if (typeof raw === 'string') {
+    const trimmed = raw.trim();
+    if (!trimmed) {
+      return [];
+    }
+    try {
+      const parsed = JSON.parse(trimmed);
+      items = Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      items = [trimmed];
+    }
+  } else if (raw && typeof raw === 'object') {
+    items = [raw];
+  }
+
+  const links: DownloadLink[] = [];
+  const seen = new Set<string>();
+  for (const item of items) {
+    const link = coerceDownloadItem(item);
+    if (!link || seen.has(link.url)) {
+      continue;
+    }
+    seen.add(link.url);
+    links.push(link);
+    if (links.length >= MAX_DOWNLOAD_BUTTONS) {
+      break;
+    }
+  }
+
+  return links;
+}
+
+/**
+ * Builds the trusted download-button markup appended to a post body. The output
+ * is plain `<a>` tags (styled via `.blog-download-btn`) so it passes the rich
+ * text sanitizer unchanged, while `<button>` elements would be stripped.
+ */
+export function buildDownloadButtonsHtml(downloads: DownloadLink[]): string {
+  if (!downloads.length) {
+    return '';
+  }
+
+  const buttons = downloads
+    .map(({ label, url }) => {
+      const safeUrl = escapeHtmlText(url);
+      const safeLabel = escapeHtmlText(label);
+      return (
+        `<a class="blog-download-btn" href="${safeUrl}" target="_blank" rel="noopener noreferrer nofollow" download>` +
+        `<span class="blog-download-btn__icon">↓</span>` +
+        `<span class="blog-download-btn__label">${safeLabel}</span>` +
+        `</a>`
+      );
+    })
+    .join('');
+
+  return `<div class="blog-download-group">${buttons}</div>`;
+}
+
+/**
+ * Merges a body of HTML with an optional set of download links, returning the
+ * combined HTML ready to be sanitized. Accepts both the structured `downloads`
+ * field and the singular `downloadUrl` / `downloadLabel` convenience fields.
+ */
+export function appendDownloadButtons(
+  content: string,
+  downloads: unknown,
+  singleUrl?: unknown,
+  singleLabel?: unknown,
+): string {
+  const links = normalizeDownloads(downloads);
+
+  if (links.length === 0 && typeof singleUrl === 'string' && singleUrl.trim()) {
+    links.push(...normalizeDownloads({ url: singleUrl, label: singleLabel }));
+  }
+
+  if (links.length === 0) {
+    return content;
+  }
+
+  return `${content}\n${buildDownloadButtonsHtml(links)}`;
+}
+
 export function mapBlogSummary(row: Record<string, unknown>): BlogSummary {
   const rawCommentsEnabled = typeof row.comments_enabled !== 'undefined'
     ? row.comments_enabled
