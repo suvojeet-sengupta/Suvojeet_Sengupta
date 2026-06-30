@@ -1,5 +1,6 @@
 'use client';
 
+import { apiUrl } from '@/lib/api-base';
 import { useState, useEffect } from 'react';
 import { Bell, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -62,7 +63,7 @@ export default function PushPrompt() {
       });
 
       // Send to server
-      await fetch('/api/public/subscribe', {
+      await fetch(apiUrl('/api/public/subscribe'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(subscription)

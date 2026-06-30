@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/api-base';
 import { useReducer } from 'react';
 
 interface FormState {
@@ -40,7 +41,7 @@ const useContactForm = () => {
         dispatch({ type: 'SUBMIT' });
 
         try {
-            const response = await fetch('/api/public/contact', {
+            const response = await fetch(apiUrl('/api/public/contact'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

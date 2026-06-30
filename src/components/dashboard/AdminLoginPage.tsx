@@ -1,5 +1,6 @@
 'use client';
 
+import { apiUrl } from '@/lib/api-base';
 import { FormEvent, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -14,7 +15,7 @@ export default function AdminLoginPage() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch('/api/admin/overview', { 
+        const res = await fetch(apiUrl('/api/admin/overview'), { 
           cache: 'no-store',
           credentials: 'include'
         });
@@ -38,7 +39,7 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/admin/login', {
+      const response = await fetch(apiUrl('/api/admin/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

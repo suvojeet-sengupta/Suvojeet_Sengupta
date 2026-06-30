@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/api-base';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { BlogComment } from '@/types/blog';
 import { CommentInput } from '../schemas';
@@ -10,7 +11,7 @@ export function useCommentsApi(slug: string, initialData?: { comments: BlogComme
   const { data, isLoading } = useQuery({
     queryKey: [COMMENTS_QUERY_KEY, slug],
     queryFn: async () => {
-      const response = await fetch(`/api/public/posts/${slug}/comments`);
+      const response = await fetch(apiUrl(`/api/public/posts/${slug}/comments`));
       if (!response.ok) throw new Error('Failed to fetch comments');
       return response.json() as Promise<{ comments: BlogComment[], count: number }>;
     },
@@ -20,7 +21,7 @@ export function useCommentsApi(slug: string, initialData?: { comments: BlogComme
 
   const commentMutation = useMutation({
     mutationFn: async (newComment: CommentInput) => {
-      const response = await fetch(`/api/public/posts/${slug}/comments`, {
+      const response = await fetch(apiUrl(`/api/public/posts/${slug}/comments`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newComment),
@@ -68,7 +69,7 @@ export function useCommentsApi(slug: string, initialData?: { comments: BlogComme
 
   const replyMutation = useMutation({
     mutationFn: async ({ commentId, author, content }: { commentId: number, author: string, content: string }) => {
-      const response = await fetch(`/api/public/comments/${commentId}/replies`, {
+      const response = await fetch(apiUrl(`/api/public/comments/${commentId}/replies`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: author, content }),

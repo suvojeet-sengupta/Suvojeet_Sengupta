@@ -1,5 +1,6 @@
 'use client';
 
+import { apiUrl } from '@/lib/api-base';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -24,7 +25,7 @@ const MusicClient = ({ initialVideos }: MusicClientProps) => {
     if (initialVideos.length === 0) {
       const fetchVideos = async () => {
         try {
-          const response = await fetch('/api/public/music-videos');
+          const response = await fetch(apiUrl('/api/public/music-videos'));
           const data = await response.json();
           if (data.videos) {
             setVideos(data.videos);
@@ -46,7 +47,7 @@ const MusicClient = ({ initialVideos }: MusicClientProps) => {
   const handleVideoPlay = async (video: MusicVideo) => {
     setActiveVideo(video);
     try {
-      await fetch(`/api/public/music-videos/${video.id}/play`, { method: 'POST' });
+      await fetch(apiUrl(`/api/public/music-videos/${video.id}/play`), { method: 'POST' });
     } catch (err) {
       console.error('Failed to track play:', err);
     }

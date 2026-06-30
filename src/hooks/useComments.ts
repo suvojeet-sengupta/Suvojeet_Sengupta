@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/api-base';
 import { useState, useReducer } from 'react';
 import type { BlogComment, BlogReply } from '@/types/blog';
 
@@ -51,7 +52,7 @@ export function useComments(initialComments: BlogComment[], initialCount: number
         setMessage('');
 
         try {
-            const response = await fetch(`/api/public/posts/${postId}/comments`, {
+            const response = await fetch(apiUrl(`/api/public/posts/${postId}/comments`), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, content }),
@@ -73,7 +74,7 @@ export function useComments(initialComments: BlogComment[], initialCount: number
 
     const submitReply = async (commentId: number, name: string, content: string) => {
         try {
-            const response = await fetch(`/api/public/comments/${commentId}/replies`, {
+            const response = await fetch(apiUrl(`/api/public/comments/${commentId}/replies`), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, content }),
