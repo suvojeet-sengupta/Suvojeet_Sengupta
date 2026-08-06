@@ -2,7 +2,7 @@ import AboutClient from '@/components/about/AboutClient';
 import { Metadata } from 'next';
 import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getFAQSchema, getProfilePageSchema } from '@/lib/seo';
 
-const ogImage = getOgImageUrl('About Me', { subtitle: 'Vibe Architect • Logic Implementer • Soulful Singer' });
+const ogImage = getOgImageUrl('About Me', { type: 'about', subtitle: 'Vibe Architect • Logic Implementer • Soulful Singer' });
 
 export const metadata: Metadata = {
   title: 'About Suvojeet Sengupta | Vibe Architect & Singer',

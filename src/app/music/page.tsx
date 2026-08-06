@@ -5,7 +5,7 @@ import { getMusicVideos } from '@/lib/music-service';
 
 export const runtime = 'edge';
 
-const ogImage = getOgImageUrl('My Music', { subtitle: 'Bengali & Hindi Vocals • Soulful Artist' });
+const ogImage = getOgImageUrl('My Music', { type: 'music', subtitle: 'Bengali & Hindi Vocals • Soulful Artist' });
 
 export const metadata: Metadata = {
   title: 'Music | Suvojeet Sengupta',

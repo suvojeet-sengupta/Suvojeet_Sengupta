@@ -4,7 +4,7 @@ import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
 import FeaturedProjects, { FeaturedProjectsSkeleton } from '@/components/home/FeaturedProjects';
 import { Suspense } from 'react';
 
-const ogImage = getOgImageUrl('Suvojeet Sengupta', { subtitle: 'Singer | Performer | Composer | Android Architect | Web & Backend Developer | AI Power User' });
+const ogImage = getOgImageUrl('Suvojeet Sengupta', { type: 'home', subtitle: 'Singer | Performer | Composer | Android Architect | Web & Backend Developer | AI Power User' });
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.title,

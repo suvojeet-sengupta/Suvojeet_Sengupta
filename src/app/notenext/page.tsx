@@ -1,6 +1,8 @@
 import ProjectClient from '@/components/common/ProjectClient';
-import { getBreadcrumbJsonLd, getProjectSchema, SEO_CONFIG } from '@/lib/seo';
+import { getBreadcrumbJsonLd, getOgImageUrl, getProjectSchema, SEO_CONFIG } from '@/lib/seo';
 import { Metadata } from 'next';
+
+const ogImage = getOgImageUrl('NoteNext', { type: 'project', subtitle: 'Offline Android Notes App with Biometric Privacy' });
 
 export const metadata: Metadata = {
     title: 'NoteNext — Offline Android Notes App | Suvojeet Sengupta',
@@ -12,12 +14,13 @@ export const metadata: Metadata = {
         description: 'Offline-first note-taking app with biometric privacy. Built with Kotlin & Jetpack Compose.',
         url: `${SEO_CONFIG.url}/notenext`,
         type: 'website',
-        images: [{ url: '/suvojeet.jpg', width: 1200, height: 630, alt: 'NoteNext by Suvojeet Sengupta' }],
+        images: [{ url: ogImage, width: 1200, height: 630, alt: 'NoteNext by Suvojeet Sengupta' }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'NoteNext — Offline Android Notes App',
         description: 'Offline-first note-taking app with biometric privacy.',
+        images: [ogImage],
         creator: SEO_CONFIG.twitterHandle,
     },
 };

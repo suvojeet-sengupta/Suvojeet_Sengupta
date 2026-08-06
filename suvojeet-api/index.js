@@ -547,7 +547,8 @@ async function handleOgImageRequest(req, res) {
 
 // ─── API ROUTING DEFINITIONS ───────────────────────────────
 
-// 1. OG Image Endpoint (both paths supported for compatibility)
+// 1. OG Image Endpoint (all paths supported for compatibility)
+app.get('/api/public/og', handleOgImageRequest);
 app.get('/api/og-image', handleOgImageRequest);
 app.get('/og-image', handleOgImageRequest);
 

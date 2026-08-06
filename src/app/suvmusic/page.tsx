@@ -1,6 +1,8 @@
 import ProjectClient from '@/components/common/ProjectClient';
-import { getBreadcrumbJsonLd, getProjectSchema, SEO_CONFIG } from '@/lib/seo';
+import { getBreadcrumbJsonLd, getOgImageUrl, getProjectSchema, SEO_CONFIG } from '@/lib/seo';
 import { Metadata } from 'next';
+
+const ogImage = getOgImageUrl('SuvMusic', { type: 'project', subtitle: 'Android YouTube Music Client', stars: 200, version: 'v2.2.2.0' });
 
 export const metadata: Metadata = {
     title: 'SuvMusic — Android YouTube Music Client | Suvojeet Sengupta',
@@ -12,12 +14,13 @@ export const metadata: Metadata = {
         description: 'High-performance YouTube Music client for Android. 200+ GitHub stars. Built with Kotlin & Media3.',
         url: `${SEO_CONFIG.url}/suvmusic`,
         type: 'website',
-        images: [{ url: '/suvojeet.jpg', width: 1200, height: 630, alt: 'SuvMusic by Suvojeet Sengupta' }],
+        images: [{ url: ogImage, width: 1200, height: 630, alt: 'SuvMusic by Suvojeet Sengupta' }],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'SuvMusic — Android YouTube Music Client',
         description: 'High-performance YouTube Music client for Android. 200+ GitHub stars.',
+        images: [ogImage],
         creator: SEO_CONFIG.twitterHandle,
     },
 };

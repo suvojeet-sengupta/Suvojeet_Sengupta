@@ -25,6 +25,7 @@ import * as route21 from '@/api-handlers/public/posts/[slug]/like/route';
 import * as route22 from '@/api-handlers/public/posts/[slug]/route';
 import * as route23 from '@/api-handlers/public/posts/route';
 import * as route24 from '@/api-handlers/public/subscribe/route';
+import * as route25 from '@/api-handlers/public/og/route';
 
 
 export const runtime = 'edge';
@@ -72,6 +73,7 @@ const routes = [
   { pattern: '/api/public/posts/[slug]', handlers: route22 as any },
   { pattern: '/api/public/posts', handlers: route23 as any },
   { pattern: '/api/public/subscribe', handlers: route24 as any },
+  { pattern: '/api/public/og', handlers: route25 as any },
 
 ];
 
