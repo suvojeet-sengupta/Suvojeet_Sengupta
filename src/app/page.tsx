@@ -4,7 +4,7 @@ import { SEO_CONFIG, getOgImageUrl } from '@/lib/seo';
 import FeaturedProjects, { FeaturedProjectsSkeleton } from '@/components/home/FeaturedProjects';
 import { Suspense } from 'react';
 
-const ogImage = getOgImageUrl('Suvojeet Sengupta', { subtitle: 'Vibe Architect & Soulful Singer' });
+const ogImage = getOgImageUrl('Suvojeet Sengupta', { subtitle: 'Singer | Performer | Composer | Android Architect | Web & Backend Developer | AI Power User' });
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.title,
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: SEO_CONFIG.description,
     url: SEO_CONFIG.url,
     siteName: SEO_CONFIG.siteName,
-    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta — Vibe Architect & Soulful Singer' }],
+    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta — Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver' }],
     locale: SEO_CONFIG.locale,
     type: 'profile',
     // @ts-ignore — profile open graph fields

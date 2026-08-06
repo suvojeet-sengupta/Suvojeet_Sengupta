@@ -18,22 +18,33 @@ export function getOgImageUrl(
 }
 
 export const SEO_CONFIG = {
-  title: "Suvojeet Sengupta | Vibe Architect & Soulful Singer",
-  description: "Official portfolio of Suvojeet Sengupta — Vibe Architect, Logic Implementer & Soulful Singer from Dhanbad, India. Builds production-grade Android apps using AI-driven architecture. Performs Hindi & Bengali songs.",
+  title: "Suvojeet Sengupta | Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver",
+  description: "Official portfolio of Suvojeet Sengupta — Singer, Performer, Composer, Tech Enthusiast, Lifelong Learner, Android App Architect, Web & Backend Developer, AI Power User & Problem Solver from Dhanbad, India.",
   siteName: "Suvojeet Sengupta",
   url: "https://suvojeetsengupta.in",
   twitterHandle: "@suvojeet_s",
   twitterSite: "@suvojeet_s",
   locale: "en_IN",
   keywords: [
-    "Suvojeet Sengupta", "Suvojeet Sengupta singer", "Suvojeet Sengupta developer",
-    "Vibe Architect", "Logic Implementer", "AI developer India",
-    "Soulful singer Dhanbad", "Hindi singer Dhanbad", "Bengali singer Dhanbad",
-    "SuvMusic app", "NoteNext app", "Android developer Jharkhand",
-    "Suvojeet Burnpur", "Suvojeet Asansol", "Custom ROM developer India",
-    "Kishore Kumar tribute singer", "Arijit Singh style singer",
-    "AI-assisted software architect", "Suvojeet portfolio",
-    "suvojeetsengupta.in", "singer and developer India"
+    "Suvojeet Sengupta",
+    "Singer",
+    "Performer",
+    "Composer",
+    "Tech Enthusiast",
+    "Lifelong Learner",
+    "Android App Architect",
+    "Web & Backend Developer",
+    "AI Power User",
+    "Problem Solver",
+    "Suvojeet Sengupta singer",
+    "Suvojeet Sengupta developer",
+    "Android App Architect India",
+    "Full Stack Developer Dhanbad",
+    "Soulful Singer India",
+    "SuvMusic app",
+    "NoteNext app",
+    "AI software developer India",
+    "suvojeetsengupta.in"
   ],
   socials: {
     github: "https://github.com/suvojeet-sengupta",
@@ -102,35 +113,39 @@ export function getEnhancedPersonSchema() {
       name: "India"
     },
     knowsLanguage: ["Hindi", "Bengali", "English"],
-    jobTitle: "Vibe Architect & Singer",
+    jobTitle: "Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver",
     hasOccupation: [
       {
         "@type": "Occupation",
-        name: "Vibe Architect",
-        description: "Designs and ships production-grade software using AI-driven architectural thinking. Does not write code manually — directs AI with complete system designs.",
+        name: "Singer, Performer & Composer",
+        description: "Vocalist and music creator performing soulful Hindi and Bengali music, compositions, and live performances.",
         occupationLocation: { "@type": "Country", name: "India" }
       },
       {
         "@type": "Occupation",
-        name: "Singer & Performer",
-        description: "Soulful vocalist performing Hindi and Bengali songs in the tradition of Kishore Kumar, Lata Mangeshkar, and Arijit Singh.",
+        name: "Android App Architect & Web & Backend Developer",
+        description: "Architects mobile Android applications and modern full-stack web and backend software architectures.",
+        occupationLocation: { "@type": "Country", name: "India" }
+      },
+      {
+        "@type": "Occupation",
+        name: "AI Power User & Problem Solver",
+        description: "Utilizes advanced AI tools and structured problem-solving methodologies for high-performance software engineering.",
         occupationLocation: { "@type": "Country", name: "India" }
       }
     ],
     description: SEO_CONFIG.description,
     knowsAbout: [
+      "Singer & Vocalist",
+      "Music Performance & Composition",
       "Android App Architecture",
-      "AI-Assisted Software Development",
-      "Systems Thinking",
-      "Custom Android ROMs",
-      "Hindi Singing",
-      "Bengali Singing",
-      "Bollywood Music",
-      "Jetpack Compose",
-      "Kotlin",
-      "Next.js",
-      "Cloudflare Workers",
-      "Production Software Design"
+      "Kotlin & Jetpack Compose",
+      "Web & Backend Development",
+      "Node.js & Next.js",
+      "Cloudflare Workers & APIs",
+      "AI-Driven Engineering & Systems Architecture",
+      "Problem Solving & Tech Innovation",
+      "Lifelong Learning"
     ],
     sameAs: Object.values(SEO_CONFIG.socials),
     mainEntityOfPage: {
