@@ -6,7 +6,7 @@ const ogImage = getOgImageUrl('About Me');
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
+  description: 'Suvojeet Sengupta is a software developer intern at gOGig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
   keywords: [
     'Suvojeet Sengupta', 'about Suvojeet Sengupta', 'software developer Dhanbad',
     'backend developer India', 'Android developer', 'Hindi singer', 'Bengali singer', 'Suvojeet Sengupta résumé'
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SEO_CONFIG.url}/about` },
   openGraph: {
     title: 'About | Suvojeet Sengupta',
-    description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
+    description: 'Suvojeet Sengupta is a software developer intern at gOGig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
     url: `${SEO_CONFIG.url}/about`,
     type: 'profile',
     images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta' }],
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'About | Suvojeet Sengupta',
-    description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
+    description: 'Suvojeet Sengupta is a software developer intern at gOGig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
     images: [ogImage],
     creator: SEO_CONFIG.twitterHandle,
     site: SEO_CONFIG.twitterSite,
@@ -41,7 +41,7 @@ export default function Page() {
   const faqSchema = getFAQSchema([
     {
       question: "Who is Suvojeet Sengupta?",
-      answer: "Suvojeet Sengupta is a software developer and Hindi & Bengali vocalist based in Dhanbad, India. He is a software developer intern at Gogig, builds Android apps and backend services, and records and performs music."
+      answer: "Suvojeet Sengupta is a software developer and Hindi & Bengali vocalist based in Dhanbad, India. He is a software developer intern at gOGig, where he works on Android app development, web and backend, and records and performs music."
     },
     {
       question: "What has Suvojeet Sengupta built?",

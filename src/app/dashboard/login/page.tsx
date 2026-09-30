@@ -1,7 +1,8 @@
 import AdminLoginPage from '@/components/dashboard/AdminLoginPage';
 
 export const metadata = {
-  title: 'Dashboard Login | Suvojeet Sengupta',
+  robots: { index: false, follow: false },
+  title: 'Admin sign in',
   description: 'Admin login for blog management.',
 };
 

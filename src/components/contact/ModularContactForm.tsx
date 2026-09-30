@@ -177,7 +177,7 @@ const ModularContactForm: React.FC<ModularContactFormProps> = ({ initialType = '
                     {submitting ? 'Sending…' : 'Send message'}
                 </button>
                 {formState.status === 'error' && (
-                    <p role="alert" className="text-[14px] text-[#c2553b]">
+                    <p role="alert" className="text-[14px] text-[color:var(--danger)]">
                         {formState.message}
                     </p>
                 )}

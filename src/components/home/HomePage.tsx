@@ -45,8 +45,9 @@ export default async function HomePage({ children }: HomePageProps) {
               Suvojeet Sengupta
             </h1>
             <p className={styles.heroLede} style={{ animationDelay: '260ms' }}>
-              I build Android apps and the backend systems behind them, and I sing
-              Hindi and Bengali music. Two crafts, practised with the same care.
+              I build Android apps, websites and the backend systems behind them,
+              currently as a software developer intern at gOGig. I also sing Hindi and
+              Bengali music. Two crafts, practised with the same care.
             </p>
 
             <div className={styles.heroActions} style={{ animationDelay: '360ms' }}>
@@ -60,8 +61,8 @@ export default async function HomePage({ children }: HomePageProps) {
 
             <dl className={styles.heroFacts} style={{ animationDelay: '460ms' }}>
               <div>
-                <dt>Engineering</dt>
-                <dd>Android, Kotlin, NestJS</dd>
+                <dt>Currently</dt>
+                <dd>Developer intern, gOGig</dd>
               </div>
               <div>
                 <dt>Music</dt>
@@ -119,10 +120,11 @@ export default async function HomePage({ children }: HomePageProps) {
           <article className={styles.practiceCol}>
             <h3>Engineering</h3>
             <p>
-              I started with Android and kept going down the stack. My apps are
-              native Kotlin with Jetpack Compose. Most of my time now goes into
-              backend work: designing REST APIs, authentication, caching, and getting
-              services deployed and running reliably.
+              I started with Android and kept going down the stack. At gOGig I work
+              across Android app development, web and backend. My own apps are native
+              Kotlin with Jetpack Compose, and on the backend I design REST APIs,
+              authentication and caching, and get services deployed and running reliably.
+              I use AI tools to write code faster, and review and test everything I ship.
             </p>
             <p>
               I&apos;m still learning, and I learn by shipping. This site runs on an

@@ -116,7 +116,7 @@ export function getEnhancedPersonSchema() {
     ],
     worksFor: {
       "@type": "Organization",
-      name: "Gogig",
+      name: "gOGig",
       url: "https://gogig.tech"
     },
     description: SEO_CONFIG.description,
@@ -130,6 +130,7 @@ export function getEnhancedPersonSchema() {
       "Jetpack Compose",
       "Next.js",
       "Cloudflare",
+      "AI-assisted software development",
       "Hindi and Bengali vocals",
       "Live music performance"
     ],

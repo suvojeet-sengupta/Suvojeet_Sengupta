@@ -14,16 +14,17 @@ export const experiences: Experience[] = [
     {
         id: "gogig",
         role: "Software Developer Intern",
-        company: "Gogig",
+        company: "gOGig",
         period: "2026 – Present",
-        description: "Full-stack and backend development on Gogig's products, working inside a professional team.",
+        description: "Android app development, web development and backend work on gOGig's products, as part of the engineering team.",
         details: [
-            "Develop and maintain full-stack features using modern frameworks",
-            "Build backend APIs and automation workflows that streamline business processes",
-            "Take part in code reviews and technical discussions",
-            "Apply clean code practices and established architectural patterns"
+            "Build and maintain features in gOGig's Android app",
+            "Develop web front ends for gOGig's products",
+            "Build and maintain backend APIs and services",
+            "Use AI coding tools to write and refactor code faster, then review and test everything before it ships",
+            "Take part in code reviews and technical discussions"
         ],
-        skills: ["Node.js", "NestJS", "React", "Next.js", "API design", "Databases", "Git"],
+        skills: ["Android", "Kotlin", "React", "Next.js", "Node.js", "NestJS", "API design", "AI-assisted development", "Git"],
         link: "https://gogig.tech",
         linkLabel: "gogig.tech"
     },
@@ -75,7 +76,7 @@ export const experiences: Experience[] = [
         id: "dishtv",
         role: "Customer Care Associate (Inbound Voice)",
         company: "DishTV India",
-        period: "2024 – Present",
+        period: "Apr 2024 – Present",
         description: "Inbound voice support for DishTV's DTH customers.",
         details: [
             "Troubleshoot set-top box, signal and dish alignment issues over the phone",
@@ -86,4 +87,4 @@ export const experiences: Experience[] = [
     }
 ];
 
-export const summary = "Software developer and vocalist based in Dhanbad, India. Software developer intern at Gogig, focused on backend development with Node.js and NestJS, with a background in Android (Kotlin, Jetpack Compose, AOSP). Built SuvMusic (290+ GitHub stars) and NoteNext, and runs this site on a self-hosted NestJS API. Also a Hindi and Bengali vocalist who records and performs.";
+export const summary = "Software developer and vocalist based in Dhanbad, India. Software developer intern at gOGig, working on Android app development, web and backend, using AI coding tools as part of the workflow. Background in Android (Kotlin, Jetpack Compose, AOSP) and backend development with Node.js and NestJS. Built SuvMusic (290+ GitHub stars) and NoteNext, and runs this site on a self-hosted NestJS API. Also a Hindi and Bengali vocalist who records and performs.";

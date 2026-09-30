@@ -2,17 +2,11 @@
 
 import { apiUrl } from '@/lib/api-base';
 import Image from 'next/image';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { BlogReply, BlogSummary } from '@/types/blog';
-import {
-  LayoutDashboard, FileText, MessageSquare,
-  Eye, CheckCircle, Trash2, Edit3, Globe,
-  LogOut, PlusCircle, Reply, PowerOff, ShieldCheck, X,
-  Play, ChevronDown, Filter, Mail, Inbox, Users, Clock, CheckCheck
-} from 'lucide-react';
-import { Icons } from '@/components/common/Icons';
+import { LayoutDashboard, FileText, MessageSquare, Inbox, Music, Users, X } from 'lucide-react';
 import type { MusicVideo } from '@/types/music';
 import { FormattedDate } from '@/components/common/FormattedDate';
 
@@ -120,6 +114,22 @@ const initialUserForm: UserFormState = {
   name: '',
 };
 
+type DashboardTab = 'overview' | 'posts' | 'comments' | 'inbox' | 'music' | 'users';
+const DASHBOARD_TABS: DashboardTab[] = ['overview', 'posts', 'comments', 'inbox', 'music', 'users'];
+
+const MESSAGE_TYPE_LABELS: Record<string, string> = {
+  GENERAL: 'General',
+  PROJECT: 'Project',
+  SONG: 'Song request',
+  ROM: 'ROM',
+};
+
+const btnBase = 'inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[13px] whitespace-nowrap transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+const btnGhost = `${btnBase} border-[color:var(--line-strong)] text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)] hover:border-[color:var(--text-primary)]`;
+const btnPrimary = `${btnBase} border-[color:var(--text-primary)] bg-[color:var(--text-primary)] text-[color:var(--bg-primary)] hover:opacity-85`;
+const btnDanger = `${btnBase} border-[color:var(--line-strong)] text-[color:var(--text-secondary)] hover:text-[color:var(--danger)] hover:border-[color:var(--danger)]`;
+const selectClass = 'rounded-full border border-[color:var(--line-strong)] bg-transparent px-3 py-1.5 text-[13px] text-[color:var(--text-primary)] outline-none cursor-pointer';
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
@@ -151,6 +161,24 @@ export default function AdminDashboardPage() {
   const [submittingUser, setSubmittingUser] = useState(false);
   const [isUserFormOpen, setIsUserFormOpen] = useState(false);
   const [editingUserEmail, setEditingUserEmail] = useState<string | null>(null);
+  const [tab, setTab] = useState<DashboardTab>('overview');
+
+  // Keep the open tab in the URL hash so a refresh stays on the same section
+  useEffect(() => {
+    const syncFromHash = () => {
+      const fromHash = window.location.hash.slice(1) as DashboardTab;
+      if (DASHBOARD_TABS.includes(fromHash)) setTab(fromHash);
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    return () => window.removeEventListener('hashchange', syncFromHash);
+  }, []);
+
+  const changeTab = useCallback((next: DashboardTab) => {
+    setTab(next);
+    window.history.replaceState(null, '', `#${next}`);
+    window.scrollTo({ top: 0 });
+  }, []);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -325,7 +353,7 @@ export default function AdminDashboardPage() {
     });
     setEditingUserEmail(user.email);
     setIsUserFormOpen(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    changeTab('users');
   };
 
   const cancelUserEdit = () => {
@@ -400,7 +428,7 @@ export default function AdminDashboardPage() {
           setIsEditing(true);
           setIsFormOpen(true);
           setActionMessage('');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          changeTab('posts');
       } catch (err: any) {
           setActionMessage(err.message);
       }
@@ -716,959 +744,688 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <section className="section-container pt-32 pb-24">
-        <p>Loading dashboard...</p>
-      </section>
+      <div className="page">
+        <p className="page-eyebrow">Admin</p>
+        <p className="text-[16px]">Loading dashboard…</p>
+      </div>
     );
   }
 
   if (unauthorized) {
     return (
-      <section className="section-container pt-32 pb-24">
-        <div className="max-w-xl border border-light rounded-sm p-8 bg-tertiary">
-          <h1 className="text-3xl font-black">Admin session required</h1>
-          <p className="mt-3">Please sign in to access dashboard controls.</p>
-          <Link
-            href="/dashboard/login"
-            className="inline-block mt-6 bg-brand-orange hover:bg-orange-700 text-white px-5 py-3 rounded-sm font-bold uppercase tracking-wider"
-          >
-            Go to Login
-          </Link>
-        </div>
-      </section>
+      <div className="page max-w-xl">
+        <p className="page-eyebrow">Admin</p>
+        <h1 className="text-[clamp(32px,4vw,44px)] leading-tight mb-3">Sign in required</h1>
+        <p className="text-[16px] mb-8">Your session has ended or you haven&apos;t signed in yet.</p>
+        <Link href="/dashboard/login" className="btn-solid">Go to sign in</Link>
+      </div>
     );
   }
 
   if (!overview || error) {
     return (
-      <section className="section-container pt-32 pb-24">
-        <p className="text-red-500 font-medium">{error || 'Unable to load dashboard data.'}</p>
-      </section>
+      <div className="page max-w-xl">
+        <p className="page-eyebrow">Admin</p>
+        <h1 className="text-[clamp(32px,4vw,44px)] leading-tight mb-3">Couldn&apos;t load the dashboard</h1>
+        <p role="alert" className="text-[16px] text-[color:var(--danger)] mb-8">{error || 'Unable to load dashboard data.'}</p>
+        <button type="button" onClick={() => { setLoading(true); loadOverview(); }} className="btn-outline">Try again</button>
+      </div>
     );
   }
 
+  const { stats } = overview;
+  const pendingCount = overview.comments.filter(c => !c.isApproved).length;
+  const approvedCount = overview.comments.length - pendingCount;
+
+  const tabs: { id: DashboardTab; label: string; icon: React.ElementType; badge?: number }[] = [
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'posts', label: 'Posts', icon: FileText },
+    { id: 'comments', label: 'Comments', icon: MessageSquare, badge: stats.pendingComments },
+    { id: 'inbox', label: 'Inbox', icon: Inbox, badge: stats.unreadMessages },
+    { id: 'music', label: 'Music', icon: Music },
+    ...(session?.isSuperAdmin ? [{ id: 'users' as const, label: 'Admins', icon: Users }] : []),
+  ];
+
+  const filteredComments = overview.comments
+    .filter(c => {
+      const matchPost = selectedPostForComments === 'all' || c.blogId === selectedPostForComments;
+      const matchFilter =
+        commentFilter === 'all' ||
+        (commentFilter === 'pending' && !c.isApproved) ||
+        (commentFilter === 'approved' && c.isApproved);
+      return matchPost && matchFilter;
+    })
+    .sort((a, b) => {
+      const ta = new Date(a.createdAt).getTime();
+      const tb = new Date(b.createdAt).getTime();
+      return commentSortOrder === 'newest' ? tb - ta : ta - tb;
+    });
+
+  const dbLimitKb = 512000; // 500 MB D1 limit
+  const dbPercent = Math.min(100, (overview.system.databaseSizeKb / dbLimitKb) * 100);
+
   return (
-    <section className="section-container pt-24 md:pt-32 pb-24">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-6 mb-10">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-full">
-            <LayoutDashboard size={28} className="md:w-8 md:h-8" />
-          </div>
-          <div>
-            <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.25em] text-muted mb-1">Admin Control Center</p>
-            <h1 className="text-3xl md:text-4xl font-black">Dashboard</h1>
-          </div>
-        </div>
-
-        <div className="flex flex-row w-full md:w-auto gap-2 md:gap-3 items-center">
-          <Link
-            href="/blog"
-            className="flex-1 md:flex-none flex items-center justify-center gap-2 border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
-          >
-            <Globe size={14} className="md:w-4 md:h-4" />
-            View Live
-          </Link>
-          <button
-            type="button"
-            onClick={logout}
-            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 md:px-4 py-2.5 rounded-sm text-xs md:text-sm font-bold uppercase tracking-wider transition-colors"
-          >
-            <PowerOff size={14} className="md:w-4 md:h-4" />
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {actionMessage && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-sm flex items-center justify-between gap-3 text-green-700">
-          <div className="flex items-center gap-3">
-              <CheckCircle size={20} />
-              <p className="text-sm font-bold">{actionMessage}</p>
-          </div>
-          <button onClick={() => setActionMessage('')}><X size={16}/></button>
-        </div>
-      )}
-
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
-          <div>
-            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Posts</p>
-            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalPosts}</p>
-          </div>
-          <div className="p-3 md:p-4 bg-brand-orange/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform lg:mt-4">
-            <Edit3 size={20} className="md:w-6 md:h-6" />
-          </div>
-        </div>
-
-        <button 
-          onClick={() => document.getElementById('comments-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
-        >
-          <div>
-            <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
-              <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Comments</p>
-              {overview.stats.pendingComments > 0 && (
-                <span className="text-[9px] md:text-[10px] bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">
-                  {overview.stats.pendingComments}
-                </span>
-              )}
-            </div>
-            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalComments}</p>
-          </div>
-          <div className="p-3 md:p-4 bg-blue-500/10 rounded-full text-blue-500 group-hover:scale-110 transition-transform lg:mt-4">
-            <MessageSquare size={20} className="md:w-6 md:h-6" />
-          </div>
-        </button>
-
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
-          <div>
-            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Views</p>
-            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalBlogViews}</p>
-          </div>
-          <div className="p-3 md:p-4 bg-green-500/10 rounded-full text-green-500 group-hover:scale-110 transition-transform lg:mt-4">
-            <Eye size={20} className="md:w-6 md:h-6" />
-          </div>
-        </div>
-
-        <div className="border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col items-center justify-center lg:items-start lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left">
-          <div>
-            <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Videos</p>
-            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalVideos}</p>
-          </div>
-          <div className="p-3 md:p-4 bg-red-500/10 rounded-full text-red-500 group-hover:scale-110 transition-transform lg:mt-4">
-            <Icons.YouTube className="w-5 h-5 md:w-6 md:h-6" />
-          </div>
-        </div>
-
-        <button 
-          onClick={() => document.getElementById('inbox-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="col-span-2 lg:col-span-1 border border-light/60 shadow-sm p-4 md:p-6 bg-tertiary flex flex-col lg:flex-row items-center lg:justify-between gap-3 lg:gap-0 group hover:border-brand-orange/40 transition-colors text-center lg:text-left cursor-pointer"
-        >
-          <div>
-            <div className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2">
-              <p className="text-[10px] md:text-xs uppercase tracking-wider text-muted font-bold">Inbox</p>
-              {overview.stats.unreadMessages > 0 && (
-                <span className="text-[9px] md:text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded-full font-bold animate-pulse">
-                  {overview.stats.unreadMessages} NEW
-                </span>
-              )}
-            </div>
-            <p className="text-2xl md:text-4xl font-black mt-1 md:mt-2 text-primary">{overview.stats.totalMessages}</p>
-          </div>
-          <div className="p-3 md:p-4 bg-orange-500/10 rounded-full text-brand-orange group-hover:scale-110 transition-transform">
-            <Inbox size={20} className="md:w-6 md:h-6" />
-          </div>
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-12">
-        <div className="border border-light/60 shadow-sm p-5 md:p-6 bg-tertiary">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-              <ShieldCheck size={16} className="text-brand-orange" />
-              System
-            </h3>
-            {overview.system.isOnline ? (
-              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-green-600 bg-green-50 px-2 py-0.5 md:py-1 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                Online
-              </span>
-            ) : (
-              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50 px-2 py-0.5 md:py-1 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                Offline
-              </span>
-            )}
-          </div>
-          <p className="text-xl md:text-2xl font-black">{overview.system.databaseSizeKb} KB <span className="text-xs md:text-sm text-secondary font-medium">Used Space</span></p>
-          <div className="w-full bg-light h-1.5 rounded-full mt-4 overflow-hidden">
-            <div 
-              className="bg-brand-orange h-full rounded-full transition-all" 
-              style={{ width: `${Math.max(1, (overview.system.databaseSizeKb / 512000) * 100)}%` }}
-            ></div>
-          </div>
-        </div>
-
-        <div className="border border-light/60 shadow-sm p-5 md:p-6 bg-tertiary">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xs md:text-sm font-bold uppercase tracking-wider text-muted flex items-center gap-2">
-              <Globe size={16} className="text-blue-500" />
-              Audience
-            </h3>
-          </div>
-          <div className="flex gap-6 md:gap-8">
-            <div>
-              <p className="text-2xl md:text-4xl font-black">{overview.stats.totalSubscribers}</p>
-              <p className="text-[10px] md:text-sm text-secondary font-medium mt-1 uppercase tracking-tighter md:tracking-normal">Push Subs</p>
-            </div>
-            <div>
-              <p className="text-2xl md:text-4xl font-black">{overview.stats.totalPageViews}</p>
-              <p className="text-[10px] md:text-sm text-secondary font-medium mt-1 uppercase tracking-tighter md:tracking-normal">Visitors</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <PlusCircle className="text-brand-orange" />
-            <h2 className="text-xl md:text-2xl font-black">{isEditing ? 'Edit Post' : 'New Post'}</h2>
-          </div>
-          <div className="flex gap-2">
-              {isEditing && (
-                  <button
-                  type="button"
-                  onClick={cancelEdit}
-                  className="flex-1 sm:flex-none bg-[color:var(--bg-tertiary)] hover:bg-[color:var(--bg-secondary)] text-[color:var(--text-primary)] px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-                >
-                  Cancel
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setIsFormOpen(!isFormOpen)}
-                className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-              >
-                {isFormOpen ? 'Hide' : (isEditing ? 'Editor' : 'Create')}
-              </button>
-          </div>
-        </div>
-        {isFormOpen && (
-        <form onSubmit={handlePostSubmit} className="mt-6 space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Title"
-              required
-              value={postForm.title}
-              onChange={(event) => setPostForm((prev) => ({ ...prev, title: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-            <input
-              type="text"
-              placeholder="Slug (optional)"
-              value={postForm.slug}
-              onChange={(event) => setPostForm((prev) => ({ ...prev, slug: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-            <input
-              type="text"
-              placeholder="Category"
-              value={postForm.category}
-              onChange={(event) => setPostForm((prev) => ({ ...prev, category: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-            <input
-              type="text"
-              placeholder="Tags (comma separated)"
-              value={postForm.tags}
-              onChange={(event) => setPostForm((prev) => ({ ...prev, tags: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-          </div>
-
-          <input
-            type="text"
-            placeholder="Cover image URL (optional)"
-            value={postForm.imageUrl}
-            onChange={(event) => setPostForm((prev) => ({ ...prev, imageUrl: event.target.value }))}
-            className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-          />
-
-          <textarea
-            rows={3}
-            placeholder="Short excerpt"
-            value={postForm.excerpt}
-            onChange={(event) => setPostForm((prev) => ({ ...prev, excerpt: event.target.value }))}
-            className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-          />
-
-          <textarea
-            rows={15}
-            required
-            placeholder="Full post content (Markdown or HTML)"
-            value={postForm.content}
-            onChange={(event) => setPostForm((prev) => ({ ...prev, content: event.target.value }))}
-            className="w-full border border-light rounded-sm px-4 py-3 bg-background font-mono text-sm"
-          />
-
-          <label className="inline-flex items-center gap-2 text-sm font-medium">
-            <input
-              type="checkbox"
-              checked={postForm.commentsEnabled}
-              onChange={(event) => setPostForm((prev) => ({ ...prev, commentsEnabled: event.target.checked }))}
-            />
-            Enable comments for this post
-          </label>
-
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={submittingPost}
-              className="bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm flex items-center gap-2"
-            >
-              {submittingPost ? 'Saving...' : (isEditing ? 'Update Post' : 'Publish Post')}
-            </button>
-            {isEditing && (
-                <button
-                    type="button"
-                    onClick={cancelEdit}
-                    className="border border-light hover:bg-[color:var(--bg-tertiary)] px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-sm"
-                >
-                    Cancel Edit
-                </button>
-            )}
-          </div>
-        </form>
-        )}
-      </div>
-
-      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <FileText className="text-brand-orange" />
-          <h2 className="text-xl md:text-2xl font-black">Manage Posts</h2>
-        </div>
-        <div className="mt-6 space-y-4">
-          {overview.posts.map((post) => (
-            <div key={post.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
-              <div className="flex flex-col gap-4">
-                <div className="min-w-0">
-                  <h3 className="text-base md:text-xl font-black truncate">{post.title}</h3>
-                  <p className="text-[10px] md:text-sm text-secondary mt-1 truncate">
-                    /blog/{post.slug}
-                  </p>
-                  <p className="text-[10px] md:text-xs text-muted mt-1 font-medium">
-                    {post.views} views • {post.commentsCount} comments
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => startEditPost(post.id)}
-                    className="flex-1 flex items-center justify-center gap-1 border border-light hover:border-blue-500 hover:text-blue-500 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    <Edit3 size={12} />
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => toggleCommentsStatus(post)}
-                    className="flex-1 border border-light hover:border-brand-orange px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    {post.commentsEnabled ? 'Disable' : 'Enable'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => deletePost(post.id)}
-                    className="flex-1 flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    <Trash2 size={12} />
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-          {overview.posts.length === 0 && (
-            <p className="text-muted">No posts available.</p>
+    <div className="page !pt-28 sm:!pt-32">
+      <header className="flex flex-wrap items-end justify-between gap-6 pb-6 border-b border-[color:var(--line-strong)]">
+        <div>
+          <p className="page-eyebrow">Admin</p>
+          <h1 className="text-[clamp(34px,4.5vw,52px)] leading-none tracking-[-0.03em]">Dashboard</h1>
+          {session && (
+            <p className="mt-3 text-[14px] text-[color:var(--text-tertiary)]">
+              Signed in as {session.email}{session.isSuperAdmin && ' · Super admin'}
+            </p>
           )}
         </div>
-      </div>
-
-      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <Icons.YouTube className="text-red-500 w-6 h-6" />
-            <h2 className="text-xl md:text-2xl font-black">Add Music Video</h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => setIsVideoFormOpen(!isVideoFormOpen)}
-            className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-          >
-            {isVideoFormOpen ? 'Hide' : 'Add Video'}
-          </button>
+        <div className="flex gap-2">
+          <Link href="/" target="_blank" className={btnGhost}>View site ↗</Link>
+          <button type="button" onClick={logout} className={btnGhost}>Sign out</button>
         </div>
-        {isVideoFormOpen && (
-        <form onSubmit={handleVideoSubmit} className="mt-6 space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="Song Title"
-              required
-              value={videoForm.title}
-              onChange={(event) => setVideoForm((prev) => ({ ...prev, title: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-            <input
-              type="text"
-              placeholder="YouTube URL"
-              required
-              value={videoForm.videoUrl}
-              onChange={(event) => setVideoForm((prev) => ({ ...prev, videoUrl: event.target.value }))}
-              className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-            />
-          </div>
-          <textarea
-            rows={3}
-            placeholder="Description (optional)"
-            value={videoForm.description}
-            onChange={(event) => setVideoForm((prev) => ({ ...prev, description: event.target.value }))}
-            className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-          />
-          <button
-            type="submit"
-            disabled={submittingVideo}
-            className="w-full sm:w-auto bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-xs md:text-sm flex items-center justify-center gap-2"
-          >
-            <PlusCircle size={18} />
-            {submittingVideo ? 'Adding...' : 'Add Video'}
-          </button>
-        </form>
-        )}
-      </div>
+      </header>
 
-      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <Play className="text-brand-orange" size={24} />
-          <h2 className="text-xl md:text-2xl font-black">Manage Music Videos</h2>
-        </div>
-        <div className="mt-6 space-y-4">
-          {overview.videos.map((video) => (
-            <div key={video.id} className="border border-light rounded-sm p-3 md:p-4 bg-background hover:border-brand-orange/30 transition-colors overflow-hidden">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4 flex-1 w-full min-w-0">
-                  <div className="w-16 md:w-24 aspect-video bg-[color:var(--bg-tertiary)] rounded-sm overflow-hidden flex-shrink-0 relative group">
-                    <Image 
-                      src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} 
-                      alt={video.title}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Icons.YouTube className="text-white w-4 h-4 md:w-5 md:h-5" />
-                    </div>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-sm md:text-lg font-bold truncate">{video.title}</h3>
-                    <p className="text-[9px] md:text-xs text-muted font-medium mt-0.5 truncate">
-                      ID: {video.youtubeId}
-                    </p>
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-orange mt-1 bg-brand-orange/5 inline-block px-2 py-0.5 rounded-full">
-                      {video.plays || 0} plays
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-2 w-full sm:w-auto">
-                  <a 
-                    href={`https://youtube.com/watch?v=${video.youtubeId}`} 
-                    target="_blank" 
-                    className="flex-1 sm:flex-none flex items-center justify-center p-2 border border-light hover:border-brand-orange hover:text-brand-orange rounded-sm transition-colors"
-                  >
-                    <Globe size={18} />
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => deleteVideo(video.id)}
-                    className="flex-1 sm:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-          {overview.videos.length === 0 && (
-            <p className="text-muted">No music videos added yet.</p>
-          )}
-        </div>
-        </div>
-
-      {session?.isSuperAdmin && (
-      <div className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <Users className="text-brand-orange" />
-            <h2 className="text-xl md:text-2xl font-black">{editingUserEmail ? 'Edit User' : 'User Management'}</h2>
-          </div>
-          <div className="flex gap-2">
-            {editingUserEmail && (
-              <button
-                type="button"
-                onClick={cancelUserEdit}
-                className="flex-1 sm:flex-none bg-[color:var(--bg-tertiary)] hover:bg-[color:var(--bg-secondary)] text-[color:var(--text-primary)] px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-              >
-                Cancel
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => setIsUserFormOpen(!isUserFormOpen)}
-              className="flex-1 sm:flex-none border border-light hover:border-brand-orange hover:text-brand-orange px-3 md:px-4 py-2 rounded-sm text-[10px] md:text-sm font-bold uppercase tracking-wider transition-colors"
-            >
-              {isUserFormOpen ? 'Hide' : (editingUserEmail ? 'Editor' : 'Add User')}
-            </button>
-          </div>
-        </div>
-
-        {isUserFormOpen && (
-          <form onSubmit={handleUserSubmit} className="mt-6 space-y-4">
-            <div className="grid md:grid-cols-3 gap-4">
-              <input
-                type="text"
-                placeholder="Name"
-                value={userForm.name}
-                onChange={(e) => setUserForm(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                required
-                disabled={!!editingUserEmail}
-                value={userForm.email}
-                onChange={(e) => setUserForm(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full border border-light rounded-sm px-4 py-3 bg-background disabled:opacity-60"
-              />
-              <input
-                type="password"
-                placeholder={editingUserEmail ? "New Password (optional)" : "Password"}
-                required={!editingUserEmail}
-                value={userForm.password}
-                onChange={(e) => setUserForm(prev => ({ ...prev, password: e.target.value }))}
-                className="w-full border border-light rounded-sm px-4 py-3 bg-background"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={submittingUser}
-              className="w-full sm:w-auto bg-brand-orange hover:bg-orange-700 disabled:opacity-60 text-white px-6 py-3 rounded-sm font-bold uppercase tracking-wider text-xs md:text-sm flex items-center justify-center gap-2"
-            >
-              <PlusCircle size={18} />
-              {submittingUser ? 'Saving...' : (editingUserEmail ? 'Update Admin' : 'Create Admin')}
-            </button>
-          </form>
-        )}
-
-        <div className="mt-8 space-y-4">
-          {users.map((user) => (
-            <div key={user.email} className="border border-light rounded-sm p-4 bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="font-bold text-lg">{user.name || 'Admin'}</h3>
-                <p className="text-sm text-secondary">{user.email}</p>
-                <p className="text-[10px] text-muted font-medium mt-1 uppercase tracking-widest">
-                  Joined <FormattedDate date={user.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric' }} />
-                </p>
-              </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={() => startEditUser(user)}
-                  className="flex-1 sm:flex-none flex items-center justify-center p-2 border border-light hover:border-blue-500 hover:text-blue-500 rounded-sm transition-colors"
-                >
-                  <Edit3 size={18} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => deleteUser(user.email)}
-                  className="flex-1 sm:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            </div>
-          ))}
-          {users.length === 0 && (
-            <p className="text-muted italic">Only environment-configured admin available.</p>
-          )}
-        </div>
-        </div>
-      )}
-
-      <div id="comments-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mb-12">
-
-        {/* Section header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3">
-            <MessageSquare className="text-brand-orange" />
-            <h2 className="text-xl md:text-2xl font-black">Comments</h2>
-            {overview.stats.pendingComments > 0 && (
-              <span className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full animate-pulse">
-                <Clock size={10} />
-                {overview.stats.pendingComments} Pending
-              </span>
-            )}
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
-              <ShieldCheck size={14} className="text-brand-orange flex-shrink-0" />
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  disabled={updatingSettings}
-                  checked={(overview.settings?.require_comment_approval ?? '1') === '1'}
-                  onChange={(e) => updateSetting('require_comment_approval', e.target.checked ? '1' : '0')}
-                  className="w-3.5 h-3.5 accent-brand-orange"
-                />
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider select-none">
-                  Review first
-                </span>
-              </label>
-            </div>
-            <div className="flex items-center gap-2 bg-background border border-light rounded-sm px-3 py-2">
-              <Filter size={14} className="text-muted flex-shrink-0" />
-              <select
-                value={selectedPostForComments}
-                onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-                className="flex-1 bg-transparent text-[10px] md:text-xs font-bold uppercase tracking-wider outline-none cursor-pointer min-w-0"
-              >
-                <option value="all">All Posts</option>
-                {overview.posts.map(post => (
-                  <option key={post.id} value={post.id}>{post.title}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Pending alert banner with bulk actions */}
-        {overview.stats.pendingComments > 0 && (
-          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <Clock size={18} className="text-amber-600 flex-shrink-0" />
-              <p className="text-sm font-bold text-amber-800">
-                {overview.stats.pendingComments} comment{overview.stats.pendingComments !== 1 ? 's' : ''} awaiting your approval
-              </p>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              <button
-                type="button"
-                onClick={() => bulkAction('approve_all_pending')}
-                disabled={bulkActioning}
-                className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider transition-colors"
-              >
-                <CheckCheck size={12} />
-                Approve All
-              </button>
-              <button
-                type="button"
-                onClick={() => bulkAction('delete_all_pending')}
-                disabled={bulkActioning}
-                className="flex items-center gap-1.5 bg-white hover:bg-red-600 disabled:opacity-60 text-red-600 hover:text-white px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider border border-red-200 hover:border-red-600 transition-colors"
-              >
-                <Trash2 size={12} />
-                Delete All
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Filter tabs + sort */}
-        <div className="flex items-center gap-0 border-b border-light mb-6">
-          {(['all', 'pending', 'approved'] as const).map((tab) => {
-            const count = tab === 'all'
-              ? overview.comments.length
-              : tab === 'pending'
-              ? overview.comments.filter(c => !c.isApproved).length
-              : overview.comments.filter(c => c.isApproved).length;
-            return (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setCommentFilter(tab)}
-                className={`flex items-center gap-2 px-4 py-2.5 text-[10px] md:text-xs font-black uppercase tracking-wider border-b-2 -mb-px transition-colors ${
-                  commentFilter === tab
-                    ? 'border-brand-orange text-brand-orange'
-                    : 'border-transparent text-muted hover:text-primary'
-                }`}
-              >
-                {tab}
-                <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black ${
-                  tab === 'pending' && count > 0
-                    ? 'bg-amber-100 text-amber-800'
-                    : 'bg-light/80 text-secondary'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-          <div className="ml-auto pr-1">
-            <select
-              value={commentSortOrder}
-              onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
-              className="bg-transparent text-[10px] font-bold uppercase tracking-wider outline-none cursor-pointer text-muted"
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Comments list */}
-        <div className="space-y-5">
-          {(() => {
-            const filtered = overview.comments
-              .filter(c => {
-                const matchPost = selectedPostForComments === 'all' || c.blogId === selectedPostForComments;
-                const matchFilter =
-                  commentFilter === 'all' ||
-                  (commentFilter === 'pending' && !c.isApproved) ||
-                  (commentFilter === 'approved' && c.isApproved);
-                return matchPost && matchFilter;
-              })
-              .sort((a, b) => {
-                const ta = new Date(a.createdAt).getTime();
-                const tb = new Date(b.createdAt).getTime();
-                return commentSortOrder === 'newest' ? tb - ta : ta - tb;
-              });
-
-            if (filtered.length === 0) {
+      <div className="mt-8 grid gap-8 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-14">
+        <nav aria-label="Dashboard sections" className="lg:sticky lg:top-24 lg:self-start -mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <ul className="flex lg:flex-col gap-1 min-w-max lg:min-w-0">
+            {tabs.map(({ id, label, icon: Icon, badge }) => {
+              const active = tab === id;
               return (
-                <div className="text-center py-14 bg-background rounded-sm border border-dashed border-light">
-                  {commentFilter === 'pending' ? (
-                    <>
-                      <CheckCircle className="mx-auto text-green-500 mb-3" size={32} />
-                      <p className="font-bold text-green-700">All caught up!</p>
-                      <p className="text-sm text-muted mt-1">No comments pending review.</p>
-                    </>
-                  ) : (
-                    <>
-                      <MessageSquare className="mx-auto text-muted mb-3" size={32} />
-                      <p className="text-muted font-medium italic">
-                        {overview.comments.length === 0 ? 'No comments yet.' : 'No comments match this filter.'}
-                      </p>
-                      {overview.comments.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => { setCommentFilter('all'); setSelectedPostForComments('all'); }}
-                          className="mt-4 text-xs font-bold uppercase tracking-widest text-brand-orange hover:underline"
-                        >
-                          Show all comments
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
-              );
-            }
-
-            return filtered.map((comment) => (
-              <div
-                key={comment.id}
-                className={`rounded-sm p-4 md:p-5 bg-background shadow-sm hover:shadow-md transition-all border ${
-                  !comment.isApproved
-                    ? 'border-l-4 border-amber-300'
-                    : 'border-light'
-                }`}
-              >
-                {/* Comment header */}
-                <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <p className="text-[10px] uppercase tracking-wider text-muted font-bold truncate">{comment.blogTitle}</p>
-                      {!comment.isApproved ? (
-                        <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full flex-shrink-0">
-                          <Clock size={9} />
-                          Awaiting Review
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-full flex-shrink-0">
-                          <CheckCircle size={9} />
-                          Approved
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="text-base md:text-lg font-bold">{comment.name}</h3>
-                    {comment.email && (
-                      <p className="text-xs text-secondary truncate max-w-[260px]">{comment.email}</p>
-                    )}
-                    <p className="text-xs text-muted mt-1">
-                      <FormattedDate date={comment.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
-                    </p>
-                  </div>
-
-                  <div className="flex flex-row md:flex-wrap w-full md:w-auto gap-2 flex-shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => toggleCommentApproval(comment)}
-                      className={`flex-1 md:flex-none flex items-center justify-center gap-1 px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors border ${
-                        !comment.isApproved
-                          ? 'bg-green-600 hover:bg-green-700 text-white border-green-600'
-                          : 'border-light hover:border-amber-400 hover:text-amber-600'
-                      }`}
-                    >
-                      <ShieldCheck size={12} className="md:w-3.5 md:h-3.5" />
-                      {comment.isApproved ? 'Unapprove' : 'Approve'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => deleteComment(comment.id)}
-                      className="flex-1 md:flex-none flex items-center justify-center gap-1 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-transparent px-3 py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider transition-colors"
-                    >
-                      <Trash2 size={12} className="md:w-3.5 md:h-3.5" />
-                      Delete
-                    </button>
-                  </div>
-                </div>
-
-                {/* Comment body */}
-                <p className="mt-4 whitespace-pre-wrap text-sm md:text-base leading-relaxed">{comment.content}</p>
-
-                {/* Replies */}
-                {comment.replies.length > 0 && (
-                  <div className="mt-4 space-y-3">
-                    {comment.replies.map((reply) => (
-                      <div key={reply.id} className="ml-4 border-l-2 border-light pl-4 flex items-start justify-between gap-4 group">
-                        <div className="flex-1 min-w-0">
-                          <p className="font-bold text-sm">
-                            {reply.name}{' '}
-                            {reply.isOwner && (
-                              <span className="text-xs font-bold uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-sm ml-1">
-                                ✔ Verified
-                              </span>
-                            )}
-                          </p>
-                          <p className="mt-2 whitespace-pre-wrap text-sm">{reply.content}</p>
-                          <p className="text-xs text-muted mt-2">
-                            <FormattedDate date={reply.createdAt} options={{ day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => deleteReply(reply.id)}
-                          className="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded-sm transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100 flex-shrink-0"
-                          title="Delete Reply"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Reply box */}
-                <div className="mt-5 space-y-2">
-                  {!comment.isApproved && (
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1.5 rounded-sm border border-amber-200 inline-block">
-                      Replying will also approve this comment.
-                    </p>
-                  )}
-                  <textarea
-                    rows={3}
-                    placeholder="Reply as owner (will show verified tick)"
-                    value={replyDrafts[comment.id] || ''}
-                    onChange={(event) => setReplyDrafts((prev) => ({ ...prev, [comment.id]: event.target.value }))}
-                    className="w-full border border-light rounded-sm px-3 py-2 bg-background text-sm"
-                  />
+                <li key={id}>
                   <button
                     type="button"
-                    onClick={() => submitOwnerReply(comment.id)}
-                    disabled={replyingToCommentId === comment.id || !(replyDrafts[comment.id] || '').trim()}
-                    className="flex items-center gap-2 bg-brand-black hover:bg-[color:var(--bg-tertiary)] disabled:opacity-50 text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-wider"
-                  >
-                    <Reply size={14} />
-                    {replyingToCommentId === comment.id
-                      ? 'Sending...'
-                      : !comment.isApproved
-                      ? 'Approve & Reply'
-                      : 'Reply as Verified Owner'}
-                  </button>
-                </div>
-              </div>
-            ));
-          })()}
-        </div>
-      </div>
-
-      <div id="inbox-section" className="border border-light/60 shadow-sm p-5 md:p-8 bg-tertiary mt-12">
-        <div className="flex items-center gap-3 mb-8">
-          <Mail className="text-brand-orange" />
-          <h2 className="text-xl md:text-2xl font-black">Inquiries Inbox</h2>
-        </div>
-
-        <div className="space-y-4">
-          {overview.messages.map((msg) => (
-            <div 
-              key={msg.id} 
-              className={`border rounded-sm p-4 md:p-6 transition-all overflow-hidden ${
-                msg.isRead 
-                ? 'bg-background border-light opacity-80' 
-                : 'bg-white border-brand-orange shadow-md border-l-4'
-              }`}
-            >
-              <div className="flex flex-col lg:flex-row justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-3 mb-2">
-                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                      msg.type === 'SONG' ? 'bg-pink-100 text-pink-700' :
-                      msg.type === 'PROJECT' ? 'bg-blue-100 text-blue-700' :
-                      msg.type === 'ROM' ? 'bg-purple-100 text-purple-700' :
-                      'bg-[color:var(--bg-tertiary)] text-zinc-700'
-                    }`}>
-                      {msg.type || 'General'}
-                    </span>
-                    {!msg.isRead && (
-                      <span className="text-[9px] font-black bg-brand-orange text-white px-2 py-0.5 rounded-full uppercase">New</span>
-                    )}
-                    <span className="text-[10px] text-muted font-bold">
-                      <FormattedDate date={msg.createdAt} options={{ day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }} />
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-base md:text-lg break-words">{msg.subject || 'No Subject'}</h3>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
-                    <p className="text-xs font-bold text-brand-orange truncate">{msg.name}</p>
-                    <p className="text-xs text-secondary truncate">{msg.email}</p>
-                  </div>
-                </div>
-                
-                <div className="flex flex-wrap lg:flex-nowrap gap-2 w-full lg:w-auto">
-                  <button
-                    onClick={() => toggleMessageRead(msg)}
-                    className={`flex-1 lg:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-sm text-[10px] font-black uppercase tracking-widest border transition-colors ${
-                      msg.isRead 
-                      ? 'border-light hover:border-brand-orange text-secondary' 
-                      : 'bg-brand-orange border-brand-orange text-white'
+                    onClick={() => changeTab(id)}
+                    aria-current={active ? 'page' : undefined}
+                    className={`flex items-center gap-2.5 w-full px-3 py-2 rounded-[6px] text-[14px] transition-colors ${
+                      active
+                        ? 'bg-[color:var(--bg-tertiary)] text-[color:var(--text-primary)]'
+                        : 'text-[color:var(--text-tertiary)] hover:text-[color:var(--text-primary)] hover:bg-[color:var(--bg-secondary)]'
                     }`}
                   >
-                    {msg.isRead ? 'Mark Unread' : 'Mark Read'}
+                    <Icon size={16} strokeWidth={1.75} aria-hidden="true" />
+                    <span>{label}</span>
+                    {!!badge && badge > 0 && (
+                      <span className="ml-auto pl-2 text-[12px] tabular-nums text-[color:var(--warn)]">{badge}</span>
+                    )}
                   </button>
-                  <button
-                    onClick={() => deleteMessage(msg.id)}
-                    className="flex-1 lg:flex-none flex items-center justify-center p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-sm transition-colors"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className="min-w-0">
+          {actionMessage && (
+            <div role="status" className="mb-8 flex items-start justify-between gap-4 px-4 py-3 rounded-[6px] border border-[color:var(--line-strong)] bg-[color:var(--bg-secondary)] text-[14px] text-[color:var(--text-primary)]">
+              <span>{actionMessage}</span>
+              <button type="button" onClick={() => setActionMessage('')} aria-label="Dismiss" className="text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)]">
+                <X size={16} />
+              </button>
+            </div>
+          )}
+
+          {/* ========= OVERVIEW ========= */}
+          {tab === 'overview' && (
+            <section aria-labelledby="overview-title">
+              <PanelHeader id="overview-title" title="Overview" description="Site activity at a glance." />
+
+              <dl className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[color:var(--line)] border border-[color:var(--line)] rounded-[8px] overflow-hidden">
+                {[
+                  { label: 'Posts', value: stats.totalPosts, to: 'posts' as DashboardTab },
+                  { label: 'Blog views', value: stats.totalBlogViews },
+                  { label: 'Comments', value: stats.totalComments, note: stats.pendingComments ? `${stats.pendingComments} pending` : undefined, to: 'comments' as DashboardTab },
+                  { label: 'Replies', value: stats.totalReplies, to: 'comments' as DashboardTab },
+                  { label: 'Messages', value: stats.totalMessages, note: stats.unreadMessages ? `${stats.unreadMessages} unread` : undefined, to: 'inbox' as DashboardTab },
+                  { label: 'Music videos', value: stats.totalVideos, to: 'music' as DashboardTab },
+                  { label: 'Push subscribers', value: stats.totalSubscribers },
+                  { label: 'Page views', value: stats.totalPageViews },
+                ].map((item) => {
+                  const body = (
+                    <>
+                      <dt className="text-[13px] text-[color:var(--text-tertiary)]">{item.label}</dt>
+                      <dd className="mt-2 font-serif text-[34px] leading-none tracking-[-0.02em] text-[color:var(--text-primary)] tabular-nums">
+                        {item.value.toLocaleString()}
+                      </dd>
+                      {item.note && <dd className="mt-2 text-[12px] text-[color:var(--warn)]">{item.note}</dd>}
+                    </>
+                  );
+                  return item.to ? (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => changeTab(item.to!)}
+                      className="flex flex-col items-start justify-start text-left p-5 bg-[color:var(--bg-primary)] hover:bg-[color:var(--bg-secondary)] transition-colors"
+                    >
+                      {body}
+                    </button>
+                  ) : (
+                    <div key={item.label} className="flex flex-col items-start justify-start p-5 bg-[color:var(--bg-primary)]">{body}</div>
+                  );
+                })}
+              </dl>
+
+              <div className="mt-12 grid gap-10 md:grid-cols-2">
+                <div>
+                  <h3 className="text-[20px] mb-4">Needs attention</h3>
+                  {stats.pendingComments === 0 && stats.unreadMessages === 0 ? (
+                    <p className="text-[15px]">Nothing waiting. All comments are reviewed and the inbox is read.</p>
+                  ) : (
+                    <ul className="border-t border-[color:var(--line)]">
+                      {stats.pendingComments > 0 && (
+                        <li className="flex items-center justify-between gap-4 py-3 border-b border-[color:var(--line)] text-[15px]">
+                          <span>{stats.pendingComments} comment{stats.pendingComments !== 1 && 's'} awaiting review</span>
+                          <button type="button" onClick={() => { setCommentFilter('pending'); changeTab('comments'); }} className="text-link text-[14px]">Review</button>
+                        </li>
+                      )}
+                      {stats.unreadMessages > 0 && (
+                        <li className="flex items-center justify-between gap-4 py-3 border-b border-[color:var(--line)] text-[15px]">
+                          <span>{stats.unreadMessages} unread message{stats.unreadMessages !== 1 && 's'}</span>
+                          <button type="button" onClick={() => changeTab('inbox')} className="text-link text-[14px]">Open inbox</button>
+                        </li>
+                      )}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-[20px]">System</h3>
+                    <span className={`pill ${overview.system.isOnline ? 'pill-ok' : 'pill-danger'}`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-current" aria-hidden="true" />
+                      {overview.system.isOnline ? 'Online' : 'Offline'}
+                    </span>
+                  </div>
+                  <p className="text-[15px]">
+                    Database: <span className="text-[color:var(--text-primary)]">{overview.system.databaseSizeKb.toLocaleString()} KB</span> of 500 MB
+                  </p>
+                  <div className="mt-3 h-1.5 rounded-full bg-[color:var(--bg-tertiary)] overflow-hidden" role="progressbar" aria-valuenow={Math.round(dbPercent)} aria-valuemin={0} aria-valuemax={100} aria-label="Database usage">
+                    <div className="h-full rounded-full bg-[color:var(--text-primary)]" style={{ width: `${Math.max(1, dbPercent)}%` }} />
+                  </div>
                 </div>
               </div>
-              
-              <div className="mt-6 p-4 bg-[color:var(--bg-secondary)] rounded-sm border border-light/40">
-                <p className="text-sm md:text-base whitespace-pre-wrap leading-relaxed italic text-secondary">
-                  &quot;{msg.message}&quot;
-                </p>
-              </div>
-              
-              <div className="mt-4">
-                <a 
-                  href={`mailto:${msg.email}?subject=Re: ${msg.subject || 'Your inquiry'}`}
-                  className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-orange hover:underline"
+            </section>
+          )}
+
+          {/* ========= POSTS ========= */}
+          {tab === 'posts' && (
+            <section aria-labelledby="posts-title">
+              <PanelHeader
+                id="posts-title"
+                title={isFormOpen ? (isEditing ? 'Edit post' : 'New post') : 'Posts'}
+                description={isFormOpen ? undefined : `${overview.posts.length} published`}
+                action={
+                  isFormOpen ? (
+                    <button type="button" onClick={cancelEdit} className={btnGhost}>Close editor</button>
+                  ) : (
+                    <button type="button" onClick={() => { setPostForm(initialPostForm); setIsEditing(false); setIsFormOpen(true); }} className={btnPrimary}>
+                      New post
+                    </button>
+                  )
+                }
+              />
+
+              {isFormOpen && (
+                <form onSubmit={handlePostSubmit} className="space-y-5 mb-14 pb-10 border-b border-[color:var(--line-strong)]">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <Field label="Title" htmlFor="post-title">
+                      <input id="post-title" type="text" required value={postForm.title}
+                        onChange={(e) => setPostForm((prev) => ({ ...prev, title: e.target.value }))} className="v-input" />
+                    </Field>
+                    <Field label="Slug" hint="Leave empty to generate from the title" htmlFor="post-slug">
+                      <input id="post-slug" type="text" value={postForm.slug}
+                        onChange={(e) => setPostForm((prev) => ({ ...prev, slug: e.target.value }))} className="v-input font-mono !text-[14px]" />
+                    </Field>
+                    <Field label="Category" htmlFor="post-category">
+                      <input id="post-category" type="text" value={postForm.category}
+                        onChange={(e) => setPostForm((prev) => ({ ...prev, category: e.target.value }))} className="v-input" />
+                    </Field>
+                    <Field label="Tags" hint="Comma separated" htmlFor="post-tags">
+                      <input id="post-tags" type="text" value={postForm.tags}
+                        onChange={(e) => setPostForm((prev) => ({ ...prev, tags: e.target.value }))} className="v-input" />
+                    </Field>
+                  </div>
+                  <Field label="Cover image URL" hint="Optional" htmlFor="post-image">
+                    <input id="post-image" type="url" value={postForm.imageUrl}
+                      onChange={(e) => setPostForm((prev) => ({ ...prev, imageUrl: e.target.value }))} className="v-input" />
+                  </Field>
+                  <Field label="Excerpt" hint="Shown in the post list and search results" htmlFor="post-excerpt">
+                    <textarea id="post-excerpt" rows={3} value={postForm.excerpt}
+                      onChange={(e) => setPostForm((prev) => ({ ...prev, excerpt: e.target.value }))} className="v-input resize-y" />
+                  </Field>
+                  <Field label="Content" hint="Markdown or HTML" htmlFor="post-content">
+                    <textarea id="post-content" rows={18} required value={postForm.content}
+                      onChange={(e) => setPostForm((prev) => ({ ...prev, content: e.target.value }))} className="v-input resize-y font-mono !text-[14px] leading-relaxed" />
+                  </Field>
+                  <label className="flex items-center gap-2.5 text-[15px] cursor-pointer select-none">
+                    <input type="checkbox" checked={postForm.commentsEnabled}
+                      onChange={(e) => setPostForm((prev) => ({ ...prev, commentsEnabled: e.target.checked }))}
+                      className="w-4 h-4 accent-[color:var(--text-primary)]" />
+                    Allow comments on this post
+                  </label>
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <button type="submit" disabled={submittingPost} className="btn-solid disabled:opacity-60">
+                      {submittingPost ? 'Saving…' : isEditing ? 'Save changes' : 'Publish post'}
+                    </button>
+                    <button type="button" onClick={cancelEdit} className="btn-outline">Cancel</button>
+                  </div>
+                </form>
+              )}
+
+              {overview.posts.length === 0 ? (
+                <EmptyState text="No posts yet. Write your first one with “New post”." />
+              ) : (
+                <ul className="border-t border-[color:var(--line)]">
+                  {overview.posts.map((post) => (
+                    <li key={post.id} className="py-5 border-b border-[color:var(--line)] grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+                      <div className="min-w-0">
+                        <h3 className="text-[19px] leading-snug truncate">{post.title}</h3>
+                        <p className="mt-1 text-[13px] text-[color:var(--text-tertiary)] flex flex-wrap gap-x-3 gap-y-1">
+                          <span className="font-mono truncate">/blog/{post.slug}</span>
+                          <span>{post.views.toLocaleString()} views</span>
+                          <span>{post.commentsCount} comments</span>
+                          {!post.commentsEnabled && <span className="text-[color:var(--warn)]">Comments off</span>}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <button type="button" onClick={() => startEditPost(post.id)} className={btnGhost}>Edit</button>
+                        <button type="button" onClick={() => toggleCommentsStatus(post)} className={btnGhost}>
+                          {post.commentsEnabled ? 'Turn comments off' : 'Turn comments on'}
+                        </button>
+                        <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" className={btnGhost}>View ↗</a>
+                        <button type="button" onClick={() => deletePost(post.id)} className={btnDanger}>Delete</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+
+          {/* ========= COMMENTS ========= */}
+          {tab === 'comments' && (
+            <section aria-labelledby="comments-title">
+              <PanelHeader
+                id="comments-title"
+                title="Comments"
+                description={`${stats.totalComments} total · ${stats.totalReplies} replies`}
+                action={
+                  <label className="flex items-center gap-2.5 text-[14px] cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      disabled={updatingSettings}
+                      checked={(overview.settings?.require_comment_approval ?? '1') === '1'}
+                      onChange={(e) => updateSetting('require_comment_approval', e.target.checked ? '1' : '0')}
+                      className="w-4 h-4 accent-[color:var(--text-primary)]"
+                    />
+                    Review comments before they appear
+                  </label>
+                }
+              />
+
+              {stats.pendingComments > 0 && (
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3 px-4 py-3 rounded-[6px] border border-[color:color-mix(in_srgb,var(--warn)_40%,transparent)]">
+                  <p className="text-[15px] text-[color:var(--warn)]">
+                    {stats.pendingComments} comment{stats.pendingComments !== 1 && 's'} awaiting review
+                  </p>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => bulkAction('approve_all_pending')} disabled={bulkActioning} className={btnGhost}>Approve all</button>
+                    <button type="button" onClick={() => bulkAction('delete_all_pending')} disabled={bulkActioning} className={btnDanger}>Delete all pending</button>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-3 pb-4 border-b border-[color:var(--line)]">
+                <div className="flex rounded-full border border-[color:var(--line-strong)] p-0.5" role="tablist" aria-label="Filter comments">
+                  {([
+                    ['pending', 'Pending', pendingCount],
+                    ['approved', 'Approved', approvedCount],
+                    ['all', 'All', overview.comments.length],
+                  ] as const).map(([value, label, count]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="tab"
+                      aria-selected={commentFilter === value}
+                      onClick={() => setCommentFilter(value)}
+                      className={`px-3 py-1 rounded-full text-[13px] transition-colors ${
+                        commentFilter === value
+                          ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-primary)]'
+                          : 'text-[color:var(--text-secondary)] hover:text-[color:var(--text-primary)]'
+                      }`}
+                    >
+                      {label} <span className="tabular-nums opacity-70">{count}</span>
+                    </button>
+                  ))}
+                </div>
+                <select
+                  aria-label="Filter by post"
+                  value={selectedPostForComments}
+                  onChange={(e) => setSelectedPostForComments(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                  className={`${selectClass} max-w-[240px]`}
                 >
-                  <Reply size={14} />
-                  Reply via Email
-                </a>
+                  <option value="all">All posts</option>
+                  {overview.posts.map(post => (
+                    <option key={post.id} value={post.id}>{post.title}</option>
+                  ))}
+                </select>
+                <select
+                  aria-label="Sort comments"
+                  value={commentSortOrder}
+                  onChange={(e) => setCommentSortOrder(e.target.value as 'newest' | 'oldest')}
+                  className={`${selectClass} ml-auto`}
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                </select>
               </div>
-            </div>
-          ))}
-          
-          {overview.messages.length === 0 && (
-            <div className="text-center py-12 border border-dashed border-light rounded-sm">
-              <Mail className="mx-auto text-muted mb-3" size={32} />
-              <p className="text-muted font-medium italic">Your inbox is empty.</p>
-            </div>
+
+              {filteredComments.length === 0 ? (
+                <div className="py-12">
+                  <p className="text-[15px]">
+                    {commentFilter === 'pending' && overview.comments.length > 0
+                      ? 'All caught up. No comments waiting for review.'
+                      : overview.comments.length === 0
+                      ? 'No comments yet.'
+                      : 'No comments match these filters.'}
+                  </p>
+                  {overview.comments.length > 0 && (commentFilter !== 'all' || selectedPostForComments !== 'all') && (
+                    <button type="button" onClick={() => { setCommentFilter('all'); setSelectedPostForComments('all'); }} className="text-link mt-4 text-[14px]">
+                      Show all comments
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <ul>
+                  {filteredComments.map((comment) => (
+                    <li key={comment.id} className="py-6 border-b border-[color:var(--line)]">
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                            <span className="text-[15px] font-medium text-[color:var(--text-primary)]">{comment.name}</span>
+                            <span className={`pill ${comment.isApproved ? 'pill-ok' : 'pill-warn'}`}>
+                              {comment.isApproved ? 'Approved' : 'Pending'}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-[13px] text-[color:var(--text-tertiary)] flex flex-wrap gap-x-2">
+                            <span>on “{comment.blogTitle}”</span>
+                            <span aria-hidden="true">·</span>
+                            <FormattedDate date={comment.createdAt} options={{ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                            {comment.email && (<><span aria-hidden="true">·</span><a href={`mailto:${comment.email}`} className="hover:text-[color:var(--text-primary)]">{comment.email}</a></>)}
+                          </p>
+                        </div>
+                        <div className="flex gap-2 flex-shrink-0">
+                          <button type="button" onClick={() => toggleCommentApproval(comment)} className={comment.isApproved ? btnGhost : btnPrimary}>
+                            {comment.isApproved ? 'Unapprove' : 'Approve'}
+                          </button>
+                          <button type="button" onClick={() => deleteComment(comment.id)} className={btnDanger}>Delete</button>
+                        </div>
+                      </div>
+
+                      <p className="mt-3 whitespace-pre-wrap text-[16px] max-w-3xl">{comment.content}</p>
+
+                      {comment.replies.length > 0 && (
+                        <ul className="mt-4 space-y-4 border-l border-[color:var(--line-strong)] pl-4 ml-1">
+                          {comment.replies.map((reply) => (
+                            <li key={reply.id} className="flex items-start justify-between gap-4">
+                              <div className="min-w-0">
+                                <p className="text-[14px] flex flex-wrap items-center gap-x-2 gap-y-1">
+                                  <span className="font-medium text-[color:var(--text-primary)]">{reply.name}</span>
+                                  {reply.isOwner && <span className="pill">Author</span>}
+                                  <span className="text-[color:var(--text-muted)]">
+                                    <FormattedDate date={reply.createdAt} options={{ day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }} />
+                                  </span>
+                                </p>
+                                <p className="mt-1 whitespace-pre-wrap text-[15px]">{reply.content}</p>
+                              </div>
+                              <button type="button" onClick={() => deleteReply(reply.id)} className="text-[13px] text-[color:var(--text-muted)] hover:text-[color:var(--danger)] flex-shrink-0">
+                                Delete
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      <div className="mt-4 max-w-3xl">
+                        <label htmlFor={`reply-${comment.id}`} className="sr-only">Reply to {comment.name}</label>
+                        <textarea
+                          id={`reply-${comment.id}`}
+                          rows={2}
+                          placeholder={`Reply to ${comment.name} as the author…`}
+                          value={replyDrafts[comment.id] || ''}
+                          onChange={(e) => setReplyDrafts((prev) => ({ ...prev, [comment.id]: e.target.value }))}
+                          className="v-input resize-y !text-[14px]"
+                        />
+                        {(replyDrafts[comment.id] || '').trim() && (
+                          <div className="mt-2 flex flex-wrap items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={() => submitOwnerReply(comment.id)}
+                              disabled={replyingToCommentId === comment.id}
+                              className={btnPrimary}
+                            >
+                              {replyingToCommentId === comment.id ? 'Sending…' : comment.isApproved ? 'Send reply' : 'Approve and reply'}
+                            </button>
+                            {!comment.isApproved && (
+                              <span className="text-[13px] text-[color:var(--text-tertiary)]">Replying also approves the comment.</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+
+          {/* ========= INBOX ========= */}
+          {tab === 'inbox' && (
+            <section aria-labelledby="inbox-title">
+              <PanelHeader
+                id="inbox-title"
+                title="Inbox"
+                description={`${stats.totalMessages} message${stats.totalMessages !== 1 ? 's' : ''}${stats.unreadMessages ? ` · ${stats.unreadMessages} unread` : ''}`}
+              />
+              {overview.messages.length === 0 ? (
+                <EmptyState text="No messages yet. Anything sent through the contact form will appear here." />
+              ) : (
+                <ul className="border-t border-[color:var(--line)]">
+                  {overview.messages.map((msg) => (
+                    <li key={msg.id} className={`py-6 border-b border-[color:var(--line)] ${msg.isRead ? '' : 'relative'}`}>
+                      {!msg.isRead && (
+                        <span className="absolute -left-4 top-8 w-1.5 h-1.5 rounded-full bg-[color:var(--text-primary)]" aria-label="Unread" />
+                      )}
+                      <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                            <span className="pill">{MESSAGE_TYPE_LABELS[msg.type || ''] || msg.type || 'General'}</span>
+                            <span className="text-[13px] text-[color:var(--text-muted)]">
+                              <FormattedDate date={msg.createdAt} options={{ day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }} />
+                            </span>
+                          </div>
+                          <h3 className={`text-[19px] leading-snug break-words ${msg.isRead ? 'text-[color:var(--text-secondary)]' : ''}`}>
+                            {msg.subject || 'No subject'}
+                          </h3>
+                          <p className="mt-1 text-[14px] text-[color:var(--text-tertiary)] break-all">
+                            {msg.name} · {msg.email}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2 flex-shrink-0">
+                          <a
+                            href={`mailto:${msg.email}?subject=${encodeURIComponent(`Re: ${msg.subject || 'Your message'}`)}`}
+                            className={btnPrimary}
+                          >
+                            Reply by email
+                          </a>
+                          <button type="button" onClick={() => toggleMessageRead(msg)} className={btnGhost}>
+                            {msg.isRead ? 'Mark unread' : 'Mark read'}
+                          </button>
+                          <button type="button" onClick={() => deleteMessage(msg.id)} className={btnDanger}>Delete</button>
+                        </div>
+                      </div>
+                      <p className="mt-4 whitespace-pre-wrap text-[15px] leading-relaxed max-w-3xl pl-4 border-l border-[color:var(--line-strong)]">
+                        {msg.message}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+
+          {/* ========= MUSIC ========= */}
+          {tab === 'music' && (
+            <section aria-labelledby="music-title">
+              <PanelHeader
+                id="music-title"
+                title="Music videos"
+                description={`${overview.videos.length} on the Music page`}
+                action={
+                  <button type="button" onClick={() => setIsVideoFormOpen(!isVideoFormOpen)} className={isVideoFormOpen ? btnGhost : btnPrimary}>
+                    {isVideoFormOpen ? 'Close' : 'Add video'}
+                  </button>
+                }
+              />
+
+              {isVideoFormOpen && (
+                <form onSubmit={handleVideoSubmit} className="space-y-5 mb-12 pb-10 border-b border-[color:var(--line-strong)]">
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <Field label="Song title" htmlFor="video-title">
+                      <input id="video-title" type="text" required value={videoForm.title}
+                        onChange={(e) => setVideoForm((prev) => ({ ...prev, title: e.target.value }))} className="v-input" />
+                    </Field>
+                    <Field label="YouTube URL" htmlFor="video-url">
+                      <input id="video-url" type="url" required value={videoForm.videoUrl} placeholder="https://youtube.com/watch?v=…"
+                        onChange={(e) => setVideoForm((prev) => ({ ...prev, videoUrl: e.target.value }))} className="v-input" />
+                    </Field>
+                  </div>
+                  <Field label="Description" hint="Optional" htmlFor="video-description">
+                    <textarea id="video-description" rows={3} value={videoForm.description}
+                      onChange={(e) => setVideoForm((prev) => ({ ...prev, description: e.target.value }))} className="v-input resize-y" />
+                  </Field>
+                  <button type="submit" disabled={submittingVideo} className="btn-solid disabled:opacity-60">
+                    {submittingVideo ? 'Adding…' : 'Add video'}
+                  </button>
+                </form>
+              )}
+
+              {overview.videos.length === 0 ? (
+                <EmptyState text="No videos yet. Added videos appear on the public Music page." />
+              ) : (
+                <ul className="border-t border-[color:var(--line)]">
+                  {overview.videos.map((video) => (
+                    <li key={video.id} className="py-4 border-b border-[color:var(--line)] flex flex-col sm:flex-row sm:items-center gap-4">
+                      <div className="flex items-center gap-4 flex-1 min-w-0">
+                        <div className="w-28 aspect-video bg-black rounded-[4px] overflow-hidden flex-shrink-0 relative">
+                          <Image src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} alt="" fill sizes="112px" className="object-cover" />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-[17px] leading-snug truncate">{video.title}</h3>
+                          <p className="mt-1 text-[13px] text-[color:var(--text-tertiary)]">
+                            {(video.plays || 0).toLocaleString()} plays · <span className="font-mono">{video.youtubeId}</span>
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <a href={`https://youtube.com/watch?v=${video.youtubeId}`} target="_blank" rel="noopener noreferrer" className={btnGhost}>YouTube ↗</a>
+                        <button type="button" onClick={() => deleteVideo(video.id)} className={btnDanger}>Delete</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
+
+          {/* ========= ADMINS ========= */}
+          {tab === 'users' && session?.isSuperAdmin && (
+            <section aria-labelledby="users-title">
+              <PanelHeader
+                id="users-title"
+                title={editingUserEmail ? 'Edit admin' : 'Admins'}
+                description={editingUserEmail ? editingUserEmail : 'People who can sign in to this dashboard.'}
+                action={
+                  isUserFormOpen ? (
+                    <button type="button" onClick={cancelUserEdit} className={btnGhost}>Cancel</button>
+                  ) : (
+                    <button type="button" onClick={() => { setUserForm(initialUserForm); setEditingUserEmail(null); setIsUserFormOpen(true); }} className={btnPrimary}>
+                      Add admin
+                    </button>
+                  )
+                }
+              />
+
+              {isUserFormOpen && (
+                <form onSubmit={handleUserSubmit} className="space-y-5 mb-12 pb-10 border-b border-[color:var(--line-strong)]">
+                  <div className="grid md:grid-cols-3 gap-5">
+                    <Field label="Name" htmlFor="user-name">
+                      <input id="user-name" type="text" value={userForm.name} autoComplete="off"
+                        onChange={(e) => setUserForm(prev => ({ ...prev, name: e.target.value }))} className="v-input" />
+                    </Field>
+                    <Field label="Email" htmlFor="user-email">
+                      <input id="user-email" type="email" required disabled={!!editingUserEmail} value={userForm.email} autoComplete="off"
+                        onChange={(e) => setUserForm(prev => ({ ...prev, email: e.target.value }))} className="v-input disabled:opacity-60" />
+                    </Field>
+                    <Field label={editingUserEmail ? 'New password' : 'Password'} hint={editingUserEmail ? 'Leave empty to keep the current one' : undefined} htmlFor="user-password">
+                      <input id="user-password" type="password" required={!editingUserEmail} value={userForm.password} autoComplete="new-password"
+                        onChange={(e) => setUserForm(prev => ({ ...prev, password: e.target.value }))} className="v-input" />
+                    </Field>
+                  </div>
+                  <button type="submit" disabled={submittingUser} className="btn-solid disabled:opacity-60">
+                    {submittingUser ? 'Saving…' : editingUserEmail ? 'Save changes' : 'Create admin'}
+                  </button>
+                </form>
+              )}
+
+              {users.length === 0 ? (
+                <EmptyState text="Only the admin configured on the server can sign in." />
+              ) : (
+                <ul className="border-t border-[color:var(--line)]">
+                  {users.map((user) => (
+                    <li key={user.email} className="py-4 border-b border-[color:var(--line)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="text-[17px]">{user.name || 'Admin'}</h3>
+                        <p className="text-[13px] text-[color:var(--text-tertiary)] break-all">
+                          {user.email} · added <FormattedDate date={user.createdAt} options={{ day: 'numeric', month: 'short', year: 'numeric' }} />
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button type="button" onClick={() => startEditUser(user)} className={btnGhost}>Edit</button>
+                        <button type="button" onClick={() => deleteUser(user.email)} className={btnDanger}>Remove</button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
+}
+
+function PanelHeader({ id, title, description, action }: { id: string; title: string; description?: string; action?: React.ReactNode }) {
+  return (
+    <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div>
+        <h2 id={id} className="text-[30px] leading-tight tracking-[-0.02em]">{title}</h2>
+        {description && <p className="mt-1 text-[14px] text-[color:var(--text-tertiary)]">{description}</p>}
+      </div>
+      {action}
+    </div>
+  );
+}
+
+function Field({ label, hint, htmlFor, children }: { label: string; hint?: string; htmlFor: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label htmlFor={htmlFor} className="v-label">
+        {label}
+        {hint && <span className="ml-2 font-normal text-[color:var(--text-muted)]">{hint}</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function EmptyState({ text }: { text: string }) {
+  return <p className="py-10 text-[15px] text-[color:var(--text-tertiary)] border-t border-[color:var(--line)]">{text}</p>;
 }

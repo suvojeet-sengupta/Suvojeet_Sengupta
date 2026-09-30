@@ -21,7 +21,7 @@ export default function BlogListPage({ initialPosts }: { initialPosts: BlogSumma
       </header>
 
       {error && (
-        <p role="alert" className="mt-10 text-[15px] text-[#c2553b]">
+        <p role="alert" className="mt-10 text-[15px] text-[color:var(--danger)]">
           {error instanceof Error ? error.message : 'Unable to load posts right now.'}
         </p>
       )}

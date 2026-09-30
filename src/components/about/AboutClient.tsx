@@ -24,9 +24,12 @@ const AboutClient = () => {
                         <p className="text-[length:inherit] leading-[inherit]">
                             I learned Android from the inside, maintaining a custom ROM for the
                             Redmi 12 5G, and went on to build NoteNext and SuvMusic. Today I&apos;m
-                            a software developer intern at Gogig, and most of my attention is on
-                            backend work: API design, authentication, databases and deployment.
-                            This site runs on a NestJS API I built and host myself.
+                            a software developer intern at gOGig, where I work on Android app
+                            development, web and backend. Outside work, most of my attention is on
+                            backend: API design, authentication, databases and deployment.
+                            I use AI tools to write code faster, and I review, test and take
+                            responsibility for everything that ships. This site runs on a NestJS
+                            API I built and host myself.
                         </p>
                         <p className="text-[length:inherit] leading-[inherit]">
                             Music came first. I grew up with Kishore Kumar and Lata Mangeshkar at
@@ -37,8 +40,8 @@ const AboutClient = () => {
 
                     <dl className="mt-10 grid grid-cols-1 sm:grid-cols-2 border-t border-[color:var(--line-strong)] max-w-[38rem]">
                         {[
-                            ['Currently', 'Software Developer Intern, Gogig'],
-                            ['Focus', 'Backend and Android'],
+                            ['Currently', 'Software Developer Intern, gOGig'],
+                            ['Focus', 'Android, web and backend'],
                             ['Sings in', 'Hindi and Bengali'],
                             ['Based in', 'Dhanbad, India'],
                         ].map(([label, value]) => (

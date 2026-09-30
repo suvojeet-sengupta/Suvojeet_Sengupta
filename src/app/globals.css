@@ -44,6 +44,11 @@
   --font-sans: var(--font-body), system-ui, sans-serif;
   --font-mono: var(--font-code), ui-monospace, monospace;
 
+  /* Status colours */
+  --ok: #3d7f4b;
+  --warn: #946514;
+  --danger: #b4432c;
+
   color-scheme: light;
 }
 
@@ -72,6 +77,10 @@
   --neon: #d8844f;
   --neon-soft: #e8a172;
   --ember: #e8a172;
+
+  --ok: #7cbf87;
+  --warn: #d9b25f;
+  --danger: #e2806a;
 
   color-scheme: dark;
 }
@@ -598,3 +607,23 @@
 .post-body hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
 .post-body table { width: 100%; border-collapse: collapse; font-size: 15px; }
 .post-body th, .post-body td { border-bottom: 1px solid var(--line); padding: 0.6em 0.5em; text-align: left; }
+
+/* ============================================
+   STATUS PILLS (dashboard, comments)
+   ============================================ */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.pill-ok     { color: var(--ok);     border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+.pill-warn   { color: var(--warn);   border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+.pill-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 45%, transparent); }
+.pill-solid  { color: var(--bg-primary); background: var(--text-primary); border-color: var(--text-primary); }

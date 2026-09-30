@@ -71,27 +71,23 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <section className="section-container">
-      <div className="max-w-md mx-auto professional-card p-7 sm:p-9">
-        <div className="v-section-num">Studio · Admin</div>
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
-          Dashboard <em className="text-[color:var(--neon)] not-italic font-black italic">Login</em>
-        </h1>
-        <p className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-80 leading-relaxed">
-          Use your secure admin credentials to manage blog posts, comments, and activity stats.
-        </p>
+    <div className="page min-h-[85vh] flex items-center">
+      <div className="w-full max-w-sm">
+        <p className="page-eyebrow">Admin</p>
+        <h1 className="text-[clamp(34px,5vw,48px)] leading-none tracking-[-0.03em] mb-3">Sign in</h1>
+        <p className="text-[15px]">Manage posts, comments, messages and music.</p>
 
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+        <form className="mt-10 space-y-5" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="admin-email" className="v-label">Email</label>
             <input
               id="admin-email"
               type="email"
               required
+              autoComplete="username"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               className="v-input"
-              placeholder="you@example.com"
             />
           </div>
 
@@ -101,15 +97,15 @@ export default function AdminLoginPage() {
               id="admin-password"
               type="password"
               required
+              autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="v-input"
-              placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <p className="font-mono text-xs uppercase tracking-[0.15em] text-red-500 p-3 border border-red-500/30">
+            <p role="alert" className="text-[14px] text-[color:var(--danger)]">
               {error}
             </p>
           )}
@@ -119,17 +115,14 @@ export default function AdminLoginPage() {
             disabled={loading}
             className="btn-solid w-full disabled:opacity-50"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
 
-        <Link
-          href="/blog"
-          className="inline-block mt-7 font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-[color:var(--neon)] hover:text-[color:var(--ember)] transition-colors"
-        >
-          ← Back to Blog
+        <Link href="/" className="text-link inline-block mt-10 text-[14px]">
+          ← Back to site
         </Link>
       </div>
-    </section>
+    </div>
   );
 }

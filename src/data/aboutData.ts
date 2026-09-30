@@ -31,8 +31,8 @@ export const timeline = [
     },
     {
         year: "2026",
-        title: "Software developer intern, Gogig",
-        description: "Working on full-stack and backend development in a professional team, and building my own NestJS API for this site."
+        title: "Software developer intern, gOGig",
+        description: "Working on gOGig's Android app, web and backend, and building my own NestJS API for this site."
     }
 ];
 
@@ -46,8 +46,8 @@ export const skillGroups = [
         items: ["Kotlin", "Java", "Jetpack Compose", "Room", "Media3", "AOSP builds", "Device trees", "Kernel patches"]
     },
     {
-        title: "Web",
-        items: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Cloudflare Pages"]
+        title: "Web & tools",
+        items: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Cloudflare Pages", "Git", "AI-assisted coding"]
     },
     {
         title: "Music",

@@ -132,7 +132,7 @@ const ResumeHub = () => {
                                 className="w-full grid grid-cols-[1fr_auto] md:grid-cols-[64px_minmax(0,1fr)_minmax(0,1.3fr)_auto] gap-x-8 gap-y-1 py-6 text-left items-baseline group"
                             >
                                 <span className="hidden md:block font-mono text-[13px] text-[color:var(--text-muted)]">
-                                    {exp.period.slice(0, 4).match(/\d{4}/) ? exp.period.slice(0, 4) : '—'}
+                                    {exp.period.match(/\d{4}/)?.[0] ?? '—'}
                                 </span>
                                 <span className="min-w-0">
                                     <span className="block font-serif text-[22px] leading-snug group-hover:underline underline-offset-4 decoration-1">

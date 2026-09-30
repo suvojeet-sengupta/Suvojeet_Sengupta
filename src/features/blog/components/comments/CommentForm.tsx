@@ -102,7 +102,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0 }}
-                            className={`text-[14px] ${status === 'error' ? 'text-[#c2553b]' : 'text-[#5fa36a]'}`}
+                            className={`text-[14px] ${status === 'error' ? 'text-[color:var(--danger)]' : 'text-[color:var(--ok)]'}`}
                         >
                             {message}
                         </motion.p>
