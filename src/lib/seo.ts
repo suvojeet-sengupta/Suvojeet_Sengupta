@@ -8,8 +8,8 @@ export function getOgImageUrl(text: string): string {
 }
 
 export const SEO_CONFIG = {
-  title: "Suvojeet Sengupta | Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver",
-  description: "Official portfolio of Suvojeet Sengupta — Singer, Performer, Composer, Tech Enthusiast, Lifelong Learner, Android App Architect, Web & Backend Developer, AI Power User & Problem Solver from Dhanbad, India.",
+  title: "Suvojeet Sengupta — Software Developer & Vocalist",
+  description: "Suvojeet Sengupta is a software developer and Hindi & Bengali vocalist from Dhanbad, India. He builds Android apps and backend services, including SuvMusic and NoteNext, and records and performs music.",
   siteName: "Suvojeet Sengupta",
   url: "https://suvojeetsengupta.in",
   twitterHandle: "@suvojeet_s",
@@ -17,23 +17,19 @@ export const SEO_CONFIG = {
   locale: "en_IN",
   keywords: [
     "Suvojeet Sengupta",
-    "Singer",
-    "Performer",
-    "Composer",
-    "Tech Enthusiast",
-    "Lifelong Learner",
-    "Android App Architect",
-    "Web & Backend Developer",
-    "AI Power User",
-    "Problem Solver",
+    "software developer",
+    "backend developer",
+    "Android developer",
+    "NestJS developer",
+    "Kotlin developer",
+    "Hindi singer",
+    "Bengali singer",
+    "vocalist",
     "Suvojeet Sengupta singer",
     "Suvojeet Sengupta developer",
-    "Android App Architect India",
-    "Full Stack Developer Dhanbad",
-    "Soulful Singer India",
+    "developer Dhanbad",
     "SuvMusic app",
     "NoteNext app",
-    "AI software developer India",
     "suvojeetsengupta.in"
   ],
   socials: {
@@ -69,7 +65,7 @@ export function getEnhancedPersonSchema() {
     name: "Suvojeet Sengupta",
     givenName: "Suvojeet",
     familyName: "Sengupta",
-    alternateName: ["Suvojeet", "Suvojeet Singer", "Vibe Architect", "Suvojeet Sengupta Singer"],
+    alternateName: ["Suvojeet", "Suvojeet Sengupta Singer"],
     url: SEO_CONFIG.url,
     image: {
       "@type": "ImageObject",
@@ -103,39 +99,39 @@ export function getEnhancedPersonSchema() {
       name: "India"
     },
     knowsLanguage: ["Hindi", "Bengali", "English"],
-    jobTitle: "Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver",
+    jobTitle: "Software Developer & Vocalist",
     hasOccupation: [
       {
         "@type": "Occupation",
-        name: "Singer, Performer & Composer",
-        description: "Vocalist and music creator performing soulful Hindi and Bengali music, compositions, and live performances.",
+        name: "Software Developer",
+        description: "Builds Android apps in Kotlin and Jetpack Compose and backend services with Node.js and NestJS.",
         occupationLocation: { "@type": "Country", name: "India" }
       },
       {
         "@type": "Occupation",
-        name: "Android App Architect & Web & Backend Developer",
-        description: "Architects mobile Android applications and modern full-stack web and backend software architectures.",
-        occupationLocation: { "@type": "Country", name: "India" }
-      },
-      {
-        "@type": "Occupation",
-        name: "AI Power User & Problem Solver",
-        description: "Utilizes advanced AI tools and structured problem-solving methodologies for high-performance software engineering.",
+        name: "Vocalist",
+        description: "Sings Hindi and Bengali songs, records covers and performs live.",
         occupationLocation: { "@type": "Country", name: "India" }
       }
     ],
+    worksFor: {
+      "@type": "Organization",
+      name: "Gogig",
+      url: "https://gogig.tech"
+    },
     description: SEO_CONFIG.description,
     knowsAbout: [
-      "Singer & Vocalist",
-      "Music Performance & Composition",
-      "Android App Architecture",
-      "Kotlin & Jetpack Compose",
-      "Web & Backend Development",
-      "Node.js & Next.js",
-      "Cloudflare Workers & APIs",
-      "AI-Driven Engineering & Systems Architecture",
-      "Problem Solving & Tech Innovation",
-      "Lifelong Learning"
+      "Backend development",
+      "Node.js",
+      "NestJS",
+      "REST API design",
+      "Android development",
+      "Kotlin",
+      "Jetpack Compose",
+      "Next.js",
+      "Cloudflare",
+      "Hindi and Bengali vocals",
+      "Live music performance"
     ],
     sameAs: Object.values(SEO_CONFIG.socials),
     mainEntityOfPage: {
@@ -153,7 +149,7 @@ export function getProfilePageSchema() {
     "@id": `${SEO_CONFIG.url}/about`,
     url: `${SEO_CONFIG.url}/about`,
     name: "About Suvojeet Sengupta",
-    description: "The personal and professional profile of Suvojeet Sengupta — Vibe Architect, Logic Implementer, and Soulful Singer from Dhanbad, India.",
+    description: "About Suvojeet Sengupta, a software developer and Hindi & Bengali vocalist from Dhanbad, India.",
     dateModified: new Date().toISOString(),
     mainEntity: {
       "@type": "Person",

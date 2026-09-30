@@ -39,37 +39,35 @@ export const CommentList: React.FC<CommentListProps> = ({
     });
 
     return (
-        <section className="mt-10 border border-light rounded-sm p-6 md:p-8 bg-background">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-light pb-6">
-                <div>
-                    <h2 className="text-2xl font-black">Comments ({count})</h2>
-                </div>
+        <section>
+            <div className="flex flex-wrap items-baseline justify-between gap-4 pb-5 border-b border-[color:var(--line-strong)]">
+                <h2 className="text-[28px]">
+                    {count} {count === 1 ? 'comment' : 'comments'}
+                </h2>
 
                 {comments.length > 0 && (
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-muted">Sort By:</span>
+                    <label className="flex items-center gap-2 text-[14px] text-[color:var(--text-tertiary)]">
+                        Sort
                         <select 
                             value={sortBy} 
                             onChange={(e) => setSortBy(e.target.value as any)}
-                            className="bg-tertiary border border-light rounded-sm px-2 py-1 text-[10px] font-black uppercase tracking-widest outline-none focus:border-brand-orange"
+                            className="bg-transparent border border-[color:var(--line-strong)] rounded-full px-3 py-1 text-[14px] text-[color:var(--text-primary)] outline-none cursor-pointer"
                         >
                             <option value="newest">Newest</option>
                             <option value="oldest">Oldest</option>
                         </select>
-                    </div>
+                    </label>
                 )}
             </div>
 
             {!commentsEnabled && (
-                <div className="bg-tertiary border border-light p-4 rounded-sm text-center mb-8">
-                    <p className="text-muted text-xs font-bold uppercase tracking-widest">
-                        Comments are currently disabled for this post.
-                    </p>
-                </div>
+                <p className="py-6 text-[15px] text-[color:var(--text-tertiary)]">
+                    Comments are turned off for this post.
+                </p>
             )}
 
             {commentsEnabled && (
-                <div className="mb-12">
+                <div className="mb-6">
                     <CommentForm 
                         onSubmit={async (name, email, content) => {
                             try {
@@ -86,7 +84,7 @@ export const CommentList: React.FC<CommentListProps> = ({
                 </div>
             )}
 
-            <div className="space-y-8">
+            <div>
                 {sortedComments.map((comment) => (
                     <CommentItem 
                         key={comment.id} 
@@ -103,11 +101,9 @@ export const CommentList: React.FC<CommentListProps> = ({
                 ))}
                 
                 {sortedComments.length === 0 && (
-                    <div className="text-center py-12 bg-tertiary border border-dashed border-light rounded-sm">
-                        <p className="text-muted text-sm font-medium">
-                            No comments yet. Be the first to start the conversation!
-                        </p>
-                    </div>
+                    <p className="py-8 text-[15px] text-[color:var(--text-tertiary)]">
+                        No comments yet.
+                    </p>
                 )}
             </div>
         </section>

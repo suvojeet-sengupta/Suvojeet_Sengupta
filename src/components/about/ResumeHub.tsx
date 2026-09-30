@@ -1,400 +1,193 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { experiences, summary } from '@/data/resumeData';
 
-const DownloadIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-);
+const INK: [number, number, number] = [22, 23, 26];
+const GREY: [number, number, number] = [96, 97, 102];
+const RULE: [number, number, number] = [210, 208, 204];
 
-const ExpandIcon = ({ expanded }: { expanded: boolean }) => (
-    <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
-    >
-        <polyline points="6 9 12 15 18 9" />
-    </svg>
-);
+async function downloadResumePdf() {
+    const { jsPDF } = await import('jspdf');
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const contentWidth = pageWidth - margin * 2;
+    let y = 24;
+
+    const ensureSpace = (needed: number) => {
+        if (y + needed > 280) {
+            doc.addPage();
+            y = 22;
+        }
+    };
+
+    const text = (value: string, size: number, style: 'normal' | 'bold' = 'normal', color = INK, x = margin) => {
+        doc.setFont('helvetica', style);
+        doc.setFontSize(size);
+        doc.setTextColor(...color);
+        const lines = doc.splitTextToSize(value, contentWidth - (x - margin));
+        lines.forEach((line: string) => {
+            ensureSpace(size * 0.5);
+            doc.text(line, x, y);
+            y += size * 0.47;
+        });
+    };
+
+    const rule = () => {
+        ensureSpace(8);
+        doc.setDrawColor(...RULE);
+        doc.setLineWidth(0.3);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 7;
+    };
+
+    const heading = (label: string) => {
+        y += 3;
+        rule();
+        text(label.toUpperCase(), 9, 'bold', GREY);
+        y += 3;
+    };
+
+    // Header
+    text('Suvojeet Sengupta', 22, 'bold');
+    y += 1;
+    text('Software Developer & Vocalist', 11, 'normal', GREY);
+    text('Dhanbad, India  ·  suvojeet@suvojeetsengupta.in  ·  suvojeetsengupta.in  ·  github.com/suvojeet-sengupta', 9, 'normal', GREY);
+
+    heading('Summary');
+    text(summary, 10);
+
+    heading('Experience');
+    experiences.forEach((exp, index) => {
+        ensureSpace(30);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(...INK);
+        doc.text(exp.role, margin, y);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(...GREY);
+        doc.text(exp.period, pageWidth - margin, y, { align: 'right' });
+        y += 5;
+        text(exp.company, 9.5, 'normal', GREY);
+        y += 1;
+        text(exp.description, 9.5);
+        y += 1;
+        exp.details.forEach((detail) => {
+            ensureSpace(6);
+            doc.setFontSize(9.5);
+            doc.setTextColor(...GREY);
+            doc.text('–', margin + 1, y);
+            text(detail, 9.5, 'normal', INK, margin + 6);
+        });
+        y += 1;
+        text(exp.skills.join('  ·  '), 8.5, 'normal', GREY);
+        if (index < experiences.length - 1) y += 5;
+    });
+
+    doc.save('Suvojeet_Sengupta_Resume.pdf');
+}
 
 const ResumeHub = () => {
-    const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [expandedId, setExpandedId] = useState<string | null>(experiences[0]?.id ?? null);
     const [downloading, setDownloading] = useState(false);
-
-    const toggleExpand = (id: string) => {
-        setExpandedId(expandedId === id ? null : id);
-    };
 
     const handleDownload = async () => {
         setDownloading(true);
-
         try {
-            const { jsPDF } = await import('jspdf');
-            const doc = new jsPDF();
-            const pageWidth = doc.internal.pageSize.getWidth();
-        const margin = 18;
-        const contentWidth = pageWidth - margin * 2;
-        let y = 18;
-
-        // Helper functions
-        const addLine = (text: string, size: number, style: 'bold' | 'normal' = 'normal', align: 'left' | 'center' = 'left', x = margin) => {
-            doc.setFontSize(size);
-            doc.setFont('helvetica', style);
-            const xPos = align === 'center' ? pageWidth / 2 : x;
-            doc.text(text, xPos, y, { align });
-            y += size * 0.55;
-        };
-
-        const addWrappedText = (text: string, size: number, style: 'bold' | 'normal' = 'normal', color?: [number, number, number]) => {
-            doc.setFontSize(size);
-            doc.setFont('helvetica', style);
-            if (color) doc.setTextColor(...color);
-            const lines = doc.splitTextToSize(text, contentWidth);
-            lines.forEach((line: string) => {
-                if (y > 275) { doc.addPage(); y = 18; }
-                doc.text(line, margin, y);
-                y += size * 0.5;
-            });
-            if (color) doc.setTextColor(0, 0, 0);
-        };
-
-        const addBulletPoint = (text: string, size: number = 9) => {
-            doc.setFontSize(size);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(255, 140, 0);
-            doc.text('•', margin + 2, y);
-            doc.setTextColor(50, 50, 50);
-            const lines = doc.splitTextToSize(text, contentWidth - 10);
-            lines.forEach((line: string) => {
-                if (y > 275) { doc.addPage(); y = 18; }
-                doc.text(line, margin + 8, y);
-                y += size * 0.5;
-            });
-        };
-
-        const addSectionDivider = (width: number = 1) => {
-            if (y > 270) { doc.addPage(); y = 18; }
-            doc.setDrawColor(255, 140, 0);
-            doc.setLineWidth(width);
-            doc.line(margin, y, pageWidth - margin, y);
-            y += 8;
-        };
-
-        // ===== HEADER =====
-        addSectionDivider(2.5);
-        addLine('SUVOJEET SENGUPTA', 24, 'bold', 'center');
-        addLine('Vibe Architect | Logic Implementer | Soulful Singer', 11, 'normal', 'center');
-        addLine('Born in Asansol, West Bengal  |  Based in Dhanbad, Jharkhand', 10, 'normal', 'center');
-        addLine('Born: 1st August 2005', 10, 'normal', 'center');
-        addLine('suvojeetsengupta.in  |  github.com/suvojeet-sengupta', 9, 'normal', 'center');
-        y += 2;
-        addSectionDivider(1.5);
-
-        // ===== SUMMARY =====
-        addLine('SUMMARY', 13, 'bold');
-        y += 2;
-        addWrappedText(summary, 9.5, 'normal', [60, 60, 60]);
-        y += 4;
-
-        // ===== EXPERIENCE =====
-        addSectionDivider(1.5);
-        addLine('PROFESSIONAL EXPERIENCE', 13, 'bold');
-        y += 4;
-
-        experiences.forEach((exp, index) => {
-            if (y > 220) { doc.addPage(); y = 18; }
-
-            // Experience Header
-            doc.setFillColor(255, 248, 240);
-            doc.roundedRect(margin, y - 3, contentWidth, 15, 2, 2, 'F');
-            doc.setFontSize(11);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(255, 140, 0);
-            doc.text(`${exp.icon}  ${exp.role}`, margin + 3, y + 3);
-            doc.setFontSize(9);
-            doc.setTextColor(100, 100, 100);
-            doc.setFont('helvetica', 'normal');
-            doc.text(`${exp.company}  |  ${exp.period}`, margin + 3, y + 9);
-            doc.setTextColor(0, 0, 0);
-            y += 18;
-
-            // Description
-            addWrappedText(exp.description, 9, 'normal', [70, 70, 70]);
-            y += 2;
-
-            // Key Contributions
-            addLine('Key Contributions', 10, 'bold');
-            y += 1;
-            exp.details.forEach(detail => {
-                addBulletPoint(detail, 9);
-                y += 1;
-            });
-
-            // Skills Tags
-            y += 1;
-            addLine('Skills', 9, 'bold');
-            y += 1;
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'bold');
-            let skillX = margin + 2;
-            const skillLineHeight = 5;
-            exp.skills.forEach((skill, i) => {
-                const skillWidth = doc.getTextWidth(skill) + 6;
-                if (skillX + skillWidth > pageWidth - margin) {
-                    skillX = margin + 2;
-                    y += skillLineHeight + 1;
-                }
-                if (y > 275) { doc.addPage(); y = 18; skillX = margin + 2; }
-                doc.setFillColor(255, 248, 240);
-                doc.setDrawColor(255, 160, 50);
-                doc.roundedRect(skillX, y - 3, skillWidth, skillLineHeight, 1, 1, 'FD');
-                doc.setTextColor(80, 60, 20);
-                doc.text(skill, skillX + 3, y);
-                doc.setTextColor(0, 0, 0);
-                skillX += skillWidth + 3;
-            });
-            y += skillLineHeight + 4;
-
-            // Link
-            if (exp.link) {
-                doc.setFontSize(8);
-                doc.setFont('helvetica', 'italic');
-                doc.setTextColor(255, 140, 0);
-                doc.text(`${exp.linkLabel || exp.link}: ${exp.link}`, margin, y);
-                doc.setTextColor(0, 0, 0);
-                y += 5;
-            }
-
-            // Divider between experiences
-            if (index < experiences.length - 1) {
-                y += 2;
-                doc.setDrawColor(220, 220, 220);
-                doc.setLineWidth(0.3);
-                doc.setLineDashPattern([2, 2], 0);
-                doc.line(margin, y, pageWidth - margin, y);
-                doc.setLineDashPattern([], 0);
-                y += 5;
-            }
-        });
-
-        // Core Skills Section
-        if (y > 240) { doc.addPage(); y = 18; }
-        addSectionDivider(1.5);
-        addLine('CORE SKILLS', 13, 'bold');
-        y += 3;
-        const coreSkills = ['Hindi & Bengali Singing', 'AI Technologies', 'Custom ROM Maintenance', 'Android (Kotlin/Java)', 'Web Development', 'Full-Stack Development', 'Customer Communication', 'Open Source Collaboration'];
-        doc.setFontSize(9);
-        doc.setFont('helvetica', 'bold');
-        let x = margin;
-        coreSkills.forEach((skill) => {
-            const w = doc.getTextWidth(skill) + 8;
-            if (x + w > pageWidth - margin) { x = margin; y += 8; }
-            if (y > 275) { doc.addPage(); y = 18; x = margin; }
-            doc.setFillColor(255, 248, 240);
-            doc.setDrawColor(255, 160, 50);
-            doc.roundedRect(x, y - 3, w, 6, 1.5, 1.5, 'FD');
-            doc.setTextColor(80, 60, 20);
-            doc.text(skill, x + 4, y + 1);
-            doc.setTextColor(0, 0, 0);
-            x += w + 3;
-        });
-        y += 12;
-
-        // Contact Section
-        if (y > 250) { doc.addPage(); y = 18; }
-        addSectionDivider(1.5);
-        addLine('CONTACT', 13, 'bold');
-        y += 3;
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(60, 60, 60);
-        doc.text('GitHub: github.com/suvojeet-sengupta', margin, y);
-        y += 6;
-        doc.text('Website: suvojeetsengupta.in', margin, y);
-        doc.setTextColor(0, 0, 0);
-
-        // Footer
-        y += 12;
-        doc.setDrawColor(255, 140, 0);
-        doc.setLineWidth(1);
-        doc.line(margin, y, pageWidth - margin, y);
-        y += 5;
-        doc.setFontSize(8);
-        doc.setFont('helvetica', 'italic');
-        doc.setTextColor(150, 150, 150);
-        doc.text('Last Updated: April 2026', pageWidth / 2, y, { align: 'center' });
-
-        doc.save('Suvojeet_Sengupta_Resume.pdf');
+            await downloadResumePdf();
         } catch (error) {
             console.error('Failed to generate PDF:', error);
-            alert('Could not generate PDF. Please try again later.');
+            alert('Could not generate the PDF. Please try again.');
         } finally {
             setDownloading(false);
         }
     };
 
     return (
-        <section className="bg-[color:var(--bg-secondary)]">
-            <div className="section-container">
-                {/* Section Header */}
-                <div className="text-center mb-14 sm:mb-16">
-                    <motion.div
-                        className="v-section-num"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        03 / Résumé
-                    </motion.div>
-                    <motion.h2
-                        className="v-section-title"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        Professional <em>Journey</em>
-                    </motion.h2>
-                    <motion.p
-                        className="mt-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-[color:var(--text-secondary)] opacity-80"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        From customer support at DishTV to full-stack development at Gogig — a journey of constant evolution.
-                    </motion.p>
-                </div>
+        <section className="sec">
+            <header className="sec-head">
+                <span className="sec-num">01</span>
+                <h2 className="sec-title">Experience</h2>
+                <button
+                    onClick={handleDownload}
+                    disabled={downloading}
+                    className="sec-note text-link !text-[14px] justify-self-start md:justify-self-end disabled:opacity-50"
+                >
+                    {downloading ? 'Preparing PDF…' : 'Download résumé (PDF)'}
+                </button>
+            </header>
 
-                {/* Experience Timeline */}
-                <div className="max-w-4xl mx-auto space-y-6">
-                    {experiences.map((exp, index) => {
-                        const isExpanded = expandedId === exp.id;
-                        return (
-                            <motion.div
-                                key={exp.id}
-                                className="professional-card !p-0 overflow-hidden"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.08 }}
+            <ol>
+                {experiences.map((exp) => {
+                    const isExpanded = expandedId === exp.id;
+                    const panelId = `exp-${exp.id}`;
+                    return (
+                        <li key={exp.id} className="border-b border-[color:var(--line)]">
+                            <button
+                                onClick={() => setExpandedId(isExpanded ? null : exp.id)}
+                                aria-expanded={isExpanded}
+                                aria-controls={panelId}
+                                className="w-full grid grid-cols-[1fr_auto] md:grid-cols-[64px_minmax(0,1fr)_minmax(0,1.3fr)_auto] gap-x-8 gap-y-1 py-6 text-left items-baseline group"
                             >
-                                {/* Header - Always Visible */}
-                                <button
-                                    onClick={() => toggleExpand(exp.id)}
-                                    className="w-full p-5 sm:p-6 flex items-center justify-between gap-4 text-left hover:bg-[color:var(--bg-tertiary)]/40 transition-colors"
+                                <span className="hidden md:block font-mono text-[13px] text-[color:var(--text-muted)]">
+                                    {exp.period.slice(0, 4).match(/\d{4}/) ? exp.period.slice(0, 4) : '—'}
+                                </span>
+                                <span className="min-w-0">
+                                    <span className="block font-serif text-[22px] leading-snug group-hover:underline underline-offset-4 decoration-1">
+                                        {exp.role}
+                                    </span>
+                                    <span className="block text-[14px] text-[color:var(--text-tertiary)] mt-1 md:hidden">
+                                        {exp.company} · {exp.period}
+                                    </span>
+                                </span>
+                                <span className="hidden md:block text-[15px] text-[color:var(--text-secondary)]">
+                                    {exp.company}
+                                    <span className="text-[color:var(--text-muted)]"> · {exp.period}</span>
+                                </span>
+                                <span
+                                    aria-hidden="true"
+                                    className={`text-[20px] leading-none text-[color:var(--text-muted)] transition-transform ${isExpanded ? 'rotate-45' : ''}`}
                                 >
-                                    <div className="flex items-center gap-4 flex-shrink min-w-0">
-                                        <span className="text-2xl sm:text-3xl flex-shrink-0">{exp.icon}</span>
-                                        <div className="min-w-0">
-                                            <h3 className="font-serif text-base sm:text-xl font-semibold truncate">{exp.role}</h3>
-                                            <p className="text-xs sm:text-sm font-mono uppercase tracking-[0.15em] text-[color:var(--neon)] mt-1 truncate">{exp.company} · {exp.period}</p>
+                                    +
+                                </span>
+                            </button>
+
+                            {isExpanded && (
+                                <div id={panelId} className="pb-8 md:pl-[96px] md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] md:gap-x-8">
+                                    <p className="text-[16px] mb-4 md:mb-0 max-w-md">{exp.description}</p>
+                                    <div>
+                                        <ul className="space-y-2 text-[15px] text-[color:var(--text-secondary)]">
+                                            {exp.details.map((detail) => (
+                                                <li key={detail} className="grid grid-cols-[16px_1fr]">
+                                                    <span className="text-[color:var(--text-muted)]">–</span>
+                                                    <span>{detail}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="mt-5 flex flex-wrap gap-2">
+                                            {exp.skills.map((skill) => (
+                                                <span key={skill} className="tag">{skill}</span>
+                                            ))}
                                         </div>
-                                    </div>
-                                    <div className="flex items-center gap-3 flex-shrink-0">
                                         {exp.link && (
                                             <a
                                                 href={exp.link}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="hidden sm:inline-block text-[10px] uppercase tracking-[0.2em] font-mono text-[color:var(--text-muted)] hover:text-[color:var(--neon)] transition-colors"
-                                                onClick={(e) => e.stopPropagation()}
+                                                className="text-link mt-5 text-[14px]"
                                             >
-                                                {exp.linkLabel || 'Visit'}
+                                                {exp.linkLabel || exp.link} ↗
                                             </a>
                                         )}
-                                        <ExpandIcon expanded={isExpanded} />
                                     </div>
-                                </button>
-
-                                {/* Expanded Content */}
-                                <AnimatePresence>
-                                    {isExpanded && (
-                                        <motion.div
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="overflow-hidden"
-                                        >
-                                            <div className="px-5 sm:px-6 pb-6 pt-3 border-t border-[color:var(--line)]">
-                                                {/* Description */}
-                                                <p className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-85 mb-6 leading-relaxed">
-                                                    {exp.description}
-                                                </p>
-
-                                                {/* Key Contributions */}
-                                                <div className="mb-6">
-                                                    <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] mb-3">
-                                                        Key Contributions
-                                                    </h4>
-                                                    <ul className="space-y-2">
-                                                        {exp.details.map((detail, i) => (
-                                                            <li key={i} className="flex items-start gap-3 text-sm text-[color:var(--text-secondary)] opacity-85">
-                                                                <span className="w-1 h-1 bg-[color:var(--neon)] mt-2.5 flex-shrink-0" />
-                                                                {detail}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-
-                                                {/* Skills */}
-                                                <div>
-                                                    <h4 className="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--neon)] mb-3">
-                                                        Skills
-                                                    </h4>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {exp.skills.map((skill, i) => (
-                                                            <span key={i} className="v-pill">
-                                                                {skill}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </motion.div>
-                        );
-                    })}
-                </div>
-
-                {/* Download Button */}
-                <motion.div
-                    className="mt-16 text-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <motion.button
-                        className="btn-solid disabled:opacity-50"
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={handleDownload}
-                        disabled={downloading}
-                    >
-                        <DownloadIcon />
-                        <span>{downloading ? 'Pressing...' : 'Download Resume PDF'}</span>
-                    </motion.button>
-                    <p className="font-mono text-[10px] text-center text-[color:var(--text-muted)] uppercase tracking-[0.25em] mt-4">
-                        Last Updated · {new Date().toISOString().slice(0,7).replace('-', '.')}
-                    </p>
-                </motion.div>
-            </div>
+                                </div>
+                            )}
+                        </li>
+                    );
+                })}
+            </ol>
         </section>
     );
 };

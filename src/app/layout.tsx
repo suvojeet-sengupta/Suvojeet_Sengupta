@@ -55,7 +55,7 @@ export const metadata: Metadata = {
         url: "/suvojeet.jpg",
         width: 1200,
         height: 630,
-        alt: "Suvojeet Sengupta — Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver",
+        alt: "Suvojeet Sengupta — Software Developer & Vocalist",
       },
     ],
   },

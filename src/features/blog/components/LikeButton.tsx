@@ -9,10 +9,9 @@ interface LikeButtonProps {
   slug: string;
   initialLikes: number;
   initialHasLiked: boolean;
-  isSidebar?: boolean;
 }
 
-export function LikeButton({ slug, initialLikes, initialHasLiked, isSidebar }: LikeButtonProps) {
+export function LikeButton({ slug, initialLikes, initialHasLiked }: LikeButtonProps) {
   const [likes, setLikes] = useState(initialLikes);
   const [hasLiked, setHasLiked] = useState(initialHasLiked);
   const { mutate: likePost } = useLikePost(slug);
@@ -33,14 +32,16 @@ export function LikeButton({ slug, initialLikes, initialHasLiked, isSidebar }: L
   return (
     <button
       onClick={handleLike}
+      aria-pressed={hasLiked}
       className={cn(
-        "flex items-center justify-center gap-2 py-2.5 border font-mono text-[11px] uppercase tracking-[0.2em] font-bold transition-all",
-        isSidebar ? "w-full" : "flex-1",
-        hasLiked ? "bg-[color:var(--neon)]/10 border-[color:var(--neon)] text-[color:var(--neon)]" : "border-[color:var(--line-strong)] hover:border-[color:var(--neon)]"
+        "inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[14px] transition-colors",
+        hasLiked
+          ? "border-[color:var(--text-primary)] text-[color:var(--text-primary)]"
+          : "border-[color:var(--line-strong)] text-[color:var(--text-secondary)] hover:border-[color:var(--text-primary)]"
       )}
     >
       <Icons.Heart className={cn("w-4 h-4", hasLiked && "fill-current")} />
-      <span>{likes} {isSidebar ? 'Likes' : ''}</span>
+      <span>{likes} {likes === 1 ? 'like' : 'likes'}</span>
     </button>
   );
 }

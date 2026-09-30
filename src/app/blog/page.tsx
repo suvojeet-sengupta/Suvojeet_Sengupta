@@ -5,7 +5,7 @@ import { getBreadcrumbJsonLd } from '@/lib/seo';
 export const runtime = 'edge';
 
 export const metadata = {
-  title: 'Blog | Suvojeet Sengupta',
+  title: 'Writing',
   description: 'Posts, insights, and updates from Suvojeet Sengupta.',
 };
 

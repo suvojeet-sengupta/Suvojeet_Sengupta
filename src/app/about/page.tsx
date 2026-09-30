@@ -5,17 +5,16 @@ import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd, getFAQSchema, getProfil
 const ogImage = getOgImageUrl('About Me');
 
 export const metadata: Metadata = {
-  title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
-  description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems — without writing code manually. AI is the implementation layer. Production thinking is the skill.',
+  title: 'About',
+  description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
   keywords: [
-    'Suvojeet Sengupta', 'about Suvojeet Sengupta', 'Vibe Architect',
-    'Logic Implementer', 'AI developer India', 'singer Dhanbad',
-    'systems thinker India', 'Android architect', 'Suvojeet biography'
+    'Suvojeet Sengupta', 'about Suvojeet Sengupta', 'software developer Dhanbad',
+    'backend developer India', 'Android developer', 'Hindi singer', 'Bengali singer', 'Suvojeet Sengupta résumé'
   ],
   alternates: { canonical: `${SEO_CONFIG.url}/about` },
   openGraph: {
-    title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
-    description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems without writing code manually.',
+    title: 'About | Suvojeet Sengupta',
+    description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
     url: `${SEO_CONFIG.url}/about`,
     type: 'profile',
     images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta' }],
@@ -25,8 +24,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Suvojeet Sengupta | Vibe Architect & Singer',
-    description: 'Suvojeet Sengupta understands architecture, thinks in systems, and solves real problems without writing code manually.',
+    title: 'About | Suvojeet Sengupta',
+    description: 'Suvojeet Sengupta is a software developer intern at Gogig and a Hindi & Bengali vocalist from Dhanbad, India. Experience, skills and background.',
     images: [ogImage],
     creator: SEO_CONFIG.twitterHandle,
     site: SEO_CONFIG.twitterSite,
@@ -42,23 +41,19 @@ export default function Page() {
   const faqSchema = getFAQSchema([
     {
       question: "Who is Suvojeet Sengupta?",
-      answer: "Suvojeet Sengupta is a Vibe Architect, Logic Implementer, and soulful Singer based in Dhanbad, India. He builds production-grade software by thinking in complete systems and using AI as his implementation layer — without writing code manually."
-    },
-    {
-      question: "Does Suvojeet Sengupta write code?",
-      answer: "Not in the traditional sense. Suvojeet designs the full system architecture — data flow, performance constraints, failure modes, and component contracts — then directs AI to implement it. The logic, the decisions, and the production thinking are entirely his. The syntax is the machine's job."
-    },
-    {
-      question: "What is a Vibe Architect?",
-      answer: "A Vibe Architect is someone who understands systems deeply enough to design them completely before building. Suvojeet thinks in architecture, plans for production from day one, and uses AI as a precision implementation tool — not a replacement for thinking."
+      answer: "Suvojeet Sengupta is a software developer and Hindi & Bengali vocalist based in Dhanbad, India. He is a software developer intern at Gogig, builds Android apps and backend services, and records and performs music."
     },
     {
       question: "What has Suvojeet Sengupta built?",
-      answer: "SuvMusic — a high-performance YouTube Music client for Android with 200+ GitHub stars; NoteNext — an offline-first note app with biometric privacy; and official Custom ROM builds for Redmi 12 5G / Poco M6 Pro 5G used by real communities."
+      answer: "SuvMusic, a YouTube Music client for Android with more than 290 GitHub stars; NoteNext, an offline-first Android notes app with biometric lock; custom ROM builds for the Redmi 12 5G / Poco M6 Pro 5G; and suvojeetsengupta.in with its own NestJS backend API."
+    },
+    {
+      question: "What technologies does Suvojeet Sengupta work with?",
+      answer: "Kotlin and Jetpack Compose for Android; TypeScript, Node.js and NestJS for backend services; Next.js and React for the web; and Docker and Cloudflare for deployment."
     },
     {
       question: "What are Suvojeet's musical influences?",
-      answer: "Suvojeet is inspired by Kishore Kumar, Lata Mangeshkar, and modern artists like Arijit Singh. He performs in Hindi and Bengali, approaching every song with the same precision and intentionality he brings to software design."
+      answer: "Kishore Kumar, Lata Mangeshkar and Arijit Singh. He sings in Hindi and Bengali."
     }
   ]);
 

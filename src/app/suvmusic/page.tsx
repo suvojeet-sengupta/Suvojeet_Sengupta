@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 const ogImage = getOgImageUrl('SuvMusic');
 
 export const metadata: Metadata = {
-    title: 'SuvMusic — Android YouTube Music Client | Suvojeet Sengupta',
+    title: 'SuvMusic — Android YouTube Music Client',
     description: 'SuvMusic is a high-performance YouTube Music client for Android built with Kotlin & Jetpack Compose. 200+ GitHub stars. Built by Suvojeet Sengupta.',
     keywords: ['SuvMusic', 'SuvMusic app', 'YouTube Music Android', 'Kotlin music app', 'Suvojeet Sengupta SuvMusic', 'open source music player Android'],
     alternates: { canonical: `${SEO_CONFIG.url}/suvmusic` },

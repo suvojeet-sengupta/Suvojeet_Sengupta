@@ -10,81 +10,60 @@ export default function BlogListPage({ initialPosts }: { initialPosts: BlogSumma
   const { data: posts, isLoading, error } = useBlogPosts(initialPosts);
 
   return (
-    <section className="section-container">
-      <div className="mb-12 sm:mb-16">
-        <div className="v-tag mb-7">Side B · Liner Notes</div>
-        <h1 className="v-section-title mb-5">
-          Latest <em>Posts</em>
-        </h1>
-        <p className="max-w-2xl text-base sm:text-lg text-[color:var(--text-secondary)] opacity-80 leading-relaxed">
-          Long-form updates, learnings, and insights from the studio — software, music, and the overlap.
+    <div className="page">
+      <header className="max-w-3xl">
+        <p className="page-eyebrow">Writing</p>
+        <h1 className="page-title">Notes on building software and making music</h1>
+        <p className="page-lede">
+          What I&apos;m learning about backend development, Android and singing, written
+          down as I go.
         </p>
-      </div>
+      </header>
 
       {error && (
-        <div className="mb-8 p-4 border border-red-500/40 bg-red-500/5 text-red-500 font-mono text-sm">
-          {error instanceof Error ? error.message : 'Unable to load blog posts right now.'}
-        </div>
+        <p role="alert" className="mt-10 text-[15px] text-[#c2553b]">
+          {error instanceof Error ? error.message : 'Unable to load posts right now.'}
+        </p>
       )}
 
-      <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
+      <ol className="mt-16 border-t border-[color:var(--line-strong)]">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => <BlogCardSkeleton key={i} />)
         ) : posts && posts.length > 0 ? (
-          posts.map((post) => <BlogCard key={post.id} post={post} />)
+          posts.map((post) => <BlogRow key={post.id} post={post} />)
         ) : (
-          <div className="col-span-full professional-card text-center py-12">
-            <h2 className="font-serif text-2xl font-semibold mb-3">No posts yet</h2>
-            <p className="text-[color:var(--text-secondary)] opacity-75">
-              The first article will appear here once published from the dashboard.
-            </p>
-          </div>
+          <li className="py-12">
+            <h2 className="text-[26px] mb-2">No posts yet</h2>
+            <p className="text-[16px]">The first post will appear here once it&apos;s published.</p>
+          </li>
         )}
-      </div>
-    </section>
+      </ol>
+    </div>
   );
 }
 
-function BlogCard({ post }: { post: BlogSummary }) {
+function BlogRow({ post }: { post: BlogSummary }) {
   return (
-    <article className="professional-card flex flex-col justify-between group">
-      <div>
-        <div className="flex flex-wrap items-center gap-2 mb-4 font-mono text-[10px] uppercase tracking-[0.2em]">
-          {post.category && <span className="v-pill v-pill-neon">{post.category}</span>}
-          <span className="text-[color:var(--text-muted)]">
-            <FormattedDate date={post.publishedAt} />
-          </span>
+    <li className="border-b border-[color:var(--line)]">
+      <Link
+        href={`/blog/${post.slug}`}
+        className="grid gap-x-10 gap-y-3 py-9 md:grid-cols-[160px_minmax(0,1fr)] group"
+      >
+        <div className="text-[14px] text-[color:var(--text-tertiary)] md:pt-2 flex md:flex-col gap-x-3 gap-y-1">
+          <FormattedDate date={post.publishedAt} />
+          {post.category && <span className="text-[color:var(--text-muted)]">{post.category}</span>}
         </div>
-
-        <h2 className="font-serif text-xl sm:text-2xl font-semibold leading-tight mb-3 group-hover:text-[color:var(--neon)] transition-colors">
-          {post.title}
-        </h2>
-        <p className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-80 leading-relaxed">
-          {post.excerpt || 'Open the post to read full details.'}
-        </p>
-
-        {post.tags.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <span key={`${post.id}-${tag}`} className="v-pill">
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mt-6 pt-5 border-t border-[color:var(--line)] flex items-center justify-between gap-4">
-        <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)]">
-          {post.views} views · {post.commentsCount} comments
+        <div className="min-w-0">
+          <h2 className="text-[clamp(24px,2.6vw,32px)] leading-tight mb-3 group-hover:underline underline-offset-[6px] decoration-1">
+            {post.title}
+          </h2>
+          {post.excerpt && <p className="text-[16px] max-w-2xl">{post.excerpt}</p>}
+          <p className="mt-4 text-[13px] text-[color:var(--text-muted)]">
+            {post.views} views · {post.commentsCount} {post.commentsCount === 1 ? 'comment' : 'comments'}
+            {post.tags.length > 0 && <> · {post.tags.join(', ')}</>}
+          </p>
         </div>
-        <Link
-          href={`/blog/${post.slug}`}
-          className="font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-[color:var(--neon)] hover:text-[color:var(--ember)] transition-colors"
-        >
-          Read →
-        </Link>
-      </div>
-    </article>
+      </Link>
+    </li>
   );
 }

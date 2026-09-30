@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 const ogImage = getOgImageUrl('Suvojeet Sengupta');
 
 export const metadata: Metadata = {
-  title: SEO_CONFIG.title,
+  title: { absolute: SEO_CONFIG.title },
   description: SEO_CONFIG.description,
   keywords: SEO_CONFIG.keywords,
   alternates: { canonical: SEO_CONFIG.url },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: SEO_CONFIG.description,
     url: SEO_CONFIG.url,
     siteName: SEO_CONFIG.siteName,
-    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta — Singer | Performer | Composer | Tech Enthusiast | Lifelong Learner | Android App Architect | Web & Backend Developer | AI Power User | Problem Solver' }],
+    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Suvojeet Sengupta — Software Developer & Vocalist' }],
     locale: SEO_CONFIG.locale,
     type: 'profile',
     // @ts-ignore — profile open graph fields

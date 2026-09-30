@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const postUrl = `${SEO_CONFIG.url}/blog/${slug}`;
 
   return {
-    title,
+    title: post.title,
     description,
     alternates: { canonical: postUrl },
     authors: [{ name: 'Suvojeet Sengupta', url: SEO_CONFIG.url }],

@@ -38,23 +38,23 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment, onReply }) =>
     };
 
     return (
-        <div className="border border-light rounded-sm p-5 bg-tertiary">
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-                <span className="font-bold">{comment.name}</span>
-                <span className="text-muted" suppressHydrationWarning>• {formatDate(comment.createdAt)}</span>
+        <div className="py-6 border-b border-[color:var(--line)]">
+            <div className="flex flex-wrap items-baseline gap-x-2 text-[14px]">
+                <span className="text-[color:var(--text-primary)] font-medium">{comment.name}</span>
+                <span className="text-[color:var(--text-muted)]" suppressHydrationWarning>· {formatDate(comment.createdAt)}</span>
                 {!comment.isApproved && (
-                    <span className="text-[10px] font-black uppercase tracking-widest bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-sm">
-                        Pending
+                    <span className="text-[12px] text-[color:var(--text-tertiary)] border border-[color:var(--line-strong)] rounded-full px-2 py-px">
+                        Awaiting approval
                     </span>
                 )}
             </div>
             
-            <p className="mt-3 whitespace-pre-wrap text-secondary">{comment.content}</p>
+            <p className="mt-2 whitespace-pre-wrap text-[16px]">{comment.content}</p>
             
-            <div className="mt-4 flex items-center gap-4">
+            <div className="mt-3 flex items-center gap-5 text-[14px]">
                 <button
                     onClick={() => setIsReplying(!isReplying)}
-                    className="text-brand-orange text-sm font-bold uppercase tracking-wider"
+                    className="text-[color:var(--text-tertiary)] hover:text-[color:var(--text-primary)] transition-colors"
                 >
                     {isReplying ? 'Cancel' : 'Reply'}
                 </button>
@@ -62,9 +62,9 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment, onReply }) =>
                 {comment.replies.length > 0 && (
                     <button
                         onClick={() => setIsRepliesCollapsed(!isRepliesCollapsed)}
-                        className="text-muted text-[10px] font-black uppercase tracking-widest"
+                        className="text-[color:var(--text-tertiary)] hover:text-[color:var(--text-primary)] transition-colors"
                     >
-                        {isRepliesCollapsed ? `View ${comment.replies.length} replies` : 'Hide replies'}
+                        {isRepliesCollapsed ? `Show ${comment.replies.length} ${comment.replies.length === 1 ? 'reply' : 'replies'}` : 'Hide replies'}
                     </button>
                 )}
             </div>
@@ -92,17 +92,17 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment, onReply }) =>
                 {!isRepliesCollapsed && comment.replies.length > 0 && (
                     <div className="mt-4 space-y-4">
                         {comment.replies.map((reply) => (
-                            <div key={reply.id} className="ml-4 border-l-2 border-light pl-4">
-                                <div className="flex flex-wrap items-center gap-2 text-sm">
-                                    <span className="font-bold">{reply.name}</span>
+                            <div key={reply.id} className="ml-1 border-l border-[color:var(--line-strong)] pl-4">
+                                <div className="flex flex-wrap items-baseline gap-x-2 text-[14px]">
+                                    <span className="text-[color:var(--text-primary)] font-medium">{reply.name}</span>
                                     {reply.isOwner && (
-                                        <span className="text-[10px] font-black uppercase tracking-widest bg-green-100 text-green-700 px-2 py-0.5 rounded-sm">
+                                        <span className="text-[12px] text-[color:var(--text-secondary)] border border-[color:var(--line-strong)] rounded-full px-2 py-px">
                                             Author
                                         </span>
                                     )}
-                                    <span className="text-muted" suppressHydrationWarning>• {formatDate(reply.createdAt)}</span>
+                                    <span className="text-[color:var(--text-muted)]" suppressHydrationWarning>· {formatDate(reply.createdAt)}</span>
                                 </div>
-                                <p className="mt-2 whitespace-pre-wrap text-secondary text-sm">{reply.content}</p>
+                                <p className="mt-1.5 whitespace-pre-wrap text-[15px]">{reply.content}</p>
                             </div>
                         ))}
                     </div>

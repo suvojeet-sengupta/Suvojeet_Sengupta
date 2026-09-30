@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Icons } from './Icons';
-import ModularContactForm from '../contact/ModularContactForm';
 import Link from 'next/link';
+import ModularContactForm from '../contact/ModularContactForm';
 
 interface ProjectClientProps {
     name: string;
@@ -20,29 +18,6 @@ interface ProjectClientProps {
     stats?: { label: string; value: string }[];
 }
 
-const ExternalLinkIcon = ({ size = 16 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-        <polyline points="15 3 21 3 21 9" />
-        <line x1="10" y1="14" x2="21" y2="3" />
-    </svg>
-);
-
-const DownloadIcon = ({ size = 16 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-);
-
-const ArrowLeftIcon = ({ size = 16 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12" />
-        <polyline points="12 19 5 12 12 5" />
-    </svg>
-);
-
 const ProjectClient: React.FC<ProjectClientProps> = ({
     name,
     description,
@@ -56,146 +31,105 @@ const ProjectClient: React.FC<ProjectClientProps> = ({
     downloadUrl: initialDownloadUrl,
     stats
 }) => {
-    const [dynamicDownloadUrl, setDynamicDownloadUrl] = useState<string | undefined>(initialDownloadUrl);
+    const [downloadUrl, setDownloadUrl] = useState<string | undefined>(initialDownloadUrl);
+    const [latestVersion, setLatestVersion] = useState<string | undefined>();
 
     useEffect(() => {
-        if (repo) {
-            fetch(`https://api.github.com/repos/${repo}/releases/latest`)
-                .then(res => res.json())
-                .then(data => {
-                    const apkAsset = data.assets?.find((asset: any) => asset.name.endsWith('.apk'));
-                    if (apkAsset) {
-                        setDynamicDownloadUrl(apkAsset.browser_download_url);
-                    }
-                })
-                .catch(err => console.error("Failed to fetch latest release:", err));
-        }
+        if (!repo) return;
+        fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+            .then(res => res.json())
+            .then(data => {
+                const apkAsset = data.assets?.find((asset: any) => asset.name.endsWith('.apk'));
+                if (apkAsset) setDownloadUrl(apkAsset.browser_download_url);
+                if (typeof data.tag_name === 'string') setLatestVersion(data.tag_name);
+            })
+            .catch(err => console.error("Failed to fetch latest release:", err));
     }, [repo]);
 
     return (
-        <div className="min-h-screen pt-24 sm:pt-28 pb-16">
-            <div className="section-container !pt-0">
-                <Link
-                    href="/#tracks"
-                    className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--text-secondary)] opacity-70 hover:text-[color:var(--neon)] hover:opacity-100 transition-colors mb-10 group"
-                >
-                    <ArrowLeftIcon size={14} />
-                    <span className="group-hover:-translate-x-1 transition-transform">Back to Tracklist</span>
-                </Link>
+        <div className="page">
+            <Link href="/#work" className="text-link text-[14px] !border-transparent hover:!border-[color:var(--text-primary)] mb-12">
+                ← All work
+            </Link>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-                        <div className="flex-1 min-w-0">
-                            <div className="v-tag mb-6">Track · {name}</div>
-                            <h1 className="font-serif font-light leading-[0.92] tracking-tight mb-5 text-[clamp(48px,9vw,128px)] break-words">
-                                {name}
-                            </h1>
-                            <p className="text-base sm:text-lg lg:text-xl text-[color:var(--text-secondary)] opacity-85 max-w-2xl leading-relaxed">
-                                {description}
-                            </p>
-                        </div>
-                        <div className="flex flex-wrap gap-3">
-                            <a
-                                href={githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-outline"
-                            >
-                                <Icons.GitHub className="w-4 h-4" /> GitHub
-                            </a>
-                            {dynamicDownloadUrl && (
-                                <a
-                                    href={dynamicDownloadUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn-solid"
-                                >
-                                    <DownloadIcon size={16} /> Download APK
-                                </a>
-                            )}
-                            {liveUrl && (
-                                <a
-                                    href={liveUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="btn-solid"
-                                >
-                                    <ExternalLinkIcon size={16} /> View Live
-                                </a>
-                            )}
-                        </div>
-                    </div>
+            <header className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 items-end">
+                <div>
+                    <p className="page-eyebrow">Project</p>
+                    <h1 className="page-title">{name}</h1>
+                    <p className="page-lede">{description}</p>
+                </div>
+                <div className="flex flex-wrap gap-3 lg:justify-end lg:pb-2">
+                    {downloadUrl && (
+                        <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="btn-solid">
+                            Download APK
+                        </a>
+                    )}
+                    {liveUrl && (
+                        <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="btn-solid">
+                            Open live site
+                        </a>
+                    )}
+                    <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                        Source on GitHub ↗
+                    </a>
+                </div>
+            </header>
 
-                    {stats && (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-14 sm:mb-16 pb-12 border-b border-[color:var(--line-strong)]">
-                            {stats.map((stat, i) => (
-                                <div key={i} className="text-center sm:text-left">
-                                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-[color:var(--text-muted)] mb-2">{stat.label}</p>
-                                    <p className="font-serif text-2xl sm:text-3xl font-semibold text-[color:var(--neon)]">{stat.value}</p>
-                                </div>
-                            ))}
+            {stats && (
+                <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-x-6 border-y border-[color:var(--line-strong)]">
+                    {stats.map((stat) => (
+                        <div key={stat.label} className="py-6">
+                            <dt className="text-[13px] text-[color:var(--text-muted)] mb-1">{stat.label}</dt>
+                            <dd className="font-serif text-[24px] text-[color:var(--text-primary)]">
+                                {stat.label === 'Version' && latestVersion ? latestVersion : stat.value}
+                            </dd>
                         </div>
+                    ))}
+                </dl>
+            )}
+
+            <div className="grid gap-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-20 mt-4">
+                <div>
+                    <section className="sec !pt-16">
+                        <h2 className="text-[30px] mb-5">Overview</h2>
+                        <p className="text-[17px] leading-[1.75] max-w-2xl">{longDescription || description}</p>
+                    </section>
+
+                    {story && (
+                        <section className="pt-14">
+                            <h2 className="text-[30px] mb-5">Why I built it</h2>
+                            <p className="text-[17px] leading-[1.75] max-w-2xl">{story}</p>
+                        </section>
                     )}
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-12">
-                        <div className="lg:col-span-2 space-y-12 sm:space-y-14">
-                            <section>
-                                <div className="v-section-num">A1 / Overview</div>
-                                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-5 tracking-tight">Project Overview</h2>
-                                <p className="text-base sm:text-lg text-[color:var(--text-secondary)] opacity-85 leading-relaxed">
-                                    {longDescription || description}
-                                </p>
-                            </section>
+                    <section className="pt-14">
+                        <h2 className="text-[30px] mb-5">Features</h2>
+                        <ul className="grid sm:grid-cols-2 gap-x-8 border-t border-[color:var(--line)]">
+                            {features.map((feature) => (
+                                <li key={feature} className="py-3.5 border-b border-[color:var(--line)] text-[16px] text-[color:var(--text-secondary)]">
+                                    {feature}
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                </div>
 
-                            {story && (
-                                <section>
-                                    <div className="v-section-num">A2 / The Story</div>
-                                    <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-5 tracking-tight">The Story</h2>
-                                    <p className="text-base sm:text-lg text-[color:var(--text-secondary)] opacity-85 leading-relaxed italic font-serif border-l-2 border-[color:var(--neon)] pl-5 sm:pl-6">
-                                        {story}
-                                    </p>
-                                </section>
-                            )}
-
-                            <section>
-                                <div className="v-section-num">A3 / Features</div>
-                                <h2 className="font-serif text-2xl sm:text-3xl font-semibold mb-6 tracking-tight">Key Features</h2>
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {features.map((feature, i) => (
-                                        <li key={i} className="flex items-start gap-3 p-4 border border-[color:var(--line)] hover:border-[color:var(--neon)]/50 transition-colors">
-                                            <span className="text-[color:var(--neon)] font-mono mt-0.5 flex-shrink-0">/</span>
-                                            <span className="text-sm sm:text-base text-[color:var(--text-secondary)] opacity-85">{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
+                <aside className="space-y-14 lg:pt-16 lg:sticky lg:top-24 lg:self-start">
+                    <section>
+                        <h2 className="text-[13px] font-sans tracking-normal text-[color:var(--text-muted)] mb-4">Built with</h2>
+                        <div className="flex flex-wrap gap-2">
+                            {techStack.map((tech) => (
+                                <span key={tech} className="tag">{tech}</span>
+                            ))}
                         </div>
+                    </section>
 
-                        <div className="space-y-8 sm:space-y-10 lg:sticky lg:top-28 lg:self-start">
-                            <section className="professional-card">
-                                <div className="v-section-num !mb-3">B1 / Stack</div>
-                                <h3 className="font-serif text-xl font-semibold mb-5 tracking-tight">Tech Stack</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {techStack.map((tech, i) => (
-                                        <span key={i} className="v-pill">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </section>
-
-                            <section className="professional-card border-[color:var(--neon)]/40">
-                                <div className="v-section-num !mb-3">B2 / Inquiry</div>
-                                <h3 className="font-serif text-xl font-semibold mb-5 tracking-tight">Project Inquiry</h3>
-                                <ModularContactForm initialType="PROJECT" projectName={name} />
-                            </section>
-                        </div>
-                    </div>
-                </motion.div>
+                    <section>
+                        <h2 className="text-[24px] mb-2">Questions or feedback</h2>
+                        <p className="text-[15px] mb-6">Bug reports, feature ideas and collaboration requests are all welcome.</p>
+                        <ModularContactForm initialType="PROJECT" projectName={name} />
+                    </section>
+                </aside>
             </div>
         </div>
     );

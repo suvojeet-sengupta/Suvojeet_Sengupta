@@ -8,11 +8,11 @@ export const runtime = 'edge';
 const ogImage = getOgImageUrl('My Music');
 
 export const metadata: Metadata = {
-  title: 'Music | Suvojeet Sengupta',
-  description: 'The musical journey and professional profile of Suvojeet Sengupta. Soulful Singer in Hindi and Bengali.',
+  title: 'Music',
+  description: 'Hindi and Bengali songs by Suvojeet Sengupta: recordings, covers and live performances.',
   openGraph: {
     title: 'Music | Suvojeet Sengupta',
-    description: 'Singer • Bengali & Hindi Vocals • Soulful Artist',
+    description: 'Hindi and Bengali songs by Suvojeet Sengupta, recorded and performed live.',
     url: `${SEO_CONFIG.url}/music`,
     type: 'website',
     images: [{ url: ogImage, width: 1200, height: 630 }],
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Music | Suvojeet Sengupta',
-    description: 'Singer • Bengali & Hindi Vocals • Soulful Artist',
+    description: 'Hindi and Bengali songs by Suvojeet Sengupta, recorded and performed live.',
     images: [ogImage],
   },
 };

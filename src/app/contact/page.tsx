@@ -5,7 +5,7 @@ import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
 const ogImage = getOgImageUrl('Get In Touch');
 
 export const metadata: Metadata = {
-  title: 'Contact | Suvojeet Sengupta',
+  title: 'Contact',
   description: 'Get in touch with Suvojeet Sengupta for projects, song requests, or collaborations. Based in India, available globally.',
   openGraph: {
     title: 'Contact | Suvojeet Sengupta',

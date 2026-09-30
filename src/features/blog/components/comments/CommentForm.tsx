@@ -50,50 +50,50 @@ export const CommentForm: React.FC<CommentFormProps> = ({
     };
 
     return (
-        <form onSubmit={handleSubmit} className={`space-y-4 ${isReply ? 'mt-3 p-4 bg-background border border-light rounded-sm' : 'mt-6'}`}>
+        <form onSubmit={handleSubmit} className={`space-y-4 ${isReply ? 'mt-4 pl-4 border-l border-[color:var(--line-strong)]' : 'mt-6'}`}>
             <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    {!isReply && <label className="text-[10px] font-black uppercase tracking-widest text-muted">Name</label>}
+                    {!isReply && <label className="v-label">Name</label>}
                     <input
                         type="text"
                         placeholder="Your name"
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full border border-light rounded-sm px-4 py-3 bg-background focus:border-brand-orange outline-none transition-colors text-sm"
+                        className="v-input"
                     />
                 </div>
                 {!isReply && (
                     <div className="space-y-1">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-muted">Email (optional)</label>
+                        <label className="v-label">Email (optional, never shown)</label>
                         <input
                             type="email"
-                            placeholder="suvojeet@example.com"
+                            placeholder="you@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border border-light rounded-sm px-4 py-3 bg-background focus:border-brand-orange outline-none transition-colors text-sm"
+                            className="v-input"
                         />
                     </div>
                 )}
             </div>
             <div className="space-y-1">
-                {!isReply && <label className="text-[10px] font-black uppercase tracking-widest text-muted">Comment</label>}
+                {!isReply && <label className="v-label">Comment</label>}
                 <textarea
                     placeholder={placeholder}
                     required
                     rows={isReply ? 3 : 4}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="w-full border border-light rounded-sm px-4 py-3 bg-background focus:border-brand-orange outline-none transition-colors text-sm resize-none"
+                    className="v-input resize-y"
                 />
             </div>
             <div className="flex items-center gap-4">
                 <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className={`${isReply ? 'bg-brand-black hover:bg-[color:var(--bg-tertiary)]' : 'bg-brand-orange hover:bg-orange-700'} disabled:opacity-60 text-white px-5 py-3 rounded-sm font-bold uppercase tracking-wider text-xs transition-colors`}
+                    className={`${isReply ? 'btn-outline' : 'btn-solid'} !py-2.5 !text-[14px] disabled:opacity-60`}
                 >
-                    {status === 'submitting' ? 'Posting...' : isReply ? 'Post Reply' : 'Post Comment'}
+                    {status === 'submitting' ? 'Posting…' : isReply ? 'Post reply' : 'Post comment'}
                 </button>
                 
                 <AnimatePresence>
@@ -102,7 +102,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0 }}
-                            className={`text-xs font-bold uppercase tracking-widest ${status === 'error' ? 'text-red-500' : 'text-green-600'}`}
+                            className={`text-[14px] ${status === 'error' ? 'text-[#c2553b]' : 'text-[#5fa36a]'}`}
                         >
                             {message}
                         </motion.p>

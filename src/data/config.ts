@@ -34,7 +34,7 @@ export const socialLinks = [
 ];
 
 export const siteConfig = {
-    title: "Suvojeet Sengupta | Vibe Architect & Soulful Singer",
-    description: "Official portfolio of Suvojeet Sengupta. Soulful Singer and Vibe Architect building high-performance logic-driven systems with AI.",
+    title: "Suvojeet Sengupta — Software Developer & Vocalist",
+    description: "Software developer and Hindi & Bengali vocalist from Dhanbad, India.",
     formSubmitUrl: config.formSubmitUrl,
 };

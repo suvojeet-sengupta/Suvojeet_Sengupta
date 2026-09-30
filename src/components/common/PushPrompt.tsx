@@ -2,8 +2,7 @@
 
 import { apiUrl } from '@/lib/api-base';
 import { useState, useEffect } from 'react';
-import { Bell, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 
 // Replace string with your actual public VAPID key
 const PUBLIC_VAPID_KEY = 'BALkX6Mm8qnve2mdG2ZPhth422pULKyehs68v8L0aH57ziTI4jYifwh0vo5MO1WHy7S28RJC1l3bgm6ezbsDxnE';
@@ -86,28 +85,31 @@ export default function PushPrompt() {
   if (!showPrompt || subscribed) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-background border border-brand-orange/30 shadow-2xl p-5 max-w-sm w-[calc(100vw-3rem)] flex items-start gap-4 animate-in slide-in-from-bottom-5 fade-in duration-500">
-      <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-full flex-shrink-0 animate-pulse">
-        <Bell size={24} />
-      </div>
-      <div className="flex-1">
-        <h3 className="font-bold text-primary mb-1">Enable Notifications</h3>
-        <p className="text-sm text-secondary mb-4">Get instantly notified when Suvojeet posts new music or blogs!</p>
-        <div className="flex gap-2">
-          <button 
-            onClick={handleSubscribe} 
-            disabled={loading}
-            className="flex-1 bg-brand-orange text-white text-xs font-bold uppercase tracking-wider py-2 rounded-sm hover:bg-orange-600 transition-colors"
-          >
-            {loading ? 'Wait...' : 'Subscribe'}
-          </button>
-          <button 
-            onClick={handleDismiss} 
-            className="flex-shrink-0 border border-light text-secondary text-xs p-2 rounded-sm hover:bg-tertiary transition-colors"
-          >
-            <X size={16} />
-          </button>
+    <div
+      role="dialog"
+      aria-label="Get notified about new posts"
+      className="fixed bottom-6 right-5 md:bottom-8 md:right-8 z-50 w-[calc(100vw-2.5rem)] max-w-sm p-5 rounded-[8px] bg-[color:var(--bg-elevated)] border border-[color:var(--line-strong)] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.35)]"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-[19px] mb-1">Get notified</h3>
+          <p className="text-[14px] leading-relaxed">A browser notification when I publish a new post or recording. No email needed.</p>
         </div>
+        <button
+          onClick={handleDismiss}
+          aria-label="Dismiss"
+          className="p-1 -m-1 text-[color:var(--text-muted)] hover:text-[color:var(--text-primary)] transition-colors"
+        >
+          <X size={18} />
+        </button>
+      </div>
+      <div className="flex gap-3 mt-4">
+        <button onClick={handleSubscribe} disabled={loading} className="btn-solid !py-2 !px-4 !text-[14px] disabled:opacity-60">
+          {loading ? 'Enabling…' : 'Turn on'}
+        </button>
+        <button onClick={handleDismiss} className="btn-outline !py-2 !px-4 !text-[14px]">
+          Not now
+        </button>
       </div>
     </div>
   );

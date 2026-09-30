@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 const ogImage = getOgImageUrl('NoteNext');
 
 export const metadata: Metadata = {
-    title: 'NoteNext — Offline Android Notes App | Suvojeet Sengupta',
+    title: 'NoteNext — Offline Android Notes App',
     description: 'NoteNext is an offline-first note-taking Android app with biometric privacy, rich text editing, and zero cloud dependency. Built by Suvojeet Sengupta.',
     keywords: ['NoteNext', 'NoteNext app', 'offline notes Android', 'biometric notes app', 'Suvojeet Sengupta NoteNext', 'Kotlin note app', 'open source notes Android'],
     alternates: { canonical: `${SEO_CONFIG.url}/notenext` },
@@ -72,7 +72,8 @@ export default function NoteNextPage() {
                 "Kotlin Serialization",
                 "Navigation Component"
             ]}
-            githubUrl="https://github.com/suvojeet-sengupta/NoteNext"
+            githubUrl="https://github.com/NoteNext/NoteNext"
+            repo="NoteNext/NoteNext"
             stats={[
                 { label: "Language", value: "Kotlin" },
                 { label: "Architecture", value: "Clean/MVVM" },
