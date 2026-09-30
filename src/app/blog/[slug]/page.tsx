@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `${post.title} | Suvojeet Sengupta`;
   const description = post.excerpt || `Read "${post.title}" on Suvojeet Sengupta's blog.`;
-  const ogImage = getOgImageUrl(post.title, { type: 'blog', category: post.category, subtitle: post.excerpt || undefined });
+  const ogImage = getOgImageUrl(post.title);
   const postUrl = `${SEO_CONFIG.url}/blog/${slug}`;
 
   return {

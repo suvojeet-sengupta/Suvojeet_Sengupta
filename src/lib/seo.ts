@@ -2,40 +2,9 @@
 // seo.ts — Maximum Google visibility
 // =====================================================
 
-export interface OgOptions {
-  type?: 'home' | 'about' | 'blog' | 'project' | 'music' | string;
-  subtitle?: string;
-  words?: string | number;
-  stars?: string | number;
-  version?: string;
-  duration?: string;
-  catalog?: string;
-  path?: string;
-  foot?: string;
-  category?: string;
-}
-
-export function getOgImageUrl(
-  title: string,
-  options: OgOptions = {}
-): string {
-  let base = process.env.NEXT_PUBLIC_OG_IMAGE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.suvojeetsengupta.in';
-  if (base.endsWith('/')) {
-    base = base.slice(0, -1);
-  }
-  const params = new URLSearchParams({ title });
-  const ogType = options.type || options.category;
-  if (ogType) params.set('type', ogType);
-  if (options.subtitle) params.set('subtitle', options.subtitle);
-  if (options.words !== undefined && options.words !== null) params.set('words', String(options.words));
-  if (options.stars !== undefined && options.stars !== null) params.set('stars', String(options.stars));
-  if (options.version) params.set('version', options.version);
-  if (options.duration) params.set('duration', options.duration);
-  if (options.catalog) params.set('catalog', options.catalog);
-  if (options.path) params.set('path', options.path);
-  if (options.foot) params.set('foot', options.foot);
-
-  return `${base}/api/public/og?${params}`;
+export function getOgImageUrl(text: string): string {
+  const base = (process.env.NEXT_PUBLIC_OG_IMAGE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.suvojeetsengupta.in').replace(/\/+$/, '');
+  return `${base}/api/public/og?${new URLSearchParams({ text })}`;
 }
 
 export const SEO_CONFIG = {
@@ -355,7 +324,7 @@ export function getBlogPostSchema(post: {
         }
       : {
           "@type": "ImageObject",
-          url: getOgImageUrl(post.title, { type: 'blog', category: post.category }),
+          url: getOgImageUrl(post.title),
           width: 1200,
           height: 630,
         },

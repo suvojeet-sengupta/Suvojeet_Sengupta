@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import ContactClient from '@/components/contact/ContactClient';
 import { SEO_CONFIG, getOgImageUrl, getBreadcrumbJsonLd } from '@/lib/seo';
 
-const ogImage = getOgImageUrl('Get In Touch', { type: 'about', subtitle: 'Projects • Song Requests • Collaborations' });
+const ogImage = getOgImageUrl('Get In Touch');
 
 export const metadata: Metadata = {
   title: 'Contact | Suvojeet Sengupta',

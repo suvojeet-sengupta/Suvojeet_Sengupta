@@ -2,7 +2,7 @@ import ProjectClient from '@/components/common/ProjectClient';
 import { getBreadcrumbJsonLd, getOgImageUrl, getProjectSchema, SEO_CONFIG } from '@/lib/seo';
 import { Metadata } from 'next';
 
-const ogImage = getOgImageUrl('SuvMusic', { type: 'project', subtitle: 'Android YouTube Music Client', stars: 200, version: 'v2.2.2.0' });
+const ogImage = getOgImageUrl('SuvMusic');
 
 export const metadata: Metadata = {
     title: 'SuvMusic — Android YouTube Music Client | Suvojeet Sengupta',

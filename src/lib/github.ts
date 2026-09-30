@@ -8,22 +8,19 @@ export interface GithubRepo {
 }
 
 export async function fetchGithubRepo(owner: string, repo: string): Promise<GithubRepo | null> {
-  const vpsUrl = process.env.GITHUB_STATS_API_URL || 'http://localhost:5003/api/github-stats';
-  
+  const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.suvojeetsengupta.in').replace(/\/+$/, '');
+
   try {
-    // Try fetching from the self-hosted cache service first to bypass GitHub rate limits (cached for 24 hours)
-    const response = await fetch(`${vpsUrl}/${repo}`, {
+    // Backend caches GitHub responses to avoid rate limits
+    const response = await fetch(`${apiBase}/api/public/github-repo/${owner}/${repo}`, {
       next: { revalidate: 86400 } // 24 hours in seconds
     });
-    
+
     if (response.ok) {
-      const result = await response.json();
-      if (result.success && result.data) {
-        return result.data;
-      }
+      return await response.json();
     }
   } catch (error: any) {
-    console.warn(`VPS GitHub cache fetch failed for ${repo}, falling back to direct API:`, error.message);
+    console.warn(`Backend GitHub fetch failed for ${repo}, falling back to direct API:`, error.message);
   }
 
   // Fallback to direct GitHub API if VPS is unreachable (cached for 24 hours)

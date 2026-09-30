@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, type Variants } from 'framer-motion';
 import styles from './HomePage.module.css';
+import { API_BASE } from '@/lib/api-base';
 
 interface Stat {
   value: number;
@@ -63,21 +64,14 @@ export default function StatsSection() {
   useEffect(() => {
     async function getDynamicStats() {
       try {
-        const response = await fetch('https://suvojeet-api.suvojeetsengupta.in/api/github-stats');
+        const response = await fetch(`${API_BASE || 'https://api.suvojeetsengupta.in'}/api/public/github-stats`);
         if (response.ok) {
-          const result = await response.json();
-          if (result.success && result.data) {
-            const data = result.data;
-            
-            // Calculate total stars across all repositories
-            let totalStars = 0;
-            Object.values(data).forEach((repo: any) => {
-              totalStars += repo.stargazers_count || 0;
-            });
-            
-            // Calculate projects shipped (baseline of 4, or repository count if higher)
-            const projectsCount = Math.max(4, Object.keys(data).length);
-            
+          const data = await response.json();
+          if (typeof data.totalStars === 'number') {
+            const totalStars = data.totalStars;
+
+            const projectsCount = 4;
+
             // Calculate years building dynamically starting from 2023
             const yearsBuilding = Math.max(3, new Date().getFullYear() - 2023);
 
@@ -90,7 +84,7 @@ export default function StatsSection() {
           }
         }
       } catch (error) {
-        console.error('Failed to load dynamic stats from VPS:', error);
+        console.error('Failed to load GitHub stats:', error);
       }
     }
     getDynamicStats();
