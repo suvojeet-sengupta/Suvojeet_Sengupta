@@ -40,3 +40,27 @@ export async function fetchGithubRepo(owner: string, repo: string): Promise<Gith
     return null;
   }
 }
+
+export interface GithubAccountStats {
+  totalStars: number;
+  totalRepos: number;
+  totalForks: number;
+  avatarUrl: string | null;
+}
+
+/** Account-wide stats from the backend (cached there for an hour). Null if unreachable. */
+export async function fetchGithubStats(): Promise<GithubAccountStats | null> {
+  const apiBase = (process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.suvojeetsengupta.in').replace(/\/+$/, '');
+
+  try {
+    const response = await fetch(`${apiBase}/api/public/github-stats`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return typeof data.totalStars === 'number' ? data : null;
+  } catch (error: any) {
+    console.warn('GitHub stats fetch failed:', error.message);
+    return null;
+  }
+}

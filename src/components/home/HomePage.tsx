@@ -1,123 +1,217 @@
 import React from 'react';
 import Link from 'next/link';
-import { calculateAge } from '@/lib/utils';
-import HeroContent from './HeroContent';
-import VinylSection from './VinylSection';
-import StatsSection from './StatsSection';
+import { fetchGithubStats } from '@/lib/github';
 import styles from './HomePage.module.css';
+
+const GITHUB_URL = 'https://github.com/suvojeet-sengupta';
+const YOUTUBE_URL = 'https://youtube.com/@suvojeetsengupta';
+const EMAIL = 'suvojeet@suvojeetsengupta.in';
+
+// Shown if the GitHub stats API is unreachable
+const FALLBACK_STARS = 300;
+const FALLBACK_REPOS = 100;
 
 interface HomePageProps {
   children?: React.ReactNode;
 }
 
-const HomePage = ({ children }: HomePageProps) => {
-  const age = calculateAge('2005-08-01');
+const ArrowRight = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+const ArrowUpRight = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <path d="M7 17L17 7M8 7h9v9" />
+  </svg>
+);
+
+export default async function HomePage({ children }: HomePageProps) {
+  const github = await fetchGithubStats();
+  const stars = github?.totalStars ?? FALLBACK_STARS;
+  const repos = github?.totalRepos ?? FALLBACK_REPOS;
 
   return (
-    <div className="min-h-screen">
+    <div className={styles.page}>
       {/* ========= HERO ========= */}
       <section className={styles.hero}>
-        <div className={styles.heroBg} aria-hidden="true" />
-        <HeroContent age={age} />
-        <VinylSection />
+        <div className={styles.heroInner}>
+          <div className={styles.heroText}>
+            <p className={styles.eyebrow} style={{ animationDelay: '80ms' }}>
+              Software developer &amp; vocalist · Dhanbad, India
+            </p>
+            <h1 className={styles.heroTitle} style={{ animationDelay: '160ms' }}>
+              Suvojeet Sengupta
+            </h1>
+            <p className={styles.heroLede} style={{ animationDelay: '260ms' }}>
+              I build Android apps and the backend systems behind them, and I sing
+              Hindi and Bengali music. Two crafts, practised with the same care.
+            </p>
+
+            <div className={styles.heroActions} style={{ animationDelay: '360ms' }}>
+              <Link href="#work" className="btn-solid">
+                See my work
+              </Link>
+              <Link href="/music" className="btn-outline">
+                Listen to my music
+              </Link>
+            </div>
+
+            <dl className={styles.heroFacts} style={{ animationDelay: '460ms' }}>
+              <div>
+                <dt>Engineering</dt>
+                <dd>Android, Kotlin, NestJS</dd>
+              </div>
+              <div>
+                <dt>Music</dt>
+                <dd>Hindi &amp; Bengali vocals</dd>
+              </div>
+              <div>
+                <dt>Open source</dt>
+                <dd>
+                  <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                    {stars} stars on GitHub
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <figure className={styles.portrait}>
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/portrait-720.webp 720w, /portrait-1200.webp 1200w"
+                sizes="(max-width: 1023px) 100vw, 42vw"
+              />
+              <img
+                src="/portrait.jpg"
+                alt="Portrait of Suvojeet Sengupta in a black suit"
+                width={1200}
+                height={1600}
+                fetchPriority="high"
+              />
+            </picture>
+          </figure>
+        </div>
       </section>
 
-      {/* ========= TRACKS (FeaturedProjects rendered as tracklist) ========= */}
-      <section id="tracks" className={styles.section}>
-        <div className={styles.sectionHead}>
-          <div>
-            <div className={styles.sectionNum}>02 / Tracklist</div>
-            <h2 className={styles.sectionTitle}>
-              Selected <em>Works</em>
-            </h2>
-          </div>
-          <div className={styles.sectionMeta}>
-            Last updated · {new Date().toISOString().slice(0, 7).replace('-', '.')}
-            <br />
-            Side A — Code · Side B — Voice
-          </div>
-        </div>
-
+      {/* ========= WORK ========= */}
+      <section id="work" className={styles.section}>
+        <header className={styles.sectionHead}>
+          <span className={styles.sectionNum}>01</span>
+          <h2 className={styles.sectionTitle}>Selected work</h2>
+          <p className={styles.sectionNote}>Star counts are pulled live from GitHub.</p>
+        </header>
         {children}
       </section>
 
-      {/* ========= APPROACH ========= */}
-      <section className={styles.approach} id="approach">
-        <div className={styles.approachInner}>
-          <div className={styles.sectionHead}>
-            <div>
-              <div className={styles.sectionNum}>03 / Method</div>
-              <h2 className={styles.sectionTitle}>
-                Three <em>Beats</em>
-              </h2>
-            </div>
-            <div className={styles.sectionMeta}>How the<br />record gets cut</div>
-          </div>
+      {/* ========= PRACTICE ========= */}
+      <section className={styles.section}>
+        <header className={styles.sectionHead}>
+          <span className={styles.sectionNum}>02</span>
+          <h2 className={styles.sectionTitle}>Two disciplines</h2>
+          <p className={styles.sectionNote}>Neither is a side project.</p>
+        </header>
 
-          <div className={styles.approachGrid}>
-            <div className={styles.approachCard}>
-              <div className={styles.approachCardNum}>01</div>
-              <h3>Technical Excellence</h3>
-              <p>
-                Clean architecture, native patterns, real benchmarks. SuvMusic and
-                NoteNext aren&apos;t side projects — they&apos;re release-grade software
-                meant to be lived in.
-              </p>
+        <div className={styles.practice}>
+          <article className={styles.practiceCol}>
+            <h3>Engineering</h3>
+            <p>
+              I started with Android and kept going down the stack. My apps are
+              native Kotlin with Jetpack Compose. Most of my time now goes into
+              backend work: designing REST APIs, authentication, caching, and getting
+              services deployed and running reliably.
+            </p>
+            <p>
+              I&apos;m still learning, and I learn by shipping. This site runs on an
+              API I built and maintain myself.
+            </p>
+            <ul className={styles.tagList} aria-label="Tools">
+              <li>Kotlin</li>
+              <li>Jetpack Compose</li>
+              <li>TypeScript</li>
+              <li>NestJS</li>
+              <li>Node.js</li>
+              <li>Next.js</li>
+              <li>Cloudflare D1 &amp; KV</li>
+              <li>Docker</li>
+            </ul>
+            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className={styles.textLink}>
+              GitHub profile <ArrowUpRight />
+            </a>
+          </article>
+
+          <article className={styles.practiceCol}>
+            <h3>Music</h3>
+            <p>
+              I sing Hindi and Bengali songs, from the film classics of Kishore
+              Kumar and Lata Mangeshkar to Arijit Singh&apos;s modern catalogue. I
+              record covers and perform live.
+            </p>
+            <p>
+              Singing taught me what engineering later confirmed: phrasing, timing and
+              repetition matter more than talent on its own.
+            </p>
+            <ul className={styles.tagList} aria-label="Repertoire">
+              <li>Hindi film songs</li>
+              <li>Bengali songs</li>
+              <li>Modern Bollywood</li>
+              <li>Patriotic songs</li>
+              <li>Covers</li>
+              <li>Live performance</li>
+            </ul>
+            <div className={styles.linkRow}>
+              <Link href="/music" className={styles.textLink}>
+                Listen <ArrowRight />
+              </Link>
+              <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className={styles.textLink}>
+                YouTube <ArrowUpRight />
+              </a>
             </div>
-            <div className={styles.approachCard}>
-              <div className={styles.approachCardNum}>02</div>
-              <h3>Creative Phrasing</h3>
-              <p>
-                A song is timing and a UI is timing. Every animation, every hover,
-                every transition is composed the same way I&apos;d phrase a vocal —
-                with feel.
-              </p>
-            </div>
-            <div className={styles.approachCard}>
-              <div className={styles.approachCardNum}>03</div>
-              <h3>Constant Practice</h3>
-              <p>
-                Logic over memorisation. Voice over volume. Every project, every
-                cover, every commit is a rehearsal for the next one being better.
-              </p>
-            </div>
-          </div>
+          </article>
         </div>
       </section>
 
-      {/* ========= STATS ========= */}
-      <StatsSection />
-
-      {/* ========= QUOTE ========= */}
-      <section className={styles.quote}>
-        <blockquote>
-          &ldquo;I build things <em>I want to use</em>. If it isn&apos;t fast,
-          clean, and intuitive — it isn&apos;t finished.&rdquo;
-        </blockquote>
-        <div className={styles.quoteAuthor}>— Suvojeet Sengupta · Born Asansol · Living Dhanbad</div>
+      {/* ========= NUMBERS ========= */}
+      <section className={styles.numbersWrap} aria-label="At a glance">
+        <dl className={styles.numbers}>
+          <div>
+            <dt>GitHub stars across my projects</dt>
+            <dd>{stars}</dd>
+          </div>
+          <div>
+            <dt>Public repositories</dt>
+            <dd>{repos}</dd>
+          </div>
+          <div>
+            <dt>Songs recorded</dt>
+            <dd>20+</dd>
+          </div>
+          <div>
+            <dt>Languages I sing in</dt>
+            <dd>2</dd>
+          </div>
+        </dl>
       </section>
 
-      {/* ========= CTA ========= */}
-      <section className={styles.cta} id="contact">
-        <div className={styles.ctaInner}>
-          <div className={styles.ctaTag}>Side B · Booking Open</div>
-          <h2 className={styles.ctaTitle}>
-            Let&apos;s cut <em>something</em> real.
+      {/* ========= CONTACT ========= */}
+      <section className={styles.contact}>
+        <div className={styles.contactInner}>
+          <h2 className={styles.contactTitle}>
+            Have a project, a role, or a song in mind?
           </h2>
-          <p className={styles.ctaSub}>
-            Need an Android engineer who phrases code like a melody — or a voice
-            for your next session? Studio is open.
-          </p>
-          <Link href="/contact" className={styles.btnCta}>
-            Open the Booth
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M13 5l7 7-7 7" />
-            </svg>
-          </Link>
+          <div className={styles.contactActions}>
+            <a href={`mailto:${EMAIL}`} className={styles.contactEmail}>
+              {EMAIL}
+            </a>
+            <Link href="/contact" className="btn-outline">
+              Use the contact form <ArrowRight />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
   );
-};
-
-export default HomePage;
+}

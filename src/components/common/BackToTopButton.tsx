@@ -30,14 +30,14 @@ const BackToTopButton = () => {
       {isVisible && (
         <motion.button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 md:bottom-10 md:right-10 bg-brand-black text-white p-3 rounded-sm shadow-xl hover:bg-brand-orange transition-all duration-300 z-50 border border-light"
+          className="fixed bottom-6 right-5 md:bottom-8 md:right-8 p-2.5 rounded-full bg-[color:var(--bg-elevated)] text-[color:var(--text-secondary)] border border-[color:var(--line-strong)] hover:text-[color:var(--text-primary)] hover:border-[color:var(--text-primary)] transition-colors z-50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           aria-label="Go to top"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 15l7-7 7 7" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.6} d="M12 19V5M6 11l6-6 6 6" />
           </svg>
         </motion.button>
       )}

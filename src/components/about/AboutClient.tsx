@@ -8,7 +8,7 @@ import { skills, philosophy, futureGoals, timeline } from '@/data/aboutData';
 import ModularContactForm from '../contact/ModularContactForm';
 import ResumeHub from './ResumeHub';
 
-const suvojeet = '/suvojeet.jpg';
+const suvojeet = '/portrait.jpg';
 
 // Icon Helper Components
 const SkillIcon = ({ name }: { name: string }) => {
@@ -109,7 +109,7 @@ const AboutClient = () => {
                         >
                             <div className="profile-frame">
                                 <motion.div
-                                    className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 overflow-hidden grayscale hover:grayscale-0 transition-all duration-500"
+                                    className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 overflow-hidden"
                                     whileHover={{ scale: 1.02 }}
                                     transition={{ duration: 0.3 }}
                                 >
@@ -117,7 +117,7 @@ const AboutClient = () => {
                                         src={suvojeet}
                                         alt="Suvojeet Sengupta"
                                         fill
-                                        className="object-cover"
+                                        className="object-cover object-top"
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         priority
                                     />

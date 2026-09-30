@@ -1,4 +1,4 @@
-import { Fraunces, JetBrains_Mono } from "next/font/google";
+import { Newsreader, Schibsted_Grotesk, IBM_Plex_Mono } from "next/font/google";
 // @ts-ignore
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
@@ -9,18 +9,24 @@ import Footer from "@/components/layout/Footer";
 import { SEO_CONFIG, getEnhancedPersonSchema, getWebSiteSchema } from "@/lib/seo";
 import { Metadata } from "next";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const display = Newsreader({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["300", "400", "600", "900"],
   style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const body = Schibsted_Grotesk({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  display: "swap",
+});
+
+const code = IBM_Plex_Mono({
+  variable: "--font-code",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -87,7 +93,7 @@ export const metadata: Metadata = {
     // bing: "YOUR_BING_VERIFICATION_CODE",
   },
   other: {
-    "theme-color": "#ea580c",
+    "theme-color": "#17181b",
     "color-scheme": "light dark",
     "format-detection": "telephone=no",
   },
@@ -115,8 +121,13 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-theme="dark" className={`${display.variable} ${body.variable} ${code.variable}`} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}`,
+          }}
+        />
         <link rel="alternate" type="application/rss+xml" title={`${SEO_CONFIG.siteName} Blog`} href={`${SEO_CONFIG.url}/rss.xml`} />
         <script
           type="application/ld+json"
@@ -131,9 +142,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }}
         />
       </head>
-      <body className={`${fraunces.variable} ${jetbrainsMono.variable} antialiased selection:bg-brand-orange selection:text-white`}>
+      <body className="antialiased">
         <Providers>
-          <ThemeProvider attribute="data-theme" defaultTheme="light" enableSystem>
+          <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem>
             <Navbar />
             <ClientLayout>
               <main className="min-h-screen">

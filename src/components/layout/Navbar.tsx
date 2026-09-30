@@ -3,9 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '@/components/common/ThemeToggle';
 import { cn } from '@/lib/utils';
+
+const NAV_LINKS = [
+  { name: 'Work', path: '/#work' },
+  { name: 'About', path: '/about' },
+  { name: 'Music', path: '/music' },
+  { name: 'Writing', path: '/blog' },
+  { name: 'Contact', path: '/contact' },
+];
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -13,115 +20,91 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 8);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Music', path: '/music' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'Dashboard', path: '/dashboard' },
-  ];
+  useEffect(() => setMobileMenuOpen(false), [pathname]);
+
+  const isActive = (path: string) =>
+    path.startsWith('/#') ? false : path === '/' ? pathname === '/' : pathname.startsWith(path);
 
   return (
-    <nav
+    <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        'flex justify-between items-center px-5 sm:px-8 py-3.5 sm:py-[18px]',
-        isScrolled
-          ? 'bg-[color:var(--bg-primary)]/85 backdrop-blur-md border-b border-[color:var(--line)]'
-          : 'bg-gradient-to-b from-[color:var(--bg-primary)]/85 to-transparent backdrop-blur-sm'
+        'fixed top-0 left-0 right-0 z-50 transition-[background-color,border-color] duration-300 border-b',
+        isScrolled || mobileMenuOpen
+          ? 'bg-[color:var(--bg-primary)]/90 backdrop-blur-md border-[color:var(--line)]'
+          : 'bg-transparent border-transparent'
       )}
-      style={{ fontFamily: 'var(--font-mono)' }}
     >
-      {/* Brand */}
-      <Link
-        href="/"
-        className="flex items-baseline gap-1.5 text-[18px] sm:text-[22px] font-black tracking-tight serif text-[color:var(--text-primary)] hover:opacity-90"
-        style={{ fontFamily: 'var(--font-serif)', letterSpacing: '-0.02em' }}
-      >
-        SUVOJEET
-        <span className="brand-dot" aria-hidden="true" />
-      </Link>
-
-      {/* Desktop nav */}
-      <ul className="hidden md:flex items-center gap-7 list-none text-[11px] uppercase tracking-[0.15em]">
-        {navLinks.map((link) => {
-          const active = pathname === link.path;
-          return (
-            <li key={link.path}>
-              <Link
-                href={link.path}
-                className={cn(
-                  'transition-opacity transition-colors hover:opacity-100 hover:text-[color:var(--neon)]',
-                  active
-                    ? 'text-[color:var(--neon)] opacity-100 before:content-["◆_"]'
-                    : 'text-[color:var(--text-secondary)] opacity-70'
-                )}
-              >
-                {link.name}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-
-      {/* Now playing + theme toggle */}
-      <div className="hidden md:flex items-center gap-4">
-        <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.15em] text-[color:var(--text-secondary)] opacity-65">
-          <div className="equalizer" aria-hidden="true">
-            <span /><span /><span /><span />
-          </div>
-          <span>Live Set · {new Date().getFullYear()}</span>
-        </div>
-        <ThemeToggle />
-      </div>
-
-      {/* Mobile toggle */}
-      <div className="flex items-center gap-3 md:hidden">
-        <ThemeToggle />
-        <button
-          aria-label="Toggle menu"
-          className="p-2 text-[color:var(--text-primary)]"
-          onClick={() => setMobileMenuOpen((v) => !v)}
+      <nav className="max-w-[1240px] mx-auto flex items-center justify-between h-16 px-5 sm:px-10">
+        <Link
+          href="/"
+          className="text-[19px] tracking-[-0.01em] text-[color:var(--text-primary)]"
+          style={{ fontFamily: 'var(--font-serif)' }}
         >
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
+          Suvojeet Sengupta
+        </Link>
 
-      {/* Mobile menu — React state, no vanilla DOM */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 bg-[color:var(--bg-secondary)] border-b border-[color:var(--line-strong)] flex flex-col gap-5 p-6 md:hidden"
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                href={link.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  'text-sm uppercase tracking-[0.2em]',
-                  pathname === link.path ? 'text-[color:var(--neon)]' : 'text-[color:var(--text-primary)]'
-                )}
-              >
-                {link.name}
-              </Link>
+        <div className="hidden md:flex items-center gap-8">
+          <ul className="flex items-center gap-7 list-none text-[14px]">
+            {NAV_LINKS.map((link) => (
+              <li key={link.path}>
+                <Link
+                  href={link.path}
+                  aria-current={isActive(link.path) ? 'page' : undefined}
+                  className={cn(
+                    'transition-colors py-1 border-b',
+                    isActive(link.path)
+                      ? 'text-[color:var(--text-primary)] border-[color:var(--text-primary)]'
+                      : 'text-[color:var(--text-tertiary)] border-transparent hover:text-[color:var(--text-primary)]'
+                  )}
+                >
+                  {link.name}
+                </Link>
+              </li>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+          </ul>
+          <ThemeToggle />
+        </div>
+
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+            className="p-2 -mr-2 text-[color:var(--text-primary)]"
+            onClick={() => setMobileMenuOpen((v) => !v)}
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6">
+              {mobileMenuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-[color:var(--line)] px-5 pb-6 pt-2">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.path}
+              href={link.path}
+              onClick={() => setMobileMenuOpen(false)}
+              className={cn(
+                'block py-3 text-[22px] border-b border-[color:var(--line)]',
+                isActive(link.path) ? 'text-[color:var(--text-primary)]' : 'text-[color:var(--text-secondary)]'
+              )}
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </header>
   );
 };
 
